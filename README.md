@@ -2,8 +2,9 @@
 
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/lbraun/geofreebie.svg?columns=all)](https://waffle.io/lbraun/geofreebie)
 
+### Welcome!
 
-Welcome! We are developing this app as part of the Location Based Services course at [ifgi](http://ifgi.de). The purpose is to explore privacy issues in location based mobile apps and to produce something useful at the same time.
+We are developing this app as part of the Location Based Services course at [ifgi](http://ifgi.de). The purpose is to explore privacy issues in location based mobile apps and to produce something useful at the same time.
 
 The Geofreebie app is meant to enhance existing freecycle networks by creating location-based recommendations.
 
@@ -13,7 +14,15 @@ The Geofreebie app is meant to enhance existing freecycle networks by creating l
 
 > Your search for couches within 5 kilometers returned 20 results.
 
+> There are 5 items being given away along the route you provided.
+
 These are just a few examples of notifications our app can deliver.
+
+### The plan
+
+* You can find our original vision for the project in our [mockups folder](https://drive.google.com/drive/folders/13sRy6OwVp6YiGpK_L-YKbhwFvKUbRUbf) and our [brainstorm file](initial_ideas_brainstorm.md).
+
+* See [Waffle.io](https://waffle.io/lbraun/geofreebie) for details on specific features.
 
 ## Technologies used
 
