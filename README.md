@@ -1,8 +1,18 @@
 # Geofreebie
 
-This is a Cordova app, developed to allow users to create a location based service without detailed programming knowledge. The app can be adjusted using two configuration files, that can be changed to settings fitting the user's needs.
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/lbraun/geofreebie.svg?columns=all)](https://waffle.io/lbraun/geofreebie)
 
-LBS-Engine was developed for the [ifgi](http://ifgi.de). Its main purpose is to have a basic template for running user studies in the field of geoinformatics.
+Welcome! We are developing this app as part of the Location Based Services course at [ifgi](http://ifgi.de). The purpose is to explore privacy issues in location based mobile apps and to produce something useful at the same time.
+
+The purpose of the Geofreebie app is to enhance existing freecycle networks by creating location-based recommendations.
+
+> Philip is giving away a toaster near a route you take often.
+
+> Anna is giving away cookies 500 meters from you!
+
+> Your search for couches within 5 kilometers returned 20 results.
+
+These are just a few examples of notifications our app can deliver.
 
 ## Technologies used
 
@@ -16,7 +26,7 @@ LBS-Engine was developed for the [ifgi](http://ifgi.de). Its main purpose is to 
 
 ## Installation
 
-Install the app and run it on your machine or on a smartphone.
+_How to install the app and run it on your device._
 
 #### Required Software
 Install this software to run this project:
@@ -28,6 +38,17 @@ To add functionality, or modify the state of the `config.json` or `layers.json`:
 
 - [Browserify](http://browserify.org/)
 - [Babelify](https://github.com/babel/babelify)
+
+You will also need:
+
+- Java JDK
+- Android SDK (download Android Studio and it's included)
+- Gradle (`brew install gradle` on Mac OS)
+
+And the following environment variables:
+
+- JAVA_HOME (google how to find the location of your google installation)
+- ANDROID_HOME (can be found from Android Studio settings. Search settings for "SDK")
 
 #### Installation
 - Clone this repository
