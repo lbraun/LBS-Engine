@@ -89,9 +89,10 @@ class Settings extends React.Component {
         this.createLog('Layer Control', e.target.checked);
     }
 
-    //handle toggle of map dragging 
+    //handle toggle of map dragging
     handleChangeDragMap(e) {
         this.props.onDragMapChange(e.target.checked);
+        console.log("map is dragging");
         this.createLog('Map Dragging', e.target.checked);
     }
 
@@ -110,7 +111,7 @@ class Settings extends React.Component {
                             <p>Logging </p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
+                            <Ons.Switch
                                 checked={this.props.logging}
                                 onChange={this.handleChangeLogging} />
                         </div>
@@ -120,7 +121,7 @@ class Settings extends React.Component {
                             <p>External data </p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
+                            <Ons.Switch
                                 checked={this.props.externalData}
                                 onChange={this.handleChangeData} />
                         </div>
@@ -130,7 +131,7 @@ class Settings extends React.Component {
                             <p>GPS </p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
+                            <Ons.Switch
                                 checked={this.props.gps}
                                 onChange={this.handleChangeGPS} />
                         </div>
@@ -140,7 +141,7 @@ class Settings extends React.Component {
                             <p>Layer Control</p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
+                            <Ons.Switch
                                 checked={this.props.layerControl}
                                 onChange={this.handleChangeLayerControl} />
                         </div>
@@ -150,7 +151,7 @@ class Settings extends React.Component {
                             <p>Drag Map</p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
+                            <Ons.Switch
                                 checked={this.props.draggable}
                                 onChange={this.handleChangeDragMap} />
                         </div>
@@ -160,7 +161,7 @@ class Settings extends React.Component {
                             <p>Zoom Map</p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
+                            <Ons.Switch
                                 checked={this.props.zoomable}
                                 onChange={this.handleChangeZoomMap} />
                         </div>
