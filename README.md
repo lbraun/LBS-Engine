@@ -38,14 +38,12 @@ These are just a few examples of notifications our app can deliver.
 
 _How to install the app and run it on your device._
 
-#### Required Software
-Install this software to run this project:
+#### Dependencies
+
+Install these dependencies to run the project:
 
 - Apache Cordova
 - node.js (npm)
-
-To add functionality, or modify the state of the `config.json` or `layers.json`:
-
 - [Browserify](http://browserify.org/)
 - [Babelify](https://github.com/babel/babelify)
 
@@ -55,16 +53,23 @@ You will also need:
 - Android SDK (download Android Studio and it's included)
 - Gradle (`brew install gradle` on Mac OS)
 
-And the following environment variables:
+And you need to set up the following environment variables:
 
 - JAVA_HOME (google how to find the location of your google installation)
 - ANDROID_HOME (can be found from Android Studio settings. Search settings for "SDK")
 
 #### Installation
+
 - Clone this repository
-- Add the cordova platform you want to use `cordova platform add <platformname>` [Cordova Getting started](https://cordova.apache.org/#getstarted)
+- Add the cordova platform you want to use `cordova platform add <platformname>`
+    - Platforms include `android`, `ios`, and `browser`
+
+    - See [Cordova Getting started](https://cordova.apache.org/#getstarted) for details
 - Run `npm run build`
-- Run `cordova run <platformname>`
+
+#### Running the app
+
+- From the console, run `cordova run <platformname>`
 
 ## Modifications of the existing app
 
