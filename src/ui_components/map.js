@@ -94,7 +94,7 @@ class Map extends React.Component {
      * @param {Object} e Layer Object fired by leaflet
      */
     handleOverlayremove(e) {
-        
+
         this.createLog(false, e.name);
     }
 
@@ -125,8 +125,8 @@ class Map extends React.Component {
             else if (layers[layer].type == 'route') {
                 layerElement.push(<leaflet.Polyline positions={layers[layer].coords} color='red' key={layers[layer].name} />);
             }
-            mapLayers.push(<leaflet.LayersControl.Overlay key={layer} 
-                                                        name={layer} 
+            mapLayers.push(<leaflet.LayersControl.Overlay key={layer}
+                                                        name={layer}
                                                         checked={true}>
                                                         <leaflet.FeatureGroup key={layer}>
                                                             {layerElement}
@@ -191,7 +191,7 @@ class Map extends React.Component {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution="Map data &copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                     />
-                    <OfflineLayer.OfflineControl />                
+                    <OfflineLayer.OfflineControl />
                     {marker}
                 </leaflet.Map>
             )

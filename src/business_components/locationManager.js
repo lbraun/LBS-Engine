@@ -5,9 +5,26 @@
  * Return promise with the gps data
  */
 function getLocation() {
-    
+
     return new Promise(function(resolve, reject) {
         navigator.geolocation.getCurrentPosition(function success(position) {
+            console.log("Current position: ", position);
+            resolve(position.coords);
+        }, function error(err) {
+            console.log(err);
+            reject(err);
+        });
+    })
+}
+
+/**
+ * Get the current location from the GPS sensor
+ * Return promise with the gps data
+ */
+function watchLocation() {
+
+    return new Promise(function(resolve, reject) {
+        navigator.geolocation.watchPosition(function success(position) {
             console.log("Current position: ", position);
             resolve(position.coords);
         }, function error(err) {
