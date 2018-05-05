@@ -11,6 +11,7 @@ _Mission: encourage reuse of discarded items_
 - Suggestions based on usual routes
 - Cost of getting there (gas, time)
 - Different travel modes
+- Potluck event
 
 ### Sugestions from Kray
 
@@ -19,6 +20,8 @@ _Mission: encourage reuse of discarded items_
 - How to decided who get's it?
 - Talk to Ana Maria Bustamante Duarte (researches refugees) and Mehrnaz Ataei (privacy morality)
 
+- Must be present to give (has to be a live status?)
+- Collocation as a requirement
 
 ### Notes
 
