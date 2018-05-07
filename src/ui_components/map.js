@@ -12,6 +12,9 @@ const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
 
+
+
+
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
@@ -31,6 +34,26 @@ class Map extends React.Component {
             iconAnchor: [25, 48],
             popupAnchor: [-3, -76]
         });
+
+        // Options: throw an error if no update is received every 30 seconds.
+        // onSuccess Callback
+        //   This method accepts a `Position` object, which contains
+        //   the current GPS coordinates
+
+
+        // onError Callback receives a PositionError object
+        //
+        this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
+              var message = 'Latitude: '  + position.coords.latitude      + '<br />' +
+                                  'Longitude: ' + position.coords.longitude     + '<br />' +
+                                  '<hr />'
+              this.setState({
+                position: [position.coords.latitude, position.coords.longitude]
+              })
+          }, function onError(error) {
+              alert('code: '    + error.code    + '\n' +
+                    'message: ' + error.message + '\n');
+          }, { timeout: 30000 });
     }
 
     /**
