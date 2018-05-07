@@ -90577,7 +90577,6 @@ const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
-
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
@@ -90601,14 +90600,12 @@ class Map extends React.Component {
         // onSuccess Callback
         //   This method accepts a `Position` object, which contains
         //   the current GPS coordinates
-
-
         // onError Callback receives a PositionError object
-        //
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
             var message = 'Latitude: ' + position.coords.latitude + '<br />' + 'Longitude: ' + position.coords.longitude + '<br />' + '<hr />';
             this.setState({
-                position: [position.coords.latitude, position.coords.longitude]
+                position: [position.coords.latitude, position.coords.longitude],
+                positionMarkerText: message
             });
         }, function onError(error) {
             alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
@@ -90728,7 +90725,19 @@ class Map extends React.Component {
 
     renderMapWithLayers() {
         //check if the location is enabled and available
-        const marker = this.state.hasLocation && this.props.gps ? React.createElement(leaflet.Marker, { position: this.state.position, icon: this.positionMarker }) : null;
+        const marker = this.state.hasLocation && this.props.gps ? React.createElement(
+            leaflet.Marker,
+            { position: this.state.position, icon: this.positionMarker },
+            React.createElement(
+                leaflet.Popup,
+                null,
+                React.createElement(
+                    'span',
+                    null,
+                    this.state.positionMarkerText
+                )
+            )
+        ) : null;
         return React.createElement(
             leaflet.Map,
             {
@@ -90761,7 +90770,19 @@ class Map extends React.Component {
             return this.renderMapWithLayers();
         } else {
             //check if the location is enabled and available
-            const marker = this.state.hasLocation && this.props.gps ? React.createElement(leaflet.Marker, { position: this.state.position, icon: this.positionMarker }) : null;
+            const marker = this.state.hasLocation && this.props.gps ? React.createElement(
+                leaflet.Marker,
+                { position: this.state.position, icon: this.positionMarker },
+                React.createElement(
+                    leaflet.Popup,
+                    null,
+                    React.createElement(
+                        'span',
+                        null,
+                        this.state.positionMarkerText
+                    )
+                )
+            ) : null;
             //return the map without any layers shown
             return React.createElement(
                 leaflet.Map,
