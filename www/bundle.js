@@ -89960,9 +89960,10 @@ module.exports={
         "center": [51.962522, 7.625615],
         "zoomable": true,
         "draggable": true,
-        "zoom": 8
+        "zoom": 20
     }
 }
+
 },{}],260:[function(require,module,exports){
 module.exports={
     "Layer1": {
