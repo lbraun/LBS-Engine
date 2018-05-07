@@ -20,6 +20,7 @@ class Map extends React.Component {
         //get the settings from the config file
         this.state = {
             position: config.map.center,
+            positionMarkerText: "",
             zoom: config.map.zoom,
             hasLocation: false
         }
@@ -36,11 +37,11 @@ class Map extends React.Component {
         //   This method accepts a `Position` object, which contains
         //   the current GPS coordinates
         // onError Callback receives a PositionError object
+        var map = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            var message = 'Latitude: '  + position.coords.latitude      + '<br />' +
-                'Longitude: ' + position.coords.longitude     + '<br />' +
-                '<hr />'
-            this.setState({
+            var message = 'Latitude: '  + position.coords.latitude + ', ' +
+                'Longitude: ' + position.coords.longitude
+            map.setState({
                 position: [position.coords.latitude, position.coords.longitude],
                 positionMarkerText: message
             })
