@@ -4,24 +4,24 @@
         "items": [
             {
                 "coords": [
-                  7.619962692260742,
-                  51.970129633610206
+                  7.62,
+                  51.97
                 ],
                 "name": "Gifter1",
                 "popup": "Heinz is donating ketchup"
             },
             {
                 "coords": [
-                  7.622880935668945,
-                  51.95098374463632
+                  7.62,
+                  51.95
                 ],
                 "name": "Gifter2",
                 "popup": "Barbara is donating rhubarb cake"
             },
             {
                 "coords": [
-                  7.6727163791656485,
-                  51.927542703316696
+                  7.67,
+                  51.93
                 ],
                 "name": "Gifter3",
                 "popup": "Denny is donating a jacket"
