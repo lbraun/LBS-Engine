@@ -39,8 +39,7 @@ class Map extends React.Component {
         // onError Callback receives a PositionError object
         var map = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            var message = 'Latitude: '  + position.coords.latitude + ', ' +
-                'Longitude: ' + position.coords.longitude
+            var message = 'Lat: '  + position.coords.latitude + ', ' + 'Long: ' + position.coords.longitude
             map.setState({
                 position: [position.coords.latitude, position.coords.longitude],
                 positionMarkerText: message
