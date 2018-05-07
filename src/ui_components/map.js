@@ -18,18 +18,38 @@ class Map extends React.Component {
         this.renderMapWithLayers = this.renderMapWithLayers.bind(this);
         this.handleOverlayadd = this.handleOverlayadd.bind(this);
         this.handleOverlayremove = this.handleOverlayremove.bind(this);
-        //get the settings from the config file
+
+        // Get the settings from the config file
         this.state = {
             position: config.map.center,
             zoom: config.map.zoom,
             hasLocation: false
         }
-        //marker symbol for the "you are here" marker
+
+        // Define marker symbol for the user position marker
         this.positionMarker = L.icon({
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
             popupAnchor: [-3, -76]
+        });
+
+
+        // Update the user's position on the map whenever a new position is reported by the device
+        var map = this;
+        this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
+
+            map.setState({
+                position: [lat, long],
+                positionMarkerText: message
+            })
+        }, function onError(error) {
+            console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+        }, {
+            timeout: 30000 // Throw an error if no update is received every 30 seconds
         });
     }
 
@@ -94,7 +114,7 @@ class Map extends React.Component {
      * @param {Object} e Layer Object fired by leaflet
      */
     handleOverlayremove(e) {
-        
+
         this.createLog(false, e.name);
     }
 
@@ -125,8 +145,8 @@ class Map extends React.Component {
             else if (layers[layer].type == 'route') {
                 layerElement.push(<leaflet.Polyline positions={layers[layer].coords} color='red' key={layers[layer].name} />);
             }
-            mapLayers.push(<leaflet.LayersControl.Overlay key={layer} 
-                                                        name={layer} 
+            mapLayers.push(<leaflet.LayersControl.Overlay key={layer}
+                                                        name={layer}
                                                         checked={true}>
                                                         <leaflet.FeatureGroup key={layer}>
                                                             {layerElement}
@@ -140,7 +160,13 @@ class Map extends React.Component {
         //check if the location is enabled and available
         const marker = this.state.hasLocation && this.props.gps
             ? (
-                <leaflet.Marker position={this.state.position} icon={this.positionMarker} />
+                <leaflet.Marker position={this.state.position} icon={this.positionMarker}>
+                    <leaflet.Popup>
+                        <span>
+                            {this.state.positionMarkerText}
+                        </span>
+                    </leaflet.Popup>
+                </leaflet.Marker>
             )
             : null;
         return (
@@ -176,7 +202,13 @@ class Map extends React.Component {
             //check if the location is enabled and available
             const marker = this.state.hasLocation && this.props.gps
                 ? (
-                    <leaflet.Marker position={this.state.position} icon={this.positionMarker} />
+                    <leaflet.Marker position={this.state.position} icon={this.positionMarker}>
+                        <leaflet.Popup>
+                            <span>
+                                {this.state.positionMarkerText}
+                            </span>
+                        </leaflet.Popup>
+                    </leaflet.Marker>
                 )
                 : null;
             //return the map without any layers shown
@@ -191,7 +223,7 @@ class Map extends React.Component {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution="Map data &copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                     />
-                    <OfflineLayer.OfflineControl />                
+                    <OfflineLayer.OfflineControl />
                     {marker}
                 </leaflet.Map>
             )
