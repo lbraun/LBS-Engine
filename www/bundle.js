@@ -90415,6 +90415,14 @@ class Map extends React.Component {
             popupAnchor: [-3, -76]
         });
 
+        // Define marker symbol for the user gifter marker
+        this.gifterMarker = L.icon({
+            iconUrl: 'img/man_blue.png',
+            iconSize: [50, 50],
+            iconAnchor: [25, 48],
+            popupAnchor: [-3, -76]
+        });
+
         // Update the user's position on the map whenever a new position is reported by the device
         var map = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
@@ -90497,19 +90505,19 @@ class Map extends React.Component {
         this.createLog(false, e.name);
     }
 
-    //get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
+    // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
     addLayers() {
         var mapLayers = [];
         for (let layer in layers) {
             var layerElement = [];
-            //check if the layer is containing markers and add those
+            // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    //if there is a popup, insert it into the map
+                    // If there is a popup, insert it into the map
                     if (layers[layer].items[i].popup != undefined) {
                         layerElement.push(React.createElement(
                             leaflet.Marker,
-                            { position: layers[layer].items[i].coords, key: layers[layer].items[i].name },
+                            { position: layers[layer].items[i].coords, key: layers[layer].items[i].name, icon: this.gifterMarker },
                             React.createElement(
                                 leaflet.Popup,
                                 null,
@@ -90525,7 +90533,7 @@ class Map extends React.Component {
                     }
                 }
             }
-            //else it is a route
+            // Else it is a route
             else if (layers[layer].type == 'route') {
                     layerElement.push(React.createElement(leaflet.Polyline, { positions: layers[layer].coords, color: 'red', key: layers[layer].name }));
                 }
@@ -90545,7 +90553,7 @@ class Map extends React.Component {
     }
 
     renderMapWithLayers() {
-        //check if the location is enabled and available
+        // Check if the location is enabled and available
         const marker = this.state.hasLocation && this.props.gps ? React.createElement(
             leaflet.Marker,
             { position: this.state.position, icon: this.positionMarker },
@@ -90584,13 +90592,13 @@ class Map extends React.Component {
         );
     }
 
-    //render the map with the layerControl
+    // Render the map with the layerControl
     render() {
-        //if the layerControl is active, the map is rendered with the layercontrol
+        // If the layerControl is active, the map is rendered with the layercontrol
         if (this.props.layerControl) {
             return this.renderMapWithLayers();
         } else {
-            //check if the location is enabled and available
+            // Check if the location is enabled and available
             const marker = this.state.hasLocation && this.props.gps ? React.createElement(
                 leaflet.Marker,
                 { position: this.state.position, icon: this.positionMarker },
@@ -90604,7 +90612,7 @@ class Map extends React.Component {
                     )
                 )
             ) : null;
-            //return the map without any layers shown
+            // Return the map without any layers shown
             return React.createElement(
                 leaflet.Map,
                 { center: this.state.position,

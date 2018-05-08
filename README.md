@@ -24,6 +24,8 @@ These are just a few examples of notifications our app can deliver.
 
 * See [Waffle.io](https://waffle.io/lbraun/geofreebie) for details on specific features.
 
+* See our [Sprint Review Slides](https://docs.google.com/presentation/d/14e147f2FRqLchENUWvpLlp1JihMFEbdodkgj4bvrjWc/edit#slide=id.p) for sprint review progress reports.
+
 ## Technologies used
 
 1. [node.js](https://nodejs.org/en/)
