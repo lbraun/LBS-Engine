@@ -6,7 +6,8 @@
 <body>
   <p>This is the help page. You can find help for the app interactions here.</p>
 
-  <p>Geolocation test:</p>
+  <!-- Forget privacy! -->
+  <p>Location history:</p>
 
   <div id="geolocation"></div>
 </body>
@@ -19,7 +20,8 @@
   //
   function onSuccess(position) {
       var element = document.getElementById('geolocation');
-      element.innerHTML = 'Latitude: '  + position.coords.latitude      + '<br />' +
+      element.innerHTML = 'Time: '      + new Date()                    + '<br />' +
+                          'Latitude: '  + position.coords.latitude      + '<br />' +
                           'Longitude: ' + position.coords.longitude     + '<br />' +
                           '<hr />'      + element.innerHTML;
   }

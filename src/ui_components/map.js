@@ -11,20 +11,22 @@ const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
+
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
         this.renderMapWithLayers = this.renderMapWithLayers.bind(this);
         this.handleOverlayadd = this.handleOverlayadd.bind(this);
         this.handleOverlayremove = this.handleOverlayremove.bind(this);
-        //get the settings from the config file
+
+        // Get the settings from the config file
         this.state = {
             position: config.map.center,
-            positionMarkerText: "",
             zoom: config.map.zoom,
             hasLocation: false
         }
-        //marker symbol for the "you are here" marker
+
+        // Define marker symbol for the user position marker
         this.positionMarker = L.icon({
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
@@ -32,23 +34,23 @@ class Map extends React.Component {
             popupAnchor: [-3, -76]
         });
 
-        // Options: throw an error if no update is received every 30 seconds.
-        // onSuccess Callback
-        //   This method accepts a `Position` object, which contains
-        //   the current GPS coordinates
-        // onError Callback receives a PositionError object
+
+        // Update the user's position on the map whenever a new position is reported by the device
         var map = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            var message = 'Latitude: '  + position.coords.latitude + ', ' +
-                'Longitude: ' + position.coords.longitude
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
+
             map.setState({
-                position: [position.coords.latitude, position.coords.longitude],
+                position: [lat, long],
                 positionMarkerText: message
             })
         }, function onError(error) {
-            alert('code: '    + error.code    + '\n' +
-                'message: ' + error.message + '\n');
-        }, { timeout: 30000 });
+            console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+        }, {
+            timeout: 30000 // Throw an error if no update is received every 30 seconds
+        });
     }
 
     /**
