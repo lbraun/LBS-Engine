@@ -89949,7 +89949,7 @@ module.exports={
 
 },{}],260:[function(require,module,exports){
 module.exports={
-    "Gifters": {
+    "gifters": {
         "type": "marker",
         "items": [
             {
@@ -89999,16 +89999,16 @@ ons.ready(function () {
 const React = require('react');
 const Ons = require('react-onsenui');
 
-//custom files
-//data
+// Custom files
+// Data
 const config = require('../data_components/config.json');
 const layers = require('../data_components/layers.json');
-//ui
+// Ui
 const map = require('./map.js');
-const pictureView = require('./pictureView.js');
+const list = require('./list.js');
 const settings = require('./settings.js');
 const embededSite = require('./embededSite.js');
-//logic
+// Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
 
@@ -90036,7 +90036,7 @@ class App extends React.Component {
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
             isOpen: false,
-            //elements used for lifted up state of the config file
+            // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
             gps: config.app.gps,
@@ -90053,7 +90053,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleLoggingChange(bool) {
         this.setState({ logging: bool });
@@ -90061,7 +90061,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleExternalDataChange(bool) {
         this.setState({ externalData: bool });
@@ -90069,7 +90069,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleGpsChange(bool) {
         this.setState({ gps: bool });
@@ -90077,7 +90077,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleLayerControlChange(bool) {
         this.setState({ layerControl: bool });
@@ -90085,7 +90085,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleDragMapChange(bool) {
         this.setState({ draggable: bool });
@@ -90093,15 +90093,15 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleZoomMapChange(bool) {
         this.setState({ zoomable: bool });
     }
 
-    //toolbar on top of the app, contains name of the app and the menu button
+    // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        const titles = ['About', 'Map', 'Streetview', 'Settings', 'Help'];
+        const titles = ['About', 'Map', 'List', 'Settings', 'Help'];
         return React.createElement(
             Ons.Toolbar,
             null,
@@ -90122,27 +90122,27 @@ class App extends React.Component {
         );
     }
 
-    //hide sidebar
+    // Hide sidebar
     hide() {
         this.setState({ isOpen: false });
     }
 
-    //show sidebar
+    // Show sidebar
     show() {
         this.setState({ isOpen: true });
     }
 
-    //handle a click o settings --> change state
+    // Handle a click on settings --> change state
     handleClickSettings() {
         this.setState({ index: 3 });
     }
 
-    //handle a click o about --> change state
+    // Handle a click on about --> change state
     handleClickAbout() {
         this.setState({ index: 0 });
     }
 
-    //handle a click o about --> change state
+    // Handle a click on about --> change state
     handleClickHelp() {
         this.setState({ index: 4 });
     }
@@ -90153,12 +90153,12 @@ class App extends React.Component {
      */
     renderTabs() {
         return [
-        //Welcome page iframe 
+        // Welcome page iframe
         {
             content: React.createElement(embededSite.EmbededComponent, { site: 'about.html', key: 'about', name: 'About' }),
             tab: React.createElement(Ons.Tab, { label: 'About', icon: '', key: 'about', style: { display: 'none' } })
         },
-        //map element
+        // Map element
         {
             content: React.createElement(map.Map, {
                 logging: this.state.logging,
@@ -90170,19 +90170,19 @@ class App extends React.Component {
                 key: 'map' }),
             tab: React.createElement(Ons.Tab, { label: 'Map', icon: 'md-map', key: 'map' })
         },
-        //pictureView element
+        // List element
         {
-            content: React.createElement(pictureView.PictureView, {
+            content: React.createElement(list.List, {
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 gps: this.state.gps,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
-                key: 'picture' }),
-            tab: React.createElement(Ons.Tab, { label: 'Streetview', icon: 'md-image', key: 'picture' })
+                key: 'list' }),
+            tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
         },
-        //settings element, with no tab displayed in the tabbar, as it is accessible via the sidebar
+        // Settings element, with no tab displayed in the tabbar, as it is accessible via the sidebar
         {
             content: React.createElement(settings.Settings, {
                 onLoggingChange: this.handleLoggingChange,
@@ -90200,20 +90200,20 @@ class App extends React.Component {
                 key: 'settings' }),
             tab: React.createElement(Ons.Tab, { label: 'Settings', icon: 'md-settings', key: 'settings', style: { display: 'none' } })
         },
-        //about page iframe 
+        // About page iframe
         {
             content: React.createElement(embededSite.EmbededComponent, { site: 'help.html', key: 'help', name: 'Help' }),
             tab: React.createElement(Ons.Tab, { label: 'Help', icon: 'md-help', key: 'help', style: { display: 'none' } })
         },
-        //ship  around an error in current onsen release
-        //can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
+        // Ship around an error in current onsen release
+        // Can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
         {
             content: React.createElement('div', { key: 'placeholder' }),
             tab: null
         }];
     }
 
-    //render the list displayed in the sidebar
+    // Render the list displayed in the sidebar
     renderList() {
         return React.createElement(
             Ons.List,
@@ -90269,7 +90269,7 @@ class App extends React.Component {
         );
     }
 
-    //render sidebars and toolbar
+    // Render sidebars and toolbar
     render() {
 
         return React.createElement(
@@ -90301,12 +90301,12 @@ class App extends React.Component {
                     index: this.state.index,
                     onPreChange: event => {
                         if (event.index != this.state.index) {
-                            //handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
+                            // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
                             if (event.target !== event.currentTarget) return;
                             this.setState({ index: event.index });
                         }
 
-                        //check if logging is enabled and create a log if so
+                        // Check if logging is enabled and create a log if so
                         if (this.state.logging) {
                             var modeName;
                             switch (event.index) {
@@ -90317,7 +90317,7 @@ class App extends React.Component {
                                     modeName = 'Map';
                                     break;
                                 case 2:
-                                    modeName = 'Streetview';
+                                    modeName = 'List';
                                     break;
                                 case 3:
                                     modeName = 'Settings';
@@ -90327,15 +90327,15 @@ class App extends React.Component {
                             }
 
                             var entry;
-                            //get the current position for the log
+                            // Get the current position for the log
                             locationManager.getLocation().then(function success(position) {
                                 entry = [position.latitude, position.longitude, modeName, 'Changed View'];
-                                //log the data
+                                // Log the data
                                 logger.logEntry(entry);
                             }, function error(err) {
-                                //if there was an error getting the position, log a '-' for lat/lng
+                                // If there was an error getting the position, log a '-' for lat/lng
                                 entry = ['-', '-', modeName, 'Changed View'];
-                                //log the data
+                                // Log the data
                                 logger.logEntry(entry);
                             });
                         }
@@ -90350,7 +90350,7 @@ module.exports = {
     App: App
 };
 
-},{"../business_components/locationManager.js":256,"../business_components/logger.js":257,"../data_components/config.json":259,"../data_components/layers.json":260,"./embededSite.js":263,"./map.js":264,"./pictureView.js":265,"./settings.js":266,"react":254,"react-onsenui":251}],263:[function(require,module,exports){
+},{"../business_components/locationManager.js":256,"../business_components/logger.js":257,"../data_components/config.json":259,"../data_components/layers.json":260,"./embededSite.js":263,"./list.js":264,"./map.js":265,"./settings.js":266,"react":254,"react-onsenui":251}],263:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -90379,6 +90379,102 @@ module.exports = {
 };
 
 },{"react":254}],264:[function(require,module,exports){
+'use strict';
+
+const React = require('react');
+const Ons = require('react-onsenui');
+
+// Custom imports
+const map = require('./map.js');
+const config = require('../data_components/config.json');
+const layers = require('../data_components/layers.json');
+
+/**
+ * Component for displaying the list view. On top a list is displayed and below a map.
+ * The map is generated in the same way, it is defined in the config file.
+ */
+class List extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    /**
+     * Handle clicks on items in the list
+     * @param {Integer} integer index of the list item
+     */
+    handleListItemClick(int) {}
+    // TODO: implement this!
+
+
+    /**
+     * Calculate the distance from the user's location to a given gifter's position
+     * @param {Integer} integer index identifying the gifter
+     */
+    calculateDistanceTo(int) {
+        // TODO: actually implement this!
+        return "50 m";
+    }
+
+    // Render the list displayed in the sidebar
+    renderList() {
+        var gifters = layers.gifters.items;
+        var listItems = [];
+
+        for (let gifter in gifters) {
+            listItems.push(React.createElement(
+                Ons.ListItem,
+                {
+                    tappable: true,
+                    onClick: this.handleListItemClick(gifter) },
+                React.createElement(
+                    'div',
+                    { className: 'left' },
+                    React.createElement(Ons.Icon, { icon: 'md-face' })
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'center' },
+                    gifters[gifter].name,
+                    ' - ',
+                    gifters[gifter].popup
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'right' },
+                    this.calculateDistanceTo(gifter)
+                )
+            ));
+        }
+
+        return React.createElement(
+            Ons.List,
+            null,
+            listItems
+        );
+    }
+
+    render() {
+        return React.createElement(
+            'div',
+            { className: 'center', style: { height: '100%' } },
+            React.createElement(
+                Ons.Row,
+                { style: { width: '100%', height: '50%' } },
+                React.createElement(map.Map, { picture: true, logging: this.props.logging, externalData: this.props.externalData, gps: this.props.gps, layerControl: this.props.layerControl,
+                    draggable: this.props.draggable, zoomable: this.props.zoomable })
+            ),
+            this.renderList()
+        );
+    }
+}
+
+module.exports = {
+    List: List
+};
+
+},{"../data_components/config.json":259,"../data_components/layers.json":260,"./map.js":265,"react":254,"react-onsenui":251}],265:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -90636,72 +90732,7 @@ module.exports = {
     Map: Map
 };
 
-},{"../business_components/locationManager.js":256,"../business_components/logger.js":257,"../business_components/offlineLayer.js":258,"../data_components/config.json":259,"../data_components/layers.json":260,"react":254,"react-leaflet":239}],265:[function(require,module,exports){
-'use strict';
-
-const React = require('react');
-const Ons = require('react-onsenui');
-
-//custom imports
-const map = require('./map.js');
-const config = require('../data_components/config.json');
-
-/**
- * Component for displaying the picture view. On top a picture is displayed and below a map.
- * The map is generated in the same way, it is defined in the config file.
- */
-class PictureView extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentImage: 0,
-            images: config.app.numberOfImages
-        };
-        this.handlePictureChange = this.handlePictureChange.bind(this);
-    }
-
-    //handle a change in the carousel
-    handlePictureChange(e) {
-        console.log(this.state.currentImage);
-        console.log(e.activeIndex);
-        this.setState({ currentImage: e.activeIndex });
-    }
-
-    render() {
-        const filepath = 'img/';
-        var images = [];
-        for (var i = 0; i < this.state.images; i++) {
-            var path = filepath + i + '.jpg';
-            images.push(path);
-        }
-        return React.createElement(
-            'div',
-            { className: 'center', style: { height: '100%' } },
-            React.createElement(
-                Ons.Carousel,
-                { onPostChange: this.handlePictureChange, index: this.state.currentImage, style: { width: '100%', height: '50%' }, swipeable: true, autoScroll: true },
-                images.map((image, index) => React.createElement(
-                    Ons.CarouselItem,
-                    { key: index },
-                    React.createElement('img', { style: { display: 'block', width: '100%' }, src: image })
-                ))
-            ),
-            React.createElement(
-                Ons.Row,
-                { style: { width: '100%', height: '50%' } },
-                React.createElement(map.Map, { picture: true, logging: this.props.logging, externalData: this.props.externalData, gps: this.props.gps, layerControl: this.props.layerControl,
-                    draggable: this.props.draggable, zoomable: this.props.zoomable })
-            )
-        );
-    }
-}
-
-module.exports = {
-    PictureView: PictureView
-};
-
-},{"../data_components/config.json":259,"./map.js":264,"react":254,"react-onsenui":251}],266:[function(require,module,exports){
+},{"../business_components/locationManager.js":256,"../business_components/logger.js":257,"../business_components/offlineLayer.js":258,"../data_components/config.json":259,"../data_components/layers.json":260,"react":254,"react-leaflet":239}],266:[function(require,module,exports){
 'use strict';
 
 const React = require('react');

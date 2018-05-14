@@ -3,16 +3,16 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
-//custom files
-//data
+// Custom files
+// Data
 const config = require('../data_components/config.json');
 const layers = require('../data_components/layers.json');
-//ui
+// Ui
 const map = require('./map.js');
-const pictureView =  require('./pictureView.js');
+const list =  require('./list.js');
 const settings = require('./settings.js');
 const embededSite = require('./embededSite.js')
-//logic
+// Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
 
@@ -41,7 +41,7 @@ class App extends React.Component {
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
             isOpen: false,
-            //elements used for lifted up state of the config file
+            // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
             gps: config.app.gps,
@@ -58,7 +58,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleLoggingChange(bool) {
         this.setState({logging: bool});
@@ -66,7 +66,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleExternalDataChange(bool) {
         this.setState({externalData: bool});
@@ -74,7 +74,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleGpsChange(bool) {
         this.setState({gps: bool});
@@ -82,7 +82,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleLayerControlChange(bool) {
         this.setState({layerControl: bool});
@@ -90,7 +90,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleDragMapChange(bool) {
         this.setState({draggable: bool});
@@ -98,16 +98,16 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleZoomMapChange(bool) {
         this.setState({zoomable: bool});
     }
 
 
-    //toolbar on top of the app, contains name of the app and the menu button
+    // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        const titles = ['About', 'Map', 'Streetview', 'Settings', 'Help'];
+        const titles = ['About', 'Map', 'List', 'Settings', 'Help'];
         return (
             <Ons.Toolbar>
                 <div className='center'>{titles[this.state.index]}</div>
@@ -120,27 +120,27 @@ class App extends React.Component {
         )
     }
 
-    //hide sidebar
+    // Hide sidebar
     hide() {
         this.setState({isOpen: false});
     }
 
-    //show sidebar
+    // Show sidebar
     show() {
         this.setState({isOpen: true});
     }
 
-    //handle a click o settings --> change state
+    // Handle a click on settings --> change state
     handleClickSettings() {
         this.setState({index: 3});
     }
 
-    //handle a click o about --> change state
+    // Handle a click on about --> change state
     handleClickAbout() {
         this.setState({index: 0});
     }
 
-    //handle a click o about --> change state
+    // Handle a click on about --> change state
     handleClickHelp() {
         this.setState({index: 4});
     }
@@ -151,60 +151,60 @@ class App extends React.Component {
      */
     renderTabs() {
         return [
-            //Welcome page iframe 
+            // Welcome page iframe
             {
                 content: <embededSite.EmbededComponent site='about.html' key='about' name='About' />,
                 tab: <Ons.Tab label='About' icon='' key='about' style={{display: 'none'}}/>
             },
-            //map element
+            // Map element
             {
-                content: <map.Map 
-                                logging={this.state.logging} 
-                                externalData={this.state.externalData} 
-                                gps={this.state.gps} 
+                content: <map.Map
+                                logging={this.state.logging}
+                                externalData={this.state.externalData}
+                                gps={this.state.gps}
                                 layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}  
-                                zoomable={this.state.zoomable} 
+                                draggable={this.state.draggable}
+                                zoomable={this.state.zoomable}
                                 key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
             },
-            //pictureView element
+            // List element
             {
-                content: <pictureView.PictureView 
-                                logging={this.state.logging} 
-                                externalData={this.state.externalData} 
-                                gps={this.state.gps} 
+                content: <list.List
+                                logging={this.state.logging}
+                                externalData={this.state.externalData}
+                                gps={this.state.gps}
                                 layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}  
-                                zoomable={this.state.zoomable} 
-                                key='picture' />,
-                tab: <Ons.Tab label='Streetview' icon='md-image' key='picture' />
+                                draggable={this.state.draggable}
+                                zoomable={this.state.zoomable}
+                                key='list' />,
+                tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },
-            //settings element, with no tab displayed in the tabbar, as it is accessible via the sidebar
+            // Settings element, with no tab displayed in the tabbar, as it is accessible via the sidebar
             {
-                content: <settings.Settings 
-                                onLoggingChange={this.handleLoggingChange} 
-                                onDataChange={this.handleExternalDataChange} 
+                content: <settings.Settings
+                                onLoggingChange={this.handleLoggingChange}
+                                onDataChange={this.handleExternalDataChange}
                                 onGpsChange={this.handleGpsChange}
-                                onLayerControlChange={this.handleLayerControlChange} 
-                                onDragMapChange={this.handleDragMapChange} 
+                                onLayerControlChange={this.handleLayerControlChange}
+                                onDragMapChange={this.handleDragMapChange}
                                 onZoomMapChange={this.handleZoomMapChange}
-                                logging={this.state.logging} 
-                                externalData={this.state.externalData} 
-                                gps={this.state.gps} 
+                                logging={this.state.logging}
+                                externalData={this.state.externalData}
+                                gps={this.state.gps}
                                 layerControl={this.state.layerControl}
-                                draggable={this.state.draggable} 
-                                zoomable={this.state.zoomable} 
+                                draggable={this.state.draggable}
+                                zoomable={this.state.zoomable}
                                 key='settings' />,
                 tab: <Ons.Tab label='Settings' icon='md-settings' key='settings' style={{display: 'none'}}/>
             },
-            //about page iframe 
+            // About page iframe
             {
                 content: <embededSite.EmbededComponent site='help.html' key='help' name='Help' />,
                 tab: <Ons.Tab label='Help' icon='md-help' key='help' style={{display: 'none'}}/>
             },
-            //ship  around an error in current onsen release
-            //can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
+            // Ship around an error in current onsen release
+            // Can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
             {
                 content: <div key='placeholder' />,
                 tab: null
@@ -212,11 +212,11 @@ class App extends React.Component {
         ]
     }
 
-    //render the list displayed in the sidebar
+    // Render the list displayed in the sidebar
     renderList() {
         return (
             <Ons.List>
-                <Ons.ListItem 
+                <Ons.ListItem
                     tappable={true}
                     onClick={this.handleClickAbout}>
                         <div className='left'>
@@ -226,7 +226,7 @@ class App extends React.Component {
                             About
                         </div>
                 </Ons.ListItem>
-                <Ons.ListItem 
+                <Ons.ListItem
                     tappable={true}
                     onClick={this.handleClickSettings}>
                         <div className='left'>
@@ -236,7 +236,7 @@ class App extends React.Component {
                             Settings
                         </div>
                 </Ons.ListItem>
-                <Ons.ListItem 
+                <Ons.ListItem
                     tappable={true}
                     onClick={this.handleClickHelp}>
                         <div className='left'>
@@ -250,38 +250,38 @@ class App extends React.Component {
         )
     }
 
-    //render sidebars and toolbar
+    // Render sidebars and toolbar
     render() {
 
         return (
             <Ons.Splitter>
-                <Ons.SplitterSide 
-                    side='right' 
-                    width={'50%'} 
+                <Ons.SplitterSide
+                    side='right'
+                    width={'50%'}
                     style={{boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'}}
                     swipeable={false}
                     collapse={true}
-                    isOpen={this.state.isOpen} 
-                    onClose={this.hide} 
+                    isOpen={this.state.isOpen}
+                    onClose={this.hide}
                     onOpen={this.show}>
                     <Ons.Page>
                         {this.renderList()}
                     </Ons.Page>
                 </Ons.SplitterSide>
                 <Ons.Page renderToolbar={this.renderToolbar}>
-                    <Ons.Tabbar 
+                    <Ons.Tabbar
                         swipeable={false}
                         position='bottom'
                         index={this.state.index}
-                        onPreChange={(event) => 
+                        onPreChange={(event) =>
                             {
                                 if(event.index != this.state.index) {
-                                    //handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
+                                    // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
                                     if(event.target !== event.currentTarget) return;
                                     this.setState({index: event.index});
                                 }
-                                
-                                //check if logging is enabled and create a log if so
+
+                                // Check if logging is enabled and create a log if so
                                 if(this.state.logging) {
                                     var modeName;
                                     switch(event.index) {
@@ -289,7 +289,7 @@ class App extends React.Component {
                                             break;
                                         case 1: modeName = 'Map'
                                             break;
-                                        case 2: modeName = 'Streetview'
+                                        case 2: modeName = 'List'
                                             break;
                                         case 3: modeName = 'Settings'
                                             break;
@@ -297,15 +297,15 @@ class App extends React.Component {
                                     }
 
                                     var entry;
-                                    //get the current position for the log
+                                    // Get the current position for the log
                                     locationManager.getLocation().then(function success(position) {
                                         entry = [position.latitude, position.longitude, modeName, 'Changed View'];
-                                        //log the data
+                                        // Log the data
                                         logger.logEntry(entry);
                                     }, function error(err) {
-                                        //if there was an error getting the position, log a '-' for lat/lng
+                                        // If there was an error getting the position, log a '-' for lat/lng
                                         entry = ['-', '-', modeName, 'Changed View'];
-                                        //log the data
+                                        // Log the data
                                         logger.logEntry(entry);
                                     })
                                 }
