@@ -71,8 +71,14 @@ class List extends React.Component {
         return (
             <div className="center" style={{height: '100%'}}>
                 <Ons.Row style={{width: '100%', height: '50%'}}>
-                    <map.Map picture={true} logging={this.props.logging} externalData={this.props.externalData} gps={this.props.gps} layerControl={this.props.layerControl}
-                            draggable={this.props.draggable}  zoomable={this.props.zoomable}/>
+                    <map.Map
+                        picture={true}
+                        logging={this.props.logging}
+                        externalData={this.props.externalData}
+                        gps={this.props.gps}
+                        layerControl={this.props.layerControl}
+                        draggable={this.props.draggable}
+                        zoomable={this.props.zoomable}/>
                 </Ons.Row>
 
                 {this.renderList()}
