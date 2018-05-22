@@ -2,6 +2,7 @@
 
 const React = require('react');
 const Ons = require('react-onsenui');
+const geolib = require('geolib');
 
 // Custom imports
 const map = require('./map.js');
@@ -32,9 +33,15 @@ class List extends React.Component {
      * Calculate the distance from the user's location to a given gifter's position
      * @param {Array} coordintes identifying the location of the gifter
      */
-    calculateDistanceTo(coords) {
-        // TODO: actually implement this!
-        return "user: " + this.props.userPosition + "gift: " + coords;
+    calculateDistanceTo(gifterPosition) {
+        var accuracy = 50; // Restrict accuracy to give gifters privacy
+        var distance = geolib.getDistance(
+            {latitude: this.props.userPosition[0], longitude: this.props.userPosition[1]},
+            {latitude: gifterPosition[0], longitude: gifterPosition[1]},
+            accuracy
+        );
+
+        return `${distance} m`
     }
 
     // Render the list displayed in the sidebar
