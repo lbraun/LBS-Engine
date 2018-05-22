@@ -91812,10 +91812,10 @@ class List extends React.Component {
 
     /**
      * Calculate the distance from the user's location to a given gifter's position
-     * @param {Array} coordintes identifying the location of the gifter
+     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
      */
     calculateDistanceTo(gifterPosition) {
-        var accuracy = 1; // Eventually we will restrict accuracy to provide privacy
+        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
         var distance = geolib.getDistance({ latitude: this.props.userPosition[0], longitude: this.props.userPosition[1] }, { latitude: gifterPosition[0], longitude: gifterPosition[1] }, accuracy);
 
         return `${distance} m`;
