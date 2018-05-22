@@ -150,10 +150,10 @@ class Map extends React.Component {
         // Check if the location is enabled and available
         const marker = this.state.hasLocation && this.props.gps
             ? (
-                <leaflet.Marker position={this.state.position} icon={this.positionMarker}>
+                <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
                     <leaflet.Popup>
                         <span>
-                            {this.state.positionMarkerText}
+                            {this.props.userPositionMarkerText}
                         </span>
                     </leaflet.Popup>
                 </leaflet.Marker>
@@ -161,7 +161,7 @@ class Map extends React.Component {
             : null;
         return (
             <leaflet.Map
-                center={this.state.position}
+                center={this.props.userPosition}
                 zoom={this.state.zoom}
                 dragging={this.props.draggable}
                 zoomControl={this.props.zoomable}
@@ -192,10 +192,10 @@ class Map extends React.Component {
             // Check if the location is enabled and available
             const marker = this.state.hasLocation && this.props.gps
                 ? (
-                    <leaflet.Marker position={this.state.position} icon={this.positionMarker}>
+                    <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
                         <leaflet.Popup>
                             <span>
-                                {this.state.positionMarkerText}
+                                {this.props.userPositionMarkerText}
                             </span>
                         </leaflet.Popup>
                     </leaflet.Marker>
@@ -203,7 +203,7 @@ class Map extends React.Component {
                 : null;
             // Return the map without any layers shown
             return (
-                <leaflet.Map center={this.state.position}
+                <leaflet.Map center={this.props.userPosition}
                     zoom={this.state.zoom}
                     dragging={this.props.draggable}
                     zoomControl={this.props.zoomable}

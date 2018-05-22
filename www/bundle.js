@@ -90041,10 +90041,28 @@ class App extends React.Component {
             externalData: config.app.externalData,
             gps: config.app.gps,
             layerControl: config.app.layerControl,
-            zoomable: config.map.draggable,
-            draggable: config.map.zoomable,
+            draggable: config.map.draggable,
+            zoomable: config.map.zoomable,
+            userPosition: [0, 0],
             index: 0
         };
+
+        // Update the user's position on the map whenever a new position is reported by the device
+        var app = this;
+        this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
+
+            app.setState({
+                userPosition: [lat, long],
+                userPositionMarkerText: message
+            });
+        }, function onError(error) {
+            console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+        }, {
+            timeout: 30000 // Throw an error if no update is received every 30 seconds
+        });
     }
 
     componentDidMount() {
@@ -90167,6 +90185,8 @@ class App extends React.Component {
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
+                userPosition: this.state.userPosition,
+                userPositionMarkerText: this.state.userPositionMarkerText,
                 key: 'map' }),
             tab: React.createElement(Ons.Tab, { label: 'Map', icon: 'md-map', key: 'map' })
         },
@@ -90179,6 +90199,8 @@ class App extends React.Component {
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
+                userPosition: this.state.userPosition,
+                userPositionMarkerText: this.state.userPositionMarkerText,
                 key: 'list' }),
             tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
         },
@@ -90410,11 +90432,11 @@ class List extends React.Component {
 
     /**
      * Calculate the distance from the user's location to a given gifter's position
-     * @param {Integer} integer index identifying the gifter
+     * @param {Array} coordintes identifying the location of the gifter
      */
-    calculateDistanceTo(int) {
+    calculateDistanceTo(coords) {
         // TODO: actually implement this!
-        return "50 m";
+        return "user: " + this.props.userPosition + "gift: " + coords;
     }
 
     // Render the list displayed in the sidebar
@@ -90443,7 +90465,7 @@ class List extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'right' },
-                    this.calculateDistanceTo(gifter)
+                    this.calculateDistanceTo(gifters[gifter].coords)
                 )
             ));
         }
@@ -90469,7 +90491,9 @@ class List extends React.Component {
                     gps: this.props.gps,
                     layerControl: this.props.layerControl,
                     draggable: this.props.draggable,
-                    zoomable: this.props.zoomable })
+                    zoomable: this.props.zoomable,
+                    userPosition: this.props.userPosition,
+                    userPositionMarkerText: this.props.userPositionMarkerText })
             ),
             this.renderList()
         );
@@ -90658,21 +90682,21 @@ class Map extends React.Component {
         // Check if the location is enabled and available
         const marker = this.state.hasLocation && this.props.gps ? React.createElement(
             leaflet.Marker,
-            { position: this.state.position, icon: this.positionMarker },
+            { position: this.props.userPosition, icon: this.positionMarker },
             React.createElement(
                 leaflet.Popup,
                 null,
                 React.createElement(
                     'span',
                     null,
-                    this.state.positionMarkerText
+                    this.props.userPositionMarkerText
                 )
             )
         ) : null;
         return React.createElement(
             leaflet.Map,
             {
-                center: this.state.position,
+                center: this.props.userPosition,
                 zoom: this.state.zoom,
                 dragging: this.props.draggable,
                 zoomControl: this.props.zoomable,
@@ -90703,21 +90727,21 @@ class Map extends React.Component {
             // Check if the location is enabled and available
             const marker = this.state.hasLocation && this.props.gps ? React.createElement(
                 leaflet.Marker,
-                { position: this.state.position, icon: this.positionMarker },
+                { position: this.props.userPosition, icon: this.positionMarker },
                 React.createElement(
                     leaflet.Popup,
                     null,
                     React.createElement(
                         'span',
                         null,
-                        this.state.positionMarkerText
+                        this.props.userPositionMarkerText
                     )
                 )
             ) : null;
             // Return the map without any layers shown
             return React.createElement(
                 leaflet.Map,
-                { center: this.state.position,
+                { center: this.props.userPosition,
                     zoom: this.state.zoom,
                     dragging: this.props.draggable,
                     zoomControl: this.props.zoomable,

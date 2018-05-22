@@ -30,11 +30,11 @@ class List extends React.Component {
 
     /**
      * Calculate the distance from the user's location to a given gifter's position
-     * @param {Integer} integer index identifying the gifter
+     * @param {Array} coordintes identifying the location of the gifter
      */
-    calculateDistanceTo(int) {
+    calculateDistanceTo(coords) {
         // TODO: actually implement this!
-        return "50 m";
+        return "user: " + this.props.userPosition + "gift: " + coords;
     }
 
     // Render the list displayed in the sidebar
@@ -54,7 +54,7 @@ class List extends React.Component {
                             {gifters[gifter].name} - {gifters[gifter].popup}
                         </div>
                         <div className='right'>
-                            {this.calculateDistanceTo(gifter)}
+                            {this.calculateDistanceTo(gifters[gifter].coords)}
                         </div>
                 </Ons.ListItem>
             )
@@ -78,7 +78,9 @@ class List extends React.Component {
                         gps={this.props.gps}
                         layerControl={this.props.layerControl}
                         draggable={this.props.draggable}
-                        zoomable={this.props.zoomable}/>
+                        zoomable={this.props.zoomable}
+                        userPosition={this.props.userPosition}
+                        userPositionMarkerText={this.props.userPositionMarkerText}/>
                 </Ons.Row>
 
                 {this.renderList()}
