@@ -48,7 +48,7 @@ class App extends React.Component {
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
-            userPosition: [0,0],
+            userPosition: config.map.center,
             index: 0
         };
 
@@ -64,6 +64,8 @@ class App extends React.Component {
                 userPosition: [lat, long],
                 userPositionMarkerText: message
             })
+
+            console.log(`Location updated! ${message}`);
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
         }, {

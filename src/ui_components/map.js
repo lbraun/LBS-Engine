@@ -23,7 +23,6 @@ class Map extends React.Component {
         this.state = {
             position: config.map.center,
             zoom: config.map.zoom,
-            hasLocation: false
         }
 
         // Define marker symbol for the user position marker
@@ -41,24 +40,6 @@ class Map extends React.Component {
             iconAnchor: [25, 48],
             popupAnchor: [-3, -76]
         });
-    }
-
-    /**
-     * Insert the gps location of the user into the map, if the gps-setting is true.
-     */
-    componentDidMount() {
-        var map = this;
-        locationManager.getLocation().then(function success(position) {
-            var pos = [];
-            pos.push(position.latitude);
-            pos.push(position.longitude);
-            if(map.props.gps) {
-                map.setState({
-                    position: pos,
-                    hasLocation: true
-                });
-            }
-        })
     }
 
     /**
@@ -148,7 +129,7 @@ class Map extends React.Component {
 
     renderMapWithLayers() {
         // Check if the location is enabled and available
-        const marker = this.state.hasLocation && this.props.gps
+        const marker = this.props.gps
             ? (
                 <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
                     <leaflet.Popup>
@@ -190,7 +171,7 @@ class Map extends React.Component {
         }
         else {
             // Check if the location is enabled and available
-            const marker = this.state.hasLocation && this.props.gps
+            const marker = this.props.gps
                 ? (
                     <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
                         <leaflet.Popup>

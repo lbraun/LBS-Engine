@@ -90058,6 +90058,8 @@ class App extends React.Component {
                 userPosition: [lat, long],
                 userPositionMarkerText: message
             });
+
+            console.log(`Location updated! ${message}`);
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
         }, {
@@ -90530,8 +90532,7 @@ class Map extends React.Component {
         // Get the settings from the config file
         this.state = {
             position: config.map.center,
-            zoom: config.map.zoom,
-            hasLocation: false
+            zoom: config.map.zoom
 
             // Define marker symbol for the user position marker
         };this.positionMarker = L.icon({
@@ -90547,41 +90548,6 @@ class Map extends React.Component {
             iconSize: [50, 50],
             iconAnchor: [25, 48],
             popupAnchor: [-3, -76]
-        });
-
-        // // Update the user's position on the map whenever a new position is reported by the device
-        // var map = this;
-        // this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-        //     var lat = position.coords.latitude;
-        //     var long = position.coords.longitude;
-        //     var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
-
-        //     map.setState({
-        //         position: [lat, long],
-        //         positionMarkerText: message
-        //     })
-        // }, function onError(error) {
-        //     console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
-        // }, {
-        //     timeout: 30000 // Throw an error if no update is received every 30 seconds
-        // });
-    }
-
-    /**
-     * Insert the gps location of the user into the map, if the gps-setting is true.
-     */
-    componentDidMount() {
-        var map = this;
-        locationManager.getLocation().then(function success(position) {
-            var pos = [];
-            pos.push(position.latitude);
-            pos.push(position.longitude);
-            if (map.props.gps) {
-                map.setState({
-                    position: pos,
-                    hasLocation: true
-                });
-            }
         });
     }
 
@@ -90680,7 +90646,7 @@ class Map extends React.Component {
 
     renderMapWithLayers() {
         // Check if the location is enabled and available
-        const marker = this.state.hasLocation && this.props.gps ? React.createElement(
+        const marker = this.props.gps ? React.createElement(
             leaflet.Marker,
             { position: this.props.userPosition, icon: this.positionMarker },
             React.createElement(
@@ -90725,7 +90691,7 @@ class Map extends React.Component {
             return this.renderMapWithLayers();
         } else {
             // Check if the location is enabled and available
-            const marker = this.state.hasLocation && this.props.gps ? React.createElement(
+            const marker = this.props.gps ? React.createElement(
                 leaflet.Marker,
                 { position: this.props.userPosition, icon: this.positionMarker },
                 React.createElement(
