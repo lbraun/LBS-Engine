@@ -91334,24 +91334,27 @@ module.exports={
                     51.97,
                     7.62
                 ],
-                "name": "Gifter1",
-                "popup": "Heinz is donating ketchup"
+                "name": "Heinz",
+                "giftDescription": "ketchup",
+                "contactInformation": "heinz@wwu.de"
             },
             {
                 "coords": [
                     51.95,
                     7.62
                 ],
-                "name": "Gifter2",
-                "popup": "Barbara is donating rhubarb cake"
+                "name": "Barbara",
+                "giftDescription": "rhubarb cake",
+                "contactInformation": "barbara@wwu.de"
             },
             {
                 "coords": [
                     51.93,
                     7.67
                 ],
-                "name": "Gifter3",
-                "popup": "Denny is donating a jacket"
+                "name": "Denny",
+                "giftDescription": "a jacket",
+                "contactInformation": "denny@wwu.de"
             }
         ]
     }
@@ -91908,7 +91911,7 @@ class GiftForm extends React.Component {
                     React.createElement(
                         'div',
                         { 'class': 'list-item__subtitle' },
-                        'Please provide a phone number, email, or other instructions'
+                        'Please provide a phone number, email, or other instructions.'
                     )
                 ),
                 React.createElement(
@@ -92000,7 +92003,9 @@ class List extends React.Component {
                     { className: 'center' },
                     gifters[gifter].name,
                     ' - ',
-                    gifters[gifter].popup
+                    gifters[gifter].giftDescription,
+                    ' - ',
+                    gifters[gifter].contactInformation
                 ),
                 React.createElement(
                     'div',
@@ -92143,8 +92148,9 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If there is a popup, insert it into the map
-                    if (layers[layer].items[i].popup != undefined) {
+                    // If there is content for a popup, insert a popup into the map
+                    if (layers[layer].items[i].name != undefined) {
+                        var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].giftDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
                         layerElement.push(React.createElement(
                             leaflet.Marker,
                             { position: layers[layer].items[i].coords, key: layers[layer].items[i].name, icon: this.gifterMarker },
@@ -92154,7 +92160,7 @@ class Map extends React.Component {
                                 React.createElement(
                                     'span',
                                     null,
-                                    layers[layer].items[i].popup
+                                    popup
                                 )
                             )
                         ));
