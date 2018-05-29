@@ -91522,7 +91522,7 @@ module.exports={
                 ],
                 "name": "Gifter1",
                 "popup": "Heinz is donating ketchup",
-                "hidden": false
+                "public": false
             },
             {
                 "coords": [
@@ -91531,7 +91531,7 @@ module.exports={
                 ],
                 "name": "Gifter2",
                 "popup": "Barbara is donating rhubarb cake",
-                "hidden": true
+                "public": true
             },
             {
                 "coords": [
@@ -91540,7 +91540,7 @@ module.exports={
                 ],
                 "name": "Gifter3",
                 "popup": "Denny is donating a jacket",
-                "hidden": false
+                "public": false
             }
         ]
     }
@@ -92172,25 +92172,28 @@ class Map extends React.Component {
         for (let layer in layers) {
             var layerElement = [];
             // Check if the layer is containing markers and add those
-            if (layers[layer].type == 'marker' && layers[layer].items["hidden"] == false) {
+            if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
                     // If there is a popup, insert it into the map
-                    if (layers[layer].items[i].popup != undefined) {
-                        layerElement.push(React.createElement(
-                            leaflet.Marker,
-                            { position: layers[layer].items[i].coords, key: layers[layer].items[i].name, icon: this.gifterMarker },
-                            React.createElement(
-                                leaflet.Popup,
-                                null,
+                    if (layers[layer].items[i].public) {
+                        // If there is a popup, insert it into the map
+                        if (layers[layer].items[i].popup != undefined) {
+                            layerElement.push(React.createElement(
+                                leaflet.Marker,
+                                { position: layers[layer].items[i].coords, key: layers[layer].items[i].name, icon: this.gifterMarker },
                                 React.createElement(
-                                    'span',
+                                    leaflet.Popup,
                                     null,
-                                    layers[layer].items[i].popup
+                                    React.createElement(
+                                        'span',
+                                        null,
+                                        layers[layer].items[i].popup
+                                    )
                                 )
-                            )
-                        ));
-                    } else {
-                        layerElement.push(React.createElement(leaflet.Marker, { position: layers[layer].items[i].coords, key: layers[layer].items[i].name }));
+                            ));
+                        } else {
+                            layerElement.push(React.createElement(leaflet.Marker, { position: layers[layer].items[i].coords, key: layers[layer].items[i].name }));
+                        }
                     }
                 }
             }
