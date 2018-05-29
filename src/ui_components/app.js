@@ -46,10 +46,31 @@ class App extends React.Component {
             externalData: config.app.externalData,
             gps: config.app.gps,
             layerControl: config.app.layerControl,
-            zoomable: config.map.draggable,
-            draggable: config.map.zoomable,
+            draggable: config.map.draggable,
+            zoomable: config.map.zoomable,
+            userPosition: config.map.center,
             index: 0
         };
+
+
+        // Update the user's position on the map whenever a new position is reported by the device
+        var app = this;
+        this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
+
+            app.setState({
+                userPosition: [lat, long],
+                userPositionMarkerText: message
+            })
+
+            console.log(`Location updated! ${message}`);
+        }, function onError(error) {
+            console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+        }, {
+            timeout: 30000 // Throw an error if no update is received every 30 seconds
+        });
     }
 
     componentDidMount() {
@@ -165,6 +186,8 @@ class App extends React.Component {
                                 layerControl={this.state.layerControl}
                                 draggable={this.state.draggable}
                                 zoomable={this.state.zoomable}
+                                userPosition={this.state.userPosition}
+                                userPositionMarkerText={this.state.userPositionMarkerText}
                                 key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
             },
@@ -177,6 +200,8 @@ class App extends React.Component {
                                 layerControl={this.state.layerControl}
                                 draggable={this.state.draggable}
                                 zoomable={this.state.zoomable}
+                                userPosition={this.state.userPosition}
+                                userPositionMarkerText={this.state.userPositionMarkerText}
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },

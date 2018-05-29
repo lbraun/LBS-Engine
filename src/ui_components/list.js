@@ -2,6 +2,7 @@
 
 const React = require('react');
 const Ons = require('react-onsenui');
+const geolib = require('geolib');
 
 // Custom imports
 const map = require('./map.js');
@@ -30,11 +31,17 @@ class List extends React.Component {
 
     /**
      * Calculate the distance from the user's location to a given gifter's position
-     * @param {Integer} integer index identifying the gifter
+     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
      */
-    calculateDistanceTo(int) {
-        // TODO: actually implement this!
-        return "50 m";
+    calculateDistanceTo(gifterPosition) {
+        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
+        var distance = geolib.getDistance(
+            {latitude: this.props.userPosition[0], longitude: this.props.userPosition[1]},
+            {latitude: gifterPosition[0], longitude: gifterPosition[1]},
+            accuracy
+        );
+
+        return `${distance} m`
     }
 
     // Render the list displayed in the sidebar
@@ -54,7 +61,7 @@ class List extends React.Component {
                             {gifters[gifter].name} - {gifters[gifter].popup}
                         </div>
                         <div className='right'>
-                            {this.calculateDistanceTo(gifter)}
+                            {this.calculateDistanceTo(gifters[gifter].coords)}
                         </div>
                 </Ons.ListItem>
             )
@@ -71,8 +78,16 @@ class List extends React.Component {
         return (
             <div className="center" style={{height: '100%'}}>
                 <Ons.Row style={{width: '100%', height: '50%'}}>
-                    <map.Map picture={true} logging={this.props.logging} externalData={this.props.externalData} gps={this.props.gps} layerControl={this.props.layerControl}
-                            draggable={this.props.draggable}  zoomable={this.props.zoomable}/>
+                    <map.Map
+                        picture={true}
+                        logging={this.props.logging}
+                        externalData={this.props.externalData}
+                        gps={this.props.gps}
+                        layerControl={this.props.layerControl}
+                        draggable={this.props.draggable}
+                        zoomable={this.props.zoomable}
+                        userPosition={this.props.userPosition}
+                        userPositionMarkerText={this.props.userPositionMarkerText}/>
                 </Ons.Row>
 
                 {this.renderList()}

@@ -23,7 +23,6 @@ class Map extends React.Component {
         this.state = {
             position: config.map.center,
             zoom: config.map.zoom,
-            hasLocation: false
         }
 
         // Define marker symbol for the user position marker
@@ -41,42 +40,6 @@ class Map extends React.Component {
             iconAnchor: [25, 48],
             popupAnchor: [-3, -76]
         });
-
-
-        // Update the user's position on the map whenever a new position is reported by the device
-        var map = this;
-        this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
-            var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
-
-            map.setState({
-                position: [lat, long],
-                positionMarkerText: message
-            })
-        }, function onError(error) {
-            console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
-        }, {
-            timeout: 30000 // Throw an error if no update is received every 30 seconds
-        });
-    }
-
-    /**
-     * Insert the gps location of the user into the map, if the gps-setting is true.
-     */
-    componentDidMount() {
-        var that = this;
-        locationManager.getLocation().then(function success(position) {
-            var pos = [];
-            pos.push(position.latitude);
-            pos.push(position.longitude);
-            if(that.props.gps) {
-                that.setState({
-                    position: pos,
-                    hasLocation: true
-                });
-            }
-        })
     }
 
     /**
@@ -86,23 +49,23 @@ class Map extends React.Component {
      */
     createLog(change, data) {
         var action;
-        var that = this;
+        var map = this;
         if(this.props.logging) {
-            //define the log
+            // Define the log
             if(change) {
                 action =  'Activate ' + data;
             }
             else action = 'Deactivate ' + data;
             var entry;
-            //get the current position for the log
+            // Get the current position for the log
             locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, that.props.picture ? 'Streetview' : 'Map', action];
-                //log the data
+                entry = [position.latitude, position.longitude, map.props.picture ? 'Streetview' : 'Map', action];
+                // Log the data
                 logger.logEntry(entry);
             }, function error(err) {
-                //if there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', that.props.picture ? 'Streetview' : 'Map', action];
-                //log the data
+                // If there was an error getting the position, log a '-' for lat/lng
+                entry = ['-', '-', map.props.picture ? 'Streetview' : 'Map', action];
+                // Log the data
                 logger.logEntry(entry);
             })
         }
@@ -166,12 +129,12 @@ class Map extends React.Component {
 
     renderMapWithLayers() {
         // Check if the location is enabled and available
-        const marker = this.state.hasLocation && this.props.gps
+        const marker = this.props.gps
             ? (
-                <leaflet.Marker position={this.state.position} icon={this.positionMarker}>
+                <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
                     <leaflet.Popup>
                         <span>
-                            {this.state.positionMarkerText}
+                            {this.props.userPositionMarkerText}
                         </span>
                     </leaflet.Popup>
                 </leaflet.Marker>
@@ -179,7 +142,7 @@ class Map extends React.Component {
             : null;
         return (
             <leaflet.Map
-                center={this.state.position}
+                center={this.props.userPosition}
                 zoom={this.state.zoom}
                 dragging={this.props.draggable}
                 zoomControl={this.props.zoomable}
@@ -208,12 +171,12 @@ class Map extends React.Component {
         }
         else {
             // Check if the location is enabled and available
-            const marker = this.state.hasLocation && this.props.gps
+            const marker = this.props.gps
                 ? (
-                    <leaflet.Marker position={this.state.position} icon={this.positionMarker}>
+                    <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
                         <leaflet.Popup>
                             <span>
-                                {this.state.positionMarkerText}
+                                {this.props.userPositionMarkerText}
                             </span>
                         </leaflet.Popup>
                     </leaflet.Marker>
@@ -221,7 +184,7 @@ class Map extends React.Component {
                 : null;
             // Return the map without any layers shown
             return (
-                <leaflet.Map center={this.state.position}
+                <leaflet.Map center={this.props.userPosition}
                     zoom={this.state.zoom}
                     dragging={this.props.draggable}
                     zoomControl={this.props.zoomable}
