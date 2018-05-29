@@ -11,6 +11,7 @@ const layers = require('../data_components/layers.json');
 const map = require('./map.js');
 const list =  require('./list.js');
 const settings = require('./settings.js');
+const giftForm = require('./giftForm.js');
 const embededSite = require('./embededSite.js')
 // Logic
 const locationManager = require('../business_components/locationManager.js');
@@ -36,6 +37,9 @@ class App extends React.Component {
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleClickAbout = this.handleClickAbout.bind(this);
         this.handleClickSettings = this.handleClickSettings.bind(this);
+        this.handleClickMyGifts = this.handleClickMyGifts.bind(this);
+        this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
+        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleClickHelp = this.handleClickHelp.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
@@ -125,10 +129,26 @@ class App extends React.Component {
         this.setState({zoomable: bool});
     }
 
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} string value after the change
+     */
+    handleGiftDescriptionChange(bool) {
+        // TODO: Add logic to publish changes when we have a way to publish gifter info
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} string value after the change
+     */
+    handleContactInformationChange(bool) {
+        // TODO: Add logic to publish changes when we have a way to publish gifter info
+    }
+
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        const titles = ['About', 'Map', 'List', 'Settings', 'Help'];
+        const titles = ['About', 'Map', 'List', 'Settings', 'My Gifts', 'Help'];
         return (
             <Ons.Toolbar>
                 <div className='center'>{titles[this.state.index]}</div>
@@ -151,19 +171,24 @@ class App extends React.Component {
         this.setState({isOpen: true});
     }
 
-    // Handle a click on settings --> change state
-    handleClickSettings() {
-        this.setState({index: 3});
-    }
-
-    // Handle a click on about --> change state
+    // Handle a click on "About" --> change state
     handleClickAbout() {
         this.setState({index: 0});
     }
 
-    // Handle a click on about --> change state
-    handleClickHelp() {
+    // Handle a click on "Settings" --> change state
+    handleClickSettings() {
+        this.setState({index: 3});
+    }
+
+    // Handle a click on "My Gifts" --> change state
+    handleClickMyGifts() {
         this.setState({index: 4});
+    }
+
+    // Handle a click on "Help" --> change state
+    handleClickHelp() {
+        this.setState({index: 5});
     }
 
     /**
@@ -205,7 +230,7 @@ class App extends React.Component {
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },
-            // Settings element, with no tab displayed in the tabbar, as it is accessible via the sidebar
+            // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <settings.Settings
                                 onLoggingChange={this.handleLoggingChange}
@@ -222,6 +247,14 @@ class App extends React.Component {
                                 zoomable={this.state.zoomable}
                                 key='settings' />,
                 tab: <Ons.Tab label='Settings' icon='md-settings' key='settings' style={{display: 'none'}}/>
+            },
+            // Gift form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
+            {
+                content: <giftForm.GiftForm
+                                onGiftDescriptionChange={this.handleGiftDescriptionChange}
+                                onContactInformationChange={this.handleContactInformationChange}
+                                key='giftForm' />,
+                tab: <Ons.Tab label='My Gifts' icon='md-edit' key='giftForm' style={{display: 'none'}}/>
             },
             // About page iframe
             {
@@ -259,6 +292,16 @@ class App extends React.Component {
                         </div>
                         <div className='center'>
                             Settings
+                        </div>
+                </Ons.ListItem>
+                <Ons.ListItem
+                    tappable={true}
+                    onClick={this.handleClickMyGifts}>
+                        <div className='left'>
+                            <Ons.Icon icon='md-edit'/>
+                        </div>
+                        <div className='center'>
+                            My Gifts
                         </div>
                 </Ons.ListItem>
                 <Ons.ListItem
@@ -318,7 +361,9 @@ class App extends React.Component {
                                             break;
                                         case 3: modeName = 'Settings'
                                             break;
-                                        case 4: modeName = 'Help';
+                                        case 4: modeName = 'MyGifts';
+                                            break;
+                                        case 5: modeName = 'Help';
                                     }
 
                                     var entry;
