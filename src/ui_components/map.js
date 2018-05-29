@@ -1,11 +1,11 @@
 'use strict';
 const React = require('react');
 const leaflet = require('react-leaflet');
-//custom files required
-//data
+// Custom files required
+// Data
 const config = require('../data_components/config.json');
 const layers = require('../data_components/layers.json');
-//logic
+// Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
