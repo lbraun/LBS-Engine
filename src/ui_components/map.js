@@ -95,7 +95,7 @@ class Map extends React.Component {
         for (let layer in layers) {
             var layerElement = [];
             // Check if the layer is containing markers and add those
-            if (layers[layer].type == 'marker') {
+            if (layers[layer].type == 'marker' && layers[layer].items["hidden"] == false) {
                 for (var i = 0; i < layers[layer].items.length; i++) {
                     // If there is a popup, insert it into the map
                     if(layers[layer].items[i].popup != undefined) {

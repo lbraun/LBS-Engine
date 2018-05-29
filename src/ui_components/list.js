@@ -44,7 +44,7 @@ class List extends React.Component {
         return `${distance} m`
     }
 
-    // Render the list displayed in the sidebar
+    // Render the list
     renderList() {
         var gifters = layers.gifters.items
         var listItems = [];

@@ -8,7 +8,8 @@
                     7.62
                 ],
                 "name": "Gifter1",
-                "popup": "Heinz is donating ketchup"
+                "popup": "Heinz is donating ketchup",
+                "hidden": false
             },
             {
                 "coords": [
@@ -16,7 +17,8 @@
                     7.62
                 ],
                 "name": "Gifter2",
-                "popup": "Barbara is donating rhubarb cake"
+                "popup": "Barbara is donating rhubarb cake",
+                "hidden": true
             },
             {
                 "coords": [
@@ -24,7 +26,8 @@
                     7.67
                 ],
                 "name": "Gifter3",
-                "popup": "Denny is donating a jacket"
+                "popup": "Denny is donating a jacket",
+                "hidden": false
             }
         ]
     }
