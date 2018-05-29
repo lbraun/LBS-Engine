@@ -166,6 +166,16 @@ class Settings extends React.Component {
                                 onChange={this.handleChangeZoomMap} />
                         </div>
                     </Ons.ListItem>
+                    <Ons.ListItem key='locationPublic'>
+                        <div className='left'>
+                            <p>Share location</p>
+                        </div>
+                        <div className='right'>
+                            <Ons.Switch
+                                checked={this.props.locationPublic}
+                                onChange={this.handleLocationPublicChange} />
+                        </div>
+                    </Ons.ListItem>
                 </Ons.List>
             </Ons.Page>
         )
