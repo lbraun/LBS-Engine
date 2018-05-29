@@ -97,18 +97,21 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If there is a popup, insert it into the map
-                    if(layers[layer].items[i].popup != undefined) {
-                        layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} icon={this.gifterMarker}>
-                            <leaflet.Popup>
-                                <span>
-                                    {layers[layer].items[i].popup}
-                                </span>
-                            </leaflet.Popup>
-                            </leaflet.Marker>)
-                    }
-                    else {
-                        layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} />)
+                    // If user chooses to be public (public:true), insert marker into the map
+                    if (layers[layer].items[i].public){
+                      // If there is a popup, insert it into the map
+                      if (layers[layer].items[i].popup != undefined ) {
+                          layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} icon={this.gifterMarker}>
+                              <leaflet.Popup>
+                                  <span>
+                                      {layers[layer].items[i].popup}
+                                  </span>
+                              </leaflet.Popup>
+                              </leaflet.Marker>)
+                      }
+                      else {
+                          layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} />)
+                      }
                     }
                 }
             }
