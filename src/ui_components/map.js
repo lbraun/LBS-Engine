@@ -30,7 +30,7 @@ class Map extends React.Component {
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [-3, -76]
+            popupAnchor: [0, -50]
         });
 
         // Define marker symbol for the user gifter marker
@@ -38,7 +38,7 @@ class Map extends React.Component {
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [-3, -76]
+            popupAnchor: [0, -50]
         });
     }
 
