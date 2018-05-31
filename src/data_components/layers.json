@@ -3,6 +3,7 @@
         "type": "marker",
         "items": [
             {
+                "id": 1,
                 "coords": [
                     51.97,
                     7.62
@@ -12,6 +13,7 @@
                 "public": false
             },
             {
+                "id": 2,
                 "coords": [
                     51.95,
                     7.62
@@ -21,6 +23,7 @@
                 "public": true
             },
             {
+                "id": 3,
                 "coords": [
                     51.93,
                     7.67
