@@ -91500,7 +91500,8 @@ module.exports={
         "externalData": false,
         "gps": true,
         "layerControl": true,
-        "numberOfImages": 3
+        "numberOfImages": 3,
+        "locationPublic": false
     },
     "map": {
         "center": [51.962522, 7.625615],
@@ -91522,7 +91523,7 @@ module.exports={
                 ],
                 "name": "Gifter1",
                 "popup": "Heinz is donating ketchup",
-                "public": false
+                "locationPublic": false
             },
             {
                 "coords": [
@@ -91531,7 +91532,7 @@ module.exports={
                 ],
                 "name": "Gifter2",
                 "popup": "Barbara is donating rhubarb cake",
-                "public": true
+                "locationPublic": true
             },
             {
                 "coords": [
@@ -91540,7 +91541,7 @@ module.exports={
                 ],
                 "name": "Gifter3",
                 "popup": "Denny is donating a jacket",
-                "public": false
+                "locationPublic": true
             }
         ]
     }
@@ -91595,6 +91596,7 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.handleClickAbout = this.handleClickAbout.bind(this);
         this.handleClickSettings = this.handleClickSettings.bind(this);
         this.handleClickHelp = this.handleClickHelp.bind(this);
@@ -91610,6 +91612,7 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: config.map.center,
+            locationPublic: config.app.locationPublic,
             index: 0
         };
 
@@ -91683,6 +91686,16 @@ class App extends React.Component {
      */
     handleZoomMapChange(bool) {
         this.setState({ zoomable: bool });
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {Boolean} bool value of the change
+     */
+    handleLocationPublicChange(bool) {
+        this.setState({ locationPublic: bool });
+        console.log("Changed location privacy");
+        // TODO: Add logic to change location privacy for gifter location
     }
 
     // Toolbar on top of the app, contains name of the app and the menu button
@@ -91781,6 +91794,7 @@ class App extends React.Component {
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
+                onLocationPublicChange: this.handleLocationPublicChange,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 gps: this.state.gps,
@@ -92174,8 +92188,8 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If there is a popup, insert it into the map
-                    if (layers[layer].items[i].public) {
+                    // If user chooses to be public (locationPublic:true), insert marker into the map
+                    if (layers[layer].items[i].locationPublic) {
                         // If there is a popup, insert it into the map
                         if (layers[layer].items[i].popup != undefined) {
                             layerElement.push(React.createElement(
@@ -92402,6 +92416,12 @@ class Settings extends React.Component {
         this.createLog('Map Zooming', e.target.checked);
     }
 
+    //handle toggle of hiding/showing location
+    handleLocationPublicChange(e) {
+        //this.props.locationPublic(e.target.checked);
+        console.log('Location display changed');
+    }
+
     render() {
         return React.createElement(
             Ons.Page,
@@ -92527,6 +92547,26 @@ class Settings extends React.Component {
                         React.createElement(Ons.Switch, {
                             checked: this.props.zoomable,
                             onChange: this.handleChangeZoomMap })
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    { key: 'locationPublic' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            'Share location'
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(Ons.Switch, {
+                            checked: this.props.locationPublic,
+                            onChange: this.handleLocationPublicChange })
                     )
                 )
             )

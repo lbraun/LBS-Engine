@@ -102,6 +102,13 @@ class Settings extends React.Component {
         this.createLog('Map Zooming', e.target.checked);
     }
 
+    //handle toggle of hiding/showing location
+    handleLocationPublicChange(e) {
+        //this.props.locationPublic(e.target.checked);
+        //this.createLog('Location display changed', e.target.checked);
+        console.log('Location display changed');
+    }
+
     render() {
         return (
             <Ons.Page>
