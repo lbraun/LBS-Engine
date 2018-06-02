@@ -2,7 +2,7 @@
     "app": {
         "logging": true,
         "externalData": false,
-        "gps": true,
+        "gps": false,
         "layerControl": true,
         "numberOfImages": 3
     },
