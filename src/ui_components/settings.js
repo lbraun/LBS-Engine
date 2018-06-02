@@ -128,12 +128,17 @@ class Settings extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem key='gps'>
                         <div className='left'>
-                            <p>GPS </p>
+                            <p>Location Tracking</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
                                 checked={this.props.gps}
                                 onChange={this.handleChangeGPS} />
+                        </div>
+                    </Ons.ListItem>
+                    <Ons.ListItem key='gpsHelpText'>
+                        <div class="list-item__subtitle">
+                            Turn this on to see your location on the map. Your location is private and will never be stored by the app.
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem key='layerControl'>
