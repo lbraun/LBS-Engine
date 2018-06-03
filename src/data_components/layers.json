@@ -9,7 +9,7 @@
                 ],
                 "name": "Gifter1",
                 "popup": "Heinz is donating ketchup",
-                "public": false
+                "locationPublic": false
             },
             {
                 "coords": [
@@ -18,7 +18,7 @@
                 ],
                 "name": "Gifter2",
                 "popup": "Barbara is donating rhubarb cake",
-                "public": true
+                "locationPublic": true
             },
             {
                 "coords": [
@@ -27,7 +27,7 @@
                 ],
                 "name": "Gifter3",
                 "popup": "Denny is donating a jacket",
-                "public": true
+                "locationPublic": true
             }
         ]
     }

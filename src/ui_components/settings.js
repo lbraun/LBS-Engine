@@ -22,6 +22,7 @@ class Settings extends React.Component {
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap =  this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.createLog = this.createLog.bind(this);
     }
 
@@ -102,6 +103,11 @@ class Settings extends React.Component {
         this.createLog('Map Zooming', e.target.checked);
     }
 
+    //handle toggle of hiding/showing location
+    handleLocationPublicChange(e) {
+        this.props.onLocationPublicChange(e.target.checked);
+    }
+
     render() {
         return (
             <Ons.Page>
@@ -164,6 +170,16 @@ class Settings extends React.Component {
                             <Ons.Switch
                                 checked={this.props.zoomable}
                                 onChange={this.handleChangeZoomMap} />
+                        </div>
+                    </Ons.ListItem>
+                    <Ons.ListItem key='locationPublic'>
+                        <div className='left'>
+                            <p>Share location</p>
+                        </div>
+                        <div className='right'>
+                            <Ons.Switch
+                                checked={this.props.locationPublic}
+                                onChange={this.handleLocationPublicChange} />
                         </div>
                     </Ons.ListItem>
                 </Ons.List>

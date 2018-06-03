@@ -4,7 +4,8 @@
         "externalData": false,
         "gps": true,
         "layerControl": true,
-        "numberOfImages": 3
+        "numberOfImages": 3,
+        "locationPublic": false
     },
     "map": {
         "center": [51.962522, 7.625615],

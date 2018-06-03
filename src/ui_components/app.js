@@ -34,6 +34,7 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.handleClickAbout = this.handleClickAbout.bind(this);
         this.handleClickSettings = this.handleClickSettings.bind(this);
         this.handleClickHelp = this.handleClickHelp.bind(this);
@@ -49,6 +50,7 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: config.map.center,
+            locationPublic: config.app.locationPublic,
             index: 0
         };
 
@@ -123,6 +125,16 @@ class App extends React.Component {
      */
     handleZoomMapChange(bool) {
         this.setState({zoomable: bool});
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {Boolean} bool value of the change
+     */
+    handleLocationPublicChange(bool) {
+        this.setState({locationPublic: bool});
+        console.log("Changed location privacy");
+        // TODO: Add logic to change location privacy for gifter location
     }
 
 
@@ -214,6 +226,7 @@ class App extends React.Component {
                                 onLayerControlChange={this.handleLayerControlChange}
                                 onDragMapChange={this.handleDragMapChange}
                                 onZoomMapChange={this.handleZoomMapChange}
+                                onLocationPublicChange={this.handleLocationPublicChange}
                                 logging={this.state.logging}
                                 externalData={this.state.externalData}
                                 gps={this.state.gps}
