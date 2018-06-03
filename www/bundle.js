@@ -92338,6 +92338,7 @@ class Settings extends React.Component {
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.createLog = this.createLog.bind(this);
     }
 
@@ -92418,7 +92419,7 @@ class Settings extends React.Component {
 
     //handle toggle of hiding/showing location
     handleLocationPublicChange(e) {
-        //this.props.locationPublic(e.target.checked);
+        this.props.onLocationPublicChange(e.target.checked);
         console.log('Location display changed');
     }
 
