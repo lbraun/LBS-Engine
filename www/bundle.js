@@ -91385,6 +91385,7 @@ ons.ready(function () {
 
 const React = require('react');
 const Ons = require('react-onsenui');
+const geolib = require('geolib');
 
 // Custom files
 // Data
@@ -91425,6 +91426,7 @@ class App extends React.Component {
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleClickHelp = this.handleClickHelp.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
@@ -91603,6 +91605,17 @@ class App extends React.Component {
     }
 
     /**
+     * Calculate the distance from the user's location to a given gifter's position
+     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
+     */
+    calculateDistanceTo(gifterPosition) {
+        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
+        var distance = geolib.getDistance({ latitude: this.state.userPosition[0], longitude: this.state.userPosition[1] }, { latitude: gifterPosition[0], longitude: gifterPosition[1] }, accuracy);
+
+        return distance;
+    }
+
+    /**
      * Render the tabs displayed in the bottom to select the mode
      * State components that are needed are handed over here from the state of this object.
      */
@@ -91626,6 +91639,7 @@ class App extends React.Component {
                 userPositionMarkerText: this.state.userPositionMarkerText,
                 centerPosition: this.state.centerPosition,
                 selectedGifterId: this.state.selectedGifterId,
+                calculateDistanceTo: this.calculateDistanceTo,
                 key: 'map' }),
             tab: React.createElement(Ons.Tab, { label: 'Map', icon: 'md-map', key: 'map' })
         },
@@ -91643,6 +91657,7 @@ class App extends React.Component {
                 centerPosition: this.state.centerPosition,
                 selectedGifterId: this.state.selectedGifterId,
                 onListItemClick: this.handleListItemClick,
+                calculateDistanceTo: this.calculateDistanceTo,
                 key: 'list' }),
             tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
         },
@@ -91842,7 +91857,7 @@ module.exports = {
     App: App
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"../data_components/layers.json":261,"./embededSite.js":264,"./giftForm.js":265,"./list.js":266,"./map.js":267,"./settings.js":268,"react":255,"react-onsenui":252}],264:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"../data_components/layers.json":261,"./embededSite.js":264,"./giftForm.js":265,"./list.js":266,"./map.js":267,"./settings.js":268,"geolib":17,"react":255,"react-onsenui":252}],264:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92011,10 +92026,8 @@ class List extends React.Component {
      * Calculate the distance from the user's location to a given gifter's position
      * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
      */
-    calculateDistanceTo(gifterPosition) {
-        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
-        var distance = geolib.getDistance({ latitude: this.props.userPosition[0], longitude: this.props.userPosition[1] }, { latitude: gifterPosition[0], longitude: gifterPosition[1] }, accuracy);
-
+    getDistanceString(gifterPosition) {
+        var distance = this.props.calculateDistanceTo(gifterPosition);
         return `${distance} m`;
     }
 
@@ -92048,7 +92061,7 @@ class List extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'right' },
-                    this.calculateDistanceTo(gifters[gifter].coords)
+                    this.getDistanceString(gifters[gifter].coords)
                 )
             ));
         }
@@ -92078,7 +92091,8 @@ class List extends React.Component {
                     userPosition: this.props.userPosition,
                     centerPosition: this.props.centerPosition,
                     userPositionMarkerText: this.props.userPositionMarkerText,
-                    selectedGifterId: this.props.selectedGifterId })
+                    selectedGifterId: this.props.selectedGifterId,
+                    calculateDistanceTo: this.props.calculateDistanceTo })
             ),
             this.renderGifterList()
         );
@@ -92216,6 +92230,30 @@ class Map extends React.Component {
                                 position: layers[layer].items[i].coords,
                                 key: layers[layer].items[i].name }));
                         }
+                    } else {
+                        // If user chooses NOT to be public, insert a buffer instead of a marker into the map
+                        // Only do this if the gifter is selected
+                        if (layers[layer].items[i].id == this.props.selectedGifterId) {
+                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].giftDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
+                            layerElement.push(React.createElement(
+                                ExtendedCircle,
+                                {
+                                    id: layers[layer].items[i].id,
+                                    isOpen: true,
+                                    key: layers[layer].items[i].name,
+                                    center: this.props.userPosition,
+                                    radius: this.props.calculateDistanceTo(layers[layer].items[i].coords) },
+                                React.createElement(
+                                    leaflet.Popup,
+                                    null,
+                                    React.createElement(
+                                        'span',
+                                        null,
+                                        popup
+                                    )
+                                )
+                            ));
+                        }
                     }
                 }
             }
@@ -92265,7 +92303,7 @@ class Map extends React.Component {
             var gifters = layers.gifters.items;
             for (var i = gifters.length - 1; i >= 0; i--) {
                 if (gifters[i].id == this.props.selectedGifterId) {
-                    if (gifters[i].public) {
+                    if (gifters[i].locationPublic) {
                         // If the gifter's position is public, move map to gifter
                         center = gifters[i].coords;
                     } else {
@@ -92350,6 +92388,23 @@ class ExtendedMarker extends leaflet.Marker {
         var result = super.render();
 
         // Access the marker element and open the popup
+        if (this.props.isOpen) {
+            this.leafletElement.openPopup();
+        }
+
+        // Return the original result (to make sure everything behaves as normal)
+        return result;
+    }
+}
+
+// Create your own class, extending from the Circle class.
+class ExtendedCircle extends leaflet.Circle {
+    // "Hijack" the component lifecycle.
+    render() {
+        // Call the Circle class render and store the result
+        var result = super.render();
+
+        // Access the circle element and open the popup
         if (this.props.isOpen) {
             this.leafletElement.openPopup();
         }
