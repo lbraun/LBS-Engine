@@ -5,13 +5,11 @@ const Ons = require('react-onsenui');
 const geolib = require('geolib');
 
 // Custom imports
-const map = require('./map.js');
 const config = require('../data_components/config.json');
 const layers = require('../data_components/layers.json');
 
 /**
- * Component for displaying the list view. On top a list is displayed and below a map.
- * The map is generated in the same way, it is defined in the config file.
+ * Component for displaying the list view.
  */
 class List extends React.Component {
 
@@ -69,22 +67,6 @@ class List extends React.Component {
     render() {
         return (
             <div className="center" style={{height: '100%'}}>
-                <Ons.Row style={{width: '100%', height: '50%'}}>
-                    <map.Map
-                        picture={true}
-                        logging={this.props.logging}
-                        externalData={this.props.externalData}
-                        gps={this.props.gps}
-                        layerControl={this.props.layerControl}
-                        draggable={this.props.draggable}
-                        zoomable={this.props.zoomable}
-                        userPosition={this.props.userPosition}
-                        centerPosition={this.props.centerPosition}
-                        userPositionMarkerText={this.props.userPositionMarkerText}
-                        selectedGifterId={this.props.selectedGifterId}
-                        calculateDistanceTo={this.props.calculateDistanceTo}/>
-                </Ons.Row>
-
                 {this.renderGifterList()}
             </div>
         )

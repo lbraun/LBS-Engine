@@ -165,7 +165,10 @@ class App extends React.Component {
      * @param {int} selectedGifterId identifier of the gifter that was selected
      */
     handleListItemClick(selectedGifterId) {
-        this.setState({selectedGifterId: selectedGifterId});
+        this.setState({
+            selectedGifterId: selectedGifterId,
+            index: 1
+        });
     }
 
     /**
