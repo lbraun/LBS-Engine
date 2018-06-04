@@ -91460,7 +91460,7 @@ class App extends React.Component {
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
-            userPosition: config.map.center,
+            userPosition: null,
             centerPosition: config.map.center,
             selectedGifterId: null,
             locationPublic: config.app.locationPublic,
@@ -91470,16 +91470,22 @@ class App extends React.Component {
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
-            var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
+            // Check if the user has geolocation turned on
+            if (app.state.gps) {
+                var lat = position.coords.latitude;
+                var long = position.coords.longitude;
+                var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
 
-            app.setState({
-                userPosition: [lat, long],
-                userPositionMarkerText: message
-            });
-
-            console.log(`Location updated! ${message}`);
+                app.setState({
+                    userPosition: [lat, long],
+                    userPositionMarkerText: message
+                });
+            } else {
+                app.setState({
+                    userPosition: null,
+                    userPositionMarkerText: null
+                });
+            }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
         }, {
@@ -91512,6 +91518,12 @@ class App extends React.Component {
      * @param {Boolean} bool value of the change
      */
     handleGpsChange(bool) {
+        if (!bool) {
+            this.setState({
+                userPosition: null,
+                userPositionMarkerText: null
+            });
+        }
         this.setState({ gps: bool });
     }
 
@@ -92049,26 +92061,30 @@ class List extends React.Component {
         var gifters = layers.gifters.items;
         var listItems = [];
 
-        // Adds a distanceToUser attribute to the array, used for list sorting
-        for (let i in gifters) {
-            var gifter = gifters[i];
-            gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords);
+        // Check if the user's position is available
+        if (this.props.userPosition) {
+            // Add a distanceToUser attribute to the array, used for list sorting
+            for (let i in gifters) {
+                var gifter = gifters[i];
+                gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords);
+            }
+
+            // Sort the list by distance, ascending
+            gifters.sort(function (a, b) {
+                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
         }
 
-        // Sort the list by distance, ascending
-        gifters.sort(function (a, b) {
-            return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-        });
-
         for (let i in gifters) {
             var gifter = gifters[i];
+            var clickable = !!(gifter.locationPublic || this.props.userPosition);
 
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
                     id: gifter.id,
-                    tappable: true,
-                    onClick: this.handleListItemClick,
+                    tappable: clickable,
+                    onClick: clickable ? this.handleListItemClick : null,
                     key: 'gifter' + gifter.id },
                 React.createElement(
                     'div',
@@ -92087,7 +92103,8 @@ class List extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'right' },
-                    `${gifter.distanceToUser} m`
+                    this.props.userPosition ? `${gifter.distanceToUser} m` : null,
+                    clickable ? null : "Location is private"
                 )
             ));
         }
@@ -92303,8 +92320,8 @@ class Map extends React.Component {
     }
 
     renderMapWithLayers() {
-        // Check if the location is enabled and available
-        const marker = this.props.gps ? React.createElement(
+        // Check if the user's position is available
+        const marker = this.props.userPosition ? React.createElement(
             ExtendedMarker,
             {
                 id: "user",

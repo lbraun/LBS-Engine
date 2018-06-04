@@ -56,7 +56,7 @@ class App extends React.Component {
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
-            userPosition: config.map.center,
+            userPosition: null,
             centerPosition: config.map.center,
             selectedGifterId: null,
             locationPublic: config.app.locationPublic,
@@ -67,16 +67,22 @@ class App extends React.Component {
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
-            var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
+            // Check if the user has geolocation turned on
+            if (app.state.gps) {
+                var lat = position.coords.latitude;
+                var long = position.coords.longitude;
+                var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
 
-            app.setState({
-                userPosition: [lat, long],
-                userPositionMarkerText: message
-            })
-
-            console.log(`Location updated! ${message}`);
+                app.setState({
+                    userPosition: [lat, long],
+                    userPositionMarkerText: message
+                })
+            } else {
+                app.setState({
+                    userPosition: null,
+                    userPositionMarkerText: null
+                })
+            }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
         }, {
@@ -109,6 +115,12 @@ class App extends React.Component {
      * @param {Boolean} bool value of the change
      */
     handleGpsChange(bool) {
+        if (!bool) {
+            this.setState({
+                userPosition: null,
+                userPositionMarkerText: null
+            });
+        }
         this.setState({gps: bool});
     }
 
