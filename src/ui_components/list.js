@@ -30,58 +30,42 @@ class List extends React.Component {
         this.props.onListItemClick(listItemId);
     }
 
-    /**
-     * Calculate the distance from the user's location to a given gifter's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
-     */
-    calculateDistanceTo(gifterPosition) {
-        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
-        var distance = geolib.getDistance(
-            {latitude: this.props.userPosition[0], longitude: this.props.userPosition[1]},
-            {latitude: gifterPosition[0], longitude: gifterPosition[1]},
-            accuracy
-        );
-
-        return `${distance} m`
-    }
-
     // Render the list
     renderGifterList() {
         var gifters = layers.gifters.items
         var listItems = [];
 
         // Adds a distanceToUser attribute to the array, used for list sorting
-        for (let g in gifters){
-          console.log(gifters[g])
-          gifters[g]["distanceToUser"] = this.calculateDistanceTo(gifters[g].coords)
-          }
+        for (let i in gifters) {
+            var gifter = gifters[i];
+            gifter["distanceToUser"] = this.calculateDistanceTo(gifter.coords)
+        }
 
-          // Sort the list by distance, ascending
-          gifters.sort(function(a, b) {
-             return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-          });
+        // Sort the list by distance, ascending
+        gifters.sort(function(a, b) {
+            return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+        });
 
-        for (let gifter in gifters) {
+        for (let i in gifters) {
+            var gifter = gifters[i];
 
             listItems.push(
                 <Ons.ListItem
-                    id={gifters[gifter].id}
+                    id={gifter.id}
                     tappable={true}
                     onClick={this.handleListItemClick}
-                    key={'gifter' + gifter}>
+                    key={'gifter' + gifter.id}>
                         <div className='left'>
                             <Ons.Icon icon='md-face'/>
                         </div>
                         <div className='center'>
-                            {gifters[gifter].name} - {gifters[gifter].giftDescription} - {gifters[gifter].contactInformation}
+                            {gifter.name} - {gifter.giftDescription} - {gifter.contactInformation}
                         </div>
                         <div className='right'>
-                            {gifters[gifter].distanceToUser}
+                            {`${gifter.distanceToUser} m`}
                         </div>
                 </Ons.ListItem>
             )
-
-
         }
 
         return (
@@ -106,7 +90,8 @@ class List extends React.Component {
                         userPosition={this.props.userPosition}
                         centerPosition={this.props.centerPosition}
                         userPositionMarkerText={this.props.userPositionMarkerText}
-                        selectedGifterId={this.props.selectedGifterId}/>
+                        selectedGifterId={this.props.selectedGifterId}
+                        calculateDistanceTo={this.props.calculateDistanceTo}/>
                 </Ons.Row>
 
                 {this.renderGifterList()}

@@ -121,6 +121,25 @@ class Map extends React.Component {
                                 position={layers[layer].items[i].coords}
                                 key={layers[layer].items[i].name} />)
                         }
+                    } else { // If user chooses NOT to be public, insert a buffer instead of a marker into the map
+                        // Only do this if the gifter is selected
+                        if (layers[layer].items[i].id == this.props.selectedGifterId) {
+                            var popup = layers[layer].items[i].name
+                                + " is offering " + layers[layer].items[i].giftDescription
+                                + " and can be contacted at " + layers[layer].items[i].contactInformation;
+                            layerElement.push(<ExtendedCircle
+                                id={layers[layer].items[i].id}
+                                isOpen={true}
+                                key={layers[layer].items[i].name}
+                                center={this.props.userPosition}
+                                radius={this.props.calculateDistanceTo(layers[layer].items[i].coords)}>
+                                <leaflet.Popup>
+                                    <span>
+                                        {popup}
+                                    </span>
+                                </leaflet.Popup>
+                            </ExtendedCircle>)
+                        }
                     }
                 }
             }
@@ -164,7 +183,7 @@ class Map extends React.Component {
             var gifters = layers.gifters.items;
             for (var i = gifters.length - 1; i >= 0; i--) {
                 if (gifters[i].id == this.props.selectedGifterId) {
-                    if (gifters[i].public) {
+                    if (gifters[i].locationPublic) {
                         // If the gifter's position is public, move map to gifter
                         center = gifters[i].coords;
                     } else {
@@ -245,6 +264,23 @@ class ExtendedMarker extends leaflet.Marker {
         var result = super.render();
 
         // Access the marker element and open the popup
+        if (this.props.isOpen) {
+            this.leafletElement.openPopup();
+        }
+
+        // Return the original result (to make sure everything behaves as normal)
+        return(result)
+    }
+}
+
+// Create your own class, extending from the Circle class.
+class ExtendedCircle extends leaflet.Circle {
+    // "Hijack" the component lifecycle.
+    render() {
+        // Call the Circle class render and store the result
+        var result = super.render();
+
+        // Access the circle element and open the popup
         if (this.props.isOpen) {
             this.leafletElement.openPopup();
         }

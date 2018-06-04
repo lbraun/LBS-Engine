@@ -2,6 +2,7 @@
 
 const React = require('react');
 const Ons = require('react-onsenui');
+const geolib = require('geolib');
 
 // Custom files
 // Data
@@ -43,6 +44,7 @@ class App extends React.Component {
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleClickHelp = this.handleClickHelp.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
@@ -215,6 +217,21 @@ class App extends React.Component {
     }
 
     /**
+     * Calculate the distance from the user's location to a given gifter's position
+     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
+     */
+    calculateDistanceTo(gifterPosition) {
+        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
+        var distance = geolib.getDistance(
+            {latitude: this.state.userPosition[0], longitude: this.state.userPosition[1]},
+            {latitude: gifterPosition[0], longitude: gifterPosition[1]},
+            accuracy
+        );
+
+        return distance;
+    }
+
+    /**
      * Render the tabs displayed in the bottom to select the mode
      * State components that are needed are handed over here from the state of this object.
      */
@@ -238,6 +255,7 @@ class App extends React.Component {
                                 userPositionMarkerText={this.state.userPositionMarkerText}
                                 centerPosition={this.state.centerPosition}
                                 selectedGifterId={this.state.selectedGifterId}
+                                calculateDistanceTo={this.calculateDistanceTo}
                                 key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
             },
@@ -255,6 +273,7 @@ class App extends React.Component {
                                 centerPosition={this.state.centerPosition}
                                 selectedGifterId={this.state.selectedGifterId}
                                 onListItemClick={this.handleListItemClick}
+                                calculateDistanceTo={this.calculateDistanceTo}
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },
