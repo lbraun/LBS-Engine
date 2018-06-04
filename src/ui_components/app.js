@@ -134,7 +134,6 @@ class App extends React.Component {
      */
     handleListItemClick(selectedGifterId) {
         this.setState({selectedGifterId: selectedGifterId});
-        this.setState({centerPosition: layers});
     }
 
 

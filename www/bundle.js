@@ -91511,7 +91511,6 @@ class App extends React.Component {
      */
     handleListItemClick(selectedGifterId) {
         this.setState({ selectedGifterId: selectedGifterId });
-        this.setState({ centerPosition: layers });
     }
 
     // Toolbar on top of the app, contains name of the app and the menu button
