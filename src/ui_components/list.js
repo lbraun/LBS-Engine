@@ -51,6 +51,15 @@ class List extends React.Component {
         var listItems = [];
 
         for (let gifter in gifters) {
+
+            // Adds a distanceToUser attribute to the array, used for list sorting
+            gifters[gifter]["distanceToUser"] = this.calculateDistanceTo(gifters[gifter].coords)
+
+            // Sort the list by distance, ascending
+            gifters.sort(function(a, b) {
+              return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
+
             listItems.push(
                 <Ons.ListItem
                     id={gifters[gifter].id}
@@ -64,10 +73,12 @@ class List extends React.Component {
                             {gifters[gifter].name} - {gifters[gifter].giftDescription} - {gifters[gifter].contactInformation}
                         </div>
                         <div className='right'>
-                            {this.calculateDistanceTo(gifters[gifter].coords)}
+                            {gifters[gifter].distanceToUser}
                         </div>
                 </Ons.ListItem>
             )
+
+
         }
 
         return (

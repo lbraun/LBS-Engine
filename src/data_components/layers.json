@@ -27,6 +27,28 @@
             {
                 "id": 3,
                 "coords": [
+                    51.969,
+                    7.595
+                ],
+                "name": "Lucas",
+                "giftDescription": "bike",
+                "contactInformation": "lbraun@wwu.de",
+                "locationPublic": true
+            },
+            {
+                "id": 4,
+                "coords": [
+                    51.969,
+                    7.597
+                ],
+                "name": "Vanesa",
+                "giftDescription": "potatoes",
+                "contactInformation": "heinz@wwu.de",
+                "locationPublic": true
+            },
+            {
+                "id": 5,
+                "coords": [
                     51.93,
                     7.67
                 ],
