@@ -30,35 +30,39 @@ class List extends React.Component {
         this.props.onListItemClick(listItemId);
     }
 
-    /**
-     * Calculate the distance from the user's location to a given gifter's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
-     */
-    getDistanceString(gifterPosition) {
-        var distance = this.props.calculateDistanceTo(gifterPosition)
-        return `${distance} m`
-    }
-
     // Render the list
     renderGifterList() {
         var gifters = layers.gifters.items
         var listItems = [];
 
-        for (let gifter in gifters) {
+        // Adds a distanceToUser attribute to the array, used for list sorting
+        for (let i in gifters) {
+            var gifter = gifters[i];
+            gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords)
+        }
+
+        // Sort the list by distance, ascending
+        gifters.sort(function(a, b) {
+            return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+        });
+
+        for (let i in gifters) {
+            var gifter = gifters[i];
+
             listItems.push(
                 <Ons.ListItem
-                    id={gifters[gifter].id}
+                    id={gifter.id}
                     tappable={true}
                     onClick={this.handleListItemClick}
-                    key={'gifter' + gifter}>
+                    key={'gifter' + gifter.id}>
                         <div className='left'>
                             <Ons.Icon icon='md-face'/>
                         </div>
                         <div className='center'>
-                            {gifters[gifter].name} - {gifters[gifter].giftDescription} - {gifters[gifter].contactInformation}
+                            {gifter.name} - {gifter.giftDescription} - {gifter.contactInformation}
                         </div>
                         <div className='right'>
-                            {this.getDistanceString(gifters[gifter].coords)}
+                            {`${gifter.distanceToUser} m`}
                         </div>
                 </Ons.ListItem>
             )

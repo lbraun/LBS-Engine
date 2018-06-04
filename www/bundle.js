@@ -91355,6 +91355,28 @@ module.exports={
             {
                 "id": 3,
                 "coords": [
+                    51.969,
+                    7.595
+                ],
+                "name": "Lucas",
+                "giftDescription": "bike",
+                "contactInformation": "lbraun@wwu.de",
+                "locationPublic": true
+            },
+            {
+                "id": 4,
+                "coords": [
+                    51.969,
+                    7.597
+                ],
+                "name": "Vanesa",
+                "giftDescription": "potatoes",
+                "contactInformation": "vanesaperez@wwu.de",
+                "locationPublic": true
+            },
+            {
+                "id": 5,
+                "coords": [
                     51.93,
                     7.67
                 ],
@@ -92022,28 +92044,32 @@ class List extends React.Component {
         this.props.onListItemClick(listItemId);
     }
 
-    /**
-     * Calculate the distance from the user's location to a given gifter's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
-     */
-    getDistanceString(gifterPosition) {
-        var distance = this.props.calculateDistanceTo(gifterPosition);
-        return `${distance} m`;
-    }
-
     // Render the list
     renderGifterList() {
         var gifters = layers.gifters.items;
         var listItems = [];
 
-        for (let gifter in gifters) {
+        // Adds a distanceToUser attribute to the array, used for list sorting
+        for (let i in gifters) {
+            var gifter = gifters[i];
+            gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords);
+        }
+
+        // Sort the list by distance, ascending
+        gifters.sort(function (a, b) {
+            return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+        });
+
+        for (let i in gifters) {
+            var gifter = gifters[i];
+
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
-                    id: gifters[gifter].id,
+                    id: gifter.id,
                     tappable: true,
                     onClick: this.handleListItemClick,
-                    key: 'gifter' + gifter },
+                    key: 'gifter' + gifter.id },
                 React.createElement(
                     'div',
                     { className: 'left' },
@@ -92052,16 +92078,16 @@ class List extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'center' },
-                    gifters[gifter].name,
+                    gifter.name,
                     ' - ',
-                    gifters[gifter].giftDescription,
+                    gifter.giftDescription,
                     ' - ',
-                    gifters[gifter].contactInformation
+                    gifter.contactInformation
                 ),
                 React.createElement(
                     'div',
                     { className: 'right' },
-                    this.getDistanceString(gifters[gifter].coords)
+                    `${gifter.distanceToUser} m`
                 )
             ));
         }
