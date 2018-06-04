@@ -92052,7 +92052,7 @@ class List extends React.Component {
         // Adds a distanceToUser attribute to the array, used for list sorting
         for (let i in gifters) {
             var gifter = gifters[i];
-            gifter["distanceToUser"] = this.calculateDistanceTo(gifter.coords);
+            gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords);
         }
 
         // Sort the list by distance, ascending
