@@ -91312,7 +91312,7 @@ module.exports={
     "app": {
         "logging": true,
         "externalData": false,
-        "gps": true,
+        "gps": false,
         "layerControl": true,
         "numberOfImages": 3,
         "locationPublic": false
@@ -92480,46 +92480,6 @@ class Settings extends React.Component {
                 null,
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'logging' },
-                    React.createElement(
-                        'div',
-                        { className: 'left' },
-                        React.createElement(
-                            'p',
-                            null,
-                            'Logging '
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        React.createElement(Ons.Switch, {
-                            checked: this.props.logging,
-                            onChange: this.handleChangeLogging })
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    { key: 'externalData' },
-                    React.createElement(
-                        'div',
-                        { className: 'left' },
-                        React.createElement(
-                            'p',
-                            null,
-                            'External data '
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        React.createElement(Ons.Switch, {
-                            checked: this.props.externalData,
-                            onChange: this.handleChangeData })
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
                     { key: 'gps' },
                     React.createElement(
                         'div',
@@ -92527,7 +92487,7 @@ class Settings extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            'GPS '
+                            'Location Tracking'
                         )
                     ),
                     React.createElement(
@@ -92540,62 +92500,11 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'layerControl' },
+                    { key: 'gpsHelpText' },
                     React.createElement(
                         'div',
-                        { className: 'left' },
-                        React.createElement(
-                            'p',
-                            null,
-                            'Layer Control'
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        React.createElement(Ons.Switch, {
-                            checked: this.props.layerControl,
-                            onChange: this.handleChangeLayerControl })
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    { key: 'dragging' },
-                    React.createElement(
-                        'div',
-                        { className: 'left' },
-                        React.createElement(
-                            'p',
-                            null,
-                            'Drag Map'
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        React.createElement(Ons.Switch, {
-                            checked: this.props.draggable,
-                            onChange: this.handleChangeDragMap })
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    { key: 'zoom' },
-                    React.createElement(
-                        'div',
-                        { className: 'left' },
-                        React.createElement(
-                            'p',
-                            null,
-                            'Zoom Map'
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        React.createElement(Ons.Switch, {
-                            checked: this.props.zoomable,
-                            onChange: this.handleChangeZoomMap })
+                        { 'class': 'list-item__subtitle' },
+                        'This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.'
                     )
                 ),
                 React.createElement(

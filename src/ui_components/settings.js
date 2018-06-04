@@ -112,29 +112,9 @@ class Settings extends React.Component {
         return (
             <Ons.Page>
                 <Ons.List>
-                    <Ons.ListItem key='logging'>
-                        <div className='left'>
-                            <p>Logging </p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch
-                                checked={this.props.logging}
-                                onChange={this.handleChangeLogging} />
-                        </div>
-                    </Ons.ListItem>
-                    <Ons.ListItem key='externalData'>
-                        <div className='left'>
-                            <p>External data </p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch
-                                checked={this.props.externalData}
-                                onChange={this.handleChangeData} />
-                        </div>
-                    </Ons.ListItem>
                     <Ons.ListItem key='gps'>
                         <div className='left'>
-                            <p>GPS </p>
+                            <p>Location Tracking</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
@@ -142,34 +122,9 @@ class Settings extends React.Component {
                                 onChange={this.handleChangeGPS} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='layerControl'>
-                        <div className='left'>
-                            <p>Layer Control</p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch
-                                checked={this.props.layerControl}
-                                onChange={this.handleChangeLayerControl} />
-                        </div>
-                    </Ons.ListItem>
-                    <Ons.ListItem key='dragging'>
-                        <div className='left'>
-                            <p>Drag Map</p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch
-                                checked={this.props.draggable}
-                                onChange={this.handleChangeDragMap} />
-                        </div>
-                    </Ons.ListItem>
-                    <Ons.ListItem key='zoom'>
-                        <div className='left'>
-                            <p>Zoom Map</p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch
-                                checked={this.props.zoomable}
-                                onChange={this.handleChangeZoomMap} />
+                    <Ons.ListItem key='gpsHelpText'>
+                        <div class="list-item__subtitle">
+                            This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem key='locationPublic'>
