@@ -35,25 +35,29 @@ class List extends React.Component {
         var gifters = layers.gifters.items
         var listItems = [];
 
-        // Adds a distanceToUser attribute to the array, used for list sorting
-        for (let i in gifters) {
-            var gifter = gifters[i];
-            gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords)
+        // Check if the user's position is available
+        if (this.props.userPosition) {
+            // Add a distanceToUser attribute to the array, used for list sorting
+            for (let i in gifters) {
+                var gifter = gifters[i];
+                gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords)
+            }
+
+            // Sort the list by distance, ascending
+            gifters.sort(function(a, b) {
+                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
         }
 
-        // Sort the list by distance, ascending
-        gifters.sort(function(a, b) {
-            return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-        });
-
         for (let i in gifters) {
             var gifter = gifters[i];
+            var clickable = !!(gifter.locationPublic || this.props.userPosition);
 
             listItems.push(
                 <Ons.ListItem
                     id={gifter.id}
-                    tappable={true}
-                    onClick={this.handleListItemClick}
+                    tappable={clickable}
+                    onClick={clickable ? this.handleListItemClick : null}
                     key={'gifter' + gifter.id}>
                         <div className='left'>
                             <Ons.Icon icon='md-face'/>
@@ -62,7 +66,8 @@ class List extends React.Component {
                             {gifter.name} - {gifter.giftDescription} - {gifter.contactInformation}
                         </div>
                         <div className='right'>
-                            {`${gifter.distanceToUser} m`}
+                            {this.props.userPosition ? `${gifter.distanceToUser} m` : null}
+                            {clickable ? null : "Location is private"}
                         </div>
                 </Ons.ListItem>
             )

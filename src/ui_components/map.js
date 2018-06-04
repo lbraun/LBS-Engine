@@ -159,8 +159,8 @@ class Map extends React.Component {
     }
 
     renderMapWithLayers() {
-        // Check if the location is enabled and available
-        const marker = this.props.gps
+        // Check if the user's position is available
+        const marker = this.props.userPosition
             ? (
                 <ExtendedMarker
                     id={"user"}
