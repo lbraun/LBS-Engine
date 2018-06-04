@@ -34,14 +34,8 @@ class List extends React.Component {
      * Calculate the distance from the user's location to a given gifter's position
      * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
      */
-    calculateDistanceTo(gifterPosition) {
-        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
-        var distance = geolib.getDistance(
-            {latitude: this.props.userPosition[0], longitude: this.props.userPosition[1]},
-            {latitude: gifterPosition[0], longitude: gifterPosition[1]},
-            accuracy
-        );
-
+    getDistanceString(gifterPosition) {
+        var distance = this.props.calculateDistanceTo(gifterPosition)
         return `${distance} m`
     }
 
@@ -64,7 +58,7 @@ class List extends React.Component {
                             {gifters[gifter].name} - {gifters[gifter].giftDescription} - {gifters[gifter].contactInformation}
                         </div>
                         <div className='right'>
-                            {this.calculateDistanceTo(gifters[gifter].coords)}
+                            {this.getDistanceString(gifters[gifter].coords)}
                         </div>
                 </Ons.ListItem>
             )
@@ -92,7 +86,8 @@ class List extends React.Component {
                         userPosition={this.props.userPosition}
                         centerPosition={this.props.centerPosition}
                         userPositionMarkerText={this.props.userPositionMarkerText}
-                        selectedGifterId={this.props.selectedGifterId}/>
+                        selectedGifterId={this.props.selectedGifterId}
+                        calculateDistanceTo={this.props.calculateDistanceTo}/>
                 </Ons.Row>
 
                 {this.renderGifterList()}
