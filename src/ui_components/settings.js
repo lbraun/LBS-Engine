@@ -129,12 +129,17 @@ class Settings extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem key='locationPublic'>
                         <div className='left'>
-                            <p>Share location</p>
+                            <p>Share Location</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
                                 checked={this.props.locationPublic}
                                 onChange={this.handleLocationPublicChange} />
+                        </div>
+                    </Ons.ListItem>
+                    <Ons.ListItem key='locationShareText'>
+                        <div className="list-item__subtitle">
+                            This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.
                         </div>
                     </Ons.ListItem>
                 </Ons.List>
