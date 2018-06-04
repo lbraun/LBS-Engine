@@ -91635,6 +91635,7 @@ class App extends React.Component {
         this.handleClickHelp = this.handleClickHelp.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
+        this.getGifters = this.getGifters.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
@@ -91646,26 +91647,43 @@ class App extends React.Component {
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
-            userPosition: config.map.center,
+            userPosition: null,
             centerPosition: config.map.center,
             selectedGifterId: null,
             locationPublic: config.app.locationPublic,
+            notificationLog: [],
             index: 0
         };
 
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
-            var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
+            if (app.state.gps) {
+                // If the user has enabled location tracking, use it
+                var lat = position.coords.latitude;
+                var long = position.coords.longitude;
+                var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
+                var coords = [lat, long];
 
-            app.setState({
-                userPosition: [lat, long],
-                userPositionMarkerText: message
-            });
+                app.setState({
+                    userPosition: coords,
+                    userPositionMarkerText: message
+                });
 
-            console.log(`Location updated! ${message}`);
+                var closestGifter = app.getGifters()[0];
+                var alreadyNotified = app.state.notificationLog.includes(closestGifter.id);
+
+                if (closestGifter.distanceToUser <= 400 && !alreadyNotified) {
+                    alert(`${closestGifter.name} is less than ${closestGifter.distanceToUser} m away with the following offer: ${closestGifter.giftDescription}`);
+                    app.setState({ notificationLog: app.state.notificationLog.push(closestGifter.id) });
+                }
+            } else {
+                // Otherwise set user position to null
+                app.setState({
+                    userPosition: null,
+                    userPositionMarkerText: null
+                });
+            }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
         }, {
@@ -91698,6 +91716,12 @@ class App extends React.Component {
      * @param {Boolean} bool value of the change
      */
     handleGpsChange(bool) {
+        if (!bool) {
+            this.setState({
+                userPosition: null,
+                userPositionMarkerText: null
+            });
+        }
         this.setState({ gps: bool });
     }
 
@@ -91730,7 +91754,10 @@ class App extends React.Component {
      * @param {int} selectedGifterId identifier of the gifter that was selected
      */
     handleListItemClick(selectedGifterId) {
-        this.setState({ selectedGifterId: selectedGifterId });
+        this.setState({
+            selectedGifterId: selectedGifterId,
+            index: 1
+        });
     }
 
     /**
@@ -91824,6 +91851,29 @@ class App extends React.Component {
     }
 
     /**
+     * Get an array of all gifters, sorted by their distance from the user
+     */
+    getGifters() {
+        var gifters = layers.gifters.items;
+
+        // If the user's position is available
+        if (this.state.userPosition) {
+            // Add a distanceToUser attribute to the array, used for list sorting
+            for (let i in gifters) {
+                var gifter = gifters[i];
+                gifter.distanceToUser = this.calculateDistanceTo(gifter.coords);
+            }
+
+            // Sort the list by distance, ascending
+            gifters.sort(function (a, b) {
+                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
+        }
+
+        return gifters;
+    }
+
+    /**
      * Render the tabs displayed in the bottom to select the mode
      * State components that are needed are handed over here from the state of this object.
      */
@@ -91866,6 +91916,7 @@ class App extends React.Component {
                 selectedGifterId: this.state.selectedGifterId,
                 onListItemClick: this.handleListItemClick,
                 calculateDistanceTo: this.calculateDistanceTo,
+                getGifters: this.getGifters,
                 key: 'list' }),
             tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
         },
@@ -92205,13 +92256,11 @@ const Ons = require('react-onsenui');
 const geolib = require('geolib');
 
 // Custom imports
-const map = require('./map.js');
 const config = require('../data_components/config.json');
 const layers = require('../data_components/layers.json');
 
 /**
- * Component for displaying the list view. On top a list is displayed and below a map.
- * The map is generated in the same way, it is defined in the config file.
+ * Component for displaying the list view.
  */
 class List extends React.Component {
 
@@ -92232,29 +92281,19 @@ class List extends React.Component {
 
     // Render the list
     renderGifterList() {
-        var gifters = layers.gifters.items;
+        var gifters = this.props.getGifters();
         var listItems = [];
 
-        // Adds a distanceToUser attribute to the array, used for list sorting
         for (let i in gifters) {
             var gifter = gifters[i];
-            gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords);
-        }
-
-        // Sort the list by distance, ascending
-        gifters.sort(function (a, b) {
-            return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-        });
-
-        for (let i in gifters) {
-            var gifter = gifters[i];
+            var clickable = !!(gifter.locationPublic || this.props.userPosition);
 
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
                     id: gifter.id,
-                    tappable: true,
-                    onClick: this.handleListItemClick,
+                    tappable: clickable,
+                    onClick: clickable ? this.handleListItemClick : null,
                     key: 'gifter' + gifter.id },
                 React.createElement(
                     'div',
@@ -92273,7 +92312,8 @@ class List extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'right' },
-                    `${gifter.distanceToUser} m`
+                    this.props.userPosition ? `${gifter.distanceToUser} m` : null,
+                    clickable ? null : "Location is private"
                 )
             ));
         }
@@ -92289,23 +92329,6 @@ class List extends React.Component {
         return React.createElement(
             'div',
             { className: 'center', style: { height: '100%' } },
-            React.createElement(
-                Ons.Row,
-                { style: { width: '100%', height: '50%' } },
-                React.createElement(map.Map, {
-                    picture: true,
-                    logging: this.props.logging,
-                    externalData: this.props.externalData,
-                    gps: this.props.gps,
-                    layerControl: this.props.layerControl,
-                    draggable: this.props.draggable,
-                    zoomable: this.props.zoomable,
-                    userPosition: this.props.userPosition,
-                    centerPosition: this.props.centerPosition,
-                    userPositionMarkerText: this.props.userPositionMarkerText,
-                    selectedGifterId: this.props.selectedGifterId,
-                    calculateDistanceTo: this.props.calculateDistanceTo })
-            ),
             this.renderGifterList()
         );
     }
@@ -92315,7 +92338,7 @@ module.exports = {
     List: List
 };
 
-},{"../data_components/config.json":261,"../data_components/layers.json":262,"./map.js":268,"geolib":18,"react":256,"react-onsenui":253}],268:[function(require,module,exports){
+},{"../data_components/config.json":261,"../data_components/layers.json":262,"geolib":18,"react":256,"react-onsenui":253}],268:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92489,8 +92512,8 @@ class Map extends React.Component {
     }
 
     renderMapWithLayers() {
-        // Check if the location is enabled and available
-        const marker = this.props.gps ? React.createElement(
+        // Check if the user's position is available
+        const marker = this.props.userPosition ? React.createElement(
             ExtendedMarker,
             {
                 id: "user",
