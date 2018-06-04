@@ -123,7 +123,7 @@ class Settings extends React.Component {
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem key='gpsHelpText'>
-                        <div class="list-item__subtitle">
+                        <div className="list-item__subtitle">
                             This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.
                         </div>
                     </Ons.ListItem>

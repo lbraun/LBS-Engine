@@ -92503,7 +92503,7 @@ class Settings extends React.Component {
                     { key: 'gpsHelpText' },
                     React.createElement(
                         'div',
-                        { 'class': 'list-item__subtitle' },
+                        { className: 'list-item__subtitle' },
                         'This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.'
                     )
                 ),
