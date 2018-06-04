@@ -98,20 +98,22 @@ class Map extends React.Component {
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
                     // If user chooses to be public (locationPublic:true), insert marker into the map
-                    if (layers[layer].items[i].locationPublic){
-                      // If there is a popup, insert it into the map
-                      if (layers[layer].items[i].popup != undefined ) {
-                          layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} icon={this.gifterMarker}>
-                              <leaflet.Popup>
-                                  <span>
-                                      {layers[layer].items[i].popup}
-                                  </span>
-                              </leaflet.Popup>
-                              </leaflet.Marker>)
-                      }
-                      else {
-                          layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} />)
-                      }
+                    if (layers[layer].items[i].locationPublic) {
+                        // If there is content for a popup, insert a popup into the map
+                        if (layers[layer].items[i].name != undefined) {
+                            var popup = layers[layer].items[i].name
+                                + " is offering " + layers[layer].items[i].giftDescription
+                                + " and can be contacted at " + layers[layer].items[i].contactInformation;
+                            layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} icon={this.gifterMarker}>
+                                <leaflet.Popup>
+                                    <span>
+                                        {popup}
+                                    </span>
+                                </leaflet.Popup>
+                                </leaflet.Marker>)
+                        } else {
+                            layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} />)
+                        }
                     }
                 }
             }

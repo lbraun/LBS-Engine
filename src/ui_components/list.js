@@ -58,7 +58,7 @@ class List extends React.Component {
                             <Ons.Icon icon='md-face'/>
                         </div>
                         <div className='center'>
-                            {gifters[gifter].name} - {gifters[gifter].popup}
+                            {gifters[gifter].name} - {gifters[gifter].giftDescription} - {gifters[gifter].contactInformation}
                         </div>
                         <div className='right'>
                             {this.calculateDistanceTo(gifters[gifter].coords)}
