@@ -91894,13 +91894,13 @@ class GiftForm extends React.Component {
                     null,
                     React.createElement(
                         'div',
-                        { 'class': 'list-item__title' },
+                        { className: 'list-item__title' },
                         'What do you have to give?'
                     ),
                     React.createElement(
                         'div',
-                        { 'class': 'list-item__subtitle' },
-                        'Please give details like shape, size, condition, flavor, age, etc.'
+                        { className: 'list-item__subtitle' },
+                        'Please give a nice short description of the item.'
                     )
                 ),
                 React.createElement(
@@ -91911,10 +91911,9 @@ class GiftForm extends React.Component {
                         null,
                         React.createElement('textarea', {
                             id: 'giftDescription',
-                            'class': 'textarea textarea--transparent',
+                            className: 'textarea textarea--transparent',
                             placeholder: 'Gift description',
-                            onChange: this.handleGiftDescriptionChange,
-                            float: true })
+                            onChange: this.handleGiftDescriptionChange })
                     )
                 ),
                 React.createElement(
@@ -91922,12 +91921,12 @@ class GiftForm extends React.Component {
                     null,
                     React.createElement(
                         'div',
-                        { 'class': 'list-item__title' },
+                        { className: 'list-item__title' },
                         'How can other users contact you?'
                     ),
                     React.createElement(
                         'div',
-                        { 'class': 'list-item__subtitle' },
+                        { className: 'list-item__subtitle' },
                         'Please provide a phone number, email, or other instructions.'
                     )
                 ),
@@ -91939,10 +91938,9 @@ class GiftForm extends React.Component {
                         null,
                         React.createElement('textarea', {
                             id: 'contactInformation',
-                            'class': 'textarea textarea--transparent',
+                            className: 'textarea textarea--transparent',
                             placeholder: 'Contact information',
-                            onChange: this.handleContactInformationChange,
-                            float: true })
+                            onChange: this.handleContactInformationChange })
                     )
                 )
             )

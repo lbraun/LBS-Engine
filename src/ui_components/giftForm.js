@@ -34,30 +34,29 @@ class GiftForm extends React.Component {
             <Ons.Page>
                 <Ons.List>
                     <Ons.ListItem>
-                        <div class="list-item__title">
+                        <div className="list-item__title">
                             What do you have to give?
                         </div>
-                        <div class="list-item__subtitle">
-                            Please give details like shape, size, condition, flavor, age, etc.
+                        <div className="list-item__subtitle">
+                            Please give a nice short description of the item.
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem>
                         <p>
                             <textarea
                                 id="giftDescription"
-                                class="textarea textarea--transparent"
+                                className="textarea textarea--transparent"
                                 placeholder="Gift description"
-                                onChange={this.handleGiftDescriptionChange}
-                                float>
+                                onChange={this.handleGiftDescriptionChange}>
                             </textarea>
                         </p>
                     </Ons.ListItem>
 
                     <Ons.ListItem>
-                        <div class="list-item__title">
+                        <div className="list-item__title">
                             How can other users contact you?
                         </div>
-                        <div class="list-item__subtitle">
+                        <div className="list-item__subtitle">
                             Please provide a phone number, email, or other instructions.
                         </div>
                     </Ons.ListItem>
@@ -65,10 +64,9 @@ class GiftForm extends React.Component {
                         <p>
                             <textarea
                                 id="contactInformation"
-                                class="textarea textarea--transparent"
+                                className="textarea textarea--transparent"
                                 placeholder="Contact information"
-                                onChange={this.handleContactInformationChange}
-                                float>
+                                onChange={this.handleContactInformationChange}>
                             </textarea>
                         </p>
                     </Ons.ListItem>
