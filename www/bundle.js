@@ -5624,7 +5624,7 @@ module.exports = ret;
 },{"./es5":13}]},{},[4])(4)
 });                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":268}],2:[function(require,module,exports){
+},{"_process":269}],2:[function(require,module,exports){
 /**
  * Static Private functions
  */
@@ -6461,7 +6461,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":268}],9:[function(require,module,exports){
+},{"_process":269}],9:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6622,7 +6622,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":268}],13:[function(require,module,exports){
+},{"_process":269}],13:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6799,7 +6799,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":7,"_process":268}],17:[function(require,module,exports){
+},{"./emptyFunction":7,"_process":269}],17:[function(require,module,exports){
 /*! geolib 2.0.23 by Manuel Bieh
 * Library to provide geo functions like distance calculation,
 * conversion of decimal coordinates to sexagesimal and vice versa, etc.
@@ -61966,7 +61966,7 @@ return ons$1;
 
 
 }).call(this,require('_process'))
-},{"_process":268}],205:[function(require,module,exports){
+},{"_process":269}],205:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -62029,7 +62029,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":209,"_process":268,"fbjs/lib/invariant":12,"fbjs/lib/warning":16}],206:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":209,"_process":269,"fbjs/lib/invariant":12,"fbjs/lib/warning":16}],206:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -62635,7 +62635,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 };
 
 }).call(this,require('_process'))
-},{"./checkPropTypes":205,"./lib/ReactPropTypesSecret":209,"_process":268,"fbjs/lib/emptyFunction":7,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203}],208:[function(require,module,exports){
+},{"./checkPropTypes":205,"./lib/ReactPropTypesSecret":209,"_process":269,"fbjs/lib/emptyFunction":7,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203}],208:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -62667,7 +62667,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./factoryWithThrowingShims":206,"./factoryWithTypeCheckers":207,"_process":268}],209:[function(require,module,exports){
+},{"./factoryWithThrowingShims":206,"./factoryWithTypeCheckers":207,"_process":269}],209:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -79339,7 +79339,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":268,"fbjs/lib/ExecutionEnvironment":3,"fbjs/lib/camelizeStyleName":5,"fbjs/lib/containsNode":6,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/getActiveElement":9,"fbjs/lib/hyphenateStyleName":11,"fbjs/lib/invariant":12,"fbjs/lib/shallowEqual":15,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205,"react":255}],211:[function(require,module,exports){
+},{"_process":269,"fbjs/lib/ExecutionEnvironment":3,"fbjs/lib/camelizeStyleName":5,"fbjs/lib/containsNode":6,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/getActiveElement":9,"fbjs/lib/hyphenateStyleName":11,"fbjs/lib/invariant":12,"fbjs/lib/shallowEqual":15,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205,"react":255}],211:[function(require,module,exports){
 /** @license React v16.3.2
  * react-dom.production.min.js
  *
@@ -79629,7 +79629,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":210,"./cjs/react-dom.production.min.js":211,"_process":268}],213:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":210,"./cjs/react-dom.production.min.js":211,"_process":269}],213:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81469,7 +81469,7 @@ Pane.childContextTypes = {
 };
 exports.default = Pane;
 }).call(this,require('_process'))
-},{"./propTypes/children":242,"./propTypes/map":249,"_process":268,"lodash/forEach":172,"lodash/omit":195,"lodash/uniqueId":202,"prop-types":208,"react":255,"warning":256}],229:[function(require,module,exports){
+},{"./propTypes/children":242,"./propTypes/map":249,"_process":269,"lodash/forEach":172,"lodash/omit":195,"lodash/uniqueId":202,"prop-types":208,"react":255,"warning":256}],229:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -90939,7 +90939,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":268,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205}],254:[function(require,module,exports){
+},{"_process":269,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205}],254:[function(require,module,exports){
 /** @license React v16.3.2
  * react.production.min.js
  *
@@ -90974,7 +90974,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":253,"./cjs/react.production.min.js":254,"_process":268}],256:[function(require,module,exports){
+},{"./cjs/react.development.js":253,"./cjs/react.production.min.js":254,"_process":269}],256:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -91038,7 +91038,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":268}],257:[function(require,module,exports){
+},{"_process":269}],257:[function(require,module,exports){
 'use strict';
 
 /**
@@ -91314,13 +91314,14 @@ module.exports={
         "externalData": false,
         "gps": false,
         "layerControl": true,
-        "numberOfImages": 3
+        "numberOfImages": 3,
+        "locationPublic": false
     },
     "map": {
         "center": [51.962522, 7.625615],
         "zoomable": true,
         "draggable": true,
-        "zoom": 20
+        "zoom": 12
     }
 }
 
@@ -91330,31 +91331,37 @@ module.exports={
         "type": "marker",
         "items": [
             {
+                "id": 1,
                 "coords": [
                     51.97,
                     7.62
                 ],
-                "name": "Gifter1",
-                "popup": "Heinz is donating ketchup",
-                "public": false
+                "name": "Heinz",
+                "giftDescription": "ketchup",
+                "contactInformation": "heinz@wwu.de",
+                "locationPublic": false
             },
             {
+                "id": 2,
                 "coords": [
                     51.95,
                     7.62
                 ],
-                "name": "Gifter2",
-                "popup": "Barbara is donating rhubarb cake",
-                "public": true
+                "name": "Barbara",
+                "giftDescription": "rhubarb cake",
+                "contactInformation": "barbara@wwu.de",
+                "locationPublic": true
             },
             {
+                "id": 3,
                 "coords": [
                     51.93,
                     7.67
                 ],
-                "name": "Gifter3",
-                "popup": "Denny is donating a jacket",
-                "public": true
+                "name": "Denny",
+                "giftDescription": "a jacket",
+                "contactInformation": "denny@wwu.de",
+                "locationPublic": true
             }
         ]
     }
@@ -91387,6 +91394,7 @@ const layers = require('../data_components/layers.json');
 const map = require('./map.js');
 const list = require('./list.js');
 const settings = require('./settings.js');
+const giftForm = require('./giftForm.js');
 const embededSite = require('./embededSite.js');
 // Logic
 const locationManager = require('../business_components/locationManager.js');
@@ -91409,9 +91417,14 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.handleClickAbout = this.handleClickAbout.bind(this);
         this.handleClickSettings = this.handleClickSettings.bind(this);
+        this.handleClickMyGifts = this.handleClickMyGifts.bind(this);
+        this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
+        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleClickHelp = this.handleClickHelp.bind(this);
+        this.handleListItemClick = this.handleListItemClick.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
@@ -91424,6 +91437,9 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: config.map.center,
+            centerPosition: config.map.center,
+            selectedGifterId: null,
+            locationPublic: config.app.locationPublic,
             index: 0
         };
 
@@ -91499,9 +91515,43 @@ class App extends React.Component {
         this.setState({ zoomable: bool });
     }
 
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {int} selectedGifterId identifier of the gifter that was selected
+     */
+    handleListItemClick(selectedGifterId) {
+        this.setState({ selectedGifterId: selectedGifterId });
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} description string value after the change
+     */
+    handleGiftDescriptionChange(description) {}
+    // TODO: Add logic to publish changes when we have a way to publish gifter info
+
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} contactInformation string value after the change
+     */
+    handleContactInformationChange(contactInformation) {}
+    // TODO: Add logic to publish changes when we have a way to publish gifter info
+
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {Boolean} bool value of the change
+     */
+    handleLocationPublicChange(bool) {
+        this.setState({ locationPublic: bool });
+        console.log("Changed location privacy");
+        // TODO: Add logic to publish changes when we have a way to publish gifter info
+    }
+
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        const titles = ['About', 'Map', 'List', 'Settings', 'Help'];
+        const titles = ['About', 'Map', 'List', 'Settings', 'My Gifts', 'Help'];
         return React.createElement(
             Ons.Toolbar,
             null,
@@ -91532,19 +91582,24 @@ class App extends React.Component {
         this.setState({ isOpen: true });
     }
 
-    // Handle a click on settings --> change state
-    handleClickSettings() {
-        this.setState({ index: 3 });
-    }
-
-    // Handle a click on about --> change state
+    // Handle a click on "About" --> change state
     handleClickAbout() {
         this.setState({ index: 0 });
     }
 
-    // Handle a click on about --> change state
-    handleClickHelp() {
+    // Handle a click on "Settings" --> change state
+    handleClickSettings() {
+        this.setState({ index: 3 });
+    }
+
+    // Handle a click on "My Gifts" --> change state
+    handleClickMyGifts() {
         this.setState({ index: 4 });
+    }
+
+    // Handle a click on "Help" --> change state
+    handleClickHelp() {
+        this.setState({ index: 5 });
     }
 
     /**
@@ -91569,6 +91624,8 @@ class App extends React.Component {
                 zoomable: this.state.zoomable,
                 userPosition: this.state.userPosition,
                 userPositionMarkerText: this.state.userPositionMarkerText,
+                centerPosition: this.state.centerPosition,
+                selectedGifterId: this.state.selectedGifterId,
                 key: 'map' }),
             tab: React.createElement(Ons.Tab, { label: 'Map', icon: 'md-map', key: 'map' })
         },
@@ -91583,10 +91640,13 @@ class App extends React.Component {
                 zoomable: this.state.zoomable,
                 userPosition: this.state.userPosition,
                 userPositionMarkerText: this.state.userPositionMarkerText,
+                centerPosition: this.state.centerPosition,
+                selectedGifterId: this.state.selectedGifterId,
+                onListItemClick: this.handleListItemClick,
                 key: 'list' }),
             tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
         },
-        // Settings element, with no tab displayed in the tabbar, as it is accessible via the sidebar
+        // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
         {
             content: React.createElement(settings.Settings, {
                 onLoggingChange: this.handleLoggingChange,
@@ -91595,6 +91655,7 @@ class App extends React.Component {
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
+                onLocationPublicChange: this.handleLocationPublicChange,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 gps: this.state.gps,
@@ -91603,6 +91664,14 @@ class App extends React.Component {
                 zoomable: this.state.zoomable,
                 key: 'settings' }),
             tab: React.createElement(Ons.Tab, { label: 'Settings', icon: 'md-settings', key: 'settings', style: { display: 'none' } })
+        },
+        // Gift form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
+        {
+            content: React.createElement(giftForm.GiftForm, {
+                onGiftDescriptionChange: this.handleGiftDescriptionChange,
+                onContactInformationChange: this.handleContactInformationChange,
+                key: 'giftForm' }),
+            tab: React.createElement(Ons.Tab, { label: 'My Gifts', icon: 'md-edit', key: 'giftForm', style: { display: 'none' } })
         },
         // About page iframe
         {
@@ -91652,6 +91721,22 @@ class App extends React.Component {
                     'div',
                     { className: 'center' },
                     'Settings'
+                )
+            ),
+            React.createElement(
+                Ons.ListItem,
+                {
+                    tappable: true,
+                    onClick: this.handleClickMyGifts },
+                React.createElement(
+                    'div',
+                    { className: 'left' },
+                    React.createElement(Ons.Icon, { icon: 'md-edit' })
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'center' },
+                    'My Gifts'
                 )
             ),
             React.createElement(
@@ -91727,6 +91812,9 @@ class App extends React.Component {
                                     modeName = 'Settings';
                                     break;
                                 case 4:
+                                    modeName = 'MyGifts';
+                                    break;
+                                case 5:
                                     modeName = 'Help';
                             }
 
@@ -91754,7 +91842,7 @@ module.exports = {
     App: App
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"../data_components/layers.json":261,"./embededSite.js":264,"./list.js":265,"./map.js":266,"./settings.js":267,"react":255,"react-onsenui":252}],264:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"../data_components/layers.json":261,"./embededSite.js":264,"./giftForm.js":265,"./list.js":266,"./map.js":267,"./settings.js":268,"react":255,"react-onsenui":252}],264:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -91787,6 +91875,110 @@ module.exports = {
 
 const React = require('react');
 const Ons = require('react-onsenui');
+
+// Custom files
+// Logic
+const logger = require('../business_components/logger.js');
+
+/**
+ * Gift form where the user can list items they are giving away. Modifies the state of the giftForm
+ */
+class GiftForm extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
+        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
+    }
+
+    // Handle updates to gift description
+    handleGiftDescriptionChange(e) {
+        this.props.onGiftDescriptionChange(e.target.value);
+    }
+
+    // Handle updates to contact information
+    handleContactInformationChange(e) {
+        this.props.onContactInformationChange(e.target.value);
+    }
+
+    render() {
+        return React.createElement(
+            Ons.Page,
+            null,
+            React.createElement(
+                Ons.List,
+                null,
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__title' },
+                        'What do you have to give?'
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__subtitle' },
+                        'Please give a nice short description of the item.'
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement('textarea', {
+                            id: 'giftDescription',
+                            className: 'textarea textarea--transparent',
+                            placeholder: 'Gift description',
+                            onChange: this.handleGiftDescriptionChange })
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__title' },
+                        'How can other users contact you?'
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__subtitle' },
+                        'Please provide a phone number, email, or other instructions.'
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement('textarea', {
+                            id: 'contactInformation',
+                            className: 'textarea textarea--transparent',
+                            placeholder: 'Contact information',
+                            onChange: this.handleContactInformationChange })
+                    )
+                )
+            )
+        );
+    }
+}
+
+const giftFormComponent = React.createElement(GiftForm, null);
+
+module.exports = {
+    GiftForm: GiftForm,
+    giftFormComponent: giftFormComponent
+};
+
+},{"../business_components/logger.js":258,"react":255,"react-onsenui":252}],266:[function(require,module,exports){
+'use strict';
+
+const React = require('react');
+const Ons = require('react-onsenui');
 const geolib = require('geolib');
 
 // Custom imports
@@ -91802,16 +91994,18 @@ class List extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.handleListItemClick = this.handleListItemClick.bind(this);
     }
 
     /**
      * Handle clicks on items in the list
      * @param {Integer} integer index of the list item
      */
-    handleListItemClick(int) {}
-    // TODO: implement this!
-
+    handleListItemClick(e) {
+        var listItemId = parseInt(e.target.parentElement.id);
+        console.log("Clicking on gifter " + listItemId);
+        this.props.onListItemClick(listItemId);
+    }
 
     /**
      * Calculate the distance from the user's location to a given gifter's position
@@ -91825,7 +92019,7 @@ class List extends React.Component {
     }
 
     // Render the list
-    renderList() {
+    renderGifterList() {
         var gifters = layers.gifters.items;
         var listItems = [];
 
@@ -91833,8 +92027,10 @@ class List extends React.Component {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
+                    id: gifters[gifter].id,
                     tappable: true,
-                    onClick: this.handleListItemClick(gifter) },
+                    onClick: this.handleListItemClick,
+                    key: 'gifter' + gifter },
                 React.createElement(
                     'div',
                     { className: 'left' },
@@ -91845,7 +92041,9 @@ class List extends React.Component {
                     { className: 'center' },
                     gifters[gifter].name,
                     ' - ',
-                    gifters[gifter].popup
+                    gifters[gifter].giftDescription,
+                    ' - ',
+                    gifters[gifter].contactInformation
                 ),
                 React.createElement(
                     'div',
@@ -91878,9 +92076,11 @@ class List extends React.Component {
                     draggable: this.props.draggable,
                     zoomable: this.props.zoomable,
                     userPosition: this.props.userPosition,
-                    userPositionMarkerText: this.props.userPositionMarkerText })
+                    centerPosition: this.props.centerPosition,
+                    userPositionMarkerText: this.props.userPositionMarkerText,
+                    selectedGifterId: this.props.selectedGifterId })
             ),
-            this.renderList()
+            this.renderGifterList()
         );
     }
 }
@@ -91889,7 +92089,7 @@ module.exports = {
     List: List
 };
 
-},{"../data_components/config.json":260,"../data_components/layers.json":261,"./map.js":266,"geolib":17,"react":255,"react-onsenui":252}],266:[function(require,module,exports){
+},{"../data_components/config.json":260,"../data_components/layers.json":261,"./map.js":267,"geolib":17,"react":255,"react-onsenui":252}],267:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -91922,7 +92122,7 @@ class Map extends React.Component {
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [-3, -76]
+            popupAnchor: [0, -50]
         });
 
         // Define marker symbol for the user gifter marker
@@ -91930,7 +92130,7 @@ class Map extends React.Component {
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [-3, -76]
+            popupAnchor: [0, -50]
         });
     }
 
@@ -91988,25 +92188,33 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If user chooses to be public (public:true), insert marker into the map
-                    if (layers[layer].items[i].public) {
-                        // If there is a popup, insert it into the map
-                        if (layers[layer].items[i].popup != undefined) {
+                    // If user chooses to be public (locationPublic:true), insert marker into the map
+                    if (layers[layer].items[i].locationPublic) {
+                        // If there is content for a popup, insert a popup into the map
+                        if (layers[layer].items[i].name != undefined) {
+                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].giftDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
                             layerElement.push(React.createElement(
-                                leaflet.Marker,
-                                { position: layers[layer].items[i].coords, key: layers[layer].items[i].name, icon: this.gifterMarker },
+                                ExtendedMarker,
+                                {
+                                    id: layers[layer].items[i].id,
+                                    position: layers[layer].items[i].coords,
+                                    isOpen: layers[layer].items[i].id == this.props.selectedGifterId,
+                                    key: layers[layer].items[i].name,
+                                    icon: this.gifterMarker },
                                 React.createElement(
                                     leaflet.Popup,
                                     null,
                                     React.createElement(
                                         'span',
                                         null,
-                                        layers[layer].items[i].popup
+                                        popup
                                     )
                                 )
                             ));
                         } else {
-                            layerElement.push(React.createElement(leaflet.Marker, { position: layers[layer].items[i].coords, key: layers[layer].items[i].name }));
+                            layerElement.push(React.createElement(leaflet.Marker, {
+                                position: layers[layer].items[i].coords,
+                                key: layers[layer].items[i].name }));
                         }
                     }
                 }
@@ -92033,8 +92241,12 @@ class Map extends React.Component {
     renderMapWithLayers() {
         // Check if the location is enabled and available
         const marker = this.props.gps ? React.createElement(
-            leaflet.Marker,
-            { position: this.props.userPosition, icon: this.positionMarker },
+            ExtendedMarker,
+            {
+                id: "user",
+                position: this.props.userPosition,
+                isOpen: false,
+                icon: this.positionMarker },
             React.createElement(
                 leaflet.Popup,
                 null,
@@ -92045,10 +92257,29 @@ class Map extends React.Component {
                 )
             )
         ) : null;
+
+        var center = this.props.centerPosition;
+
+        // Center on a gifter if one has been selected from the list view
+        if (this.props.selectedGifterId != null) {
+            var gifters = layers.gifters.items;
+            for (var i = gifters.length - 1; i >= 0; i--) {
+                if (gifters[i].id == this.props.selectedGifterId) {
+                    if (gifters[i].public) {
+                        // If the gifter's position is public, move map to gifter
+                        center = gifters[i].coords;
+                    } else {
+                        // Otherwise just center on the user's position
+                        center = this.props.userPosition;
+                    }
+                }
+            }
+        }
+
         return React.createElement(
             leaflet.Map,
             {
-                center: this.props.userPosition,
+                center: center,
                 zoom: this.state.zoom,
                 dragging: this.props.draggable,
                 zoomControl: this.props.zoomable,
@@ -92090,10 +92321,11 @@ class Map extends React.Component {
                     )
                 )
             ) : null;
+
             // Return the map without any layers shown
             return React.createElement(
                 leaflet.Map,
-                { center: this.props.userPosition,
+                { center: this.props.centerPosition,
                     zoom: this.state.zoom,
                     dragging: this.props.draggable,
                     zoomControl: this.props.zoomable,
@@ -92110,23 +92342,40 @@ class Map extends React.Component {
     }
 }
 
+// Create your own class, extending from the Marker class.
+class ExtendedMarker extends leaflet.Marker {
+    // "Hijack" the component lifecycle.
+    render() {
+        // Call the Marker class render and store the result
+        var result = super.render();
+
+        // Access the marker element and open the popup
+        if (this.props.isOpen) {
+            this.leafletElement.openPopup();
+        }
+
+        // Return the original result (to make sure everything behaves as normal)
+        return result;
+    }
+}
+
 module.exports = {
     Map: Map
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../business_components/offlineLayer.js":259,"../data_components/config.json":260,"../data_components/layers.json":261,"react":255,"react-leaflet":240}],267:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../business_components/offlineLayer.js":259,"../data_components/config.json":260,"../data_components/layers.json":261,"react":255,"react-leaflet":240}],268:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
 const Ons = require('react-onsenui');
 
-//custom files
-//logic
+// Custom files
+// Logic
 const logger = require('../business_components/logger.js');
 const locationManager = require('../business_components/locationManager.js');
 
 /**
- * Settings for the app. Modifys the state of the settings
+ * Settings for the app. Modifies the state of the settings
  */
 class Settings extends React.Component {
 
@@ -92138,82 +92387,88 @@ class Settings extends React.Component {
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.createLog = this.createLog.bind(this);
     }
 
     createLog(mode, change) {
         var action;
         if (this.props.logging) {
-            //define the log
+            // Define the log
             if (change) {
                 action = 'Activate ' + mode;
             } else action = 'Deactivate ' + mode;
             var entry;
-            //get the current position for the log
+            // Get the current position for the log
             locationManager.getLocation().then(function success(position) {
                 entry = [position.latitude, position.longitude, 'Settings', action];
-                //log the data
+                // Log the data
                 logger.logEntry(entry);
             }, function error(err) {
-                //if there was an error getting the position, log a '-' for lat/lng
+                // If there was an error getting the position, log a '-' for lat/lng
                 entry = ['-', '-', 'Settings', action];
-                //log the data
+                // Log the data
                 logger.logEntry(entry);
             });
         }
     }
 
-    //handle toggle for logging
+    // Handle toggle for logging
     handleChangeLogging(e) {
         this.props.onLoggingChange(e.target.checked);
         var action;
-        //define the log
+        // Define the log
         if (e.target.checked) {
             action = 'Activate logging';
         } else action = 'Deactivate logging';
         var entry;
-        //get the current position for the log
+        // Get the current position for the log
         locationManager.getLocation().then(function success(position) {
             entry = [position.latitude, position.longitude, 'Settings', action];
-            //log the data
+            // Log the data
             logger.logEntry(entry);
         }, function error(err) {
-            //if there was an error getting the position, log a '-' for lat/lng
+            // If there was an error getting the position, log a '-' for lat/lng
             entry = ['-', '-', 'Settigns', action];
-            //log the data
+            // Log the data
             logger.logEntry(entry);
         });
     }
 
-    //handle toggle for using external data
+    // Handle toggle for using external data
     handleChangeData(e) {
         this.props.onDataChange(e.target.checked);
         this.createLog('external data', e.target.checked);
     }
 
-    //handle toggle for using GPS
+    // Handle toggle for using GPS
     handleChangeGPS(e) {
         this.props.onGpsChange(e.target.checked);
         this.createLog('GPS', e.target.checked);
     }
 
-    //handle toggle for layerControl
+    // Handle toggle for layerControl
     handleChangeLayerControl(e) {
         this.props.onLayerControlChange(e.target.checked);
         this.createLog('Layer Control', e.target.checked);
     }
 
-    //handle toggle of map dragging
+    // Handle toggle of map dragging
     handleChangeDragMap(e) {
         this.props.onDragMapChange(e.target.checked);
         console.log("map is dragging");
         this.createLog('Map Dragging', e.target.checked);
     }
 
-    //handle toggle of map zooming
+    // Handle toggle of map zooming
     handleChangeZoomMap(e) {
         this.props.onZoomMapChange(e.target.checked);
         this.createLog('Map Zooming', e.target.checked);
+    }
+
+    //handle toggle of hiding/showing location
+    handleLocationPublicChange(e) {
+        this.props.onLocationPublicChange(e.target.checked);
     }
 
     render() {
@@ -92251,6 +92506,26 @@ class Settings extends React.Component {
                         { 'class': 'list-item__subtitle' },
                         'This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.'
                     )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    { key: 'locationPublic' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            'Share location'
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(Ons.Switch, {
+                            checked: this.props.locationPublic,
+                            onChange: this.handleLocationPublicChange })
+                    )
                 )
             )
         );
@@ -92264,7 +92539,7 @@ module.exports = {
     settingsComponent: settingsComponent
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"react":255,"react-onsenui":252}],268:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"react":255,"react-onsenui":252}],269:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 

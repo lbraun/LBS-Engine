@@ -4,12 +4,13 @@
         "externalData": false,
         "gps": false,
         "layerControl": true,
-        "numberOfImages": 3
+        "numberOfImages": 3,
+        "locationPublic": false
     },
     "map": {
         "center": [51.962522, 7.625615],
         "zoomable": true,
         "draggable": true,
-        "zoom": 20
+        "zoom": 12
     }
 }
