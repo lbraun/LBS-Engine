@@ -30,7 +30,7 @@ class Map extends React.Component {
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [-3, -76]
+            popupAnchor: [0, -50]
         });
 
         // Define marker symbol for the user gifter marker
@@ -38,7 +38,7 @@ class Map extends React.Component {
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [-3, -76]
+            popupAnchor: [0, -50]
         });
     }
 
@@ -104,15 +104,22 @@ class Map extends React.Component {
                             var popup = layers[layer].items[i].name
                                 + " is offering " + layers[layer].items[i].giftDescription
                                 + " and can be contacted at " + layers[layer].items[i].contactInformation;
-                            layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} icon={this.gifterMarker}>
+                            layerElement.push(<ExtendedMarker
+                                id={layers[layer].items[i].id}
+                                position={layers[layer].items[i].coords}
+                                isOpen={layers[layer].items[i].id == this.props.selectedGifterId}
+                                key={layers[layer].items[i].name}
+                                icon={this.gifterMarker}>
                                 <leaflet.Popup>
                                     <span>
                                         {popup}
                                     </span>
                                 </leaflet.Popup>
-                                </leaflet.Marker>)
+                            </ExtendedMarker>)
                         } else {
-                            layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} />)
+                            layerElement.push(<leaflet.Marker
+                                position={layers[layer].items[i].coords}
+                                key={layers[layer].items[i].name} />)
                         }
                     }
                 }
@@ -136,18 +143,41 @@ class Map extends React.Component {
         // Check if the location is enabled and available
         const marker = this.props.gps
             ? (
-                <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
+                <ExtendedMarker
+                    id={"user"}
+                    position={this.props.userPosition}
+                    isOpen={false}
+                    icon={this.positionMarker}>
                     <leaflet.Popup>
                         <span>
                             {this.props.userPositionMarkerText}
                         </span>
                     </leaflet.Popup>
-                </leaflet.Marker>
+                </ExtendedMarker>
             )
             : null;
+
+        var center = this.props.centerPosition;
+
+        // Center on a gifter if one has been selected from the list view
+        if (this.props.selectedGifterId != null) {
+            var gifters = layers.gifters.items;
+            for (var i = gifters.length - 1; i >= 0; i--) {
+                if (gifters[i].id == this.props.selectedGifterId) {
+                    if (gifters[i].public) {
+                        // If the gifter's position is public, move map to gifter
+                        center = gifters[i].coords;
+                    } else {
+                        // Otherwise just center on the user's position
+                        center = this.props.userPosition;
+                    }
+                }
+            }
+        }
+
         return (
             <leaflet.Map
-                center={this.props.userPosition}
+                center={center}
                 zoom={this.state.zoom}
                 dragging={this.props.draggable}
                 zoomControl={this.props.zoomable}
@@ -173,8 +203,7 @@ class Map extends React.Component {
         // If the layerControl is active, the map is rendered with the layercontrol
         if (this.props.layerControl) {
             return this.renderMapWithLayers()
-        }
-        else {
+        } else {
             // Check if the location is enabled and available
             const marker = this.props.gps
                 ? (
@@ -187,9 +216,10 @@ class Map extends React.Component {
                     </leaflet.Marker>
                 )
                 : null;
+
             // Return the map without any layers shown
             return (
-                <leaflet.Map center={this.props.userPosition}
+                <leaflet.Map center={this.props.centerPosition}
                     zoom={this.state.zoom}
                     dragging={this.props.draggable}
                     zoomControl={this.props.zoomable}
@@ -204,6 +234,23 @@ class Map extends React.Component {
                 </leaflet.Map>
             )
         }
+    }
+}
+
+// Create your own class, extending from the Marker class.
+class ExtendedMarker extends leaflet.Marker {
+    // "Hijack" the component lifecycle.
+    render() {
+        // Call the Marker class render and store the result
+        var result = super.render();
+
+        // Access the marker element and open the popup
+        if (this.props.isOpen) {
+            this.leafletElement.openPopup();
+        }
+
+        // Return the original result (to make sure everything behaves as normal)
+        return(result)
     }
 }
 

@@ -91321,7 +91321,7 @@ module.exports={
         "center": [51.962522, 7.625615],
         "zoomable": true,
         "draggable": true,
-        "zoom": 20
+        "zoom": 12
     }
 }
 
@@ -91331,6 +91331,7 @@ module.exports={
         "type": "marker",
         "items": [
             {
+                "id": 1,
                 "coords": [
                     51.97,
                     7.62
@@ -91341,6 +91342,7 @@ module.exports={
                 "locationPublic": false
             },
             {
+                "id": 2,
                 "coords": [
                     51.95,
                     7.62
@@ -91351,6 +91353,7 @@ module.exports={
                 "locationPublic": true
             },
             {
+                "id": 3,
                 "coords": [
                     51.93,
                     7.67
@@ -91421,6 +91424,7 @@ class App extends React.Component {
         this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleClickHelp = this.handleClickHelp.bind(this);
+        this.handleListItemClick = this.handleListItemClick.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
@@ -91433,6 +91437,8 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: config.map.center,
+            centerPosition: config.map.center,
+            selectedGifterId: null,
             locationPublic: config.app.locationPublic,
             index: 0
         };
@@ -91507,6 +91513,14 @@ class App extends React.Component {
      */
     handleZoomMapChange(bool) {
         this.setState({ zoomable: bool });
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {int} selectedGifterId identifier of the gifter that was selected
+     */
+    handleListItemClick(selectedGifterId) {
+        this.setState({ selectedGifterId: selectedGifterId });
     }
 
     /**
@@ -91610,6 +91624,8 @@ class App extends React.Component {
                 zoomable: this.state.zoomable,
                 userPosition: this.state.userPosition,
                 userPositionMarkerText: this.state.userPositionMarkerText,
+                centerPosition: this.state.centerPosition,
+                selectedGifterId: this.state.selectedGifterId,
                 key: 'map' }),
             tab: React.createElement(Ons.Tab, { label: 'Map', icon: 'md-map', key: 'map' })
         },
@@ -91624,6 +91640,9 @@ class App extends React.Component {
                 zoomable: this.state.zoomable,
                 userPosition: this.state.userPosition,
                 userPositionMarkerText: this.state.userPositionMarkerText,
+                centerPosition: this.state.centerPosition,
+                selectedGifterId: this.state.selectedGifterId,
+                onListItemClick: this.handleListItemClick,
                 key: 'list' }),
             tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
         },
@@ -91975,16 +91994,18 @@ class List extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.handleListItemClick = this.handleListItemClick.bind(this);
     }
 
     /**
      * Handle clicks on items in the list
      * @param {Integer} integer index of the list item
      */
-    handleListItemClick(int) {}
-    // TODO: implement this!
-
+    handleListItemClick(e) {
+        var listItemId = parseInt(e.target.parentElement.id);
+        console.log("Clicking on gifter " + listItemId);
+        this.props.onListItemClick(listItemId);
+    }
 
     /**
      * Calculate the distance from the user's location to a given gifter's position
@@ -91998,7 +92019,7 @@ class List extends React.Component {
     }
 
     // Render the list
-    renderList() {
+    renderGifterList() {
         var gifters = layers.gifters.items;
         var listItems = [];
 
@@ -92006,8 +92027,10 @@ class List extends React.Component {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
+                    id: gifters[gifter].id,
                     tappable: true,
-                    onClick: this.handleListItemClick(gifter) },
+                    onClick: this.handleListItemClick,
+                    key: 'gifter' + gifter },
                 React.createElement(
                     'div',
                     { className: 'left' },
@@ -92053,9 +92076,11 @@ class List extends React.Component {
                     draggable: this.props.draggable,
                     zoomable: this.props.zoomable,
                     userPosition: this.props.userPosition,
-                    userPositionMarkerText: this.props.userPositionMarkerText })
+                    centerPosition: this.props.centerPosition,
+                    userPositionMarkerText: this.props.userPositionMarkerText,
+                    selectedGifterId: this.props.selectedGifterId })
             ),
-            this.renderList()
+            this.renderGifterList()
         );
     }
 }
@@ -92097,7 +92122,7 @@ class Map extends React.Component {
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [-3, -76]
+            popupAnchor: [0, -50]
         });
 
         // Define marker symbol for the user gifter marker
@@ -92105,7 +92130,7 @@ class Map extends React.Component {
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [-3, -76]
+            popupAnchor: [0, -50]
         });
     }
 
@@ -92169,8 +92194,13 @@ class Map extends React.Component {
                         if (layers[layer].items[i].name != undefined) {
                             var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].giftDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
                             layerElement.push(React.createElement(
-                                leaflet.Marker,
-                                { position: layers[layer].items[i].coords, key: layers[layer].items[i].name, icon: this.gifterMarker },
+                                ExtendedMarker,
+                                {
+                                    id: layers[layer].items[i].id,
+                                    position: layers[layer].items[i].coords,
+                                    isOpen: layers[layer].items[i].id == this.props.selectedGifterId,
+                                    key: layers[layer].items[i].name,
+                                    icon: this.gifterMarker },
                                 React.createElement(
                                     leaflet.Popup,
                                     null,
@@ -92182,7 +92212,9 @@ class Map extends React.Component {
                                 )
                             ));
                         } else {
-                            layerElement.push(React.createElement(leaflet.Marker, { position: layers[layer].items[i].coords, key: layers[layer].items[i].name }));
+                            layerElement.push(React.createElement(leaflet.Marker, {
+                                position: layers[layer].items[i].coords,
+                                key: layers[layer].items[i].name }));
                         }
                     }
                 }
@@ -92209,8 +92241,12 @@ class Map extends React.Component {
     renderMapWithLayers() {
         // Check if the location is enabled and available
         const marker = this.props.gps ? React.createElement(
-            leaflet.Marker,
-            { position: this.props.userPosition, icon: this.positionMarker },
+            ExtendedMarker,
+            {
+                id: "user",
+                position: this.props.userPosition,
+                isOpen: false,
+                icon: this.positionMarker },
             React.createElement(
                 leaflet.Popup,
                 null,
@@ -92221,10 +92257,29 @@ class Map extends React.Component {
                 )
             )
         ) : null;
+
+        var center = this.props.centerPosition;
+
+        // Center on a gifter if one has been selected from the list view
+        if (this.props.selectedGifterId != null) {
+            var gifters = layers.gifters.items;
+            for (var i = gifters.length - 1; i >= 0; i--) {
+                if (gifters[i].id == this.props.selectedGifterId) {
+                    if (gifters[i].public) {
+                        // If the gifter's position is public, move map to gifter
+                        center = gifters[i].coords;
+                    } else {
+                        // Otherwise just center on the user's position
+                        center = this.props.userPosition;
+                    }
+                }
+            }
+        }
+
         return React.createElement(
             leaflet.Map,
             {
-                center: this.props.userPosition,
+                center: center,
                 zoom: this.state.zoom,
                 dragging: this.props.draggable,
                 zoomControl: this.props.zoomable,
@@ -92266,10 +92321,11 @@ class Map extends React.Component {
                     )
                 )
             ) : null;
+
             // Return the map without any layers shown
             return React.createElement(
                 leaflet.Map,
-                { center: this.props.userPosition,
+                { center: this.props.centerPosition,
                     zoom: this.state.zoom,
                     dragging: this.props.draggable,
                     zoomControl: this.props.zoomable,
@@ -92283,6 +92339,23 @@ class Map extends React.Component {
                 marker
             );
         }
+    }
+}
+
+// Create your own class, extending from the Marker class.
+class ExtendedMarker extends leaflet.Marker {
+    // "Hijack" the component lifecycle.
+    render() {
+        // Call the Marker class render and store the result
+        var result = super.render();
+
+        // Access the marker element and open the popup
+        if (this.props.isOpen) {
+            this.leafletElement.openPopup();
+        }
+
+        // Return the original result (to make sure everything behaves as normal)
+        return result;
     }
 }
 

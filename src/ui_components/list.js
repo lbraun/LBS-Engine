@@ -17,16 +17,17 @@ class List extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        }
+        this.handleListItemClick = this.handleListItemClick.bind(this);
     }
 
     /**
      * Handle clicks on items in the list
      * @param {Integer} integer index of the list item
      */
-    handleListItemClick(int) {
-        // TODO: implement this!
+    handleListItemClick(e) {
+        var listItemId = parseInt(e.target.parentElement.id);
+        console.log("Clicking on gifter " + listItemId)
+        this.props.onListItemClick(listItemId);
     }
 
     /**
@@ -45,15 +46,17 @@ class List extends React.Component {
     }
 
     // Render the list
-    renderList() {
+    renderGifterList() {
         var gifters = layers.gifters.items
         var listItems = [];
 
         for (let gifter in gifters) {
             listItems.push(
                 <Ons.ListItem
+                    id={gifters[gifter].id}
                     tappable={true}
-                    onClick={this.handleListItemClick(gifter)}>
+                    onClick={this.handleListItemClick}
+                    key={'gifter' + gifter}>
                         <div className='left'>
                             <Ons.Icon icon='md-face'/>
                         </div>
@@ -87,10 +90,12 @@ class List extends React.Component {
                         draggable={this.props.draggable}
                         zoomable={this.props.zoomable}
                         userPosition={this.props.userPosition}
-                        userPositionMarkerText={this.props.userPositionMarkerText}/>
+                        centerPosition={this.props.centerPosition}
+                        userPositionMarkerText={this.props.userPositionMarkerText}
+                        selectedGifterId={this.props.selectedGifterId}/>
                 </Ons.Row>
 
-                {this.renderList()}
+                {this.renderGifterList()}
             </div>
         )
     }

@@ -42,6 +42,7 @@ class App extends React.Component {
         this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleClickHelp = this.handleClickHelp.bind(this);
+        this.handleListItemClick = this.handleListItemClick.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
@@ -54,6 +55,8 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: config.map.center,
+            centerPosition: config.map.center,
+            selectedGifterId: null,
             locationPublic: config.app.locationPublic,
             index: 0
         };
@@ -129,6 +132,14 @@ class App extends React.Component {
      */
     handleZoomMapChange(bool) {
         this.setState({zoomable: bool});
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {int} selectedGifterId identifier of the gifter that was selected
+     */
+    handleListItemClick(selectedGifterId) {
+        this.setState({selectedGifterId: selectedGifterId});
     }
 
     /**
@@ -225,6 +236,8 @@ class App extends React.Component {
                                 zoomable={this.state.zoomable}
                                 userPosition={this.state.userPosition}
                                 userPositionMarkerText={this.state.userPositionMarkerText}
+                                centerPosition={this.state.centerPosition}
+                                selectedGifterId={this.state.selectedGifterId}
                                 key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
             },
@@ -239,6 +252,9 @@ class App extends React.Component {
                                 zoomable={this.state.zoomable}
                                 userPosition={this.state.userPosition}
                                 userPositionMarkerText={this.state.userPositionMarkerText}
+                                centerPosition={this.state.centerPosition}
+                                selectedGifterId={this.state.selectedGifterId}
+                                onListItemClick={this.handleListItemClick}
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },
