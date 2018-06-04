@@ -85,8 +85,8 @@ class App extends React.Component {
                 var alreadyNotified = app.state.notificationLog.includes(closestGifter.id)
 
                 if (closestGifter.distanceToUser <= 400 && !alreadyNotified) {
-                    alert(`${closestGifter.name} is less than ${closestGifter.distanceToUser} m away with the following offer: ${closestGifter.giftDescription}`);
                     app.setState({notificationLog: app.state.notificationLog.push(closestGifter.id)})
+                    alert(`${closestGifter.name} is less than ${closestGifter.distanceToUser} m away with the following offer: ${closestGifter.giftDescription}`);
                 }
             } else {
                 // Otherwise set user position to null
