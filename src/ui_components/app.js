@@ -45,6 +45,7 @@ class App extends React.Component {
         this.handleClickHelp = this.handleClickHelp.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
+        this.getGifters = this.getGifters.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.state = {
@@ -60,6 +61,7 @@ class App extends React.Component {
             centerPosition: config.map.center,
             selectedGifterId: null,
             locationPublic: config.app.locationPublic,
+            notificationLog: [],
             index: 0
         };
 
@@ -67,17 +69,27 @@ class App extends React.Component {
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            // Check if the user has geolocation turned on
             if (app.state.gps) {
+                // If the user has enabled location tracking, use it
                 var lat = position.coords.latitude;
                 var long = position.coords.longitude;
                 var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
+                var coords = [lat, long];
 
                 app.setState({
-                    userPosition: [lat, long],
+                    userPosition: coords,
                     userPositionMarkerText: message
                 })
+
+                var closestGifter = app.getGifters()[0];
+                var alreadyNotified = app.state.notificationLog.includes(closestGifter.id)
+
+                if (closestGifter.distanceToUser <= 400 && !alreadyNotified) {
+                    alert(`${closestGifter.name} is less than ${closestGifter.distanceToUser} m away with the following offer: ${closestGifter.giftDescription}`);
+                    app.setState({notificationLog: app.state.notificationLog.push(closestGifter.id)})
+                }
             } else {
+                // Otherwise set user position to null
                 app.setState({
                     userPosition: null,
                     userPositionMarkerText: null
@@ -244,6 +256,29 @@ class App extends React.Component {
     }
 
     /**
+     * Get an array of all gifters, sorted by their distance from the user
+     */
+    getGifters() {
+        var gifters = layers.gifters.items;
+
+        // If the user's position is available
+        if (this.state.userPosition) {
+            // Add a distanceToUser attribute to the array, used for list sorting
+            for (let i in gifters) {
+                var gifter = gifters[i];
+                gifter.distanceToUser = this.calculateDistanceTo(gifter.coords)
+            }
+
+            // Sort the list by distance, ascending
+            gifters.sort(function(a, b) {
+                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
+        }
+
+        return gifters;
+    }
+
+    /**
      * Render the tabs displayed in the bottom to select the mode
      * State components that are needed are handed over here from the state of this object.
      */
@@ -286,6 +321,7 @@ class App extends React.Component {
                                 selectedGifterId={this.state.selectedGifterId}
                                 onListItemClick={this.handleListItemClick}
                                 calculateDistanceTo={this.calculateDistanceTo}
+                                getGifters={this.getGifters}
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },

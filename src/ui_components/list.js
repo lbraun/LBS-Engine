@@ -32,22 +32,8 @@ class List extends React.Component {
 
     // Render the list
     renderGifterList() {
-        var gifters = layers.gifters.items
+        var gifters = this.props.getGifters();
         var listItems = [];
-
-        // Check if the user's position is available
-        if (this.props.userPosition) {
-            // Add a distanceToUser attribute to the array, used for list sorting
-            for (let i in gifters) {
-                var gifter = gifters[i];
-                gifter.distanceToUser = this.props.calculateDistanceTo(gifter.coords)
-            }
-
-            // Sort the list by distance, ascending
-            gifters.sort(function(a, b) {
-                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-            });
-        }
 
         for (let i in gifters) {
             var gifter = gifters[i];
