@@ -9,7 +9,8 @@
                 ],
                 "name": "Heinz",
                 "giftDescription": "ketchup",
-                "contactInformation": "heinz@wwu.de"
+                "contactInformation": "heinz@wwu.de",
+                "locationPublic": false
             },
             {
                 "coords": [
@@ -18,7 +19,8 @@
                 ],
                 "name": "Barbara",
                 "giftDescription": "rhubarb cake",
-                "contactInformation": "barbara@wwu.de"
+                "contactInformation": "barbara@wwu.de",
+                "locationPublic": true
             },
             {
                 "coords": [
@@ -27,7 +29,8 @@
                 ],
                 "name": "Denny",
                 "giftDescription": "a jacket",
-                "contactInformation": "denny@wwu.de"
+                "contactInformation": "denny@wwu.de",
+                "locationPublic": true
             }
         ]
     }

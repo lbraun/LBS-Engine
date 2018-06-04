@@ -91314,7 +91314,8 @@ module.exports={
         "externalData": false,
         "gps": true,
         "layerControl": true,
-        "numberOfImages": 3
+        "numberOfImages": 3,
+        "locationPublic": false
     },
     "map": {
         "center": [51.962522, 7.625615],
@@ -91336,7 +91337,8 @@ module.exports={
                 ],
                 "name": "Heinz",
                 "giftDescription": "ketchup",
-                "contactInformation": "heinz@wwu.de"
+                "contactInformation": "heinz@wwu.de",
+                "locationPublic": false
             },
             {
                 "coords": [
@@ -91345,7 +91347,8 @@ module.exports={
                 ],
                 "name": "Barbara",
                 "giftDescription": "rhubarb cake",
-                "contactInformation": "barbara@wwu.de"
+                "contactInformation": "barbara@wwu.de",
+                "locationPublic": true
             },
             {
                 "coords": [
@@ -91354,7 +91357,8 @@ module.exports={
                 ],
                 "name": "Denny",
                 "giftDescription": "a jacket",
-                "contactInformation": "denny@wwu.de"
+                "contactInformation": "denny@wwu.de",
+                "locationPublic": true
             }
         ]
     }
@@ -91410,6 +91414,7 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.handleClickAbout = this.handleClickAbout.bind(this);
         this.handleClickSettings = this.handleClickSettings.bind(this);
         this.handleClickMyGifts = this.handleClickMyGifts.bind(this);
@@ -91428,6 +91433,7 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: config.map.center,
+            locationPublic: config.app.locationPublic,
             index: 0
         };
 
@@ -91505,19 +91511,29 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {String} string value after the change
+     * @param {String} description string value after the change
      */
-    handleGiftDescriptionChange(bool) {}
+    handleGiftDescriptionChange(description) {}
     // TODO: Add logic to publish changes when we have a way to publish gifter info
 
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {String} string value after the change
+     * @param {String} contactInformation string value after the change
      */
-    handleContactInformationChange(bool) {}
+    handleContactInformationChange(contactInformation) {}
     // TODO: Add logic to publish changes when we have a way to publish gifter info
 
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {Boolean} bool value of the change
+     */
+    handleLocationPublicChange(bool) {
+        this.setState({ locationPublic: bool });
+        console.log("Changed location privacy");
+        // TODO: Add logic to publish changes when we have a way to publish gifter info
+    }
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
@@ -91620,6 +91636,7 @@ class App extends React.Component {
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
+                onLocationPublicChange: this.handleLocationPublicChange,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 gps: this.state.gps,
@@ -91982,7 +91999,7 @@ class List extends React.Component {
         return `${distance} m`;
     }
 
-    // Render the list displayed in the sidebar
+    // Render the list
     renderList() {
         var gifters = layers.gifters.items;
         var listItems = [];
@@ -92054,11 +92071,11 @@ module.exports = {
 
 const React = require('react');
 const leaflet = require('react-leaflet');
-//custom files required
-//data
+// Custom files required
+// Data
 const config = require('../data_components/config.json');
 const layers = require('../data_components/layers.json');
-//logic
+// Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
@@ -92148,24 +92165,27 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If there is content for a popup, insert a popup into the map
-                    if (layers[layer].items[i].name != undefined) {
-                        var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].giftDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
-                        layerElement.push(React.createElement(
-                            leaflet.Marker,
-                            { position: layers[layer].items[i].coords, key: layers[layer].items[i].name, icon: this.gifterMarker },
-                            React.createElement(
-                                leaflet.Popup,
-                                null,
+                    // If user chooses to be public (locationPublic:true), insert marker into the map
+                    if (layers[layer].items[i].locationPublic) {
+                        // If there is content for a popup, insert a popup into the map
+                        if (layers[layer].items[i].name != undefined) {
+                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].giftDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
+                            layerElement.push(React.createElement(
+                                leaflet.Marker,
+                                { position: layers[layer].items[i].coords, key: layers[layer].items[i].name, icon: this.gifterMarker },
                                 React.createElement(
-                                    'span',
+                                    leaflet.Popup,
                                     null,
-                                    popup
+                                    React.createElement(
+                                        'span',
+                                        null,
+                                        popup
+                                    )
                                 )
-                            )
-                        ));
-                    } else {
-                        layerElement.push(React.createElement(leaflet.Marker, { position: layers[layer].items[i].coords, key: layers[layer].items[i].name }));
+                            ));
+                        } else {
+                            layerElement.push(React.createElement(leaflet.Marker, { position: layers[layer].items[i].coords, key: layers[layer].items[i].name }));
+                        }
                     }
                 }
             }
@@ -92296,6 +92316,7 @@ class Settings extends React.Component {
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.createLog = this.createLog.bind(this);
     }
 
@@ -92372,6 +92393,11 @@ class Settings extends React.Component {
     handleChangeZoomMap(e) {
         this.props.onZoomMapChange(e.target.checked);
         this.createLog('Map Zooming', e.target.checked);
+    }
+
+    //handle toggle of hiding/showing location
+    handleLocationPublicChange(e) {
+        this.props.onLocationPublicChange(e.target.checked);
     }
 
     render() {
@@ -92499,6 +92525,26 @@ class Settings extends React.Component {
                         React.createElement(Ons.Switch, {
                             checked: this.props.zoomable,
                             onChange: this.handleChangeZoomMap })
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    { key: 'locationPublic' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            'Share location'
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(Ons.Switch, {
+                            checked: this.props.locationPublic,
+                            onChange: this.handleLocationPublicChange })
                     )
                 )
             )

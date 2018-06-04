@@ -1,11 +1,11 @@
 'use strict';
 const React = require('react');
 const leaflet = require('react-leaflet');
-//custom files required
-//data
+// Custom files required
+// Data
 const config = require('../data_components/config.json');
 const layers = require('../data_components/layers.json');
-//logic
+// Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
@@ -97,21 +97,23 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If there is content for a popup, insert a popup into the map
-                    if (layers[layer].items[i].name != undefined) {
-                        var popup = layers[layer].items[i].name
-                            + " is offering " + layers[layer].items[i].giftDescription
-                            + " and can be contacted at " + layers[layer].items[i].contactInformation;
-                        layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} icon={this.gifterMarker}>
-                            <leaflet.Popup>
-                                <span>
-                                    {popup}
-                                </span>
-                            </leaflet.Popup>
-                            </leaflet.Marker>)
-                    }
-                    else {
-                        layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} />)
+                    // If user chooses to be public (locationPublic:true), insert marker into the map
+                    if (layers[layer].items[i].locationPublic) {
+                        // If there is content for a popup, insert a popup into the map
+                        if (layers[layer].items[i].name != undefined) {
+                            var popup = layers[layer].items[i].name
+                                + " is offering " + layers[layer].items[i].giftDescription
+                                + " and can be contacted at " + layers[layer].items[i].contactInformation;
+                            layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} icon={this.gifterMarker}>
+                                <leaflet.Popup>
+                                    <span>
+                                        {popup}
+                                    </span>
+                                </leaflet.Popup>
+                                </leaflet.Marker>)
+                        } else {
+                            layerElement.push(<leaflet.Marker position={layers[layer].items[i].coords} key={layers[layer].items[i].name} />)
+                        }
                     }
                 }
             }

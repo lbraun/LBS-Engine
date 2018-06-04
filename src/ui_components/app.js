@@ -35,6 +35,7 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.handleClickAbout = this.handleClickAbout.bind(this);
         this.handleClickSettings = this.handleClickSettings.bind(this);
         this.handleClickMyGifts = this.handleClickMyGifts.bind(this);
@@ -53,6 +54,7 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: config.map.center,
+            locationPublic: config.app.locationPublic,
             index: 0
         };
 
@@ -131,17 +133,27 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {String} string value after the change
+     * @param {String} description string value after the change
      */
-    handleGiftDescriptionChange(bool) {
+    handleGiftDescriptionChange(description) {
         // TODO: Add logic to publish changes when we have a way to publish gifter info
     }
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {String} string value after the change
+     * @param {String} contactInformation string value after the change
      */
-    handleContactInformationChange(bool) {
+    handleContactInformationChange(contactInformation) {
+        // TODO: Add logic to publish changes when we have a way to publish gifter info
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {Boolean} bool value of the change
+     */
+    handleLocationPublicChange(bool) {
+        this.setState({locationPublic: bool});
+        console.log("Changed location privacy");
         // TODO: Add logic to publish changes when we have a way to publish gifter info
     }
 
@@ -239,6 +251,7 @@ class App extends React.Component {
                                 onLayerControlChange={this.handleLayerControlChange}
                                 onDragMapChange={this.handleDragMapChange}
                                 onZoomMapChange={this.handleZoomMapChange}
+                                onLocationPublicChange={this.handleLocationPublicChange}
                                 logging={this.state.logging}
                                 externalData={this.state.externalData}
                                 gps={this.state.gps}
