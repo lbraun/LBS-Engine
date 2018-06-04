@@ -8,9 +8,10 @@
                     51.97,
                     7.62
                 ],
-                "name": "Gifter1",
-                "popup": "Heinz is donating ketchup",
-                "public": false
+                "name": "Heinz",
+                "giftDescription": "ketchup",
+                "contactInformation": "heinz@wwu.de",
+                "locationPublic": false
             },
             {
                 "id": 2,
@@ -18,9 +19,10 @@
                     51.95,
                     7.62
                 ],
-                "name": "Gifter2",
-                "popup": "Barbara is donating rhubarb cake",
-                "public": true
+                "name": "Barbara",
+                "giftDescription": "rhubarb cake",
+                "contactInformation": "barbara@wwu.de",
+                "locationPublic": true
             },
             {
                 "id": 3,
@@ -28,9 +30,10 @@
                     51.93,
                     7.67
                 ],
-                "name": "Gifter3",
-                "popup": "Denny is donating a jacket",
-                "public": true
+                "name": "Denny",
+                "giftDescription": "a jacket",
+                "contactInformation": "denny@wwu.de",
+                "locationPublic": true
             }
         ]
     }

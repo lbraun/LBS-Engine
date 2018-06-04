@@ -97,19 +97,22 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If user chooses to be public (public:true), insert marker into the map
-                    if (layers[layer].items[i].public){
-                        // If there is a popup, insert it into the map
-                        if (layers[layer].items[i].popup != undefined ) {
+                    // If user chooses to be public (locationPublic:true), insert marker into the map
+                    if (layers[layer].items[i].locationPublic) {
+                        // If there is content for a popup, insert a popup into the map
+                        if (layers[layer].items[i].name != undefined) {
+                            var popup = layers[layer].items[i].name
+                                + " is offering " + layers[layer].items[i].giftDescription
+                                + " and can be contacted at " + layers[layer].items[i].contactInformation;
                             layerElement.push(<ExtendedMarker
                                 id={layers[layer].items[i].id}
                                 position={layers[layer].items[i].coords}
                                 isOpen={layers[layer].items[i].id == this.props.selectedGifterId}
-                                key={layers[layer].items[i].id}
+                                key={layers[layer].items[i].name}
                                 icon={this.gifterMarker}>
                                 <leaflet.Popup>
                                     <span>
-                                        {layers[layer].items[i].popup}
+                                        {popup}
                                     </span>
                                 </leaflet.Popup>
                             </ExtendedMarker>)
