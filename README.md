@@ -4,7 +4,9 @@
 
 ### Welcome!
 
-We are developing this app as part of the Location Based Services course at [ifgi](http://ifgi.de). The purpose is to explore privacy issues in location based mobile apps and to produce something useful at the same time.
+Geofreebie is a [freecycling](https://en.wikipedia.org/wiki/Freecycling) and skill-sharing app. It improves on existing freecycling platforms with its map interface and location-based recommendations. It makes freecycling more accessible and spontaneuous.
+
+This app was initially developed as part of Christian Kray, Markus Konkol, and Mehrnaz Ataei's Location Based Services course at [ifgi](http://ifgi.de). The purpose was to explore privacy issues in location-based mobile apps and to produce something useful at the same time.
 
 The Geofreebie app is meant to enhance existing freecycle networks by creating location-based recommendations.
 
