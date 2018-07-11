@@ -17,7 +17,7 @@ _Mission: encourage reuse of discarded items_
 
 - Opportunistic management/sharing
 - What's the morality?
-- How to decided who get's it?
+- How to decide who get's it?
 - Talk to Ana Maria Bustamante Duarte (researches refugees) and Mehrnaz Ataei (privacy morality)
 
 - Must be present to give (has to be a live status?)
