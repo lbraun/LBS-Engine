@@ -4,21 +4,27 @@
 
 ### Welcome!
 
-Geofreebie is a [freecycling](https://en.wikipedia.org/wiki/Freecycling) and skill-sharing app. It improves on existing freecycling platforms with its map interface and location-based recommendations. It makes freecycling more accessible and spontaneuous.
+Geofreebie is a [freecycling](https://en.wikipedia.org/wiki/Freecycling) and skill-sharing app. It improves on existing freecycling platforms in Münster, Germany with its map interface and location-based recommendations. It makes freecycling more accessible and spontaneuous.
 
-This app was initially developed as part of Christian Kray, Markus Konkol, and Mehrnaz Ataei's Location Based Services course at [ifgi](http://ifgi.de). The purpose was to explore privacy issues in location-based mobile apps and to produce something useful at the same time.
 
-The Geofreebie app is meant to enhance existing freecycle networks by creating location-based recommendations.
+![Map screenshot](www/img/screenshots/map_wide.png "Map screenshot")
+> _The app's map view: see where people are offering freebies in your city._
 
-> Philip is giving away a toaster near a route you take often.
+This app was initially developed as part of Christian Kray, Markus Konkol, and Mehrnaz Ataei's Location Based Services course at the [Institut for Geoinformatics](http://ifgi.de). The purpose was to explore privacy issues in location-based mobile apps and to produce something useful at the same time.
 
-> Anna is giving away cookies 500 meters from you!
+The Geofreebie app is meant to enhance existing freecycle networks by creating location-based listings and recommendations.
 
-> Your search for couches within 5 kilometers returned 20 results.
+  * Anna is giving away cookies 500 meters from you!
 
-> There are 5 items being given away along the route you provided.
+  * Your search for couches within 5 kilometers returned 20 results.
+
+  * There are 5 items being given away within 1 kilometer of your position.
 
 These are just a few examples of notifications our app can deliver.
+
+
+![List screenshot](www/img/screenshots/list_wide.png "List screenshot")
+> _The app's list view: discover the freebies nearest to you, click to see them on the map._
 
 ### The plan
 
