@@ -37,17 +37,15 @@ class App extends React.Component {
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
-        this.handleClickAbout = this.handleClickAbout.bind(this);
-        this.handleClickSettings = this.handleClickSettings.bind(this);
-        this.handleClickMyGifts = this.handleClickMyGifts.bind(this);
+        this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
-        this.handleClickHelp = this.handleClickHelp.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.getGifters = this.getGifters.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
+        this.tabNames = ["About", "Map", "List", "Settings", "My Gifts", "Help"];
         this.state = {
             isOpen: false,
             // Elements used for lifted up state of the config file
@@ -62,7 +60,7 @@ class App extends React.Component {
             selectedGifterId: null,
             locationPublic: config.app.locationPublic,
             notificationLog: [],
-            index: 0
+            currentTab: "About"
         };
 
 
@@ -167,7 +165,7 @@ class App extends React.Component {
     handleListItemClick(selectedGifterId) {
         this.setState({
             selectedGifterId: selectedGifterId,
-            index: 1
+            currentTab: "Map"
         });
     }
 
@@ -200,10 +198,9 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        const titles = ['About', 'Map', 'List', 'Settings', 'My Gifts', 'Help'];
         return (
             <Ons.Toolbar>
-                <div className='center'>{titles[this.state.index]}</div>
+                <div className='center'>{this.state.currentTab}</div>
                 <div className='right'>
                     <Ons.ToolbarButton onClick={this.show}>
                         <Ons.Icon icon='ion-navicon, material:md-menu'></Ons.Icon>
@@ -223,24 +220,9 @@ class App extends React.Component {
         this.setState({isOpen: true});
     }
 
-    // Handle a click on "About" --> change state
-    handleClickAbout() {
-        this.setState({index: 0});
-    }
-
-    // Handle a click on "Settings" --> change state
-    handleClickSettings() {
-        this.setState({index: 3});
-    }
-
-    // Handle a click on "My Gifts" --> change state
-    handleClickMyGifts() {
-        this.setState({index: 4});
-    }
-
-    // Handle a click on "Help" --> change state
-    handleClickHelp() {
-        this.setState({index: 5});
+    // Handle a click on a sidebar item --> change state
+    handleSidebarClick(e) {
+        this.setState({currentTab: e.target.innerHTML});
     }
 
     /**
@@ -355,7 +337,7 @@ class App extends React.Component {
                                 key='giftForm' />,
                 tab: <Ons.Tab label='My Gifts' icon='md-edit' key='giftForm' style={{display: 'none'}}/>
             },
-            // About page iframe
+            // Help page iframe
             {
                 content: <embededSite.EmbededComponent site='help.html' key='help' name='Help' />,
                 tab: <Ons.Tab label='Help' icon='md-help' key='help' style={{display: 'none'}}/>
@@ -371,48 +353,35 @@ class App extends React.Component {
 
     // Render the list displayed in the sidebar
     renderList() {
+        var sidebarItems = [
+            {"name": "About",    "icon": "md-info"},
+            {"name": "Settings", "icon": "md-settings"},
+            {"name": "My Gifts", "icon": "md-edit"},
+            {"name": "Help",     "icon": "md-help"}
+        ];
+
+        var listItems = [];
+
+        for (let i in sidebarItems) {
+            var sidebarItem = sidebarItems[i];
+
+            listItems.push(
+                <Ons.ListItem
+                    tappable={true}
+                    onClick={this.handleSidebarClick}>
+                        <div className='left'>
+                            <Ons.Icon icon={sidebarItem["icon"]}/>
+                        </div>
+                        <div className='center'>
+                            {sidebarItem["name"]}
+                        </div>
+                </Ons.ListItem>
+            )
+        }
+
         return (
             <Ons.List>
-                <Ons.ListItem
-                    tappable={true}
-                    onClick={this.handleClickAbout}>
-                        <div className='left'>
-                            <Ons.Icon icon='md-info'/>
-                        </div>
-                        <div className='center'>
-                            About
-                        </div>
-                </Ons.ListItem>
-                <Ons.ListItem
-                    tappable={true}
-                    onClick={this.handleClickSettings}>
-                        <div className='left'>
-                            <Ons.Icon icon='md-settings'/>
-                        </div>
-                        <div className='center'>
-                            Settings
-                        </div>
-                </Ons.ListItem>
-                <Ons.ListItem
-                    tappable={true}
-                    onClick={this.handleClickMyGifts}>
-                        <div className='left'>
-                            <Ons.Icon icon='md-edit'/>
-                        </div>
-                        <div className='center'>
-                            My Gifts
-                        </div>
-                </Ons.ListItem>
-                <Ons.ListItem
-                    tappable={true}
-                    onClick={this.handleClickHelp}>
-                        <div className='left'>
-                            <Ons.Icon icon='md-help'/>
-                        </div>
-                        <div className='center'>
-                            Help
-                        </div>
-                </Ons.ListItem>
+                {listItems}
             </Ons.List>
         )
     }
@@ -435,48 +404,18 @@ class App extends React.Component {
                         {this.renderList()}
                     </Ons.Page>
                 </Ons.SplitterSide>
+
                 <Ons.Page renderToolbar={this.renderToolbar}>
                     <Ons.Tabbar
                         swipeable={false}
                         position='bottom'
-                        index={this.state.index}
+                        index={this.tabNames.indexOf(this.state.currentTab)}
                         onPreChange={(event) =>
                             {
-                                if(event.index != this.state.index) {
+                                if(event.index != this.tabNames.indexOf(this.state.currentTab)) {
                                     // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
                                     if(event.target !== event.currentTarget) return;
-                                    this.setState({index: event.index});
-                                }
-
-                                // Check if logging is enabled and create a log if so
-                                if(this.state.logging) {
-                                    var modeName;
-                                    switch(event.index) {
-                                        case 0: modeName = 'About'
-                                            break;
-                                        case 1: modeName = 'Map'
-                                            break;
-                                        case 2: modeName = 'List'
-                                            break;
-                                        case 3: modeName = 'Settings'
-                                            break;
-                                        case 4: modeName = 'MyGifts';
-                                            break;
-                                        case 5: modeName = 'Help';
-                                    }
-
-                                    var entry;
-                                    // Get the current position for the log
-                                    locationManager.getLocation().then(function success(position) {
-                                        entry = [position.latitude, position.longitude, modeName, 'Changed View'];
-                                        // Log the data
-                                        logger.logEntry(entry);
-                                    }, function error(err) {
-                                        // If there was an error getting the position, log a '-' for lat/lng
-                                        entry = ['-', '-', modeName, 'Changed View'];
-                                        // Log the data
-                                        logger.logEntry(entry);
-                                    })
+                                    this.setState({currentTab: this.tabNames[event.index]});
                                 }
                             }}
                         renderTabs={this.renderTabs} />
