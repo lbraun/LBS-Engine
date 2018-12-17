@@ -354,10 +354,10 @@ class App extends React.Component {
     // Render the list displayed in the sidebar
     renderList() {
         var sidebarItems = [
-            {"name": "About",    "icon": "md-info"},
-            {"name": "Settings", "icon": "md-settings"},
             {"name": "My Offers", "icon": "md-edit"},
-            {"name": "Help",     "icon": "md-help"}
+            {"name": "Settings", "icon": "md-settings"},
+            {"name": "Help",     "icon": "md-help"},
+            {"name": "About",    "icon": "md-info"}
         ];
 
         var listItems = [];
