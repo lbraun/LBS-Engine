@@ -18,11 +18,11 @@ class Settings extends React.Component {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
         this.handleChangeLogging = this.handleChangeLogging.bind(this);
-        this.handleChangeGPS = this.handleChangeGPS.bind(this);
+        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
-        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
+        this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.createLog = this.createLog.bind(this);
     }
 
@@ -66,7 +66,7 @@ class Settings extends React.Component {
             logger.logEntry(entry);
         }, function error(err) {
             // If there was an error getting the position, log a '-' for lat/lng
-            entry = ['-', '-', 'Settigns', action];
+            entry = ['-', '-', 'Settings', action];
             // Log the data
             logger.logEntry(entry);
         })
@@ -75,69 +75,63 @@ class Settings extends React.Component {
     // Handle toggle for using external data
     handleChangeData(e) {
         this.props.onDataChange(e.target.checked);
-        this.createLog('external data', e.target.checked);
     }
 
     // Handle toggle for using GPS
-    handleChangeGPS(e) {
-        this.props.onGpsChange(e.target.checked);
-        this.createLog('GPS', e.target.checked);
+    handleUseLocationSettingChange(e) {
+        this.props.onUseLocationSettingChange(e.target.checked);
     }
 
     // Handle toggle for layerControl
     handleChangeLayerControl(e) {
         this.props.onLayerControlChange(e.target.checked);
-        this.createLog('Layer Control', e.target.checked);
     }
 
     // Handle toggle of map dragging
     handleChangeDragMap(e) {
         this.props.onDragMapChange(e.target.checked);
-        console.log("map is dragging");
-        this.createLog('Map Dragging', e.target.checked);
     }
 
     // Handle toggle of map zooming
     handleChangeZoomMap(e) {
         this.props.onZoomMapChange(e.target.checked);
-        this.createLog('Map Zooming', e.target.checked);
     }
 
     //handle toggle of hiding/showing location
-    handleLocationPublicChange(e) {
-        this.props.onLocationPublicChange(e.target.checked);
+    handleShareLocationSettingChange(e) {
+        this.props.onShareLocationSettingChange(e.target.checked);
     }
 
     render() {
         return (
             <Ons.Page>
                 <Ons.List>
-                    <Ons.ListItem key='gps'>
+                    <Ons.ListItem key='useLocation'>
                         <div className='left'>
-                            <p>Location Tracking</p>
+                            <p>Use my location</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
-                                checked={this.props.gps}
-                                onChange={this.handleChangeGPS} />
+                                checked={this.props.useLocation}
+                                onChange={this.handleUseLocationSettingChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='gpsHelpText'>
+                    <Ons.ListItem key='useLocationText'>
                         <div className="list-item__subtitle">
                             This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='locationPublic'>
+                    <Ons.ListItem key='shareLocation'>
                         <div className='left'>
-                            <p>Share Location</p>
+                            <p>Share my location</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
-                                checked={this.props.locationPublic}
-                                onChange={this.handleLocationPublicChange} />
+                                checked={this.props.shareLocation}
+                                onChange={this.handleShareLocationSettingChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='locationShareText'>
+                    <Ons.ListItem key='shareLocationText'>
                         <div className="list-item__subtitle">
                             This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.
                         </div>

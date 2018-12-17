@@ -11,7 +11,7 @@
                 "name": "Heinz",
                 "offerDescription": "ketchup",
                 "contactInformation": "heinz@wwu.de",
-                "locationPublic": false
+                "shareLocation": false
             },
             {
                 "id": 2,
@@ -22,7 +22,7 @@
                 "name": "Barbara",
                 "offerDescription": "rhubarb cake",
                 "contactInformation": "barbara@wwu.de",
-                "locationPublic": true
+                "shareLocation": true
             },
             {
                 "id": 3,
@@ -33,7 +33,7 @@
                 "name": "Lucas",
                 "offerDescription": "bike",
                 "contactInformation": "lbraun@wwu.de",
-                "locationPublic": true
+                "shareLocation": true
             },
             {
                 "id": 4,
@@ -44,7 +44,7 @@
                 "name": "Vanesa",
                 "offerDescription": "potatoes",
                 "contactInformation": "vanesaperez@wwu.de",
-                "locationPublic": true
+                "shareLocation": true
             },
             {
                 "id": 5,
@@ -55,7 +55,7 @@
                 "name": "Denny",
                 "offerDescription": "a jacket",
                 "contactInformation": "denny@wwu.de",
-                "locationPublic": true
+                "shareLocation": true
             }
         ]
     }

@@ -2,10 +2,10 @@
     "app": {
         "logging": true,
         "externalData": false,
-        "gps": false,
+        "useLocation": false,
         "layerControl": true,
         "numberOfImages": 3,
-        "locationPublic": false
+        "shareLocation": false
     },
     "map": {
         "center": [51.962522, 7.625615],
