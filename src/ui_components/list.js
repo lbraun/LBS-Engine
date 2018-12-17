@@ -35,7 +35,7 @@ class List extends React.Component {
 
         for (let i in freecyclers) {
             var freecycler = freecyclers[i];
-            var clickable = !!(freecycler.locationPublic || this.props.userPosition);
+            var clickable = !!(freecycler.shareLocation || this.props.userPosition);
 
             listItems.push(
                 <Ons.ListItem

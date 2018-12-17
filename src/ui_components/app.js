@@ -32,11 +32,11 @@ class App extends React.Component {
         this.renderToolbar = this.renderToolbar.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
-        this.handleGpsChange =  this.handleGpsChange.bind(this);
+        this.handleUseLocationSettingChange =  this.handleUseLocationSettingChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
+        this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
@@ -51,14 +51,14 @@ class App extends React.Component {
             // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
-            gps: config.app.gps,
+            useLocation: config.app.useLocation,
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: null,
             centerPosition: config.map.center,
             selectedFreecyclerId: null,
-            locationPublic: config.app.locationPublic,
+            shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About"
         };
@@ -67,7 +67,7 @@ class App extends React.Component {
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            if (app.state.gps) {
+            if (app.state.useLocation) {
                 // If the user has enabled location tracking, use it
                 var lat = position.coords.latitude;
                 var long = position.coords.longitude;
@@ -124,14 +124,14 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {Boolean} bool value of the change
      */
-    handleGpsChange(bool) {
+    handleUseLocationSettingChange(bool) {
         if (!bool) {
             this.setState({
                 userPosition: null,
                 userPositionMarkerText: null
             });
         }
-        this.setState({gps: bool});
+        this.setState({useLocation: bool});
     }
 
     /**
@@ -189,8 +189,8 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {Boolean} bool value of the change
      */
-    handleLocationPublicChange(bool) {
-        this.setState({locationPublic: bool});
+    handleShareLocationSettingChange(bool) {
+        this.setState({shareLocation: bool});
         console.log("Changed location privacy");
         // TODO: Add logic to publish changes when we have a way to publish freecycler info
     }
@@ -279,7 +279,7 @@ class App extends React.Component {
                 content: <map.Map
                                 logging={this.state.logging}
                                 externalData={this.state.externalData}
-                                gps={this.state.gps}
+                                useLocation={this.state.useLocation}
                                 layerControl={this.state.layerControl}
                                 draggable={this.state.draggable}
                                 zoomable={this.state.zoomable}
@@ -296,7 +296,7 @@ class App extends React.Component {
                 content: <list.List
                                 logging={this.state.logging}
                                 externalData={this.state.externalData}
-                                gps={this.state.gps}
+                                useLocation={this.state.useLocation}
                                 layerControl={this.state.layerControl}
                                 draggable={this.state.draggable}
                                 zoomable={this.state.zoomable}
@@ -315,14 +315,14 @@ class App extends React.Component {
                 content: <settings.Settings
                                 onLoggingChange={this.handleLoggingChange}
                                 onDataChange={this.handleExternalDataChange}
-                                onGpsChange={this.handleGpsChange}
+                                onUseLocationSettingChange={this.handleUseLocationSettingChange}
                                 onLayerControlChange={this.handleLayerControlChange}
                                 onDragMapChange={this.handleDragMapChange}
                                 onZoomMapChange={this.handleZoomMapChange}
-                                onLocationPublicChange={this.handleLocationPublicChange}
+                                onShareLocationSettingChange={this.handleShareLocationSettingChange}
                                 logging={this.state.logging}
                                 externalData={this.state.externalData}
-                                gps={this.state.gps}
+                                useLocation={this.state.useLocation}
                                 layerControl={this.state.layerControl}
                                 draggable={this.state.draggable}
                                 zoomable={this.state.zoomable}

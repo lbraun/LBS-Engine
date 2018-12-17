@@ -91312,10 +91312,10 @@ module.exports={
     "app": {
         "logging": true,
         "externalData": false,
-        "gps": false,
+        "useLocation": false,
         "layerControl": true,
         "numberOfImages": 3,
-        "locationPublic": false
+        "shareLocation": false
     },
     "map": {
         "center": [51.962522, 7.625615],
@@ -91339,7 +91339,7 @@ module.exports={
                 "name": "Heinz",
                 "offerDescription": "ketchup",
                 "contactInformation": "heinz@wwu.de",
-                "locationPublic": false
+                "shareLocation": false
             },
             {
                 "id": 2,
@@ -91350,7 +91350,7 @@ module.exports={
                 "name": "Barbara",
                 "offerDescription": "rhubarb cake",
                 "contactInformation": "barbara@wwu.de",
-                "locationPublic": true
+                "shareLocation": true
             },
             {
                 "id": 3,
@@ -91361,7 +91361,7 @@ module.exports={
                 "name": "Lucas",
                 "offerDescription": "bike",
                 "contactInformation": "lbraun@wwu.de",
-                "locationPublic": true
+                "shareLocation": true
             },
             {
                 "id": 4,
@@ -91372,7 +91372,7 @@ module.exports={
                 "name": "Vanesa",
                 "offerDescription": "potatoes",
                 "contactInformation": "vanesaperez@wwu.de",
-                "locationPublic": true
+                "shareLocation": true
             },
             {
                 "id": 5,
@@ -91383,7 +91383,7 @@ module.exports={
                 "name": "Denny",
                 "offerDescription": "a jacket",
                 "contactInformation": "denny@wwu.de",
-                "locationPublic": true
+                "shareLocation": true
             }
         ]
     }
@@ -91436,11 +91436,11 @@ class App extends React.Component {
         this.renderToolbar = this.renderToolbar.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
-        this.handleGpsChange = this.handleGpsChange.bind(this);
+        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
+        this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
@@ -91455,14 +91455,14 @@ class App extends React.Component {
             // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
-            gps: config.app.gps,
+            useLocation: config.app.useLocation,
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             userPosition: null,
             centerPosition: config.map.center,
             selectedFreecyclerId: null,
-            locationPublic: config.app.locationPublic,
+            shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About"
         };
@@ -91470,7 +91470,7 @@ class App extends React.Component {
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            if (app.state.gps) {
+            if (app.state.useLocation) {
                 // If the user has enabled location tracking, use it
                 var lat = position.coords.latitude;
                 var long = position.coords.longitude;
@@ -91527,14 +91527,14 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {Boolean} bool value of the change
      */
-    handleGpsChange(bool) {
+    handleUseLocationSettingChange(bool) {
         if (!bool) {
             this.setState({
                 userPosition: null,
                 userPositionMarkerText: null
             });
         }
-        this.setState({ gps: bool });
+        this.setState({ useLocation: bool });
     }
 
     /**
@@ -91592,8 +91592,8 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {Boolean} bool value of the change
      */
-    handleLocationPublicChange(bool) {
-        this.setState({ locationPublic: bool });
+    handleShareLocationSettingChange(bool) {
+        this.setState({ shareLocation: bool });
         console.log("Changed location privacy");
         // TODO: Add logic to publish changes when we have a way to publish freecycler info
     }
@@ -91685,7 +91685,7 @@ class App extends React.Component {
             content: React.createElement(map.Map, {
                 logging: this.state.logging,
                 externalData: this.state.externalData,
-                gps: this.state.gps,
+                useLocation: this.state.useLocation,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
@@ -91702,7 +91702,7 @@ class App extends React.Component {
             content: React.createElement(list.List, {
                 logging: this.state.logging,
                 externalData: this.state.externalData,
-                gps: this.state.gps,
+                useLocation: this.state.useLocation,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
@@ -91721,14 +91721,14 @@ class App extends React.Component {
             content: React.createElement(settings.Settings, {
                 onLoggingChange: this.handleLoggingChange,
                 onDataChange: this.handleExternalDataChange,
-                onGpsChange: this.handleGpsChange,
+                onUseLocationSettingChange: this.handleUseLocationSettingChange,
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
-                onLocationPublicChange: this.handleLocationPublicChange,
+                onShareLocationSettingChange: this.handleShareLocationSettingChange,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
-                gps: this.state.gps,
+                useLocation: this.state.useLocation,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
@@ -91903,7 +91903,7 @@ class List extends React.Component {
 
         for (let i in freecyclers) {
             var freecycler = freecyclers[i];
-            var clickable = !!(freecycler.locationPublic || this.props.userPosition);
+            var clickable = !!(freecycler.shareLocation || this.props.userPosition);
 
             listItems.push(React.createElement(
                 Ons.ListItem,
@@ -92054,8 +92054,8 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If user chooses to be public (locationPublic:true), insert marker into the map
-                    if (layers[layer].items[i].locationPublic) {
+                    // If user chooses to be public (shareLocation:true), insert marker into the map
+                    if (layers[layer].items[i].shareLocation) {
                         // If there is content for a popup, insert a popup into the map
                         if (layers[layer].items[i].name != undefined) {
                             var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].offerDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
@@ -92155,7 +92155,7 @@ class Map extends React.Component {
             var freecyclers = layers.freecyclers.items;
             for (var i = freecyclers.length - 1; i >= 0; i--) {
                 if (freecyclers[i].id == this.props.selectedFreecyclerId) {
-                    if (freecyclers[i].locationPublic) {
+                    if (freecyclers[i].shareLocation) {
                         // If the freecycler's position is public, move map to freecycler
                         center = freecyclers[i].coords;
                     } else {
@@ -92198,7 +92198,7 @@ class Map extends React.Component {
             return this.renderMapWithLayers();
         } else {
             // Check if the location is enabled and available
-            const marker = this.props.gps ? React.createElement(
+            const marker = this.props.useLocation ? React.createElement(
                 leaflet.Marker,
                 { position: this.props.userPosition, icon: this.positionMarker },
                 React.createElement(
@@ -92394,11 +92394,11 @@ class Settings extends React.Component {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
         this.handleChangeLogging = this.handleChangeLogging.bind(this);
-        this.handleChangeGPS = this.handleChangeGPS.bind(this);
+        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
-        this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
+        this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.createLog = this.createLog.bind(this);
     }
 
@@ -92440,7 +92440,7 @@ class Settings extends React.Component {
             logger.logEntry(entry);
         }, function error(err) {
             // If there was an error getting the position, log a '-' for lat/lng
-            entry = ['-', '-', 'Settigns', action];
+            entry = ['-', '-', 'Settings', action];
             // Log the data
             logger.logEntry(entry);
         });
@@ -92449,37 +92449,31 @@ class Settings extends React.Component {
     // Handle toggle for using external data
     handleChangeData(e) {
         this.props.onDataChange(e.target.checked);
-        this.createLog('external data', e.target.checked);
     }
 
     // Handle toggle for using GPS
-    handleChangeGPS(e) {
-        this.props.onGpsChange(e.target.checked);
-        this.createLog('GPS', e.target.checked);
+    handleUseLocationSettingChange(e) {
+        this.props.onUseLocationSettingChange(e.target.checked);
     }
 
     // Handle toggle for layerControl
     handleChangeLayerControl(e) {
         this.props.onLayerControlChange(e.target.checked);
-        this.createLog('Layer Control', e.target.checked);
     }
 
     // Handle toggle of map dragging
     handleChangeDragMap(e) {
         this.props.onDragMapChange(e.target.checked);
-        console.log("map is dragging");
-        this.createLog('Map Dragging', e.target.checked);
     }
 
     // Handle toggle of map zooming
     handleChangeZoomMap(e) {
         this.props.onZoomMapChange(e.target.checked);
-        this.createLog('Map Zooming', e.target.checked);
     }
 
     //handle toggle of hiding/showing location
-    handleLocationPublicChange(e) {
-        this.props.onLocationPublicChange(e.target.checked);
+    handleShareLocationSettingChange(e) {
+        this.props.onShareLocationSettingChange(e.target.checked);
     }
 
     render() {
@@ -92491,27 +92485,27 @@ class Settings extends React.Component {
                 null,
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'gps' },
+                    { key: 'useLocation' },
                     React.createElement(
                         'div',
                         { className: 'left' },
                         React.createElement(
                             'p',
                             null,
-                            'Location Tracking'
+                            'Use my location'
                         )
                     ),
                     React.createElement(
                         'div',
                         { className: 'right' },
                         React.createElement(Ons.Switch, {
-                            checked: this.props.gps,
-                            onChange: this.handleChangeGPS })
+                            checked: this.props.useLocation,
+                            onChange: this.handleUseLocationSettingChange })
                     )
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'gpsHelpText' },
+                    { key: 'useLocationText' },
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
@@ -92520,27 +92514,27 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'locationPublic' },
+                    { key: 'shareLocation' },
                     React.createElement(
                         'div',
                         { className: 'left' },
                         React.createElement(
                             'p',
                             null,
-                            'Share Location'
+                            'Share my location'
                         )
                     ),
                     React.createElement(
                         'div',
                         { className: 'right' },
                         React.createElement(Ons.Switch, {
-                            checked: this.props.locationPublic,
-                            onChange: this.handleLocationPublicChange })
+                            checked: this.props.shareLocation,
+                            onChange: this.handleShareLocationSettingChange })
                     )
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'locationShareText' },
+                    { key: 'shareLocationText' },
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },

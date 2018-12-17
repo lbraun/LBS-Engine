@@ -97,8 +97,8 @@ class Map extends React.Component {
             // Check if the layer is containing markers and add those
             if (layers[layer].type == 'marker') {
                 for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If user chooses to be public (locationPublic:true), insert marker into the map
-                    if (layers[layer].items[i].locationPublic) {
+                    // If user chooses to be public (shareLocation:true), insert marker into the map
+                    if (layers[layer].items[i].shareLocation) {
                         // If there is content for a popup, insert a popup into the map
                         if (layers[layer].items[i].name != undefined) {
                             var popup = layers[layer].items[i].name
@@ -183,7 +183,7 @@ class Map extends React.Component {
             var freecyclers = layers.freecyclers.items;
             for (var i = freecyclers.length - 1; i >= 0; i--) {
                 if (freecyclers[i].id == this.props.selectedFreecyclerId) {
-                    if (freecyclers[i].locationPublic) {
+                    if (freecyclers[i].shareLocation) {
                         // If the freecycler's position is public, move map to freecycler
                         center = freecyclers[i].coords;
                     } else {
@@ -224,7 +224,7 @@ class Map extends React.Component {
             return this.renderMapWithLayers()
         } else {
             // Check if the location is enabled and available
-            const marker = this.props.gps
+            const marker = this.props.useLocation
                 ? (
                     <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
                         <leaflet.Popup>
