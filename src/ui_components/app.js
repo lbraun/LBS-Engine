@@ -12,7 +12,7 @@ const layers = require('../data_components/layers.json');
 const map = require('./map.js');
 const list =  require('./list.js');
 const settings = require('./settings.js');
-const giftForm = require('./giftForm.js');
+const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js')
 // Logic
 const locationManager = require('../business_components/locationManager.js');
@@ -38,14 +38,14 @@ class App extends React.Component {
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
-        this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
+        this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
-        this.getGifters = this.getGifters.bind(this);
+        this.getFreecyclers = this.getFreecyclers.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
-        this.tabNames = ["About", "Map", "List", "Settings", "My Gifts", "Help"];
+        this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
         this.state = {
             isOpen: false,
             // Elements used for lifted up state of the config file
@@ -57,7 +57,7 @@ class App extends React.Component {
             zoomable: config.map.zoomable,
             userPosition: null,
             centerPosition: config.map.center,
-            selectedGifterId: null,
+            selectedFreecyclerId: null,
             locationPublic: config.app.locationPublic,
             notificationLog: [],
             currentTab: "About"
@@ -79,12 +79,12 @@ class App extends React.Component {
                     userPositionMarkerText: message
                 })
 
-                var closestGifter = app.getGifters()[0];
-                var alreadyNotified = app.state.notificationLog.includes(closestGifter.id)
+                var closestFreecycler = app.getFreecyclers()[0];
+                var alreadyNotified = app.state.notificationLog.includes(closestFreecycler.id)
 
-                if (closestGifter.distanceToUser <= 400 && !alreadyNotified) {
-                    app.setState({notificationLog: app.state.notificationLog.push(closestGifter.id)})
-                    alert(`${closestGifter.name} is less than ${closestGifter.distanceToUser} m away with the following offer: ${closestGifter.giftDescription}`);
+                if (closestFreecycler.distanceToUser <= 400 && !alreadyNotified) {
+                    app.setState({notificationLog: app.state.notificationLog.push(closestFreecycler.id)})
+                    alert(`${closestFreecycler.name} is less than ${closestFreecycler.distanceToUser} m away with the following offer: ${closestFreecycler.offerDescription}`);
                 }
             } else {
                 // Otherwise set user position to null
@@ -160,11 +160,11 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {int} selectedGifterId identifier of the gifter that was selected
+     * @param {int} selectedFreecyclerId identifier of the freecycler that was selected
      */
-    handleListItemClick(selectedGifterId) {
+    handleListItemClick(selectedFreecyclerId) {
         this.setState({
-            selectedGifterId: selectedGifterId,
+            selectedFreecyclerId: selectedFreecyclerId,
             currentTab: "Map"
         });
     }
@@ -173,8 +173,8 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {String} description string value after the change
      */
-    handleGiftDescriptionChange(description) {
-        // TODO: Add logic to publish changes when we have a way to publish gifter info
+    handleOfferDescriptionChange(description) {
+        // TODO: Add logic to publish changes when we have a way to publish freecycler info
     }
 
     /**
@@ -182,7 +182,7 @@ class App extends React.Component {
      * @param {String} contactInformation string value after the change
      */
     handleContactInformationChange(contactInformation) {
-        // TODO: Add logic to publish changes when we have a way to publish gifter info
+        // TODO: Add logic to publish changes when we have a way to publish freecycler info
     }
 
     /**
@@ -192,7 +192,7 @@ class App extends React.Component {
     handleLocationPublicChange(bool) {
         this.setState({locationPublic: bool});
         console.log("Changed location privacy");
-        // TODO: Add logic to publish changes when we have a way to publish gifter info
+        // TODO: Add logic to publish changes when we have a way to publish freecycler info
     }
 
 
@@ -226,14 +226,14 @@ class App extends React.Component {
     }
 
     /**
-     * Calculate the distance from the user's location to a given gifter's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
+     * Calculate the distance from the user's location to a given freecycler's position
+     * @param {Array} coordinates (latitude, longitude) identifying the location of the freecycler
      */
-    calculateDistanceTo(gifterPosition) {
+    calculateDistanceTo(freecyclerPosition) {
         var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
         var distance = geolib.getDistance(
             {latitude: this.state.userPosition[0], longitude: this.state.userPosition[1]},
-            {latitude: gifterPosition[0], longitude: gifterPosition[1]},
+            {latitude: freecyclerPosition[0], longitude: freecyclerPosition[1]},
             accuracy
         );
 
@@ -241,26 +241,26 @@ class App extends React.Component {
     }
 
     /**
-     * Get an array of all gifters, sorted by their distance from the user
+     * Get an array of all freecyclers, sorted by their distance from the user
      */
-    getGifters() {
-        var gifters = layers.gifters.items;
+    getFreecyclers() {
+        var freecyclers = layers.freecyclers.items;
 
         // If the user's position is available
         if (this.state.userPosition) {
             // Add a distanceToUser attribute to the array, used for list sorting
-            for (let i in gifters) {
-                var gifter = gifters[i];
-                gifter.distanceToUser = this.calculateDistanceTo(gifter.coords)
+            for (let i in freecyclers) {
+                var freecycler = freecyclers[i];
+                freecycler.distanceToUser = this.calculateDistanceTo(freecycler.coords)
             }
 
             // Sort the list by distance, ascending
-            gifters.sort(function(a, b) {
+            freecyclers.sort(function(a, b) {
                 return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
             });
         }
 
-        return gifters;
+        return freecyclers;
     }
 
     /**
@@ -286,7 +286,7 @@ class App extends React.Component {
                                 userPosition={this.state.userPosition}
                                 userPositionMarkerText={this.state.userPositionMarkerText}
                                 centerPosition={this.state.centerPosition}
-                                selectedGifterId={this.state.selectedGifterId}
+                                selectedFreecyclerId={this.state.selectedFreecyclerId}
                                 calculateDistanceTo={this.calculateDistanceTo}
                                 key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
@@ -303,10 +303,10 @@ class App extends React.Component {
                                 userPosition={this.state.userPosition}
                                 userPositionMarkerText={this.state.userPositionMarkerText}
                                 centerPosition={this.state.centerPosition}
-                                selectedGifterId={this.state.selectedGifterId}
+                                selectedFreecyclerId={this.state.selectedFreecyclerId}
                                 onListItemClick={this.handleListItemClick}
                                 calculateDistanceTo={this.calculateDistanceTo}
-                                getGifters={this.getGifters}
+                                getFreecyclers={this.getFreecyclers}
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },
@@ -329,13 +329,13 @@ class App extends React.Component {
                                 key='settings' />,
                 tab: <Ons.Tab label='Settings' icon='md-settings' key='settings' style={{display: 'none'}}/>
             },
-            // Gift form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
+            // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
-                content: <giftForm.GiftForm
-                                onGiftDescriptionChange={this.handleGiftDescriptionChange}
+                content: <offerForm.offerForm
+                                onOfferDescriptionChange={this.handleOfferDescriptionChange}
                                 onContactInformationChange={this.handleContactInformationChange}
-                                key='giftForm' />,
-                tab: <Ons.Tab label='My Gifts' icon='md-edit' key='giftForm' style={{display: 'none'}}/>
+                                key='offerForm' />,
+                tab: <Ons.Tab label='My Offers' icon='md-edit' key='offerForm' style={{display: 'none'}}/>
             },
             // Help page iframe
             {
@@ -354,10 +354,10 @@ class App extends React.Component {
     // Render the list displayed in the sidebar
     renderList() {
         var sidebarItems = [
-            {"name": "About",    "icon": "md-info"},
+            {"name": "My Offers", "icon": "md-edit"},
             {"name": "Settings", "icon": "md-settings"},
-            {"name": "My Gifts", "icon": "md-edit"},
-            {"name": "Help",     "icon": "md-help"}
+            {"name": "Help",     "icon": "md-help"},
+            {"name": "About",    "icon": "md-info"}
         ];
 
         var listItems = [];

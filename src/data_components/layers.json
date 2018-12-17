@@ -1,5 +1,5 @@
 {
-    "gifters": {
+    "freecyclers": {
         "type": "marker",
         "items": [
             {
@@ -9,7 +9,7 @@
                     7.62
                 ],
                 "name": "Heinz",
-                "giftDescription": "ketchup",
+                "offerDescription": "ketchup",
                 "contactInformation": "heinz@wwu.de",
                 "locationPublic": false
             },
@@ -20,7 +20,7 @@
                     7.62
                 ],
                 "name": "Barbara",
-                "giftDescription": "rhubarb cake",
+                "offerDescription": "rhubarb cake",
                 "contactInformation": "barbara@wwu.de",
                 "locationPublic": true
             },
@@ -31,7 +31,7 @@
                     7.595
                 ],
                 "name": "Lucas",
-                "giftDescription": "bike",
+                "offerDescription": "bike",
                 "contactInformation": "lbraun@wwu.de",
                 "locationPublic": true
             },
@@ -42,7 +42,7 @@
                     7.597
                 ],
                 "name": "Vanesa",
-                "giftDescription": "potatoes",
+                "offerDescription": "potatoes",
                 "contactInformation": "vanesaperez@wwu.de",
                 "locationPublic": true
             },
@@ -53,7 +53,7 @@
                     7.67
                 ],
                 "name": "Denny",
-                "giftDescription": "a jacket",
+                "offerDescription": "a jacket",
                 "contactInformation": "denny@wwu.de",
                 "locationPublic": true
             }

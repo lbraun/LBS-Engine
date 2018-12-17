@@ -5,7 +5,7 @@ _Mission: encourage reuse of discarded items_
 
 - Find free food or furniture near your current location
   - Or on your route
-- Rate the gifters (trustworthy, high quality stuff?)
+- Rate the freecyclers (trustworthy, high quality stuff?)
 - Two languages?
 - Scrape existing sites?
 - Suggestions based on usual routes

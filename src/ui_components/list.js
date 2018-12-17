@@ -24,33 +24,33 @@ class List extends React.Component {
      */
     handleListItemClick(e) {
         var listItemId = parseInt(e.target.parentElement.id);
-        console.log("Clicking on gifter " + listItemId)
+        console.log("Clicking on freecycler " + listItemId)
         this.props.onListItemClick(listItemId);
     }
 
     // Render the list
-    renderGifterList() {
-        var gifters = this.props.getGifters();
+    renderFreecyclerList() {
+        var freecyclers = this.props.getFreecyclers();
         var listItems = [];
 
-        for (let i in gifters) {
-            var gifter = gifters[i];
-            var clickable = !!(gifter.locationPublic || this.props.userPosition);
+        for (let i in freecyclers) {
+            var freecycler = freecyclers[i];
+            var clickable = !!(freecycler.locationPublic || this.props.userPosition);
 
             listItems.push(
                 <Ons.ListItem
-                    id={gifter.id}
+                    id={freecycler.id}
                     tappable={clickable}
                     onClick={clickable ? this.handleListItemClick : null}
-                    key={'gifter' + gifter.id}>
+                    key={'freecycler' + freecycler.id}>
                         <div className='left'>
                             <Ons.Icon icon='md-face'/>
                         </div>
                         <div className='center'>
-                            {gifter.name} - {gifter.giftDescription} - {gifter.contactInformation}
+                            {freecycler.name} - {freecycler.offerDescription} - {freecycler.contactInformation}
                         </div>
                         <div className='right'>
-                            {this.props.userPosition ? `${gifter.distanceToUser} m` : null}
+                            {this.props.userPosition ? `${freecycler.distanceToUser} m` : null}
                             {clickable ? null : "Location is private"}
                         </div>
                 </Ons.ListItem>
@@ -67,7 +67,7 @@ class List extends React.Component {
     render() {
         return (
             <div className="center" style={{height: '100%'}}>
-                {this.renderGifterList()}
+                {this.renderFreecyclerList()}
             </div>
         )
     }
