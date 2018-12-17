@@ -91327,7 +91327,7 @@ module.exports={
 
 },{}],261:[function(require,module,exports){
 module.exports={
-    "gifters": {
+    "freecyclers": {
         "type": "marker",
         "items": [
             {
@@ -91337,7 +91337,7 @@ module.exports={
                     7.62
                 ],
                 "name": "Heinz",
-                "giftDescription": "ketchup",
+                "offerDescription": "ketchup",
                 "contactInformation": "heinz@wwu.de",
                 "locationPublic": false
             },
@@ -91348,7 +91348,7 @@ module.exports={
                     7.62
                 ],
                 "name": "Barbara",
-                "giftDescription": "rhubarb cake",
+                "offerDescription": "rhubarb cake",
                 "contactInformation": "barbara@wwu.de",
                 "locationPublic": true
             },
@@ -91359,7 +91359,7 @@ module.exports={
                     7.595
                 ],
                 "name": "Lucas",
-                "giftDescription": "bike",
+                "offerDescription": "bike",
                 "contactInformation": "lbraun@wwu.de",
                 "locationPublic": true
             },
@@ -91370,7 +91370,7 @@ module.exports={
                     7.597
                 ],
                 "name": "Vanesa",
-                "giftDescription": "potatoes",
+                "offerDescription": "potatoes",
                 "contactInformation": "vanesaperez@wwu.de",
                 "locationPublic": true
             },
@@ -91381,7 +91381,7 @@ module.exports={
                     7.67
                 ],
                 "name": "Denny",
-                "giftDescription": "a jacket",
+                "offerDescription": "a jacket",
                 "contactInformation": "denny@wwu.de",
                 "locationPublic": true
             }
@@ -91417,7 +91417,7 @@ const layers = require('../data_components/layers.json');
 const map = require('./map.js');
 const list = require('./list.js');
 const settings = require('./settings.js');
-const giftForm = require('./giftForm.js');
+const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js');
 // Logic
 const locationManager = require('../business_components/locationManager.js');
@@ -91442,14 +91442,14 @@ class App extends React.Component {
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleLocationPublicChange = this.handleLocationPublicChange.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
-        this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
+        this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
-        this.getGifters = this.getGifters.bind(this);
+        this.getFreecyclers = this.getFreecyclers.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
-        this.tabNames = ["About", "Map", "List", "Settings", "My Gifts", "Help"];
+        this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
         this.state = {
             isOpen: false,
             // Elements used for lifted up state of the config file
@@ -91461,7 +91461,7 @@ class App extends React.Component {
             zoomable: config.map.zoomable,
             userPosition: null,
             centerPosition: config.map.center,
-            selectedGifterId: null,
+            selectedFreecyclerId: null,
             locationPublic: config.app.locationPublic,
             notificationLog: [],
             currentTab: "About"
@@ -91482,12 +91482,12 @@ class App extends React.Component {
                     userPositionMarkerText: message
                 });
 
-                var closestGifter = app.getGifters()[0];
-                var alreadyNotified = app.state.notificationLog.includes(closestGifter.id);
+                var closestFreecycler = app.getFreecyclers()[0];
+                var alreadyNotified = app.state.notificationLog.includes(closestFreecycler.id);
 
-                if (closestGifter.distanceToUser <= 400 && !alreadyNotified) {
-                    app.setState({ notificationLog: app.state.notificationLog.push(closestGifter.id) });
-                    alert(`${closestGifter.name} is less than ${closestGifter.distanceToUser} m away with the following offer: ${closestGifter.giftDescription}`);
+                if (closestFreecycler.distanceToUser <= 400 && !alreadyNotified) {
+                    app.setState({ notificationLog: app.state.notificationLog.push(closestFreecycler.id) });
+                    alert(`${closestFreecycler.name} is less than ${closestFreecycler.distanceToUser} m away with the following offer: ${closestFreecycler.offerDescription}`);
                 }
             } else {
                 // Otherwise set user position to null
@@ -91563,11 +91563,11 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {int} selectedGifterId identifier of the gifter that was selected
+     * @param {int} selectedFreecyclerId identifier of the freecycler that was selected
      */
-    handleListItemClick(selectedGifterId) {
+    handleListItemClick(selectedFreecyclerId) {
         this.setState({
-            selectedGifterId: selectedGifterId,
+            selectedFreecyclerId: selectedFreecyclerId,
             currentTab: "Map"
         });
     }
@@ -91576,8 +91576,8 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {String} description string value after the change
      */
-    handleGiftDescriptionChange(description) {}
-    // TODO: Add logic to publish changes when we have a way to publish gifter info
+    handleOfferDescriptionChange(description) {}
+    // TODO: Add logic to publish changes when we have a way to publish freecycler info
 
 
     /**
@@ -91585,7 +91585,7 @@ class App extends React.Component {
      * @param {String} contactInformation string value after the change
      */
     handleContactInformationChange(contactInformation) {}
-    // TODO: Add logic to publish changes when we have a way to publish gifter info
+    // TODO: Add logic to publish changes when we have a way to publish freecycler info
 
 
     /**
@@ -91595,7 +91595,7 @@ class App extends React.Component {
     handleLocationPublicChange(bool) {
         this.setState({ locationPublic: bool });
         console.log("Changed location privacy");
-        // TODO: Add logic to publish changes when we have a way to publish gifter info
+        // TODO: Add logic to publish changes when we have a way to publish freecycler info
     }
 
     // Toolbar on top of the app, contains name of the app and the menu button
@@ -91636,37 +91636,37 @@ class App extends React.Component {
     }
 
     /**
-     * Calculate the distance from the user's location to a given gifter's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the gifter
+     * Calculate the distance from the user's location to a given freecycler's position
+     * @param {Array} coordinates (latitude, longitude) identifying the location of the freecycler
      */
-    calculateDistanceTo(gifterPosition) {
+    calculateDistanceTo(freecyclerPosition) {
         var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
-        var distance = geolib.getDistance({ latitude: this.state.userPosition[0], longitude: this.state.userPosition[1] }, { latitude: gifterPosition[0], longitude: gifterPosition[1] }, accuracy);
+        var distance = geolib.getDistance({ latitude: this.state.userPosition[0], longitude: this.state.userPosition[1] }, { latitude: freecyclerPosition[0], longitude: freecyclerPosition[1] }, accuracy);
 
         return distance;
     }
 
     /**
-     * Get an array of all gifters, sorted by their distance from the user
+     * Get an array of all freecyclers, sorted by their distance from the user
      */
-    getGifters() {
-        var gifters = layers.gifters.items;
+    getFreecyclers() {
+        var freecyclers = layers.freecyclers.items;
 
         // If the user's position is available
         if (this.state.userPosition) {
             // Add a distanceToUser attribute to the array, used for list sorting
-            for (let i in gifters) {
-                var gifter = gifters[i];
-                gifter.distanceToUser = this.calculateDistanceTo(gifter.coords);
+            for (let i in freecyclers) {
+                var freecycler = freecyclers[i];
+                freecycler.distanceToUser = this.calculateDistanceTo(freecycler.coords);
             }
 
             // Sort the list by distance, ascending
-            gifters.sort(function (a, b) {
+            freecyclers.sort(function (a, b) {
                 return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
             });
         }
 
-        return gifters;
+        return freecyclers;
     }
 
     /**
@@ -91692,7 +91692,7 @@ class App extends React.Component {
                 userPosition: this.state.userPosition,
                 userPositionMarkerText: this.state.userPositionMarkerText,
                 centerPosition: this.state.centerPosition,
-                selectedGifterId: this.state.selectedGifterId,
+                selectedFreecyclerId: this.state.selectedFreecyclerId,
                 calculateDistanceTo: this.calculateDistanceTo,
                 key: 'map' }),
             tab: React.createElement(Ons.Tab, { label: 'Map', icon: 'md-map', key: 'map' })
@@ -91709,10 +91709,10 @@ class App extends React.Component {
                 userPosition: this.state.userPosition,
                 userPositionMarkerText: this.state.userPositionMarkerText,
                 centerPosition: this.state.centerPosition,
-                selectedGifterId: this.state.selectedGifterId,
+                selectedFreecyclerId: this.state.selectedFreecyclerId,
                 onListItemClick: this.handleListItemClick,
                 calculateDistanceTo: this.calculateDistanceTo,
-                getGifters: this.getGifters,
+                getFreecyclers: this.getFreecyclers,
                 key: 'list' }),
             tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
         },
@@ -91735,13 +91735,13 @@ class App extends React.Component {
                 key: 'settings' }),
             tab: React.createElement(Ons.Tab, { label: 'Settings', icon: 'md-settings', key: 'settings', style: { display: 'none' } })
         },
-        // Gift form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
+        // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
         {
-            content: React.createElement(giftForm.GiftForm, {
-                onGiftDescriptionChange: this.handleGiftDescriptionChange,
+            content: React.createElement(offerForm.offerForm, {
+                onOfferDescriptionChange: this.handleOfferDescriptionChange,
                 onContactInformationChange: this.handleContactInformationChange,
-                key: 'giftForm' }),
-            tab: React.createElement(Ons.Tab, { label: 'My Gifts', icon: 'md-edit', key: 'giftForm', style: { display: 'none' } })
+                key: 'offerForm' }),
+            tab: React.createElement(Ons.Tab, { label: 'My Offers', icon: 'md-edit', key: 'offerForm', style: { display: 'none' } })
         },
         // Help page iframe
         {
@@ -91758,7 +91758,7 @@ class App extends React.Component {
 
     // Render the list displayed in the sidebar
     renderList() {
-        var sidebarItems = [{ "name": "About", "icon": "md-info" }, { "name": "Settings", "icon": "md-settings" }, { "name": "My Gifts", "icon": "md-edit" }, { "name": "Help", "icon": "md-help" }];
+        var sidebarItems = [{ "name": "About", "icon": "md-info" }, { "name": "Settings", "icon": "md-settings" }, { "name": "My Offers", "icon": "md-edit" }, { "name": "Help", "icon": "md-help" }];
 
         var listItems = [];
 
@@ -91837,7 +91837,7 @@ module.exports = {
     App: App
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"../data_components/layers.json":261,"./embededSite.js":264,"./giftForm.js":265,"./list.js":266,"./map.js":267,"./settings.js":268,"geolib":17,"react":255,"react-onsenui":252}],264:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"../data_components/layers.json":261,"./embededSite.js":264,"./list.js":265,"./map.js":266,"./offerForm.js":267,"./settings.js":268,"geolib":17,"react":255,"react-onsenui":252}],264:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -91870,110 +91870,6 @@ module.exports = {
 
 const React = require('react');
 const Ons = require('react-onsenui');
-
-// Custom files
-// Logic
-const logger = require('../business_components/logger.js');
-
-/**
- * Gift form where the user can list items they are giving away. Modifies the state of the giftForm
- */
-class GiftForm extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
-        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
-    }
-
-    // Handle updates to gift description
-    handleGiftDescriptionChange(e) {
-        this.props.onGiftDescriptionChange(e.target.value);
-    }
-
-    // Handle updates to contact information
-    handleContactInformationChange(e) {
-        this.props.onContactInformationChange(e.target.value);
-    }
-
-    render() {
-        return React.createElement(
-            Ons.Page,
-            null,
-            React.createElement(
-                Ons.List,
-                null,
-                React.createElement(
-                    Ons.ListItem,
-                    null,
-                    React.createElement(
-                        'div',
-                        { className: 'list-item__title' },
-                        'What do you have to give?'
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'list-item__subtitle' },
-                        'Please give a nice short description of the item.'
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    null,
-                    React.createElement(
-                        'p',
-                        null,
-                        React.createElement('textarea', {
-                            id: 'giftDescription',
-                            className: 'textarea textarea--transparent',
-                            placeholder: 'Gift description',
-                            onChange: this.handleGiftDescriptionChange })
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    null,
-                    React.createElement(
-                        'div',
-                        { className: 'list-item__title' },
-                        'How can other users contact you?'
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'list-item__subtitle' },
-                        'Please provide a phone number, email, or other instructions.'
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    null,
-                    React.createElement(
-                        'p',
-                        null,
-                        React.createElement('textarea', {
-                            id: 'contactInformation',
-                            className: 'textarea textarea--transparent',
-                            placeholder: 'Contact information',
-                            onChange: this.handleContactInformationChange })
-                    )
-                )
-            )
-        );
-    }
-}
-
-const giftFormComponent = React.createElement(GiftForm, null);
-
-module.exports = {
-    GiftForm: GiftForm,
-    giftFormComponent: giftFormComponent
-};
-
-},{"../business_components/logger.js":258,"react":255,"react-onsenui":252}],266:[function(require,module,exports){
-'use strict';
-
-const React = require('react');
-const Ons = require('react-onsenui');
 const geolib = require('geolib');
 
 // Custom imports
@@ -91996,26 +91892,26 @@ class List extends React.Component {
      */
     handleListItemClick(e) {
         var listItemId = parseInt(e.target.parentElement.id);
-        console.log("Clicking on gifter " + listItemId);
+        console.log("Clicking on freecycler " + listItemId);
         this.props.onListItemClick(listItemId);
     }
 
     // Render the list
-    renderGifterList() {
-        var gifters = this.props.getGifters();
+    renderFreecyclerList() {
+        var freecyclers = this.props.getFreecyclers();
         var listItems = [];
 
-        for (let i in gifters) {
-            var gifter = gifters[i];
-            var clickable = !!(gifter.locationPublic || this.props.userPosition);
+        for (let i in freecyclers) {
+            var freecycler = freecyclers[i];
+            var clickable = !!(freecycler.locationPublic || this.props.userPosition);
 
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
-                    id: gifter.id,
+                    id: freecycler.id,
                     tappable: clickable,
                     onClick: clickable ? this.handleListItemClick : null,
-                    key: 'gifter' + gifter.id },
+                    key: 'freecycler' + freecycler.id },
                 React.createElement(
                     'div',
                     { className: 'left' },
@@ -92024,16 +91920,16 @@ class List extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'center' },
-                    gifter.name,
+                    freecycler.name,
                     ' - ',
-                    gifter.giftDescription,
+                    freecycler.offerDescription,
                     ' - ',
-                    gifter.contactInformation
+                    freecycler.contactInformation
                 ),
                 React.createElement(
                     'div',
                     { className: 'right' },
-                    this.props.userPosition ? `${gifter.distanceToUser} m` : null,
+                    this.props.userPosition ? `${freecycler.distanceToUser} m` : null,
                     clickable ? null : "Location is private"
                 )
             ));
@@ -92050,7 +91946,7 @@ class List extends React.Component {
         return React.createElement(
             'div',
             { className: 'center', style: { height: '100%' } },
-            this.renderGifterList()
+            this.renderFreecyclerList()
         );
     }
 }
@@ -92059,7 +91955,7 @@ module.exports = {
     List: List
 };
 
-},{"../data_components/config.json":260,"../data_components/layers.json":261,"geolib":17,"react":255,"react-onsenui":252}],267:[function(require,module,exports){
+},{"../data_components/config.json":260,"../data_components/layers.json":261,"geolib":17,"react":255,"react-onsenui":252}],266:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92095,8 +91991,8 @@ class Map extends React.Component {
             popupAnchor: [0, -50]
         });
 
-        // Define marker symbol for the user gifter marker
-        this.gifterMarker = L.icon({
+        // Define marker symbol for the user freecycler marker
+        this.freecyclerMarker = L.icon({
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
@@ -92162,15 +92058,15 @@ class Map extends React.Component {
                     if (layers[layer].items[i].locationPublic) {
                         // If there is content for a popup, insert a popup into the map
                         if (layers[layer].items[i].name != undefined) {
-                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].giftDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
+                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].offerDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
                             layerElement.push(React.createElement(
                                 ExtendedMarker,
                                 {
                                     id: layers[layer].items[i].id,
                                     position: layers[layer].items[i].coords,
-                                    isOpen: layers[layer].items[i].id == this.props.selectedGifterId,
+                                    isOpen: layers[layer].items[i].id == this.props.selectedFreecyclerId,
                                     key: layers[layer].items[i].name,
-                                    icon: this.gifterMarker },
+                                    icon: this.freecyclerMarker },
                                 React.createElement(
                                     leaflet.Popup,
                                     null,
@@ -92188,9 +92084,9 @@ class Map extends React.Component {
                         }
                     } else {
                         // If user chooses NOT to be public, insert a buffer instead of a marker into the map
-                        // Only do this if the gifter is selected
-                        if (layers[layer].items[i].id == this.props.selectedGifterId) {
-                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].giftDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
+                        // Only do this if the freecycler is selected
+                        if (layers[layer].items[i].id == this.props.selectedFreecyclerId) {
+                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].offerDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
                             layerElement.push(React.createElement(
                                 ExtendedCircle,
                                 {
@@ -92254,14 +92150,14 @@ class Map extends React.Component {
 
         var center = this.props.centerPosition;
 
-        // Center on a gifter if one has been selected from the list view
-        if (this.props.selectedGifterId != null) {
-            var gifters = layers.gifters.items;
-            for (var i = gifters.length - 1; i >= 0; i--) {
-                if (gifters[i].id == this.props.selectedGifterId) {
-                    if (gifters[i].locationPublic) {
-                        // If the gifter's position is public, move map to gifter
-                        center = gifters[i].coords;
+        // Center on a freecycler if one has been selected from the list view
+        if (this.props.selectedFreecyclerId != null) {
+            var freecyclers = layers.freecyclers.items;
+            for (var i = freecyclers.length - 1; i >= 0; i--) {
+                if (freecyclers[i].id == this.props.selectedFreecyclerId) {
+                    if (freecyclers[i].locationPublic) {
+                        // If the freecycler's position is public, move map to freecycler
+                        center = freecyclers[i].coords;
                     } else {
                         // Otherwise just center on the user's position
                         center = this.props.userPosition;
@@ -92374,7 +92270,111 @@ module.exports = {
     Map: Map
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../business_components/offlineLayer.js":259,"../data_components/config.json":260,"../data_components/layers.json":261,"react":255,"react-leaflet":240}],268:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../business_components/offlineLayer.js":259,"../data_components/config.json":260,"../data_components/layers.json":261,"react":255,"react-leaflet":240}],267:[function(require,module,exports){
+'use strict';
+
+const React = require('react');
+const Ons = require('react-onsenui');
+
+// Custom files
+// Logic
+const logger = require('../business_components/logger.js');
+
+/**
+ * Offer form where the user can list items they are giving away. Modifies the state of the offerForm
+ */
+class offerForm extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
+        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
+    }
+
+    // Handle updates to offer description
+    handleOfferDescriptionChange(e) {
+        this.props.onOfferDescriptionChange(e.target.value);
+    }
+
+    // Handle updates to contact information
+    handleContactInformationChange(e) {
+        this.props.onContactInformationChange(e.target.value);
+    }
+
+    render() {
+        return React.createElement(
+            Ons.Page,
+            null,
+            React.createElement(
+                Ons.List,
+                null,
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__title' },
+                        'What do you have to give?'
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__subtitle' },
+                        'Please give a nice short description of the offer.'
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement('textarea', {
+                            id: 'offerDescription',
+                            className: 'textarea textarea--transparent',
+                            placeholder: 'Offer description',
+                            onChange: this.handleOfferDescriptionChange })
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__title' },
+                        'How can other users contact you?'
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__subtitle' },
+                        'Please provide a phone number, email, or other instructions.'
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement('textarea', {
+                            id: 'contactInformation',
+                            className: 'textarea textarea--transparent',
+                            placeholder: 'Contact information',
+                            onChange: this.handleContactInformationChange })
+                    )
+                )
+            )
+        );
+    }
+}
+
+const offerFormComponent = React.createElement('offerForm', null);
+
+module.exports = {
+    offerForm: offerForm,
+    offerFormComponent: offerFormComponent
+};
+
+},{"../business_components/logger.js":258,"react":255,"react-onsenui":252}],268:[function(require,module,exports){
 'use strict';
 
 const React = require('react');

@@ -33,8 +33,8 @@ class Map extends React.Component {
             popupAnchor: [0, -50]
         });
 
-        // Define marker symbol for the user gifter marker
-        this.gifterMarker = L.icon({
+        // Define marker symbol for the user freecycler marker
+        this.freecyclerMarker = L.icon({
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
@@ -102,14 +102,14 @@ class Map extends React.Component {
                         // If there is content for a popup, insert a popup into the map
                         if (layers[layer].items[i].name != undefined) {
                             var popup = layers[layer].items[i].name
-                                + " is offering " + layers[layer].items[i].giftDescription
+                                + " is offering " + layers[layer].items[i].offerDescription
                                 + " and can be contacted at " + layers[layer].items[i].contactInformation;
                             layerElement.push(<ExtendedMarker
                                 id={layers[layer].items[i].id}
                                 position={layers[layer].items[i].coords}
-                                isOpen={layers[layer].items[i].id == this.props.selectedGifterId}
+                                isOpen={layers[layer].items[i].id == this.props.selectedFreecyclerId}
                                 key={layers[layer].items[i].name}
-                                icon={this.gifterMarker}>
+                                icon={this.freecyclerMarker}>
                                 <leaflet.Popup>
                                     <span>
                                         {popup}
@@ -122,10 +122,10 @@ class Map extends React.Component {
                                 key={layers[layer].items[i].name} />)
                         }
                     } else { // If user chooses NOT to be public, insert a buffer instead of a marker into the map
-                        // Only do this if the gifter is selected
-                        if (layers[layer].items[i].id == this.props.selectedGifterId) {
+                        // Only do this if the freecycler is selected
+                        if (layers[layer].items[i].id == this.props.selectedFreecyclerId) {
                             var popup = layers[layer].items[i].name
-                                + " is offering " + layers[layer].items[i].giftDescription
+                                + " is offering " + layers[layer].items[i].offerDescription
                                 + " and can be contacted at " + layers[layer].items[i].contactInformation;
                             layerElement.push(<ExtendedCircle
                                 id={layers[layer].items[i].id}
@@ -178,14 +178,14 @@ class Map extends React.Component {
 
         var center = this.props.centerPosition;
 
-        // Center on a gifter if one has been selected from the list view
-        if (this.props.selectedGifterId != null) {
-            var gifters = layers.gifters.items;
-            for (var i = gifters.length - 1; i >= 0; i--) {
-                if (gifters[i].id == this.props.selectedGifterId) {
-                    if (gifters[i].locationPublic) {
-                        // If the gifter's position is public, move map to gifter
-                        center = gifters[i].coords;
+        // Center on a freecycler if one has been selected from the list view
+        if (this.props.selectedFreecyclerId != null) {
+            var freecyclers = layers.freecyclers.items;
+            for (var i = freecyclers.length - 1; i >= 0; i--) {
+                if (freecyclers[i].id == this.props.selectedFreecyclerId) {
+                    if (freecyclers[i].locationPublic) {
+                        // If the freecycler's position is public, move map to freecycler
+                        center = freecyclers[i].coords;
                     } else {
                         // Otherwise just center on the user's position
                         center = this.props.userPosition;

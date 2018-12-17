@@ -9,19 +9,19 @@ const logger = require('../business_components/logger.js');
 
 
 /**
- * Gift form where the user can list items they are giving away. Modifies the state of the giftForm
+ * Offer form where the user can list items they are giving away. Modifies the state of the offerForm
  */
-class GiftForm extends React.Component {
+class offerForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleGiftDescriptionChange = this.handleGiftDescriptionChange.bind(this);
+        this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
     }
 
-    // Handle updates to gift description
-    handleGiftDescriptionChange(e) {
-        this.props.onGiftDescriptionChange(e.target.value);
+    // Handle updates to offer description
+    handleOfferDescriptionChange(e) {
+        this.props.onOfferDescriptionChange(e.target.value);
     }
 
     // Handle updates to contact information
@@ -38,16 +38,16 @@ class GiftForm extends React.Component {
                             What do you have to give?
                         </div>
                         <div className="list-item__subtitle">
-                            Please give a nice short description of the item.
+                            Please give a nice short description of the offer.
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem>
                         <p>
                             <textarea
-                                id="giftDescription"
+                                id="offerDescription"
                                 className="textarea textarea--transparent"
-                                placeholder="Gift description"
-                                onChange={this.handleGiftDescriptionChange}>
+                                placeholder="Offer description"
+                                onChange={this.handleOfferDescriptionChange}>
                             </textarea>
                         </p>
                     </Ons.ListItem>
@@ -76,9 +76,9 @@ class GiftForm extends React.Component {
     }
 }
 
-const giftFormComponent = <GiftForm />
+const offerFormComponent = <offerForm />
 
 module.exports = {
-    GiftForm: GiftForm,
-    giftFormComponent: giftFormComponent
+    offerForm: offerForm,
+    offerFormComponent: offerFormComponent
 }
