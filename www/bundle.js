@@ -91915,12 +91915,11 @@ class List extends React.Component {
 
     /**
      * Handle clicks on users in the list
-     * @param {Integer} integer index of the list item
+     * @param {userId} id of the user
+     * @param {e} click event
      */
-    handleListItemClick(e) {
-        var listItemId = parseInt(e.target.parentElement.id);
-        console.log("Clicking on user " + listItemId);
-        this.props.onListItemClick(listItemId);
+    handleListItemClick(userId, e) {
+        this.props.onListItemClick(userId);
     }
 
     // Render the list
@@ -91950,7 +91949,7 @@ class List extends React.Component {
                     Ons.ListItem,
                     {
                         tappable: clickable,
-                        onClick: clickable ? this.handleListItemClick : null,
+                        onClick: clickable ? this.handleListItemClick.bind(this, user.id) : null,
                         id: `user-list-item-${user.id}`,
                         key: user.id },
                     React.createElement(
