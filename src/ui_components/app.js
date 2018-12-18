@@ -368,10 +368,10 @@ class App extends React.Component {
     // Render the list displayed in the sidebar
     renderList() {
         var sidebarItems = [
-            {"name": "My Offers", "icon": "md-edit"},
-            {"name": "Settings", "icon": "md-settings"},
-            {"name": "Help",     "icon": "md-help"},
-            {"name": "About",    "icon": "md-info"}
+            {"id":1, "name": "My Offers", "icon": "md-edit"},
+            {"id":2, "name": "Settings", "icon": "md-settings"},
+            {"id":3, "name": "Help",     "icon": "md-help"},
+            {"id":4, "name": "About",    "icon": "md-info"}
         ];
 
         var listItems = [];
@@ -381,6 +381,8 @@ class App extends React.Component {
 
             listItems.push(
                 <Ons.ListItem
+                    id={`sidebar-item-${sidebarItem["id"]}`}
+                    key={sidebarItem["id"]}
                     tappable={true}
                     onClick={this.handleSidebarClick}>
                         <div className='left'>

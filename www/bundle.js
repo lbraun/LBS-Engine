@@ -91393,7 +91393,7 @@ module.exports={
 const React = require('react');
 const ReactDOM = require('react-dom');
 const ons = require('onsenui');
-//project files
+// Project files
 const app = require('./ui_components/app.js');
 
 ons.ready(function () {
@@ -91765,7 +91765,7 @@ class App extends React.Component {
 
     // Render the list displayed in the sidebar
     renderList() {
-        var sidebarItems = [{ "name": "My Offers", "icon": "md-edit" }, { "name": "Settings", "icon": "md-settings" }, { "name": "Help", "icon": "md-help" }, { "name": "About", "icon": "md-info" }];
+        var sidebarItems = [{ "id": 1, "name": "My Offers", "icon": "md-edit" }, { "id": 2, "name": "Settings", "icon": "md-settings" }, { "id": 3, "name": "Help", "icon": "md-help" }, { "id": 4, "name": "About", "icon": "md-info" }];
 
         var listItems = [];
 
@@ -91775,6 +91775,8 @@ class App extends React.Component {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
+                    id: `sidebar-item-${sidebarItem["id"]}`,
+                    key: sidebarItem["id"],
                     tappable: true,
                     onClick: this.handleSidebarClick },
                 React.createElement(
@@ -91917,7 +91919,7 @@ class List extends React.Component {
      */
     handleListItemClick(e) {
         var listItemId = parseInt(e.target.parentElement.id);
-        console.log("Clicking on freecycler " + listItemId);
+        console.log("Clicking on user " + listItemId);
         this.props.onListItemClick(listItemId);
     }
 
@@ -91937,21 +91939,20 @@ class List extends React.Component {
                 'Loading...'
             );
         } else {
-            // var freecyclers = this.props.getUsers();
-            var freecyclers = this.state.users;
+            var users = this.state.users;
             var listItems = [];
 
-            for (let i in freecyclers) {
-                var freecycler = freecyclers[i];
-                var clickable = !!(freecycler.shareLocation || this.props.userPosition);
+            for (let i in users) {
+                var user = users[i];
+                var clickable = !!(user.shareLocation || this.props.userPosition);
 
                 listItems.push(React.createElement(
                     Ons.ListItem,
                     {
-                        id: freecycler.id,
                         tappable: clickable,
                         onClick: clickable ? this.handleListItemClick : null,
-                        key: 'freecycler' + freecycler.id },
+                        id: `user-list-item-${user.id}`,
+                        key: user.id },
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -91960,16 +91961,16 @@ class List extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'center' },
-                        freecycler.name,
+                        user.name,
                         ' - ',
-                        freecycler.offerDescription,
+                        user.offerDescription,
                         ' - ',
-                        freecycler.contactInformation
+                        user.contactInformation
                     ),
                     React.createElement(
                         'div',
                         { className: 'right' },
-                        this.props.userPosition ? `${freecycler.distanceToUser} m` : null,
+                        this.props.userPosition ? `${user.distanceToUser} m` : null,
                         clickable ? null : "Location is private"
                     )
                 ));
@@ -92347,7 +92348,7 @@ class offerForm extends React.Component {
                 null,
                 React.createElement(
                     Ons.ListItem,
-                    null,
+                    { id: 'offer-description-title-li' },
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
@@ -92361,7 +92362,7 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    null,
+                    { id: 'offer-description-textarea-li' },
                     React.createElement(
                         'p',
                         null,
@@ -92374,7 +92375,7 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    null,
+                    { id: 'contact-information-title-li' },
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
@@ -92388,7 +92389,7 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    null,
+                    { id: 'contact-information-textarea-li' },
                     React.createElement(
                         'p',
                         null,
@@ -92522,7 +92523,7 @@ class Settings extends React.Component {
                 null,
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'useLocation' },
+                    { id: 'use-location-li', key: 'useLocation' },
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -92542,7 +92543,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'useLocationText' },
+                    { id: 'use-location-text-li', key: 'useLocationText' },
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
@@ -92551,7 +92552,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'shareLocation' },
+                    { id: 'share-location-li', key: 'shareLocation' },
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -92571,7 +92572,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'shareLocationText' },
+                    { id: 'share-location-text-li', key: 'shareLocationText' },
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },

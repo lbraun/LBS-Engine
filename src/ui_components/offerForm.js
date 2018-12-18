@@ -33,7 +33,7 @@ class offerForm extends React.Component {
         return (
             <Ons.Page>
                 <Ons.List>
-                    <Ons.ListItem>
+                    <Ons.ListItem id="offer-description-title-li">
                         <div className="list-item__title">
                             What do you have to give?
                         </div>
@@ -41,7 +41,7 @@ class offerForm extends React.Component {
                             Please give a nice short description of the offer.
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem>
+                    <Ons.ListItem id="offer-description-textarea-li">
                         <p>
                             <textarea
                                 id="offerDescription"
@@ -52,7 +52,7 @@ class offerForm extends React.Component {
                         </p>
                     </Ons.ListItem>
 
-                    <Ons.ListItem>
+                    <Ons.ListItem id="contact-information-title-li">
                         <div className="list-item__title">
                             How can other users contact you?
                         </div>
@@ -60,7 +60,7 @@ class offerForm extends React.Component {
                             Please provide a phone number, email, or other instructions.
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem>
+                    <Ons.ListItem id="contact-information-textarea-li">
                         <p>
                             <textarea
                                 id="contactInformation"

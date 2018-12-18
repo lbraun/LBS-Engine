@@ -59,7 +59,6 @@ class List extends React.Component {
         } else if (!this.state.isLoaded) {
             return <div>Loading...</div>;
         } else {
-            // var users = this.props.getUsers();
             var users = this.state.users;
             var listItems = [];
 
@@ -69,10 +68,10 @@ class List extends React.Component {
 
                 listItems.push(
                     <Ons.ListItem
-                        id={user.id}
                         tappable={clickable}
                         onClick={clickable ? this.handleListItemClick : null}
-                        key={'user' + user.id}>
+                        id={`user-list-item-${user.id}`}
+                        key={user.id}>
                             <div className='left'>
                                 <Ons.Icon icon='md-face'/>
                             </div>
