@@ -4,7 +4,7 @@ const leaflet = require('react-leaflet');
 // Custom files required
 // Data
 const config = require('../data_components/config.json');
-const layers = require('../data_components/layers.json');
+const userData = require('../data_components/users.json');
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
@@ -16,13 +16,14 @@ class Map extends React.Component {
         super(props);
         this.addLayers = this.addLayers.bind(this);
         this.renderMapWithLayers = this.renderMapWithLayers.bind(this);
-        this.handleOverlayadd = this.handleOverlayadd.bind(this);
-        this.handleOverlayremove = this.handleOverlayremove.bind(this);
+        this.handleOverlayAdd = this.handleOverlayAdd.bind(this);
+        this.handleOverlayRemove = this.handleOverlayRemove.bind(this);
 
         // Get the settings from the config file
         this.state = {
             position: config.map.center,
             zoom: config.map.zoom,
+            users: userData.users,
         }
 
         // Define marker symbol for the user position marker
@@ -30,15 +31,15 @@ class Map extends React.Component {
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [0, -50]
+            popupAnchor: [0, -50],
         });
 
-        // Define marker symbol for the user freecycler marker
-        this.freecyclerMarker = L.icon({
+        // Define marker symbol for the user user marker
+        this.userMarker = L.icon({
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
-            popupAnchor: [0, -50]
+            popupAnchor: [0, -50],
         });
     }
 
@@ -75,8 +76,7 @@ class Map extends React.Component {
      * Handle the activation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayadd(e) {
-
+    handleOverlayAdd(e) {
         this.createLog(true, e.name);
     }
 
@@ -84,78 +84,75 @@ class Map extends React.Component {
      * Handle the deactivation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayremove(e) {
+    handleOverlayRemove(e) {
 
         this.createLog(false, e.name);
     }
 
     // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
     addLayers() {
-        var mapLayers = [];
-        for (let layer in layers) {
-            var layerElement = [];
-            // Check if the layer is containing markers and add those
-            if (layers[layer].type == 'marker') {
-                for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If user chooses to be public (shareLocation:true), insert marker into the map
-                    if (layers[layer].items[i].shareLocation) {
-                        // If there is content for a popup, insert a popup into the map
-                        if (layers[layer].items[i].name != undefined) {
-                            var popup = layers[layer].items[i].name
-                                + " is offering " + layers[layer].items[i].offerDescription
-                                + " and can be contacted at " + layers[layer].items[i].contactInformation;
-                            layerElement.push(<ExtendedMarker
-                                id={layers[layer].items[i].id}
-                                position={layers[layer].items[i].coords}
-                                isOpen={layers[layer].items[i].id == this.props.selectedFreecyclerId}
-                                key={layers[layer].items[i].name}
-                                icon={this.freecyclerMarker}>
-                                <leaflet.Popup>
-                                    <span>
-                                        {popup}
-                                    </span>
-                                </leaflet.Popup>
-                            </ExtendedMarker>)
-                        } else {
-                            layerElement.push(<leaflet.Marker
-                                position={layers[layer].items[i].coords}
-                                key={layers[layer].items[i].name} />)
-                        }
-                    } else { // If user chooses NOT to be public, insert a buffer instead of a marker into the map
-                        // Only do this if the freecycler is selected
-                        if (layers[layer].items[i].id == this.props.selectedFreecyclerId) {
-                            var popup = layers[layer].items[i].name
-                                + " is offering " + layers[layer].items[i].offerDescription
-                                + " and can be contacted at " + layers[layer].items[i].contactInformation;
-                            layerElement.push(<ExtendedCircle
-                                id={layers[layer].items[i].id}
-                                isOpen={true}
-                                key={layers[layer].items[i].name}
-                                center={this.props.userPosition}
-                                radius={this.props.calculateDistanceTo(layers[layer].items[i].coords)}>
-                                <leaflet.Popup>
-                                    <span>
-                                        {popup}
-                                    </span>
-                                </leaflet.Popup>
-                            </ExtendedCircle>)
-                        }
-                    }
+        var layers = [];
+        var userLayer = [];
+        var users = this.state.users;
+
+        for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            // If user chooses to be public (shareLocation:true), insert marker into the map
+            if (user.shareLocation) {
+                // If there is content for a popup, insert a popup into the map
+                if (user.name != undefined) {
+                    var popup = user.name
+                        + " is offering " + user.offerDescription
+                        + " and can be contacted at " + user.contactInformation;
+                    userLayer.push(<ExtendedMarker
+                        id={user.id}
+                        position={user.coords}
+                        isOpen={user.id == this.props.selectedUserId}
+                        key={user.name}
+                        icon={this.userMarker}>
+                        <leaflet.Popup>
+                            <span>
+                                {popup}
+                            </span>
+                        </leaflet.Popup>
+                    </ExtendedMarker>)
+                } else {
+                    userLayer.push(<leaflet.Marker
+                        position={user.coords}
+                        key={user.name} />)
+                }
+            } else {
+                // If user chooses NOT to be public, insert a buffer instead of a marker into the map
+                // Only do this if the user is selected
+                if (user.id == this.props.selectedUserId) {
+                    var popup = user.name
+                        + " is offering " + user.offerDescription
+                        + " and can be contacted at " + user.contactInformation;
+                    userLayer.push(<ExtendedCircle
+                        id={user.id}
+                        isOpen={true}
+                        key={user.name}
+                        center={this.props.userPosition}
+                        radius={this.props.calculateDistanceTo(user.coords)}>
+                        <leaflet.Popup>
+                            <span>
+                                {popup}
+                            </span>
+                        </leaflet.Popup>
+                    </ExtendedCircle>)
                 }
             }
-            // Else it is a route
-            else if (layers[layer].type == 'route') {
-                layerElement.push(<leaflet.Polyline positions={layers[layer].coords} color='red' key={layers[layer].name} />);
-            }
-            mapLayers.push(<leaflet.LayersControl.Overlay key={layer}
-                                                        name={layer}
-                                                        checked={true}>
-                                                        <leaflet.FeatureGroup key={layer}>
-                                                            {layerElement}
-                                                        </leaflet.FeatureGroup>
-                            </leaflet.LayersControl.Overlay>)
         }
-        return mapLayers;
+        layers.push(
+            <leaflet.LayersControl.Overlay
+                key="userLayer"
+                name="userLayer"
+                checked={true}>
+                <leaflet.FeatureGroup key="userLayer">
+                    {userLayer}
+                </leaflet.FeatureGroup>
+            </leaflet.LayersControl.Overlay>)
+        return layers;
     }
 
     renderMapWithLayers() {
@@ -178,14 +175,15 @@ class Map extends React.Component {
 
         var center = this.props.centerPosition;
 
-        // Center on a freecycler if one has been selected from the list view
-        if (this.props.selectedFreecyclerId != null) {
-            var freecyclers = layers.freecyclers.items;
-            for (var i = freecyclers.length - 1; i >= 0; i--) {
-                if (freecyclers[i].id == this.props.selectedFreecyclerId) {
-                    if (freecyclers[i].shareLocation) {
-                        // If the freecycler's position is public, move map to freecycler
-                        center = freecyclers[i].coords;
+        // Center on a user if one has been selected from the list view
+        if (this.props.selectedUserId != null) {
+            var users = this.state.users;
+            for (var i = users.length - 1; i >= 0; i--) {
+                var user = users[i];
+                if (user.id == this.props.selectedUserId) {
+                    if (user.shareLocation) {
+                        // If the user's position is public, move map to user
+                        center = user.coords;
                     } else {
                         // Otherwise just center on the user's position
                         center = this.props.userPosition;
@@ -202,8 +200,8 @@ class Map extends React.Component {
                 zoomControl={this.props.zoomable}
                 scrollWheelZoom={this.props.zoomable}
                 zoomDelta={this.props.zoomable == false ? 0 : 1}
-                onOverlayadd={this.handleOverlayadd}
-                onOverlayremove={this.handleOverlayremove}>
+                onOverlayadd={this.handleOverlayAdd}
+                onOverlayremove={this.handleOverlayRemove}>
                 <OfflineLayer.OfflineLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="Map data &copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"

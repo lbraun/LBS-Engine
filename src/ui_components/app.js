@@ -7,7 +7,7 @@ const geolib = require('geolib');
 // Custom files
 // Data
 const config = require('../data_components/config.json');
-const layers = require('../data_components/layers.json');
+
 // Ui
 const map = require('./map.js');
 const list =  require('./list.js');
@@ -42,7 +42,7 @@ class App extends React.Component {
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
-        this.getFreecyclers = this.getFreecyclers.bind(this);
+        this.getUsers = this.getUsers.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
@@ -57,7 +57,7 @@ class App extends React.Component {
             zoomable: config.map.zoomable,
             userPosition: null,
             centerPosition: config.map.center,
-            selectedFreecyclerId: null,
+            selectedUserId: null,
             shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About"
@@ -79,12 +79,15 @@ class App extends React.Component {
                     userPositionMarkerText: message
                 })
 
-                var closestFreecycler = app.getFreecyclers()[0];
-                var alreadyNotified = app.state.notificationLog.includes(closestFreecycler.id)
-
-                if (closestFreecycler.distanceToUser <= 400 && !alreadyNotified) {
-                    app.setState({notificationLog: app.state.notificationLog.push(closestFreecycler.id)})
-                    alert(`${closestFreecycler.name} is less than ${closestFreecycler.distanceToUser} m away with the following offer: ${closestFreecycler.offerDescription}`);
+                var closestUser = app.getUsers()[0];
+                if (closestUser) {
+                    // Check if there is a user nearby about whom
+                    // the current user has not yet been notified
+                    var alreadyNotified = app.state.notificationLog.includes(closestUser.id)
+                    if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
+                        app.setState({notificationLog: app.state.notificationLog.push(closestUser.id)})
+                        alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
+                    }
                 }
             } else {
                 // Otherwise set user position to null
@@ -160,11 +163,11 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {int} selectedFreecyclerId identifier of the freecycler that was selected
+     * @param {int} selectedUserId identifier of the user that was selected
      */
-    handleListItemClick(selectedFreecyclerId) {
+    handleListItemClick(selectedUserId) {
         this.setState({
-            selectedFreecyclerId: selectedFreecyclerId,
+            selectedUserId: selectedUserId,
             currentTab: "Map"
         });
     }
@@ -174,7 +177,7 @@ class App extends React.Component {
      * @param {String} description string value after the change
      */
     handleOfferDescriptionChange(description) {
-        // TODO: Add logic to publish changes when we have a way to publish freecycler info
+        // TODO: Add logic to publish changes when we have a way to publish user info
     }
 
     /**
@@ -182,7 +185,7 @@ class App extends React.Component {
      * @param {String} contactInformation string value after the change
      */
     handleContactInformationChange(contactInformation) {
-        // TODO: Add logic to publish changes when we have a way to publish freecycler info
+        // TODO: Add logic to publish changes when we have a way to publish user info
     }
 
     /**
@@ -192,7 +195,7 @@ class App extends React.Component {
     handleShareLocationSettingChange(bool) {
         this.setState({shareLocation: bool});
         console.log("Changed location privacy");
-        // TODO: Add logic to publish changes when we have a way to publish freecycler info
+        // TODO: Add logic to publish changes when we have a way to publish user info
     }
 
 
@@ -226,14 +229,14 @@ class App extends React.Component {
     }
 
     /**
-     * Calculate the distance from the user's location to a given freecycler's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the freecycler
+     * Calculate the distance from the user's location to a given user's position
+     * @param {Array} coordinates (latitude, longitude) identifying the location of the user
      */
-    calculateDistanceTo(freecyclerPosition) {
+    calculateDistanceTo(userPosition) {
         var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
         var distance = geolib.getDistance(
             {latitude: this.state.userPosition[0], longitude: this.state.userPosition[1]},
-            {latitude: freecyclerPosition[0], longitude: freecyclerPosition[1]},
+            {latitude: userPosition[0], longitude: userPosition[1]},
             accuracy
         );
 
@@ -241,26 +244,37 @@ class App extends React.Component {
     }
 
     /**
-     * Get an array of all freecyclers, sorted by their distance from the user
+     * Get an array of all users, sorted by their distance from the user
      */
-    getFreecyclers() {
-        var freecyclers = layers.freecyclers.items;
+    getUsers() {
+        var users = [];
+        fetch("http://localhost:3001/api/getUsers")
+          .then(res => res.json())
+          .then(
+            (result) => {
+              users = result;
+            },
+            (error) => {
+              console.log("There was an error!");
+              console.log(error);
+            }
+          )
 
         // If the user's position is available
         if (this.state.userPosition) {
             // Add a distanceToUser attribute to the array, used for list sorting
-            for (let i in freecyclers) {
-                var freecycler = freecyclers[i];
-                freecycler.distanceToUser = this.calculateDistanceTo(freecycler.coords)
+            for (let i in users) {
+                var user = users[i];
+                user.distanceToUser = this.calculateDistanceTo(user.coords)
             }
 
             // Sort the list by distance, ascending
-            freecyclers.sort(function(a, b) {
+            users.sort(function(a, b) {
                 return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
             });
         }
 
-        return freecyclers;
+        return users;
     }
 
     /**
@@ -286,7 +300,7 @@ class App extends React.Component {
                                 userPosition={this.state.userPosition}
                                 userPositionMarkerText={this.state.userPositionMarkerText}
                                 centerPosition={this.state.centerPosition}
-                                selectedFreecyclerId={this.state.selectedFreecyclerId}
+                                selectedUserId={this.state.selectedUserId}
                                 calculateDistanceTo={this.calculateDistanceTo}
                                 key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
@@ -303,10 +317,10 @@ class App extends React.Component {
                                 userPosition={this.state.userPosition}
                                 userPositionMarkerText={this.state.userPositionMarkerText}
                                 centerPosition={this.state.centerPosition}
-                                selectedFreecyclerId={this.state.selectedFreecyclerId}
+                                selectedUserId={this.state.selectedUserId}
                                 onListItemClick={this.handleListItemClick}
                                 calculateDistanceTo={this.calculateDistanceTo}
-                                getFreecyclers={this.getFreecyclers}
+                                getUsers={this.getUsers}
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },

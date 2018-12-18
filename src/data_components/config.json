@@ -2,10 +2,10 @@
     "app": {
         "logging": true,
         "externalData": false,
-        "useLocation": false,
         "layerControl": true,
         "numberOfImages": 3,
-        "shareLocation": false
+        "useLocation": true, // TODO: set this to false before going live
+        "shareLocation": true // TODO: set this to false before going live
     },
     "map": {
         "center": [51.962522, 7.625615],
