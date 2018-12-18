@@ -91494,7 +91494,7 @@ class App extends React.Component {
                     // the current user has not yet been notified
                     var alreadyNotified = app.state.notificationLog.includes(closestUser.id);
                     if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
-                        app.setState({ notificationLog: app.state.notificationLog.push(closestUser.id) });
+                        app.setState({ notificationLog: app.state.notificationLog.concat([closestUser.id]) });
                         alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
                     }
                 }
@@ -91533,8 +91533,8 @@ class App extends React.Component {
 
     /**
      * Update the calculated distance from current user to each other user
-     * @param {userPosition} coordinate tuple representing the current user's position
-     * @param {users} array of users
+     * @param {Array} coordinate tuple representing the current user's position
+     * @param {Array} array of users
      */
     updateDistancesToUsers(userPosition, users) {
         // If the user's position is available
