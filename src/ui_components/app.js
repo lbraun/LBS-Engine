@@ -32,10 +32,10 @@ class App extends React.Component {
         this.renderToolbar = this.renderToolbar.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
-        this.handleUseLocationSettingChange =  this.handleUseLocationSettingChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleUseLocationSettingChange =  this.handleUseLocationSettingChange.bind(this);
         this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
@@ -44,7 +44,6 @@ class App extends React.Component {
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
-        this.getUsers = this.getUsers.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
@@ -53,7 +52,6 @@ class App extends React.Component {
             // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
-            useLocation: config.app.useLocation,
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
@@ -63,6 +61,7 @@ class App extends React.Component {
             userPosition: null,
             centerPosition: config.map.center,
             selectedUserId: null,
+            useLocation: config.app.useLocation,
             shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About"
@@ -284,7 +283,7 @@ class App extends React.Component {
      * @param {Array} coordinates (latitude, longitude) identifying the position
      */
     calculateDistanceTo(position) {
-        return calculateDistanceBetween(this.state.userPosition, position);
+        return this.calculateDistanceBetween(this.state.userPosition, position);
     }
 
     /**
@@ -299,40 +298,6 @@ class App extends React.Component {
             {latitude: position2[0], longitude: position2[1]},
             accuracy
         );
-    }
-
-    /**
-     * Get an array of all users, sorted by their distance from the user
-     */
-    getUsers() {
-        var users = [];
-        fetch("http://localhost:3001/api/getUsers")
-          .then(res => res.json())
-          .then(
-            (result) => {
-              users = result;
-            },
-            (error) => {
-              console.log("There was an error!");
-              console.log(error);
-            }
-          )
-
-        // If the user's position is available
-        if (this.state.userPosition) {
-            // Add a distanceToUser attribute to the array, used for list sorting
-            for (let i in users) {
-                var user = users[i];
-                user.distanceToUser = this.calculateDistanceTo(user.coords)
-            }
-
-            // Sort the list by distance, ascending
-            users.sort(function(a, b) {
-                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-            });
-        }
-
-        return users;
     }
 
     /**
@@ -378,7 +343,6 @@ class App extends React.Component {
                                 centerPosition={this.state.centerPosition}
                                 selectedUserId={this.state.selectedUserId}
                                 onListItemClick={this.handleListItemClick}
-                                calculateDistanceTo={this.calculateDistanceTo}
                                 usersAreLoaded={this.state.usersAreLoaded}
                                 errorLoadingUsers={this.state.errorLoadingUsers}
                                 users={this.state.users}
@@ -390,14 +354,15 @@ class App extends React.Component {
                 content: <settings.Settings
                                 onLoggingChange={this.handleLoggingChange}
                                 onDataChange={this.handleExternalDataChange}
-                                onUseLocationSettingChange={this.handleUseLocationSettingChange}
                                 onLayerControlChange={this.handleLayerControlChange}
                                 onDragMapChange={this.handleDragMapChange}
                                 onZoomMapChange={this.handleZoomMapChange}
+                                onUseLocationSettingChange={this.handleUseLocationSettingChange}
                                 onShareLocationSettingChange={this.handleShareLocationSettingChange}
+                                useLocation={this.state.useLocation}
+                                shareLocation={this.state.shareLocation}
                                 logging={this.state.logging}
                                 externalData={this.state.externalData}
-                                useLocation={this.state.useLocation}
                                 layerControl={this.state.layerControl}
                                 draggable={this.state.draggable}
                                 zoomable={this.state.zoomable}

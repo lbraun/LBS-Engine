@@ -4,7 +4,6 @@ const leaflet = require('react-leaflet');
 // Custom files required
 // Data
 const config = require('../data_components/config.json');
-const userData = require('../data_components/users.json');
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
@@ -23,7 +22,6 @@ class Map extends React.Component {
         this.state = {
             position: config.map.center,
             zoom: config.map.zoom,
-            users: userData.users,
         }
 
         // Define marker symbol for the user position marker
@@ -177,7 +175,7 @@ class Map extends React.Component {
 
         // Center on a user if one has been selected from the list view
         if (this.props.selectedUserId != null) {
-            var users = this.state.users;
+            var users = this.props.users;
             for (var i = users.length - 1; i >= 0; i--) {
                 var user = users[i];
                 if (user.id == this.props.selectedUserId) {

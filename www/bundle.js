@@ -5624,7 +5624,7 @@ module.exports = ret;
 },{"./es5":13}]},{},[4])(4)
 });                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":269}],2:[function(require,module,exports){
+},{"_process":268}],2:[function(require,module,exports){
 /**
  * Static Private functions
  */
@@ -6461,7 +6461,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":269}],9:[function(require,module,exports){
+},{"_process":268}],9:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6622,7 +6622,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":269}],13:[function(require,module,exports){
+},{"_process":268}],13:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6799,7 +6799,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":7,"_process":269}],17:[function(require,module,exports){
+},{"./emptyFunction":7,"_process":268}],17:[function(require,module,exports){
 /*! geolib 2.0.23 by Manuel Bieh
 * Library to provide geo functions like distance calculation,
 * conversion of decimal coordinates to sexagesimal and vice versa, etc.
@@ -61966,7 +61966,7 @@ return ons$1;
 
 
 }).call(this,require('_process'))
-},{"_process":269}],205:[function(require,module,exports){
+},{"_process":268}],205:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -62029,7 +62029,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":209,"_process":269,"fbjs/lib/invariant":12,"fbjs/lib/warning":16}],206:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":209,"_process":268,"fbjs/lib/invariant":12,"fbjs/lib/warning":16}],206:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -62635,7 +62635,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 };
 
 }).call(this,require('_process'))
-},{"./checkPropTypes":205,"./lib/ReactPropTypesSecret":209,"_process":269,"fbjs/lib/emptyFunction":7,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203}],208:[function(require,module,exports){
+},{"./checkPropTypes":205,"./lib/ReactPropTypesSecret":209,"_process":268,"fbjs/lib/emptyFunction":7,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203}],208:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -62667,7 +62667,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./factoryWithThrowingShims":206,"./factoryWithTypeCheckers":207,"_process":269}],209:[function(require,module,exports){
+},{"./factoryWithThrowingShims":206,"./factoryWithTypeCheckers":207,"_process":268}],209:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -79339,7 +79339,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":269,"fbjs/lib/ExecutionEnvironment":3,"fbjs/lib/camelizeStyleName":5,"fbjs/lib/containsNode":6,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/getActiveElement":9,"fbjs/lib/hyphenateStyleName":11,"fbjs/lib/invariant":12,"fbjs/lib/shallowEqual":15,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205,"react":255}],211:[function(require,module,exports){
+},{"_process":268,"fbjs/lib/ExecutionEnvironment":3,"fbjs/lib/camelizeStyleName":5,"fbjs/lib/containsNode":6,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/getActiveElement":9,"fbjs/lib/hyphenateStyleName":11,"fbjs/lib/invariant":12,"fbjs/lib/shallowEqual":15,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205,"react":255}],211:[function(require,module,exports){
 /** @license React v16.3.2
  * react-dom.production.min.js
  *
@@ -79629,7 +79629,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":210,"./cjs/react-dom.production.min.js":211,"_process":269}],213:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":210,"./cjs/react-dom.production.min.js":211,"_process":268}],213:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81469,7 +81469,7 @@ Pane.childContextTypes = {
 };
 exports.default = Pane;
 }).call(this,require('_process'))
-},{"./propTypes/children":242,"./propTypes/map":249,"_process":269,"lodash/forEach":172,"lodash/omit":195,"lodash/uniqueId":202,"prop-types":208,"react":255,"warning":256}],229:[function(require,module,exports){
+},{"./propTypes/children":242,"./propTypes/map":249,"_process":268,"lodash/forEach":172,"lodash/omit":195,"lodash/uniqueId":202,"prop-types":208,"react":255,"warning":256}],229:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -90939,7 +90939,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":269,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205}],254:[function(require,module,exports){
+},{"_process":268,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205}],254:[function(require,module,exports){
 /** @license React v16.3.2
  * react.production.min.js
  *
@@ -90974,7 +90974,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":253,"./cjs/react.production.min.js":254,"_process":269}],256:[function(require,module,exports){
+},{"./cjs/react.development.js":253,"./cjs/react.production.min.js":254,"_process":268}],256:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -91038,7 +91038,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":269}],257:[function(require,module,exports){
+},{"_process":268}],257:[function(require,module,exports){
 'use strict';
 
 /**
@@ -91326,68 +91326,6 @@ module.exports={
 }
 
 },{}],261:[function(require,module,exports){
-module.exports={
-    "success": true,
-    "users": [
-        {
-            "id": 1,
-            "coords": [
-                51.97,
-                7.62
-            ],
-            "name": "Heinz",
-            "offerDescription": "ketchup",
-            "contactInformation": "heinz@wwu.de",
-            "shareLocation": false
-        },
-        {
-            "id": 2,
-            "coords": [
-                51.95,
-                7.62
-            ],
-            "name": "Barbara",
-            "offerDescription": "rhubarb cake",
-            "contactInformation": "barbara@wwu.de",
-            "shareLocation": true
-        },
-        {
-            "id": 3,
-            "coords": [
-                51.969,
-                7.595
-            ],
-            "name": "Lucas",
-            "offerDescription": "bike",
-            "contactInformation": "lbraun@wwu.de",
-            "shareLocation": true
-        },
-        {
-            "id": 4,
-            "coords": [
-                51.969,
-                7.597
-            ],
-            "name": "Vanesa",
-            "offerDescription": "potatoes",
-            "contactInformation": "vanesaperez@wwu.de",
-            "shareLocation": true
-        },
-        {
-            "id": 5,
-            "coords": [
-                51.93,
-                7.67
-            ],
-            "name": "Denny",
-            "offerDescription": "a jacket",
-            "contactInformation": "denny@wwu.de",
-            "shareLocation": true
-        }
-    ]
-}
-
-},{}],262:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -91400,7 +91338,7 @@ ons.ready(function () {
     ReactDOM.render(React.createElement(app.App, null), document.getElementById('root'));
 });
 
-},{"./ui_components/app.js":263,"onsenui":204,"react":255,"react-dom":212}],263:[function(require,module,exports){
+},{"./ui_components/app.js":262,"onsenui":204,"react":255,"react-dom":212}],262:[function(require,module,exports){
 "use strict";
 
 const React = require('react');
@@ -91434,10 +91372,10 @@ class App extends React.Component {
         this.renderToolbar = this.renderToolbar.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
-        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
@@ -91446,7 +91384,6 @@ class App extends React.Component {
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
-        this.getUsers = this.getUsers.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
@@ -91455,7 +91392,6 @@ class App extends React.Component {
             // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
-            useLocation: config.app.useLocation,
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
@@ -91465,6 +91401,7 @@ class App extends React.Component {
             userPosition: null,
             centerPosition: config.map.center,
             selectedUserId: null,
+            useLocation: config.app.useLocation,
             shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About"
@@ -91686,7 +91623,7 @@ class App extends React.Component {
      * @param {Array} coordinates (latitude, longitude) identifying the position
      */
     calculateDistanceTo(position) {
-        return calculateDistanceBetween(this.state.userPosition, position);
+        return this.calculateDistanceBetween(this.state.userPosition, position);
     }
 
     /**
@@ -91697,35 +91634,6 @@ class App extends React.Component {
     calculateDistanceBetween(position1, position2) {
         var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
         return geolib.getDistance({ latitude: position1[0], longitude: position1[1] }, { latitude: position2[0], longitude: position2[1] }, accuracy);
-    }
-
-    /**
-     * Get an array of all users, sorted by their distance from the user
-     */
-    getUsers() {
-        var users = [];
-        fetch("http://localhost:3001/api/getUsers").then(res => res.json()).then(result => {
-            users = result;
-        }, error => {
-            console.log("There was an error!");
-            console.log(error);
-        });
-
-        // If the user's position is available
-        if (this.state.userPosition) {
-            // Add a distanceToUser attribute to the array, used for list sorting
-            for (let i in users) {
-                var user = users[i];
-                user.distanceToUser = this.calculateDistanceTo(user.coords);
-            }
-
-            // Sort the list by distance, ascending
-            users.sort(function (a, b) {
-                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-            });
-        }
-
-        return users;
     }
 
     /**
@@ -91771,7 +91679,6 @@ class App extends React.Component {
                 centerPosition: this.state.centerPosition,
                 selectedUserId: this.state.selectedUserId,
                 onListItemClick: this.handleListItemClick,
-                calculateDistanceTo: this.calculateDistanceTo,
                 usersAreLoaded: this.state.usersAreLoaded,
                 errorLoadingUsers: this.state.errorLoadingUsers,
                 users: this.state.users,
@@ -91783,14 +91690,15 @@ class App extends React.Component {
             content: React.createElement(settings.Settings, {
                 onLoggingChange: this.handleLoggingChange,
                 onDataChange: this.handleExternalDataChange,
-                onUseLocationSettingChange: this.handleUseLocationSettingChange,
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
+                onUseLocationSettingChange: this.handleUseLocationSettingChange,
                 onShareLocationSettingChange: this.handleShareLocationSettingChange,
+                useLocation: this.state.useLocation,
+                shareLocation: this.state.shareLocation,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
-                useLocation: this.state.useLocation,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
@@ -91901,7 +91809,7 @@ module.exports = {
     App: App
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"./embededSite.js":264,"./list.js":265,"./map.js":266,"./offerForm.js":267,"./settings.js":268,"geolib":17,"react":255,"react-onsenui":252}],264:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"./embededSite.js":263,"./list.js":264,"./map.js":265,"./offerForm.js":266,"./settings.js":267,"geolib":17,"react":255,"react-onsenui":252}],263:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -91929,7 +91837,7 @@ module.exports = {
     EmbededComponent: EmbededComponent
 };
 
-},{"react":255}],265:[function(require,module,exports){
+},{"react":255}],264:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92032,7 +91940,7 @@ module.exports = {
     List: List
 };
 
-},{"../data_components/config.json":260,"geolib":17,"react":255,"react-onsenui":252}],266:[function(require,module,exports){
+},{"../data_components/config.json":260,"geolib":17,"react":255,"react-onsenui":252}],265:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92040,7 +91948,6 @@ const leaflet = require('react-leaflet');
 // Custom files required
 // Data
 const config = require('../data_components/config.json');
-const userData = require('../data_components/users.json');
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
@@ -92058,8 +91965,7 @@ class Map extends React.Component {
         // Get the settings from the config file
         this.state = {
             position: config.map.center,
-            zoom: config.map.zoom,
-            users: userData.users
+            zoom: config.map.zoom
 
             // Define marker symbol for the user position marker
         };this.positionMarker = L.icon({
@@ -92224,7 +92130,7 @@ class Map extends React.Component {
 
         // Center on a user if one has been selected from the list view
         if (this.props.selectedUserId != null) {
-            var users = this.state.users;
+            var users = this.props.users;
             for (var i = users.length - 1; i >= 0; i--) {
                 var user = users[i];
                 if (user.id == this.props.selectedUserId) {
@@ -92343,7 +92249,7 @@ module.exports = {
     Map: Map
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../business_components/offlineLayer.js":259,"../data_components/config.json":260,"../data_components/users.json":261,"react":255,"react-leaflet":240}],267:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../business_components/offlineLayer.js":259,"../data_components/config.json":260,"react":255,"react-leaflet":240}],266:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92447,7 +92353,7 @@ module.exports = {
     offerFormComponent: offerFormComponent
 };
 
-},{"../business_components/logger.js":258,"react":255,"react-onsenui":252}],268:[function(require,module,exports){
+},{"../business_components/logger.js":258,"react":255,"react-onsenui":252}],267:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92626,7 +92532,7 @@ module.exports = {
     settingsComponent: settingsComponent
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"react":255,"react-onsenui":252}],269:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"react":255,"react-onsenui":252}],268:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -92812,4 +92718,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[262]);
+},{}]},{},[261]);
