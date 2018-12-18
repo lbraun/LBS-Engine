@@ -48,7 +48,7 @@ class List extends React.Component {
      */
     handleListItemClick(e) {
         var listItemId = parseInt(e.target.parentElement.id);
-        console.log("Clicking on freecycler " + listItemId)
+        console.log("Clicking on user " + listItemId)
         this.props.onListItemClick(listItemId);
     }
 
@@ -59,28 +59,28 @@ class List extends React.Component {
         } else if (!this.state.isLoaded) {
             return <div>Loading...</div>;
         } else {
-            // var freecyclers = this.props.getUsers();
-            var freecyclers = this.state.users;
+            // var users = this.props.getUsers();
+            var users = this.state.users;
             var listItems = [];
 
-            for (let i in freecyclers) {
-                var freecycler = freecyclers[i];
-                var clickable = !!(freecycler.shareLocation || this.props.userPosition);
+            for (let i in users) {
+                var user = users[i];
+                var clickable = !!(user.shareLocation || this.props.userPosition);
 
                 listItems.push(
                     <Ons.ListItem
-                        id={freecycler.id}
+                        id={user.id}
                         tappable={clickable}
                         onClick={clickable ? this.handleListItemClick : null}
-                        key={'freecycler' + freecycler.id}>
+                        key={'user' + user.id}>
                             <div className='left'>
                                 <Ons.Icon icon='md-face'/>
                             </div>
                             <div className='center'>
-                                {freecycler.name} - {freecycler.offerDescription} - {freecycler.contactInformation}
+                                {user.name} - {user.offerDescription} - {user.contactInformation}
                             </div>
                             <div className='right'>
-                                {this.props.userPosition ? `${freecycler.distanceToUser} m` : null}
+                                {this.props.userPosition ? `${user.distanceToUser} m` : null}
                                 {clickable ? null : "Location is private"}
                             </div>
                     </Ons.ListItem>
