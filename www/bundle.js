@@ -92189,7 +92189,7 @@ class Map extends React.Component {
             leaflet.LayersControl.Overlay,
             {
                 key: 'userLayer',
-                name: 'userLayer',
+                name: 'Show other users',
                 checked: true },
             React.createElement(
                 leaflet.FeatureGroup,

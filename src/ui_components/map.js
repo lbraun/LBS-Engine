@@ -146,7 +146,7 @@ class Map extends React.Component {
         layers.push(
             <leaflet.LayersControl.Overlay
                 key="userLayer"
-                name="userLayer"
+                name="Show other users"
                 checked={true}>
                 <leaflet.FeatureGroup key="userLayer">
                     {userLayer}
