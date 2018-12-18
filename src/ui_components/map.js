@@ -93,7 +93,7 @@ class Map extends React.Component {
     addLayers() {
         var layers = [];
         var userLayer = [];
-        var users = this.state.users;
+        var users = this.props.users;
 
         for (var i = 0; i < users.length; i++) {
             var user = users[i];

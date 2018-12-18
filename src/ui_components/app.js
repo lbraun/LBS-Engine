@@ -41,7 +41,9 @@ class App extends React.Component {
         this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
+        this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.getUsers = this.getUsers.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
@@ -55,6 +57,9 @@ class App extends React.Component {
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
+            errorLoadingUsers: null,
+            usersAreLoaded: false,
+            users: [],
             userPosition: null,
             centerPosition: config.map.center,
             selectedUserId: null,
@@ -74,12 +79,16 @@ class App extends React.Component {
                 var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
                 var coords = [lat, long];
 
+                var users = app.updateDistancesToUsers(coords, app.state.users);
+
                 app.setState({
                     userPosition: coords,
-                    userPositionMarkerText: message
+                    userPositionMarkerText: message,
+                    users: users
                 })
 
-                var closestUser = app.getUsers()[0];
+
+                var closestUser = app.state.users[0];
                 if (closestUser) {
                     // Check if there is a user nearby about whom
                     // the current user has not yet been notified
@@ -105,6 +114,48 @@ class App extends React.Component {
 
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
+
+        var users = [];
+        fetch("http://localhost:3001/api/getUsers")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        usersAreLoaded: true,
+                        users: result.users
+                    });
+                },
+                (error) => {
+                    console.log("There was an error loading the users!");
+                    console.log(error);
+                    this.setState({
+                        usersAreLoaded: true,
+                        errorLoadingUsers: error
+                    });
+                }
+            )
+    }
+
+    /**
+     * Update the calculated distance from current user to each other user
+     * @param {Array} coordinate tuple representing the current user's position
+     * @param {Array} array of users
+     */
+    updateDistancesToUsers(userPosition, users) {
+        // If the user's position is available
+        if (userPosition) {
+            // Add a distanceToUser attribute to the array, used for list sorting
+            for (let i in users) {
+                var user = users[i];
+                user.distanceToUser = this.calculateDistanceBetween(userPosition, user.coords)
+            }
+
+            // Sort the list by distance, ascending
+            users.sort(function(a, b) {
+                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
+        }
+        return users;
     }
 
     /**
@@ -229,18 +280,25 @@ class App extends React.Component {
     }
 
     /**
-     * Calculate the distance from the user's location to a given user's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the user
+     * Calculate the distance from the user's location to a given position
+     * @param {Array} coordinates (latitude, longitude) identifying the position
      */
-    calculateDistanceTo(userPosition) {
+    calculateDistanceTo(position) {
+        return calculateDistanceBetween(this.state.userPosition, position);
+    }
+
+    /**
+     * Calculate the distance between two positions
+     * @param {Array} coordinates (latitude, longitude) identifying the first position
+     * @param {Array} coordinates (latitude, longitude) identifying the second position
+     */
+    calculateDistanceBetween(position1, position2) {
         var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
-        var distance = geolib.getDistance(
-            {latitude: this.state.userPosition[0], longitude: this.state.userPosition[1]},
-            {latitude: userPosition[0], longitude: userPosition[1]},
+        return geolib.getDistance(
+            {latitude: position1[0], longitude: position1[1]},
+            {latitude: position2[0], longitude: position2[1]},
             accuracy
         );
-
-        return distance;
     }
 
     /**
@@ -302,6 +360,7 @@ class App extends React.Component {
                                 centerPosition={this.state.centerPosition}
                                 selectedUserId={this.state.selectedUserId}
                                 calculateDistanceTo={this.calculateDistanceTo}
+                                users={this.state.users}
                                 key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
             },
@@ -320,7 +379,9 @@ class App extends React.Component {
                                 selectedUserId={this.state.selectedUserId}
                                 onListItemClick={this.handleListItemClick}
                                 calculateDistanceTo={this.calculateDistanceTo}
-                                getUsers={this.getUsers}
+                                usersAreLoaded={this.state.usersAreLoaded}
+                                errorLoadingUsers={this.state.errorLoadingUsers}
+                                users={this.state.users}
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },

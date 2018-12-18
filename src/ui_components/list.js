@@ -15,32 +15,7 @@ class List extends React.Component {
     constructor(props) {
         super(props);
         this.handleListItemClick = this.handleListItemClick.bind(this);
-        this.state = {
-            error: null,
-            isLoaded: false,
-            users: []
-        }
     }
-
-    componentDidMount() {
-        fetch("http://localhost:3001/api/getUsers")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        users: result.users
-                    });
-                },
-
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-      }
 
     /**
      * Handle clicks on users in the list
@@ -53,12 +28,12 @@ class List extends React.Component {
 
     // Render the list
     renderUserList() {
-        if (this.state.error) {
+        if (this.props.errorLoadingUsers) {
             return <div>Error: {this.state.error.message}</div>;
-        } else if (!this.state.isLoaded) {
+        } else if (!this.props.usersAreLoaded) {
             return <div>Loading...</div>;
         } else {
-            var users = this.state.users;
+            var users = this.props.users;
             var listItems = [];
 
             for (let i in users) {
@@ -78,7 +53,7 @@ class List extends React.Component {
                                 {user.name} - {user.offerDescription} - {user.contactInformation}
                             </div>
                             <div className='right'>
-                                {this.props.userPosition ? `${user.distanceToUser} m` : null}
+                                {this.props.userPosition && user.distanceToUser ? `${user.distanceToUser} m` : null}
                                 {clickable ? null : "Location is private"}
                             </div>
                     </Ons.ListItem>
