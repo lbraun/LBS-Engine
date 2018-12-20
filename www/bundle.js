@@ -91417,10 +91417,7 @@ class App extends React.Component {
                 var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
                 var coords = [lat, long];
 
-                var users = [];
-                if (app.state.users) {
-                    app.updateDistancesToUsers(coords, app.state.users);
-                }
+                var users = app.updateDistancesToUsers(coords, app.state.users);
 
                 app.setState({
                     userPosition: coords,
@@ -91455,11 +91452,10 @@ class App extends React.Component {
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
 
-        var users = [];
         fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
             this.setState({
                 usersAreLoaded: true,
-                users: result.users || []
+                users: result || []
             });
         }, error => {
             console.log("There was an error loading the users!");
@@ -91890,7 +91886,7 @@ class List extends React.Component {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                'There are no other users right now. Please check back later!'
+                'There are no other users in the system right now. Please check back later!'
             ));
         } else {
             var users = this.props.users;
