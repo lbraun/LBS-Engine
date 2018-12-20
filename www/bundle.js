@@ -91981,7 +91981,7 @@ class Map extends React.Component {
             popupAnchor: [0, -50]
         });
 
-        // Define marker symbol for the user user marker
+        // Define marker symbol for the user marker
         this.userMarker = L.icon({
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
