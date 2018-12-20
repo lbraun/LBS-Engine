@@ -7,7 +7,7 @@ const geolib = require('geolib');
 // Custom files
 // Data
 const config = require('../data_components/config.json');
-const layers = require('../data_components/layers.json');
+
 // Ui
 const map = require('./map.js');
 const list =  require('./list.js');
@@ -32,17 +32,18 @@ class App extends React.Component {
         this.renderToolbar = this.renderToolbar.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
-        this.handleUseLocationSettingChange =  this.handleUseLocationSettingChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleUseLocationSettingChange =  this.handleUseLocationSettingChange.bind(this);
         this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
-        this.getFreecyclers = this.getFreecyclers.bind(this);
+        this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
@@ -51,13 +52,16 @@ class App extends React.Component {
             // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
-            useLocation: config.app.useLocation,
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
+            errorLoadingUsers: null,
+            usersAreLoaded: false,
+            users: [],
             userPosition: null,
             centerPosition: config.map.center,
-            selectedFreecyclerId: null,
+            selectedUserId: null,
+            useLocation: config.app.useLocation,
             shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About"
@@ -74,17 +78,24 @@ class App extends React.Component {
                 var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
                 var coords = [lat, long];
 
+                var users = app.updateDistancesToUsers(coords, app.state.users);
+
                 app.setState({
                     userPosition: coords,
-                    userPositionMarkerText: message
+                    userPositionMarkerText: message,
+                    users: users
                 })
 
-                var closestFreecycler = app.getFreecyclers()[0];
-                var alreadyNotified = app.state.notificationLog.includes(closestFreecycler.id)
 
-                if (closestFreecycler.distanceToUser <= 400 && !alreadyNotified) {
-                    app.setState({notificationLog: app.state.notificationLog.push(closestFreecycler.id)})
-                    alert(`${closestFreecycler.name} is less than ${closestFreecycler.distanceToUser} m away with the following offer: ${closestFreecycler.offerDescription}`);
+                var closestUser = app.state.users[0];
+                if (closestUser) {
+                    // Check if there is a user nearby about whom
+                    // the current user has not yet been notified
+                    var alreadyNotified = app.state.notificationLog.includes(closestUser.id)
+                    if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
+                        app.setState({notificationLog: app.state.notificationLog.concat([closestUser.id])})
+                        alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
+                    }
                 }
             } else {
                 // Otherwise set user position to null
@@ -102,6 +113,47 @@ class App extends React.Component {
 
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
+
+        fetch("https://geofreebie-backend.herokuapp.com/api/users")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        usersAreLoaded: true,
+                        users: result || []
+                    });
+                },
+                (error) => {
+                    console.log("There was an error loading the users!");
+                    console.log(error);
+                    this.setState({
+                        usersAreLoaded: true,
+                        errorLoadingUsers: error
+                    });
+                }
+            )
+    }
+
+    /**
+     * Update the calculated distance from current user to each other user
+     * @param {Array} coordinate tuple representing the current user's position
+     * @param {Array} array of users
+     */
+    updateDistancesToUsers(userPosition, users) {
+        // If the user's position is available
+        if (userPosition) {
+            // Add a distanceToUser attribute to the array, used for list sorting
+            for (let i in users) {
+                var user = users[i];
+                user.distanceToUser = this.calculateDistanceBetween(userPosition, user.coords)
+            }
+
+            // Sort the list by distance, ascending
+            users.sort(function(a, b) {
+                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
+        }
+        return users;
     }
 
     /**
@@ -160,11 +212,11 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {int} selectedFreecyclerId identifier of the freecycler that was selected
+     * @param {int} selectedUserId identifier of the user that was selected
      */
-    handleListItemClick(selectedFreecyclerId) {
+    handleListItemClick(selectedUserId) {
         this.setState({
-            selectedFreecyclerId: selectedFreecyclerId,
+            selectedUserId: selectedUserId,
             currentTab: "Map"
         });
     }
@@ -174,7 +226,7 @@ class App extends React.Component {
      * @param {String} description string value after the change
      */
     handleOfferDescriptionChange(description) {
-        // TODO: Add logic to publish changes when we have a way to publish freecycler info
+        // TODO: Add logic to publish changes when we have a way to publish user info
     }
 
     /**
@@ -182,7 +234,7 @@ class App extends React.Component {
      * @param {String} contactInformation string value after the change
      */
     handleContactInformationChange(contactInformation) {
-        // TODO: Add logic to publish changes when we have a way to publish freecycler info
+        // TODO: Add logic to publish changes when we have a way to publish user info
     }
 
     /**
@@ -192,7 +244,7 @@ class App extends React.Component {
     handleShareLocationSettingChange(bool) {
         this.setState({shareLocation: bool});
         console.log("Changed location privacy");
-        // TODO: Add logic to publish changes when we have a way to publish freecycler info
+        // TODO: Add logic to publish changes when we have a way to publish user info
     }
 
 
@@ -226,41 +278,25 @@ class App extends React.Component {
     }
 
     /**
-     * Calculate the distance from the user's location to a given freecycler's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the freecycler
+     * Calculate the distance from the user's location to a given position
+     * @param {Array} coordinates (latitude, longitude) identifying the position
      */
-    calculateDistanceTo(freecyclerPosition) {
-        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
-        var distance = geolib.getDistance(
-            {latitude: this.state.userPosition[0], longitude: this.state.userPosition[1]},
-            {latitude: freecyclerPosition[0], longitude: freecyclerPosition[1]},
-            accuracy
-        );
-
-        return distance;
+    calculateDistanceTo(position) {
+        return this.calculateDistanceBetween(this.state.userPosition, position);
     }
 
     /**
-     * Get an array of all freecyclers, sorted by their distance from the user
+     * Calculate the distance between two positions
+     * @param {Array} coordinates (latitude, longitude) identifying the first position
+     * @param {Array} coordinates (latitude, longitude) identifying the second position
      */
-    getFreecyclers() {
-        var freecyclers = layers.freecyclers.items;
-
-        // If the user's position is available
-        if (this.state.userPosition) {
-            // Add a distanceToUser attribute to the array, used for list sorting
-            for (let i in freecyclers) {
-                var freecycler = freecyclers[i];
-                freecycler.distanceToUser = this.calculateDistanceTo(freecycler.coords)
-            }
-
-            // Sort the list by distance, ascending
-            freecyclers.sort(function(a, b) {
-                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-            });
-        }
-
-        return freecyclers;
+    calculateDistanceBetween(position1, position2) {
+        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
+        return geolib.getDistance(
+            {latitude: position1[0], longitude: position1[1]},
+            {latitude: position2[0], longitude: position2[1]},
+            accuracy
+        );
     }
 
     /**
@@ -286,8 +322,9 @@ class App extends React.Component {
                                 userPosition={this.state.userPosition}
                                 userPositionMarkerText={this.state.userPositionMarkerText}
                                 centerPosition={this.state.centerPosition}
-                                selectedFreecyclerId={this.state.selectedFreecyclerId}
+                                selectedUserId={this.state.selectedUserId}
                                 calculateDistanceTo={this.calculateDistanceTo}
+                                users={this.state.users}
                                 key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
             },
@@ -303,10 +340,11 @@ class App extends React.Component {
                                 userPosition={this.state.userPosition}
                                 userPositionMarkerText={this.state.userPositionMarkerText}
                                 centerPosition={this.state.centerPosition}
-                                selectedFreecyclerId={this.state.selectedFreecyclerId}
+                                selectedUserId={this.state.selectedUserId}
                                 onListItemClick={this.handleListItemClick}
-                                calculateDistanceTo={this.calculateDistanceTo}
-                                getFreecyclers={this.getFreecyclers}
+                                usersAreLoaded={this.state.usersAreLoaded}
+                                errorLoadingUsers={this.state.errorLoadingUsers}
+                                users={this.state.users}
                                 key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },
@@ -315,14 +353,15 @@ class App extends React.Component {
                 content: <settings.Settings
                                 onLoggingChange={this.handleLoggingChange}
                                 onDataChange={this.handleExternalDataChange}
-                                onUseLocationSettingChange={this.handleUseLocationSettingChange}
                                 onLayerControlChange={this.handleLayerControlChange}
                                 onDragMapChange={this.handleDragMapChange}
                                 onZoomMapChange={this.handleZoomMapChange}
+                                onUseLocationSettingChange={this.handleUseLocationSettingChange}
                                 onShareLocationSettingChange={this.handleShareLocationSettingChange}
+                                useLocation={this.state.useLocation}
+                                shareLocation={this.state.shareLocation}
                                 logging={this.state.logging}
                                 externalData={this.state.externalData}
-                                useLocation={this.state.useLocation}
                                 layerControl={this.state.layerControl}
                                 draggable={this.state.draggable}
                                 zoomable={this.state.zoomable}
@@ -354,10 +393,10 @@ class App extends React.Component {
     // Render the list displayed in the sidebar
     renderList() {
         var sidebarItems = [
-            {"name": "My Offers", "icon": "md-edit"},
-            {"name": "Settings", "icon": "md-settings"},
-            {"name": "Help",     "icon": "md-help"},
-            {"name": "About",    "icon": "md-info"}
+            {"id":1, "name": "My Offers", "icon": "md-edit"},
+            {"id":2, "name": "Settings", "icon": "md-settings"},
+            {"id":3, "name": "Help",     "icon": "md-help"},
+            {"id":4, "name": "About",    "icon": "md-info"}
         ];
 
         var listItems = [];
@@ -367,6 +406,8 @@ class App extends React.Component {
 
             listItems.push(
                 <Ons.ListItem
+                    id={`sidebar-item-${sidebarItem["id"]}`}
+                    key={sidebarItem["id"]}
                     tappable={true}
                     onClick={this.handleSidebarClick}>
                         <div className='left'>

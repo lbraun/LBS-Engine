@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.lbraun.lbsengine" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>LBS-Engine</name>
+    <name>Geofreebie</name>
     <description>
-        A template app for developing easy location based services.
+        A location-based freecycling service.
     </description>
     <author>
-        Lasse Einfeldt
+        Lucas Braun
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -70,6 +70,6 @@
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
-    <engine name="browser" spec="^5.0.3" />
+    <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^6.4.0" />
 </widget>

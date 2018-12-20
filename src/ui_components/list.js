@@ -6,7 +6,6 @@ const geolib = require('geolib');
 
 // Custom imports
 const config = require('../data_components/config.json');
-const layers = require('../data_components/layers.json');
 
 /**
  * Component for displaying the list view.
@@ -19,42 +18,63 @@ class List extends React.Component {
     }
 
     /**
-     * Handle clicks on items in the list
-     * @param {Integer} integer index of the list item
+     * Handle clicks on users in the list
+     * @param {userId} id of the user
+     * @param {e} click event
      */
-    handleListItemClick(e) {
-        var listItemId = parseInt(e.target.parentElement.id);
-        console.log("Clicking on freecycler " + listItemId)
-        this.props.onListItemClick(listItemId);
+    handleListItemClick(userId, e) {
+        this.props.onListItemClick(userId);
     }
 
     // Render the list
-    renderFreecyclerList() {
-        var freecyclers = this.props.getFreecyclers();
+    renderUserList() {
         var listItems = [];
 
-        for (let i in freecyclers) {
-            var freecycler = freecyclers[i];
-            var clickable = !!(freecycler.shareLocation || this.props.userPosition);
-
+        if (this.props.errorLoadingUsers) {
             listItems.push(
-                <Ons.ListItem
-                    id={freecycler.id}
-                    tappable={clickable}
-                    onClick={clickable ? this.handleListItemClick : null}
-                    key={'freecycler' + freecycler.id}>
-                        <div className='left'>
-                            <Ons.Icon icon='md-face'/>
-                        </div>
-                        <div className='center'>
-                            {freecycler.name} - {freecycler.offerDescription} - {freecycler.contactInformation}
-                        </div>
-                        <div className='right'>
-                            {this.props.userPosition ? `${freecycler.distanceToUser} m` : null}
-                            {clickable ? null : "Location is private"}
-                        </div>
+                <Ons.ListItem key="0">
+                    Error: {this.state.error.message}
                 </Ons.ListItem>
-            )
+            );
+        } else if (!this.props.usersAreLoaded) {
+            listItems.push(
+                <Ons.ListItem key="0">
+                    Loading...
+                </Ons.ListItem>
+            );
+        } else if (this.props.users.length == 0) {
+            listItems.push(
+                <Ons.ListItem key="0">
+                    There are no other users in the system right now.
+                    Please check back later!
+                </Ons.ListItem>
+            );
+        } else {
+            var users = this.props.users;
+
+            for (let i in users) {
+                var user = users[i];
+                var clickable = !!(user.shareLocation || this.props.userPosition);
+
+                listItems.push(
+                    <Ons.ListItem
+                        tappable={clickable}
+                        onClick={clickable ? this.handleListItemClick.bind(this, user.id) : null}
+                        id={`user-list-item-${user.id}`}
+                        key={user.id}>
+                            <div className='left'>
+                                <Ons.Icon icon='md-face'/>
+                            </div>
+                            <div className='center'>
+                                {user.name} - {user.offerDescription} - {user.contactInformation}
+                            </div>
+                            <div className='right'>
+                                {this.props.userPosition && user.distanceToUser ? `${user.distanceToUser} m` : null}
+                                {clickable ? null : "Location is private"}
+                            </div>
+                    </Ons.ListItem>
+                )
+            }
         }
 
         return (
@@ -67,7 +87,7 @@ class List extends React.Component {
     render() {
         return (
             <div className="center" style={{height: '100%'}}>
-                {this.renderFreecyclerList()}
+                {this.renderUserList()}
             </div>
         )
     }

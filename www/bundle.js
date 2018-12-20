@@ -5624,7 +5624,7 @@ module.exports = ret;
 },{"./es5":13}]},{},[4])(4)
 });                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":269}],2:[function(require,module,exports){
+},{"_process":268}],2:[function(require,module,exports){
 /**
  * Static Private functions
  */
@@ -6461,7 +6461,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":269}],9:[function(require,module,exports){
+},{"_process":268}],9:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6622,7 +6622,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":269}],13:[function(require,module,exports){
+},{"_process":268}],13:[function(require,module,exports){
 'use strict';
 
 /**
@@ -6799,7 +6799,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":7,"_process":269}],17:[function(require,module,exports){
+},{"./emptyFunction":7,"_process":268}],17:[function(require,module,exports){
 /*! geolib 2.0.23 by Manuel Bieh
 * Library to provide geo functions like distance calculation,
 * conversion of decimal coordinates to sexagesimal and vice versa, etc.
@@ -61966,7 +61966,7 @@ return ons$1;
 
 
 }).call(this,require('_process'))
-},{"_process":269}],205:[function(require,module,exports){
+},{"_process":268}],205:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -62029,7 +62029,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":209,"_process":269,"fbjs/lib/invariant":12,"fbjs/lib/warning":16}],206:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":209,"_process":268,"fbjs/lib/invariant":12,"fbjs/lib/warning":16}],206:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -62635,7 +62635,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 };
 
 }).call(this,require('_process'))
-},{"./checkPropTypes":205,"./lib/ReactPropTypesSecret":209,"_process":269,"fbjs/lib/emptyFunction":7,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203}],208:[function(require,module,exports){
+},{"./checkPropTypes":205,"./lib/ReactPropTypesSecret":209,"_process":268,"fbjs/lib/emptyFunction":7,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203}],208:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -62667,7 +62667,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./factoryWithThrowingShims":206,"./factoryWithTypeCheckers":207,"_process":269}],209:[function(require,module,exports){
+},{"./factoryWithThrowingShims":206,"./factoryWithTypeCheckers":207,"_process":268}],209:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -79339,7 +79339,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":269,"fbjs/lib/ExecutionEnvironment":3,"fbjs/lib/camelizeStyleName":5,"fbjs/lib/containsNode":6,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/getActiveElement":9,"fbjs/lib/hyphenateStyleName":11,"fbjs/lib/invariant":12,"fbjs/lib/shallowEqual":15,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205,"react":255}],211:[function(require,module,exports){
+},{"_process":268,"fbjs/lib/ExecutionEnvironment":3,"fbjs/lib/camelizeStyleName":5,"fbjs/lib/containsNode":6,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/getActiveElement":9,"fbjs/lib/hyphenateStyleName":11,"fbjs/lib/invariant":12,"fbjs/lib/shallowEqual":15,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205,"react":255}],211:[function(require,module,exports){
 /** @license React v16.3.2
  * react-dom.production.min.js
  *
@@ -79629,7 +79629,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":210,"./cjs/react-dom.production.min.js":211,"_process":269}],213:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":210,"./cjs/react-dom.production.min.js":211,"_process":268}],213:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81469,7 +81469,7 @@ Pane.childContextTypes = {
 };
 exports.default = Pane;
 }).call(this,require('_process'))
-},{"./propTypes/children":242,"./propTypes/map":249,"_process":269,"lodash/forEach":172,"lodash/omit":195,"lodash/uniqueId":202,"prop-types":208,"react":255,"warning":256}],229:[function(require,module,exports){
+},{"./propTypes/children":242,"./propTypes/map":249,"_process":268,"lodash/forEach":172,"lodash/omit":195,"lodash/uniqueId":202,"prop-types":208,"react":255,"warning":256}],229:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -90939,7 +90939,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":269,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205}],254:[function(require,module,exports){
+},{"_process":268,"fbjs/lib/emptyFunction":7,"fbjs/lib/emptyObject":8,"fbjs/lib/invariant":12,"fbjs/lib/warning":16,"object-assign":203,"prop-types/checkPropTypes":205}],254:[function(require,module,exports){
 /** @license React v16.3.2
  * react.production.min.js
  *
@@ -90974,7 +90974,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":253,"./cjs/react.production.min.js":254,"_process":269}],256:[function(require,module,exports){
+},{"./cjs/react.development.js":253,"./cjs/react.production.min.js":254,"_process":268}],256:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -91038,7 +91038,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":269}],257:[function(require,module,exports){
+},{"_process":268}],257:[function(require,module,exports){
 'use strict';
 
 /**
@@ -91312,10 +91312,10 @@ module.exports={
     "app": {
         "logging": true,
         "externalData": false,
-        "useLocation": false,
         "layerControl": true,
         "numberOfImages": 3,
-        "shareLocation": false
+        "useLocation": true,
+        "shareLocation": true
     },
     "map": {
         "center": [51.962522, 7.625615],
@@ -91326,83 +91326,19 @@ module.exports={
 }
 
 },{}],261:[function(require,module,exports){
-module.exports={
-    "freecyclers": {
-        "type": "marker",
-        "items": [
-            {
-                "id": 1,
-                "coords": [
-                    51.97,
-                    7.62
-                ],
-                "name": "Heinz",
-                "offerDescription": "ketchup",
-                "contactInformation": "heinz@wwu.de",
-                "shareLocation": false
-            },
-            {
-                "id": 2,
-                "coords": [
-                    51.95,
-                    7.62
-                ],
-                "name": "Barbara",
-                "offerDescription": "rhubarb cake",
-                "contactInformation": "barbara@wwu.de",
-                "shareLocation": true
-            },
-            {
-                "id": 3,
-                "coords": [
-                    51.969,
-                    7.595
-                ],
-                "name": "Lucas",
-                "offerDescription": "bike",
-                "contactInformation": "lbraun@wwu.de",
-                "shareLocation": true
-            },
-            {
-                "id": 4,
-                "coords": [
-                    51.969,
-                    7.597
-                ],
-                "name": "Vanesa",
-                "offerDescription": "potatoes",
-                "contactInformation": "vanesaperez@wwu.de",
-                "shareLocation": true
-            },
-            {
-                "id": 5,
-                "coords": [
-                    51.93,
-                    7.67
-                ],
-                "name": "Denny",
-                "offerDescription": "a jacket",
-                "contactInformation": "denny@wwu.de",
-                "shareLocation": true
-            }
-        ]
-    }
-}
-
-},{}],262:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
 const ReactDOM = require('react-dom');
 const ons = require('onsenui');
-//project files
+// Project files
 const app = require('./ui_components/app.js');
 
 ons.ready(function () {
     ReactDOM.render(React.createElement(app.App, null), document.getElementById('root'));
 });
 
-},{"./ui_components/app.js":263,"onsenui":204,"react":255,"react-dom":212}],263:[function(require,module,exports){
+},{"./ui_components/app.js":262,"onsenui":204,"react":255,"react-dom":212}],262:[function(require,module,exports){
 "use strict";
 
 const React = require('react');
@@ -91412,7 +91348,7 @@ const geolib = require('geolib');
 // Custom files
 // Data
 const config = require('../data_components/config.json');
-const layers = require('../data_components/layers.json');
+
 // Ui
 const map = require('./map.js');
 const list = require('./list.js');
@@ -91436,17 +91372,18 @@ class App extends React.Component {
         this.renderToolbar = this.renderToolbar.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
-        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
+        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
-        this.getFreecyclers = this.getFreecyclers.bind(this);
+        this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
@@ -91455,13 +91392,16 @@ class App extends React.Component {
             // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
-            useLocation: config.app.useLocation,
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
+            errorLoadingUsers: null,
+            usersAreLoaded: false,
+            users: [],
             userPosition: null,
             centerPosition: config.map.center,
-            selectedFreecyclerId: null,
+            selectedUserId: null,
+            useLocation: config.app.useLocation,
             shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About"
@@ -91477,17 +91417,23 @@ class App extends React.Component {
                 var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
                 var coords = [lat, long];
 
+                var users = app.updateDistancesToUsers(coords, app.state.users);
+
                 app.setState({
                     userPosition: coords,
-                    userPositionMarkerText: message
+                    userPositionMarkerText: message,
+                    users: users
                 });
 
-                var closestFreecycler = app.getFreecyclers()[0];
-                var alreadyNotified = app.state.notificationLog.includes(closestFreecycler.id);
-
-                if (closestFreecycler.distanceToUser <= 400 && !alreadyNotified) {
-                    app.setState({ notificationLog: app.state.notificationLog.push(closestFreecycler.id) });
-                    alert(`${closestFreecycler.name} is less than ${closestFreecycler.distanceToUser} m away with the following offer: ${closestFreecycler.offerDescription}`);
+                var closestUser = app.state.users[0];
+                if (closestUser) {
+                    // Check if there is a user nearby about whom
+                    // the current user has not yet been notified
+                    var alreadyNotified = app.state.notificationLog.includes(closestUser.id);
+                    if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
+                        app.setState({ notificationLog: app.state.notificationLog.concat([closestUser.id]) });
+                        alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
+                    }
                 }
             } else {
                 // Otherwise set user position to null
@@ -91505,6 +91451,42 @@ class App extends React.Component {
 
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
+
+        fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
+            this.setState({
+                usersAreLoaded: true,
+                users: result || []
+            });
+        }, error => {
+            console.log("There was an error loading the users!");
+            console.log(error);
+            this.setState({
+                usersAreLoaded: true,
+                errorLoadingUsers: error
+            });
+        });
+    }
+
+    /**
+     * Update the calculated distance from current user to each other user
+     * @param {Array} coordinate tuple representing the current user's position
+     * @param {Array} array of users
+     */
+    updateDistancesToUsers(userPosition, users) {
+        // If the user's position is available
+        if (userPosition) {
+            // Add a distanceToUser attribute to the array, used for list sorting
+            for (let i in users) {
+                var user = users[i];
+                user.distanceToUser = this.calculateDistanceBetween(userPosition, user.coords);
+            }
+
+            // Sort the list by distance, ascending
+            users.sort(function (a, b) {
+                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
+        }
+        return users;
     }
 
     /**
@@ -91563,11 +91545,11 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {int} selectedFreecyclerId identifier of the freecycler that was selected
+     * @param {int} selectedUserId identifier of the user that was selected
      */
-    handleListItemClick(selectedFreecyclerId) {
+    handleListItemClick(selectedUserId) {
         this.setState({
-            selectedFreecyclerId: selectedFreecyclerId,
+            selectedUserId: selectedUserId,
             currentTab: "Map"
         });
     }
@@ -91577,7 +91559,7 @@ class App extends React.Component {
      * @param {String} description string value after the change
      */
     handleOfferDescriptionChange(description) {}
-    // TODO: Add logic to publish changes when we have a way to publish freecycler info
+    // TODO: Add logic to publish changes when we have a way to publish user info
 
 
     /**
@@ -91585,7 +91567,7 @@ class App extends React.Component {
      * @param {String} contactInformation string value after the change
      */
     handleContactInformationChange(contactInformation) {}
-    // TODO: Add logic to publish changes when we have a way to publish freecycler info
+    // TODO: Add logic to publish changes when we have a way to publish user info
 
 
     /**
@@ -91595,7 +91577,7 @@ class App extends React.Component {
     handleShareLocationSettingChange(bool) {
         this.setState({ shareLocation: bool });
         console.log("Changed location privacy");
-        // TODO: Add logic to publish changes when we have a way to publish freecycler info
+        // TODO: Add logic to publish changes when we have a way to publish user info
     }
 
     // Toolbar on top of the app, contains name of the app and the menu button
@@ -91636,37 +91618,21 @@ class App extends React.Component {
     }
 
     /**
-     * Calculate the distance from the user's location to a given freecycler's position
-     * @param {Array} coordinates (latitude, longitude) identifying the location of the freecycler
+     * Calculate the distance from the user's location to a given position
+     * @param {Array} coordinates (latitude, longitude) identifying the position
      */
-    calculateDistanceTo(freecyclerPosition) {
-        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
-        var distance = geolib.getDistance({ latitude: this.state.userPosition[0], longitude: this.state.userPosition[1] }, { latitude: freecyclerPosition[0], longitude: freecyclerPosition[1] }, accuracy);
-
-        return distance;
+    calculateDistanceTo(position) {
+        return this.calculateDistanceBetween(this.state.userPosition, position);
     }
 
     /**
-     * Get an array of all freecyclers, sorted by their distance from the user
+     * Calculate the distance between two positions
+     * @param {Array} coordinates (latitude, longitude) identifying the first position
+     * @param {Array} coordinates (latitude, longitude) identifying the second position
      */
-    getFreecyclers() {
-        var freecyclers = layers.freecyclers.items;
-
-        // If the user's position is available
-        if (this.state.userPosition) {
-            // Add a distanceToUser attribute to the array, used for list sorting
-            for (let i in freecyclers) {
-                var freecycler = freecyclers[i];
-                freecycler.distanceToUser = this.calculateDistanceTo(freecycler.coords);
-            }
-
-            // Sort the list by distance, ascending
-            freecyclers.sort(function (a, b) {
-                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
-            });
-        }
-
-        return freecyclers;
+    calculateDistanceBetween(position1, position2) {
+        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
+        return geolib.getDistance({ latitude: position1[0], longitude: position1[1] }, { latitude: position2[0], longitude: position2[1] }, accuracy);
     }
 
     /**
@@ -91692,8 +91658,9 @@ class App extends React.Component {
                 userPosition: this.state.userPosition,
                 userPositionMarkerText: this.state.userPositionMarkerText,
                 centerPosition: this.state.centerPosition,
-                selectedFreecyclerId: this.state.selectedFreecyclerId,
+                selectedUserId: this.state.selectedUserId,
                 calculateDistanceTo: this.calculateDistanceTo,
+                users: this.state.users,
                 key: 'map' }),
             tab: React.createElement(Ons.Tab, { label: 'Map', icon: 'md-map', key: 'map' })
         },
@@ -91709,10 +91676,11 @@ class App extends React.Component {
                 userPosition: this.state.userPosition,
                 userPositionMarkerText: this.state.userPositionMarkerText,
                 centerPosition: this.state.centerPosition,
-                selectedFreecyclerId: this.state.selectedFreecyclerId,
+                selectedUserId: this.state.selectedUserId,
                 onListItemClick: this.handleListItemClick,
-                calculateDistanceTo: this.calculateDistanceTo,
-                getFreecyclers: this.getFreecyclers,
+                usersAreLoaded: this.state.usersAreLoaded,
+                errorLoadingUsers: this.state.errorLoadingUsers,
+                users: this.state.users,
                 key: 'list' }),
             tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
         },
@@ -91721,14 +91689,15 @@ class App extends React.Component {
             content: React.createElement(settings.Settings, {
                 onLoggingChange: this.handleLoggingChange,
                 onDataChange: this.handleExternalDataChange,
-                onUseLocationSettingChange: this.handleUseLocationSettingChange,
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
+                onUseLocationSettingChange: this.handleUseLocationSettingChange,
                 onShareLocationSettingChange: this.handleShareLocationSettingChange,
+                useLocation: this.state.useLocation,
+                shareLocation: this.state.shareLocation,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
-                useLocation: this.state.useLocation,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
@@ -91758,7 +91727,7 @@ class App extends React.Component {
 
     // Render the list displayed in the sidebar
     renderList() {
-        var sidebarItems = [{ "name": "My Offers", "icon": "md-edit" }, { "name": "Settings", "icon": "md-settings" }, { "name": "Help", "icon": "md-help" }, { "name": "About", "icon": "md-info" }];
+        var sidebarItems = [{ "id": 1, "name": "My Offers", "icon": "md-edit" }, { "id": 2, "name": "Settings", "icon": "md-settings" }, { "id": 3, "name": "Help", "icon": "md-help" }, { "id": 4, "name": "About", "icon": "md-info" }];
 
         var listItems = [];
 
@@ -91768,6 +91737,8 @@ class App extends React.Component {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
+                    id: `sidebar-item-${sidebarItem["id"]}`,
+                    key: sidebarItem["id"],
                     tappable: true,
                     onClick: this.handleSidebarClick },
                 React.createElement(
@@ -91837,7 +91808,7 @@ module.exports = {
     App: App
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"../data_components/layers.json":261,"./embededSite.js":264,"./list.js":265,"./map.js":266,"./offerForm.js":267,"./settings.js":268,"geolib":17,"react":255,"react-onsenui":252}],264:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../data_components/config.json":260,"./embededSite.js":263,"./list.js":264,"./map.js":265,"./offerForm.js":266,"./settings.js":267,"geolib":17,"react":255,"react-onsenui":252}],263:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -91865,7 +91836,7 @@ module.exports = {
     EmbededComponent: EmbededComponent
 };
 
-},{"react":255}],265:[function(require,module,exports){
+},{"react":255}],264:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -91874,7 +91845,6 @@ const geolib = require('geolib');
 
 // Custom imports
 const config = require('../data_components/config.json');
-const layers = require('../data_components/layers.json');
 
 /**
  * Component for displaying the list view.
@@ -91887,52 +91857,73 @@ class List extends React.Component {
     }
 
     /**
-     * Handle clicks on items in the list
-     * @param {Integer} integer index of the list item
+     * Handle clicks on users in the list
+     * @param {userId} id of the user
+     * @param {e} click event
      */
-    handleListItemClick(e) {
-        var listItemId = parseInt(e.target.parentElement.id);
-        console.log("Clicking on freecycler " + listItemId);
-        this.props.onListItemClick(listItemId);
+    handleListItemClick(userId, e) {
+        this.props.onListItemClick(userId);
     }
 
     // Render the list
-    renderFreecyclerList() {
-        var freecyclers = this.props.getFreecyclers();
+    renderUserList() {
         var listItems = [];
 
-        for (let i in freecyclers) {
-            var freecycler = freecyclers[i];
-            var clickable = !!(freecycler.shareLocation || this.props.userPosition);
-
+        if (this.props.errorLoadingUsers) {
             listItems.push(React.createElement(
                 Ons.ListItem,
-                {
-                    id: freecycler.id,
-                    tappable: clickable,
-                    onClick: clickable ? this.handleListItemClick : null,
-                    key: 'freecycler' + freecycler.id },
-                React.createElement(
-                    'div',
-                    { className: 'left' },
-                    React.createElement(Ons.Icon, { icon: 'md-face' })
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'center' },
-                    freecycler.name,
-                    ' - ',
-                    freecycler.offerDescription,
-                    ' - ',
-                    freecycler.contactInformation
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'right' },
-                    this.props.userPosition ? `${freecycler.distanceToUser} m` : null,
-                    clickable ? null : "Location is private"
-                )
+                { key: '0' },
+                'Error: ',
+                this.state.error.message
             ));
+        } else if (!this.props.usersAreLoaded) {
+            listItems.push(React.createElement(
+                Ons.ListItem,
+                { key: '0' },
+                'Loading...'
+            ));
+        } else if (this.props.users.length == 0) {
+            listItems.push(React.createElement(
+                Ons.ListItem,
+                { key: '0' },
+                'There are no other users in the system right now. Please check back later!'
+            ));
+        } else {
+            var users = this.props.users;
+
+            for (let i in users) {
+                var user = users[i];
+                var clickable = !!(user.shareLocation || this.props.userPosition);
+
+                listItems.push(React.createElement(
+                    Ons.ListItem,
+                    {
+                        tappable: clickable,
+                        onClick: clickable ? this.handleListItemClick.bind(this, user.id) : null,
+                        id: `user-list-item-${user.id}`,
+                        key: user.id },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(Ons.Icon, { icon: 'md-face' })
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'center' },
+                        user.name,
+                        ' - ',
+                        user.offerDescription,
+                        ' - ',
+                        user.contactInformation
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        this.props.userPosition && user.distanceToUser ? `${user.distanceToUser} m` : null,
+                        clickable ? null : "Location is private"
+                    )
+                ));
+            }
         }
 
         return React.createElement(
@@ -91946,7 +91937,7 @@ class List extends React.Component {
         return React.createElement(
             'div',
             { className: 'center', style: { height: '100%' } },
-            this.renderFreecyclerList()
+            this.renderUserList()
         );
     }
 }
@@ -91955,7 +91946,7 @@ module.exports = {
     List: List
 };
 
-},{"../data_components/config.json":260,"../data_components/layers.json":261,"geolib":17,"react":255,"react-onsenui":252}],266:[function(require,module,exports){
+},{"../data_components/config.json":260,"geolib":17,"react":255,"react-onsenui":252}],265:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -91963,7 +91954,6 @@ const leaflet = require('react-leaflet');
 // Custom files required
 // Data
 const config = require('../data_components/config.json');
-const layers = require('../data_components/layers.json');
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
@@ -91975,8 +91965,8 @@ class Map extends React.Component {
         super(props);
         this.addLayers = this.addLayers.bind(this);
         this.renderMapWithLayers = this.renderMapWithLayers.bind(this);
-        this.handleOverlayadd = this.handleOverlayadd.bind(this);
-        this.handleOverlayremove = this.handleOverlayremove.bind(this);
+        this.handleOverlayAdd = this.handleOverlayAdd.bind(this);
+        this.handleOverlayRemove = this.handleOverlayRemove.bind(this);
 
         // Get the settings from the config file
         this.state = {
@@ -91991,8 +91981,8 @@ class Map extends React.Component {
             popupAnchor: [0, -50]
         });
 
-        // Define marker symbol for the user freecycler marker
-        this.freecyclerMarker = L.icon({
+        // Define marker symbol for the user marker
+        this.userMarker = L.icon({
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
@@ -92032,8 +92022,7 @@ class Map extends React.Component {
      * Handle the activation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayadd(e) {
-
+    handleOverlayAdd(e) {
         this.createLog(true, e.name);
     }
 
@@ -92041,91 +92030,86 @@ class Map extends React.Component {
      * Handle the deactivation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayremove(e) {
+    handleOverlayRemove(e) {
 
         this.createLog(false, e.name);
     }
 
     // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
     addLayers() {
-        var mapLayers = [];
-        for (let layer in layers) {
-            var layerElement = [];
-            // Check if the layer is containing markers and add those
-            if (layers[layer].type == 'marker') {
-                for (var i = 0; i < layers[layer].items.length; i++) {
-                    // If user chooses to be public (shareLocation:true), insert marker into the map
-                    if (layers[layer].items[i].shareLocation) {
-                        // If there is content for a popup, insert a popup into the map
-                        if (layers[layer].items[i].name != undefined) {
-                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].offerDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
-                            layerElement.push(React.createElement(
-                                ExtendedMarker,
-                                {
-                                    id: layers[layer].items[i].id,
-                                    position: layers[layer].items[i].coords,
-                                    isOpen: layers[layer].items[i].id == this.props.selectedFreecyclerId,
-                                    key: layers[layer].items[i].name,
-                                    icon: this.freecyclerMarker },
-                                React.createElement(
-                                    leaflet.Popup,
-                                    null,
-                                    React.createElement(
-                                        'span',
-                                        null,
-                                        popup
-                                    )
-                                )
-                            ));
-                        } else {
-                            layerElement.push(React.createElement(leaflet.Marker, {
-                                position: layers[layer].items[i].coords,
-                                key: layers[layer].items[i].name }));
-                        }
-                    } else {
-                        // If user chooses NOT to be public, insert a buffer instead of a marker into the map
-                        // Only do this if the freecycler is selected
-                        if (layers[layer].items[i].id == this.props.selectedFreecyclerId) {
-                            var popup = layers[layer].items[i].name + " is offering " + layers[layer].items[i].offerDescription + " and can be contacted at " + layers[layer].items[i].contactInformation;
-                            layerElement.push(React.createElement(
-                                ExtendedCircle,
-                                {
-                                    id: layers[layer].items[i].id,
-                                    isOpen: true,
-                                    key: layers[layer].items[i].name,
-                                    center: this.props.userPosition,
-                                    radius: this.props.calculateDistanceTo(layers[layer].items[i].coords) },
-                                React.createElement(
-                                    leaflet.Popup,
-                                    null,
-                                    React.createElement(
-                                        'span',
-                                        null,
-                                        popup
-                                    )
-                                )
-                            ));
-                        }
-                    }
+        var layers = [];
+        var userLayer = [];
+        var users = this.props.users;
+
+        for (var i = 0; i < users.length; i++) {
+            var user = users[i];
+            // If user chooses to be public (shareLocation:true), insert marker into the map
+            if (user.shareLocation) {
+                // If there is content for a popup, insert a popup into the map
+                if (user.name != undefined) {
+                    var popup = user.name + " is offering " + user.offerDescription + " and can be contacted at " + user.contactInformation;
+                    userLayer.push(React.createElement(
+                        ExtendedMarker,
+                        {
+                            id: user.id,
+                            position: user.coords,
+                            isOpen: user.id == this.props.selectedUserId,
+                            key: user.name,
+                            icon: this.userMarker },
+                        React.createElement(
+                            leaflet.Popup,
+                            null,
+                            React.createElement(
+                                'span',
+                                null,
+                                popup
+                            )
+                        )
+                    ));
+                } else {
+                    userLayer.push(React.createElement(leaflet.Marker, {
+                        position: user.coords,
+                        key: user.name }));
+                }
+            } else {
+                // If user chooses NOT to be public, insert a buffer instead of a marker into the map
+                // Only do this if the user is selected
+                if (user.id == this.props.selectedUserId) {
+                    var popup = user.name + " is offering " + user.offerDescription + " and can be contacted at " + user.contactInformation;
+                    userLayer.push(React.createElement(
+                        ExtendedCircle,
+                        {
+                            id: user.id,
+                            isOpen: true,
+                            key: user.name,
+                            center: this.props.userPosition,
+                            radius: this.props.calculateDistanceTo(user.coords) },
+                        React.createElement(
+                            leaflet.Popup,
+                            null,
+                            React.createElement(
+                                'span',
+                                null,
+                                popup
+                            )
+                        )
+                    ));
                 }
             }
-            // Else it is a route
-            else if (layers[layer].type == 'route') {
-                    layerElement.push(React.createElement(leaflet.Polyline, { positions: layers[layer].coords, color: 'red', key: layers[layer].name }));
-                }
-            mapLayers.push(React.createElement(
-                leaflet.LayersControl.Overlay,
-                { key: layer,
-                    name: layer,
-                    checked: true },
-                React.createElement(
-                    leaflet.FeatureGroup,
-                    { key: layer },
-                    layerElement
-                )
-            ));
         }
-        return mapLayers;
+        layers.push(React.createElement(
+            leaflet.LayersControl.Overlay,
+            {
+                key: 'userLayer',
+                name: 'Show other users',
+                checked: true },
+            React.createElement(
+                leaflet.FeatureGroup,
+                { key: 'userLayer' },
+                userLayer
+            )
+        ));
+        return layers;
     }
 
     renderMapWithLayers() {
@@ -92150,14 +92134,15 @@ class Map extends React.Component {
 
         var center = this.props.centerPosition;
 
-        // Center on a freecycler if one has been selected from the list view
-        if (this.props.selectedFreecyclerId != null) {
-            var freecyclers = layers.freecyclers.items;
-            for (var i = freecyclers.length - 1; i >= 0; i--) {
-                if (freecyclers[i].id == this.props.selectedFreecyclerId) {
-                    if (freecyclers[i].shareLocation) {
-                        // If the freecycler's position is public, move map to freecycler
-                        center = freecyclers[i].coords;
+        // Center on a user if one has been selected from the list view
+        if (this.props.selectedUserId != null) {
+            var users = this.props.users;
+            for (var i = users.length - 1; i >= 0; i--) {
+                var user = users[i];
+                if (user.id == this.props.selectedUserId) {
+                    if (user.shareLocation) {
+                        // If the user's position is public, move map to user
+                        center = user.coords;
                     } else {
                         // Otherwise just center on the user's position
                         center = this.props.userPosition;
@@ -92175,8 +92160,8 @@ class Map extends React.Component {
                 zoomControl: this.props.zoomable,
                 scrollWheelZoom: this.props.zoomable,
                 zoomDelta: this.props.zoomable == false ? 0 : 1,
-                onOverlayadd: this.handleOverlayadd,
-                onOverlayremove: this.handleOverlayremove },
+                onOverlayadd: this.handleOverlayAdd,
+                onOverlayremove: this.handleOverlayRemove },
             React.createElement(OfflineLayer.OfflineLayer, {
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 attribution: 'Map data \xA9 <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -92270,7 +92255,7 @@ module.exports = {
     Map: Map
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../business_components/offlineLayer.js":259,"../data_components/config.json":260,"../data_components/layers.json":261,"react":255,"react-leaflet":240}],267:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"../business_components/offlineLayer.js":259,"../data_components/config.json":260,"react":255,"react-leaflet":240}],266:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92310,7 +92295,7 @@ class offerForm extends React.Component {
                 null,
                 React.createElement(
                     Ons.ListItem,
-                    null,
+                    { id: 'offer-description-title-li' },
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
@@ -92324,7 +92309,7 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    null,
+                    { id: 'offer-description-textarea-li' },
                     React.createElement(
                         'p',
                         null,
@@ -92337,7 +92322,7 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    null,
+                    { id: 'contact-information-title-li' },
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
@@ -92351,7 +92336,7 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    null,
+                    { id: 'contact-information-textarea-li' },
                     React.createElement(
                         'p',
                         null,
@@ -92374,7 +92359,7 @@ module.exports = {
     offerFormComponent: offerFormComponent
 };
 
-},{"../business_components/logger.js":258,"react":255,"react-onsenui":252}],268:[function(require,module,exports){
+},{"../business_components/logger.js":258,"react":255,"react-onsenui":252}],267:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92485,7 +92470,7 @@ class Settings extends React.Component {
                 null,
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'useLocation' },
+                    { id: 'use-location-li', key: 'useLocation' },
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -92505,7 +92490,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'useLocationText' },
+                    { id: 'use-location-text-li', key: 'useLocationText' },
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
@@ -92514,7 +92499,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'shareLocation' },
+                    { id: 'share-location-li', key: 'shareLocation' },
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -92534,7 +92519,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'shareLocationText' },
+                    { id: 'share-location-text-li', key: 'shareLocationText' },
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
@@ -92553,7 +92538,7 @@ module.exports = {
     settingsComponent: settingsComponent
 };
 
-},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"react":255,"react-onsenui":252}],269:[function(require,module,exports){
+},{"../business_components/locationManager.js":257,"../business_components/logger.js":258,"react":255,"react-onsenui":252}],268:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -92739,4 +92724,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[262]);
+},{}]},{},[261]);

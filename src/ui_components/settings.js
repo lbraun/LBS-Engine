@@ -106,7 +106,7 @@ class Settings extends React.Component {
         return (
             <Ons.Page>
                 <Ons.List>
-                    <Ons.ListItem key='useLocation'>
+                    <Ons.ListItem id='use-location-li' key='useLocation'>
                         <div className='left'>
                             <p>Use my location</p>
                         </div>
@@ -116,12 +116,12 @@ class Settings extends React.Component {
                                 onChange={this.handleUseLocationSettingChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='useLocationText'>
+                    <Ons.ListItem id='use-location-text-li' key='useLocationText'>
                         <div className="list-item__subtitle">
                             This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='shareLocation'>
+                    <Ons.ListItem id='share-location-li' key='shareLocation'>
                         <div className='left'>
                             <p>Share my location</p>
                         </div>
@@ -131,7 +131,7 @@ class Settings extends React.Component {
                                 onChange={this.handleShareLocationSettingChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='shareLocationText'>
+                    <Ons.ListItem id='share-location-text-li' key='shareLocationText'>
                         <div className="list-item__subtitle">
                             This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.
                         </div>

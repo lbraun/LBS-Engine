@@ -1,0 +1,60 @@
+{
+    "success": true,
+    "users": [
+        {
+            "id": 1,
+            "coords": [
+                51.97,
+                7.62
+            ],
+            "name": "Heinz",
+            "offerDescription": "ketchup",
+            "contactInformation": "heinz@wwu.de",
+            "shareLocation": false
+        },
+        {
+            "id": 2,
+            "coords": [
+                51.95,
+                7.62
+            ],
+            "name": "Barbara",
+            "offerDescription": "rhubarb cake",
+            "contactInformation": "barbara@wwu.de",
+            "shareLocation": true
+        },
+        {
+            "id": 3,
+            "coords": [
+                51.969,
+                7.595
+            ],
+            "name": "Lucas",
+            "offerDescription": "bike",
+            "contactInformation": "lbraun@wwu.de",
+            "shareLocation": true
+        },
+        {
+            "id": 4,
+            "coords": [
+                51.969,
+                7.597
+            ],
+            "name": "Vanesa",
+            "offerDescription": "potatoes",
+            "contactInformation": "vanesaperez@wwu.de",
+            "shareLocation": true
+        },
+        {
+            "id": 5,
+            "coords": [
+                51.93,
+                7.67
+            ],
+            "name": "Denny",
+            "offerDescription": "a jacket",
+            "contactInformation": "denny@wwu.de",
+            "shareLocation": true
+        }
+    ]
+}
