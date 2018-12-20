@@ -91417,7 +91417,10 @@ class App extends React.Component {
                 var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
                 var coords = [lat, long];
 
-                var users = app.updateDistancesToUsers(coords, app.state.users);
+                var users = [];
+                if (app.state.users) {
+                    app.updateDistancesToUsers(coords, app.state.users);
+                }
 
                 app.setState({
                     userPosition: coords,
@@ -91453,10 +91456,10 @@ class App extends React.Component {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
 
         var users = [];
-        fetch("http://localhost:3001/api/getUsers").then(res => res.json()).then(result => {
+        fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
             this.setState({
                 usersAreLoaded: true,
-                users: result.users
+                users: result.users || []
             });
         }, error => {
             console.log("There was an error loading the users!");
@@ -91868,22 +91871,29 @@ class List extends React.Component {
 
     // Render the list
     renderUserList() {
+        var listItems = [];
+
         if (this.props.errorLoadingUsers) {
-            return React.createElement(
-                'div',
-                null,
+            listItems.push(React.createElement(
+                Ons.ListItem,
+                { key: '0' },
                 'Error: ',
                 this.state.error.message
-            );
+            ));
         } else if (!this.props.usersAreLoaded) {
-            return React.createElement(
-                'div',
-                null,
+            listItems.push(React.createElement(
+                Ons.ListItem,
+                { key: '0' },
                 'Loading...'
-            );
+            ));
+        } else if (this.props.users.length == 0) {
+            listItems.push(React.createElement(
+                Ons.ListItem,
+                { key: '0' },
+                'There are no other users right now. Please check back later!'
+            ));
         } else {
             var users = this.props.users;
-            var listItems = [];
 
             for (let i in users) {
                 var user = users[i];
@@ -91918,13 +91928,13 @@ class List extends React.Component {
                     )
                 ));
             }
-
-            return React.createElement(
-                Ons.List,
-                null,
-                listItems
-            );
         }
+
+        return React.createElement(
+            Ons.List,
+            null,
+            listItems
+        );
     }
 
     render() {

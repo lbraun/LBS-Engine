@@ -78,7 +78,10 @@ class App extends React.Component {
                 var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
                 var coords = [lat, long];
 
-                var users = app.updateDistancesToUsers(coords, app.state.users);
+                var users = []
+                if (app.state.users) {
+                    app.updateDistancesToUsers(coords, app.state.users);
+                }
 
                 app.setState({
                     userPosition: coords,
@@ -115,13 +118,13 @@ class App extends React.Component {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
 
         var users = [];
-        fetch("http://localhost:3001/api/getUsers")
+        fetch("https://geofreebie-backend.herokuapp.com/api/users")
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         usersAreLoaded: true,
-                        users: result.users
+                        users: result.users || []
                     });
                 },
                 (error) => {

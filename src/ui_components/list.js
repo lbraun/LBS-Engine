@@ -28,13 +28,29 @@ class List extends React.Component {
 
     // Render the list
     renderUserList() {
+        var listItems = [];
+
         if (this.props.errorLoadingUsers) {
-            return <div>Error: {this.state.error.message}</div>;
+            listItems.push(
+                <Ons.ListItem key="0">
+                    Error: {this.state.error.message}
+                </Ons.ListItem>
+            );
         } else if (!this.props.usersAreLoaded) {
-            return <div>Loading...</div>;
+            listItems.push(
+                <Ons.ListItem key="0">
+                    Loading...
+                </Ons.ListItem>
+            );
+        } else if (this.props.users.length == 0) {
+            listItems.push(
+                <Ons.ListItem key="0">
+                    There are no other users in the system right now.
+                    Please check back later!
+                </Ons.ListItem>
+            );
         } else {
             var users = this.props.users;
-            var listItems = [];
 
             for (let i in users) {
                 var user = users[i];
@@ -59,13 +75,13 @@ class List extends React.Component {
                     </Ons.ListItem>
                 )
             }
-
-            return (
-                <Ons.List>
-                    {listItems}
-                </Ons.List>
-            )
         }
+
+        return (
+            <Ons.List>
+                {listItems}
+            </Ons.List>
+        )
     }
 
     render() {
