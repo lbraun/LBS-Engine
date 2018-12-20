@@ -91314,8 +91314,8 @@ module.exports={
         "externalData": false,
         "layerControl": true,
         "numberOfImages": 3,
-        "useLocation": true, // TODO: set this to false before going live
-        "shareLocation": true // TODO: set this to false before going live
+        "useLocation": true,
+        "shareLocation": true
     },
     "map": {
         "center": [51.962522, 7.625615],
