@@ -91404,7 +91404,8 @@ class App extends React.Component {
             useLocation: config.app.useLocation,
             shareLocation: config.app.shareLocation,
             notificationLog: [],
-            currentTab: "About"
+            currentTab: "About",
+            currentUserId: 3
         };
 
         // Update the user's position on the map whenever a new position is reported by the device
@@ -91452,7 +91453,15 @@ class App extends React.Component {
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
 
+        // Fetch updated list of active users
         fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
+            // Remove current user from the list
+            for (var i = result.length - 1; i >= 0; --i) {
+                if (result[i].id == this.state.currentUserId) {
+                    result.splice(i, 1);
+                }
+            }
+
             this.setState({
                 usersAreLoaded: true,
                 users: result || []
@@ -91973,7 +91982,7 @@ class Map extends React.Component {
             position: config.map.center,
             zoom: config.map.zoom
 
-            // Define marker symbol for the user position marker
+            // Define marker symbol for the current user's position
         };this.positionMarker = L.icon({
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
@@ -91981,7 +91990,7 @@ class Map extends React.Component {
             popupAnchor: [0, -50]
         });
 
-        // Define marker symbol for the user marker
+        // Define marker symbol for other users' positions
         this.userMarker = L.icon({
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],

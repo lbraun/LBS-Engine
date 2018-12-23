@@ -64,7 +64,8 @@ class App extends React.Component {
             useLocation: config.app.useLocation,
             shareLocation: config.app.shareLocation,
             notificationLog: [],
-            currentTab: "About"
+            currentTab: "About",
+            currentUserId: 3,
         };
 
 
@@ -114,10 +115,18 @@ class App extends React.Component {
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
 
+        // Fetch updated list of active users
         fetch("https://geofreebie-backend.herokuapp.com/api/users")
             .then(res => res.json())
             .then(
                 (result) => {
+                    // Remove current user from the list
+                    for (var i = result.length - 1; i >= 0; --i) {
+                        if (result[i].id == this.state.currentUserId) {
+                            result.splice(i, 1);
+                        }
+                    }
+
                     this.setState({
                         usersAreLoaded: true,
                         users: result || []
