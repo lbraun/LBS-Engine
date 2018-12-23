@@ -24,7 +24,7 @@ class Map extends React.Component {
             zoom: config.map.zoom,
         }
 
-        // Define marker symbol for the user position marker
+        // Define marker symbol for the current user's position
         this.positionMarker = L.icon({
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
@@ -32,7 +32,7 @@ class Map extends React.Component {
             popupAnchor: [0, -50],
         });
 
-        // Define marker symbol for the user marker
+        // Define marker symbol for other users' positions
         this.userMarker = L.icon({
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
