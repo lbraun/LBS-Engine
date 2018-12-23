@@ -91396,7 +91396,9 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             errorLoadingUsers: null,
+            errorUpdatingUser: null,
             usersAreLoaded: false,
+            currentUserIsLoaded: false,
             users: [],
             userPosition: null,
             centerPosition: config.map.center,
@@ -91405,7 +91407,8 @@ class App extends React.Component {
             shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About",
-            currentUserId: 3
+            currentUserId: "5c1f6a0e9314b10016a091c0",
+            currentUser: null
         };
 
         // Update the user's position on the map whenever a new position is reported by the device
@@ -91453,18 +91456,24 @@ class App extends React.Component {
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
 
+        var currentUser;
+
         // Fetch updated list of active users
         fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
-            // Remove current user from the list
+            // Store current user and remove it from the list
             for (var i = result.length - 1; i >= 0; --i) {
-                if (result[i].id == this.state.currentUserId) {
+                if (result[i]._id == this.state.currentUserId) {
+                    currentUser = result[i];
                     result.splice(i, 1);
                 }
             }
 
             this.setState({
-                usersAreLoaded: true,
-                users: result || []
+                currentUser: currentUser,
+                currentUserIsLoaded: true,
+                offerDescription: currentUser.offerDescription,
+                users: result || [],
+                usersAreLoaded: true
             });
         }, error => {
             console.log("There was an error loading the users!");
@@ -91567,9 +91576,30 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {String} description string value after the change
      */
-    handleOfferDescriptionChange(description) {}
-    // TODO: Add logic to publish changes when we have a way to publish user info
+    handleOfferDescriptionChange(offerDescription) {
+        var updatedBody = this.state.currentUser;
+        updatedBody.offerDescription = offerDescription;
 
+        // Make the call to the update API
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + updatedBody._id;
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(updatedBody),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(res => res.json()).then(result => {
+            this.setState({
+                currentUser: result,
+                offerDescription: result.offerDescription,
+                currentUserIsLoaded: true
+            });
+        }, error => {
+            console.log("There was an error updating the user!");
+            console.log(error);
+            this.setState({
+                errorUpdatingUser: error
+            });
+        });
+    }
 
     /**
      * Handle the change of the parameter from the lower level
