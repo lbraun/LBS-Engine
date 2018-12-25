@@ -255,7 +255,9 @@ class App extends React.Component {
      * @param {String} contactInformation string value after the change
      */
     handleContactInformationChange(contactInformation) {
-        // TODO: Add logic to publish changes when we have a way to publish user info
+        var updatedUser = this.state.currentUser;
+        updatedUser.contactInformation = contactInformation;
+        this.pushUserUpdate(updatedUser);
     }
 
     /**
@@ -273,6 +275,10 @@ class App extends React.Component {
      * @param {User} updatedUser object, representing the user in its most up-to-date form
      */
     pushUserUpdate(updatedUser) {
+        this.setState({
+            currentUserIsLoaded: false,
+        });
+
         // Make the call to the update API
         var url = "https://geofreebie-backend.herokuapp.com/api/users/" + updatedUser._id;
         fetch(url, {
@@ -286,6 +292,7 @@ class App extends React.Component {
                     this.setState({
                         currentUser: result,
                         offerDescription: result.offerDescription,
+                        contactInformation: result.contactInformation,
                         currentUserIsLoaded: true,
                     });
                 },
@@ -365,67 +372,70 @@ class App extends React.Component {
             // Map element
             {
                 content: <map.Map
-                                logging={this.state.logging}
-                                externalData={this.state.externalData}
-                                useLocation={this.state.useLocation}
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}
-                                zoomable={this.state.zoomable}
-                                userPosition={this.state.userPosition}
-                                userPositionMarkerText={this.state.userPositionMarkerText}
-                                centerPosition={this.state.centerPosition}
-                                selectedUserId={this.state.selectedUserId}
-                                calculateDistanceTo={this.calculateDistanceTo}
-                                users={this.state.users}
-                                key='map' />,
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    useLocation={this.state.useLocation}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    userPosition={this.state.userPosition}
+                    userPositionMarkerText={this.state.userPositionMarkerText}
+                    centerPosition={this.state.centerPosition}
+                    selectedUserId={this.state.selectedUserId}
+                    calculateDistanceTo={this.calculateDistanceTo}
+                    users={this.state.users}
+                    key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
             },
             // List element
             {
                 content: <list.List
-                                logging={this.state.logging}
-                                externalData={this.state.externalData}
-                                useLocation={this.state.useLocation}
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}
-                                zoomable={this.state.zoomable}
-                                userPosition={this.state.userPosition}
-                                userPositionMarkerText={this.state.userPositionMarkerText}
-                                centerPosition={this.state.centerPosition}
-                                selectedUserId={this.state.selectedUserId}
-                                onListItemClick={this.handleListItemClick}
-                                usersAreLoaded={this.state.usersAreLoaded}
-                                errorLoadingUsers={this.state.errorLoadingUsers}
-                                users={this.state.users}
-                                key='list' />,
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    useLocation={this.state.useLocation}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    userPosition={this.state.userPosition}
+                    userPositionMarkerText={this.state.userPositionMarkerText}
+                    centerPosition={this.state.centerPosition}
+                    selectedUserId={this.state.selectedUserId}
+                    onListItemClick={this.handleListItemClick}
+                    usersAreLoaded={this.state.usersAreLoaded}
+                    errorLoadingUsers={this.state.errorLoadingUsers}
+                    users={this.state.users}
+                    key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },
             // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <settings.Settings
-                                onLoggingChange={this.handleLoggingChange}
-                                onDataChange={this.handleExternalDataChange}
-                                onLayerControlChange={this.handleLayerControlChange}
-                                onDragMapChange={this.handleDragMapChange}
-                                onZoomMapChange={this.handleZoomMapChange}
-                                onUseLocationSettingChange={this.handleUseLocationSettingChange}
-                                onShareLocationSettingChange={this.handleShareLocationSettingChange}
-                                useLocation={this.state.useLocation}
-                                shareLocation={this.state.shareLocation}
-                                logging={this.state.logging}
-                                externalData={this.state.externalData}
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}
-                                zoomable={this.state.zoomable}
-                                key='settings' />,
+                    onLoggingChange={this.handleLoggingChange}
+                    onDataChange={this.handleExternalDataChange}
+                    onLayerControlChange={this.handleLayerControlChange}
+                    onDragMapChange={this.handleDragMapChange}
+                    onZoomMapChange={this.handleZoomMapChange}
+                    onUseLocationSettingChange={this.handleUseLocationSettingChange}
+                    onShareLocationSettingChange={this.handleShareLocationSettingChange}
+                    useLocation={this.state.useLocation}
+                    shareLocation={this.state.shareLocation}
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    key='settings' />,
                 tab: <Ons.Tab label='Settings' icon='md-settings' key='settings' style={{display: 'none'}}/>
             },
             // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <offerForm.offerForm
-                                onOfferDescriptionChange={this.handleOfferDescriptionChange}
-                                onContactInformationChange={this.handleContactInformationChange}
-                                key='offerForm' />,
+                    onOfferDescriptionChange={this.handleOfferDescriptionChange}
+                    onContactInformationChange={this.handleContactInformationChange}
+                    pushUserUpdate={this.pushUserUpdate}
+                    currentUserIsLoaded={this.state.currentUserIsLoaded}
+                    currentUser={this.state.currentUser}
+                    key='offerForm' />,
                 tab: <Ons.Tab label='My Offers' icon='md-edit' key='offerForm' style={{display: 'none'}}/>
             },
             // Help page iframe

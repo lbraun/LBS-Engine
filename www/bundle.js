@@ -91587,9 +91587,11 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {String} contactInformation string value after the change
      */
-    handleContactInformationChange(contactInformation) {}
-    // TODO: Add logic to publish changes when we have a way to publish user info
-
+    handleContactInformationChange(contactInformation) {
+        var updatedUser = this.state.currentUser;
+        updatedUser.contactInformation = contactInformation;
+        this.pushUserUpdate(updatedUser);
+    }
 
     /**
      * Handle the change of the parameter from the lower level
@@ -91606,6 +91608,10 @@ class App extends React.Component {
      * @param {User} updatedUser object, representing the user in its most up-to-date form
      */
     pushUserUpdate(updatedUser) {
+        this.setState({
+            currentUserIsLoaded: false
+        });
+
         // Make the call to the update API
         var url = "https://geofreebie-backend.herokuapp.com/api/users/" + updatedUser._id;
         fetch(url, {
@@ -91616,6 +91622,7 @@ class App extends React.Component {
             this.setState({
                 currentUser: result,
                 offerDescription: result.offerDescription,
+                contactInformation: result.contactInformation,
                 currentUserIsLoaded: true
             });
         }, error => {
@@ -91756,6 +91763,9 @@ class App extends React.Component {
             content: React.createElement(offerForm.offerForm, {
                 onOfferDescriptionChange: this.handleOfferDescriptionChange,
                 onContactInformationChange: this.handleContactInformationChange,
+                pushUserUpdate: this.pushUserUpdate,
+                currentUserIsLoaded: this.state.currentUserIsLoaded,
+                currentUser: this.state.currentUser,
                 key: 'offerForm' }),
             tab: React.createElement(Ons.Tab, { label: 'My Offers', icon: 'md-edit', key: 'offerForm', style: { display: 'none' } })
         },
@@ -92019,9 +92029,10 @@ class Map extends React.Component {
         this.state = {
             position: config.map.center,
             zoom: config.map.zoom
+        };
 
-            // Define marker symbol for the current user's position
-        };this.positionMarker = L.icon({
+        // Define marker symbol for the current user's position
+        this.positionMarker = L.icon({
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
             iconAnchor: [25, 48],
@@ -92319,18 +92330,30 @@ class offerForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
-        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
+            offerDescription: "",
+            contactInformation: ""
+        };
     }
 
-    // Handle updates to offer description
-    handleOfferDescriptionChange(e) {
-        this.props.onOfferDescriptionChange(e.target.value);
-    }
+    /**
+     * Handle the change of a user property
+     * @param {Event} e the react event object
+     * @param {String} fieldName string name of the field that was changed
+     */
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
 
-    // Handle updates to contact information
-    handleContactInformationChange(e) {
-        this.props.onContactInformationChange(e.target.value);
+        this.setState({
+            [name]: value
+        });
+
+        var updatedUser = this.props.currentUser;
+        updatedUser[name] = value;
+        this.props.pushUserUpdate(updatedUser);
     }
 
     render() {
@@ -92362,9 +92385,11 @@ class offerForm extends React.Component {
                         null,
                         React.createElement('textarea', {
                             id: 'offerDescription',
+                            name: 'offerDescription',
                             className: 'textarea textarea--transparent',
                             placeholder: 'Offer description',
-                            onChange: this.handleOfferDescriptionChange })
+                            value: this.state.offerDescription,
+                            onChange: this.handleInputChange })
                     )
                 ),
                 React.createElement(
@@ -92389,9 +92414,20 @@ class offerForm extends React.Component {
                         null,
                         React.createElement('textarea', {
                             id: 'contactInformation',
+                            name: 'contactInformation',
                             className: 'textarea textarea--transparent',
                             placeholder: 'Contact information',
-                            onChange: this.handleContactInformationChange })
+                            value: this.state.contactInformation,
+                            onChange: this.handleInputChange })
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__subtitle' },
+                        this.props.currentUserIsLoaded ? "✔︎" : "Syncing..."
                     )
                 )
             )

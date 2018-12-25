@@ -22,7 +22,7 @@ class Map extends React.Component {
         this.state = {
             position: config.map.center,
             zoom: config.map.zoom,
-        }
+        };
 
         // Define marker symbol for the current user's position
         this.positionMarker = L.icon({

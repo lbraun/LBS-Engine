@@ -15,18 +15,30 @@ class offerForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
-        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.state = {
+            offerDescription: "",
+            contactInformation: "",
+        };
     }
 
-    // Handle updates to offer description
-    handleOfferDescriptionChange(e) {
-        this.props.onOfferDescriptionChange(e.target.value);
-    }
+    /**
+     * Handle the change of a user property
+     * @param {Event} e the react event object
+     * @param {String} fieldName string name of the field that was changed
+     */
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
 
-    // Handle updates to contact information
-    handleContactInformationChange(e) {
-        this.props.onContactInformationChange(e.target.value);
+        this.setState({
+          [name]: value
+        });
+
+        var updatedUser = this.props.currentUser;
+        updatedUser[name] = value;
+        this.props.pushUserUpdate(updatedUser);
     }
 
     render() {
@@ -45,9 +57,11 @@ class offerForm extends React.Component {
                         <p>
                             <textarea
                                 id="offerDescription"
+                                name="offerDescription"
                                 className="textarea textarea--transparent"
                                 placeholder="Offer description"
-                                onChange={this.handleOfferDescriptionChange}>
+                                value={this.state.offerDescription}
+                                onChange={this.handleInputChange}>
                             </textarea>
                         </p>
                     </Ons.ListItem>
@@ -64,11 +78,18 @@ class offerForm extends React.Component {
                         <p>
                             <textarea
                                 id="contactInformation"
+                                name="contactInformation"
                                 className="textarea textarea--transparent"
                                 placeholder="Contact information"
-                                onChange={this.handleContactInformationChange}>
+                                value={this.state.contactInformation}
+                                onChange={this.handleInputChange}>
                             </textarea>
                         </p>
+                    </Ons.ListItem>
+                    <Ons.ListItem>
+                        <div className="list-item__subtitle">
+                            {this.props.currentUserIsLoaded ? "✔︎" : "Syncing..."}
+                        </div>
                     </Ons.ListItem>
                 </Ons.List>
             </Ons.Page>
