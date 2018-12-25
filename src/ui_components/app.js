@@ -37,6 +37,7 @@ class App extends React.Component {
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleUseLocationSettingChange =  this.handleUseLocationSettingChange.bind(this);
         this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
+        this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
         this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
@@ -56,7 +57,7 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             errorLoadingUsers: null,
-            errorUpdatingUser: null,
+            errorSyncingUser: null,
             usersAreLoaded: false,
             currentUserIsLoaded: false,
             users: [],
@@ -244,33 +245,9 @@ class App extends React.Component {
      * @param {String} description string value after the change
      */
     handleOfferDescriptionChange(offerDescription) {
-        var updatedBody = this.state.currentUser;
-        updatedBody.offerDescription = offerDescription;
-
-        // Make the call to the update API
-        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + updatedBody._id;
-        fetch(url, {
-            method: "PUT",
-            body: JSON.stringify(updatedBody),
-            headers: {'Content-Type': 'application/json'},
-        })
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        currentUser: result,
-                        offerDescription: result.offerDescription,
-                        currentUserIsLoaded: true,
-                    });
-                },
-                (error) => {
-                    console.log("There was an error updating the user!");
-                    console.log(error);
-                    this.setState({
-                        errorUpdatingUser: error
-                    });
-                }
-            )
+        var updatedUser = this.state.currentUser;
+        updatedUser.offerDescription = offerDescription;
+        this.pushUserUpdate(updatedUser);
     }
 
     /**
@@ -289,6 +266,37 @@ class App extends React.Component {
         this.setState({shareLocation: bool});
         console.log("Changed location privacy");
         // TODO: Add logic to publish changes when we have a way to publish user info
+    }
+
+    /**
+     * Push the provided user to the database server
+     * @param {User} updatedUser object, representing the user in its most up-to-date form
+     */
+    pushUserUpdate(updatedUser) {
+        // Make the call to the update API
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + updatedUser._id;
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(updatedUser),
+            headers: {'Content-Type': 'application/json'},
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        currentUser: result,
+                        offerDescription: result.offerDescription,
+                        currentUserIsLoaded: true,
+                    });
+                },
+                (error) => {
+                    console.log("There was an error updating the user!");
+                    console.log(error);
+                    this.setState({
+                        errorSyncingUser: error
+                    });
+                }
+            )
     }
 
 
