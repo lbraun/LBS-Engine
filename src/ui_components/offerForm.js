@@ -9,32 +9,23 @@ const logger = require('../business_components/logger.js');
 
 
 /**
- * Offer form where the user can list items they are giving away. Modifies the state of the offerForm
+ * Offer form where the user can list items they are giving away.
  */
 class offerForm extends React.Component {
 
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.state = {
-            offerDescription: "",
-            contactInformation: "",
-        };
     }
 
     /**
      * Handle the change of a user property
      * @param {Event} e the react event object
-     * @param {String} fieldName string name of the field that was changed
      */
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-        this.setState({
-          [name]: value
-        });
 
         var updatedUser = this.props.currentUser;
         updatedUser[name] = value;
@@ -60,7 +51,7 @@ class offerForm extends React.Component {
                                 name="offerDescription"
                                 className="textarea textarea--transparent"
                                 placeholder="Offer description"
-                                value={this.state.offerDescription}
+                                value={this.props.currentUser.offerDescription}
                                 onChange={this.handleInputChange}>
                             </textarea>
                         </p>
@@ -81,7 +72,7 @@ class offerForm extends React.Component {
                                 name="contactInformation"
                                 className="textarea textarea--transparent"
                                 placeholder="Contact information"
-                                value={this.state.contactInformation}
+                                value={this.props.currentUser.contactInformation}
                                 onChange={this.handleInputChange}>
                             </textarea>
                         </p>

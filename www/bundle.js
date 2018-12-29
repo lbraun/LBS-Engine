@@ -91376,11 +91376,8 @@ class App extends React.Component {
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
-        this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
-        this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
-        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
@@ -91401,34 +91398,65 @@ class App extends React.Component {
             usersAreLoaded: false,
             currentUserIsLoaded: false,
             users: [],
-            userPosition: null,
             centerPosition: config.map.center,
             selectedUserId: null,
-            useLocation: config.app.useLocation,
-            shareLocation: config.app.shareLocation,
             notificationLog: [],
             currentTab: "About",
-            currentUserId: "5c1f6a0e9314b10016a091c0",
-            currentUser: null
+            currentUserId: "5c23c5b2c3972800172d3e91",
+            currentUser: {
+                useLocation: config.app.useLocation,
+                shareLocation: config.app.shareLocation,
+                offerDescription: "",
+                contactInformation: "",
+                coords: null
+            }
         };
+
+        var currentUser;
+
+        fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
+            // Store current user and remove it from the list
+            for (var i = result.length - 1; i >= 0; --i) {
+                if (result[i]._id == this.state.currentUserId) {
+                    currentUser = result[i];
+                    result.splice(i, 1);
+                }
+            }
+
+            this.setState({
+                currentUser: currentUser,
+                currentUserIsLoaded: true,
+                users: result || [],
+                usersAreLoaded: true
+            });
+        }, error => {
+            console.log("There was an error loading the users!");
+            console.log(error);
+            this.setState({
+                usersAreLoaded: true,
+                errorLoadingUsers: error
+            });
+        });
 
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            if (app.state.useLocation) {
+            if (app.state.currentUser.useLocation) {
                 // If the user has enabled location tracking, use it
                 var lat = position.coords.latitude;
                 var long = position.coords.longitude;
-                var message = `Your current coordinates are ${lat}, ${long} (lat, long).`;
                 var coords = [lat, long];
+                var message = "You are here!";
 
                 var users = app.updateDistancesToUsers(coords, app.state.users);
 
                 app.setState({
-                    userPosition: coords,
-                    userPositionMarkerText: message,
                     users: users
                 });
+
+                var updatedUser = app.state.currentUser;
+                updatedUser.coords = coords;
+                app.pushUserUpdate(updatedUser);
 
                 var closestUser = app.state.users[0];
                 if (closestUser) {
@@ -91442,10 +91470,9 @@ class App extends React.Component {
                 }
             } else {
                 // Otherwise set user position to null
-                app.setState({
-                    userPosition: null,
-                    userPositionMarkerText: null
-                });
+                var updatedUser = app.state.currentUser;
+                updatedUser.coords = null;
+                app.pushUserUpdate(updatedUser);
             }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
@@ -91472,7 +91499,6 @@ class App extends React.Component {
             this.setState({
                 currentUser: currentUser,
                 currentUserIsLoaded: true,
-                offerDescription: currentUser.offerDescription,
                 users: result || [],
                 usersAreLoaded: true
             });
@@ -91531,11 +91557,9 @@ class App extends React.Component {
     handleUseLocationSettingChange(bool) {
         if (!bool) {
             this.setState({
-                userPosition: null,
-                userPositionMarkerText: null
+                userPosition: null
             });
         }
-        this.setState({ useLocation: bool });
     }
 
     /**
@@ -91574,55 +91598,23 @@ class App extends React.Component {
     }
 
     /**
-     * Handle the change of the parameter from the lower level
-     * @param {String} description string value after the change
-     */
-    handleOfferDescriptionChange(offerDescription) {
-        var updatedUser = this.state.currentUser;
-        updatedUser.offerDescription = offerDescription;
-        this.pushUserUpdate(updatedUser);
-    }
-
-    /**
-     * Handle the change of the parameter from the lower level
-     * @param {String} contactInformation string value after the change
-     */
-    handleContactInformationChange(contactInformation) {
-        var updatedUser = this.state.currentUser;
-        updatedUser.contactInformation = contactInformation;
-        this.pushUserUpdate(updatedUser);
-    }
-
-    /**
-     * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change
-     */
-    handleShareLocationSettingChange(bool) {
-        this.setState({ shareLocation: bool });
-        console.log("Changed location privacy");
-        // TODO: Add logic to publish changes when we have a way to publish user info
-    }
-
-    /**
      * Push the provided user to the database server
      * @param {User} updatedUser object, representing the user in its most up-to-date form
      */
     pushUserUpdate(updatedUser) {
         this.setState({
+            currentUser: updatedUser,
             currentUserIsLoaded: false
         });
 
         // Make the call to the update API
-        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + updatedUser._id;
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
         fetch(url, {
             method: "PUT",
             body: JSON.stringify(updatedUser),
             headers: { 'Content-Type': 'application/json' }
         }).then(res => res.json()).then(result => {
             this.setState({
-                currentUser: result,
-                offerDescription: result.offerDescription,
-                contactInformation: result.contactInformation,
                 currentUserIsLoaded: true
             });
         }, error => {
@@ -91676,7 +91668,7 @@ class App extends React.Component {
      * @param {Array} coordinates (latitude, longitude) identifying the position
      */
     calculateDistanceTo(position) {
-        return this.calculateDistanceBetween(this.state.userPosition, position);
+        return this.calculateDistanceBetween(this.state.currentUser.coords, position);
     }
 
     /**
@@ -91705,12 +91697,10 @@ class App extends React.Component {
             content: React.createElement(map.Map, {
                 logging: this.state.logging,
                 externalData: this.state.externalData,
-                useLocation: this.state.useLocation,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
-                userPosition: this.state.userPosition,
-                userPositionMarkerText: this.state.userPositionMarkerText,
+                currentUser: this.state.currentUser,
                 centerPosition: this.state.centerPosition,
                 selectedUserId: this.state.selectedUserId,
                 calculateDistanceTo: this.calculateDistanceTo,
@@ -91723,12 +91713,10 @@ class App extends React.Component {
             content: React.createElement(list.List, {
                 logging: this.state.logging,
                 externalData: this.state.externalData,
-                useLocation: this.state.useLocation,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
-                userPosition: this.state.userPosition,
-                userPositionMarkerText: this.state.userPositionMarkerText,
+                currentUser: this.state.currentUser,
                 centerPosition: this.state.centerPosition,
                 selectedUserId: this.state.selectedUserId,
                 onListItemClick: this.handleListItemClick,
@@ -91747,9 +91735,8 @@ class App extends React.Component {
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
                 onUseLocationSettingChange: this.handleUseLocationSettingChange,
-                onShareLocationSettingChange: this.handleShareLocationSettingChange,
-                useLocation: this.state.useLocation,
-                shareLocation: this.state.shareLocation,
+                pushUserUpdate: this.pushUserUpdate,
+                currentUser: this.state.currentUser,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 layerControl: this.state.layerControl,
@@ -91761,8 +91748,6 @@ class App extends React.Component {
         // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
         {
             content: React.createElement(offerForm.offerForm, {
-                onOfferDescriptionChange: this.handleOfferDescriptionChange,
-                onContactInformationChange: this.handleContactInformationChange,
                 pushUserUpdate: this.pushUserUpdate,
                 currentUserIsLoaded: this.state.currentUserIsLoaded,
                 currentUser: this.state.currentUser,
@@ -91950,7 +91935,7 @@ class List extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = !!(user.shareLocation || this.props.userPosition);
+                var clickable = !!(user.shareLocation || this.props.currentUser.coords);
 
                 listItems.push(React.createElement(
                     Ons.ListItem,
@@ -91976,7 +91961,7 @@ class List extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'right' },
-                        this.props.userPosition && user.distanceToUser ? `${user.distanceToUser} m` : null,
+                        this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null,
                         clickable ? null : "Location is private"
                     )
                 ));
@@ -92140,7 +92125,7 @@ class Map extends React.Component {
                             id: user.id,
                             isOpen: true,
                             key: user.name,
-                            center: this.props.userPosition,
+                            center: this.props.currentUser.coords,
                             radius: this.props.calculateDistanceTo(user.coords) },
                         React.createElement(
                             leaflet.Popup,
@@ -92172,11 +92157,11 @@ class Map extends React.Component {
 
     renderMapWithLayers() {
         // Check if the user's position is available
-        const marker = this.props.userPosition ? React.createElement(
+        const marker = this.props.currentUser.coords ? React.createElement(
             ExtendedMarker,
             {
                 id: "user",
-                position: this.props.userPosition,
+                position: this.props.currentUser.coords,
                 isOpen: false,
                 icon: this.positionMarker },
             React.createElement(
@@ -92185,7 +92170,7 @@ class Map extends React.Component {
                 React.createElement(
                     'span',
                     null,
-                    this.props.userPositionMarkerText
+                    'You are here!'
                 )
             )
         ) : null;
@@ -92203,7 +92188,7 @@ class Map extends React.Component {
                         center = user.coords;
                     } else {
                         // Otherwise just center on the user's position
-                        center = this.props.userPosition;
+                        center = this.props.currentUser.coords;
                     }
                 }
             }
@@ -92241,16 +92226,16 @@ class Map extends React.Component {
             return this.renderMapWithLayers();
         } else {
             // Check if the location is enabled and available
-            const marker = this.props.useLocation ? React.createElement(
+            const marker = this.props.currentUser.useLocation ? React.createElement(
                 leaflet.Marker,
-                { position: this.props.userPosition, icon: this.positionMarker },
+                { position: this.props.currentUser.coords, icon: this.positionMarker },
                 React.createElement(
                     leaflet.Popup,
                     null,
                     React.createElement(
                         'span',
                         null,
-                        this.props.userPositionMarkerText
+                        'You are here!'
                     )
                 )
             ) : null;
@@ -92324,32 +92309,23 @@ const Ons = require('react-onsenui');
 const logger = require('../business_components/logger.js');
 
 /**
- * Offer form where the user can list items they are giving away. Modifies the state of the offerForm
+ * Offer form where the user can list items they are giving away.
  */
 class offerForm extends React.Component {
 
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.state = {
-            offerDescription: "",
-            contactInformation: ""
-        };
     }
 
     /**
      * Handle the change of a user property
      * @param {Event} e the react event object
-     * @param {String} fieldName string name of the field that was changed
      */
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
-        this.setState({
-            [name]: value
-        });
 
         var updatedUser = this.props.currentUser;
         updatedUser[name] = value;
@@ -92388,7 +92364,7 @@ class offerForm extends React.Component {
                             name: 'offerDescription',
                             className: 'textarea textarea--transparent',
                             placeholder: 'Offer description',
-                            value: this.state.offerDescription,
+                            value: this.props.currentUser.offerDescription,
                             onChange: this.handleInputChange })
                     )
                 ),
@@ -92417,7 +92393,7 @@ class offerForm extends React.Component {
                             name: 'contactInformation',
                             className: 'textarea textarea--transparent',
                             placeholder: 'Contact information',
-                            value: this.state.contactInformation,
+                            value: this.props.currentUser.contactInformation,
                             onChange: this.handleInputChange })
                     )
                 ),
@@ -92462,11 +92438,10 @@ class Settings extends React.Component {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
         this.handleChangeLogging = this.handleChangeLogging.bind(this);
-        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
-        this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.createLog = this.createLog.bind(this);
     }
 
@@ -92519,11 +92494,6 @@ class Settings extends React.Component {
         this.props.onDataChange(e.target.checked);
     }
 
-    // Handle toggle for using GPS
-    handleUseLocationSettingChange(e) {
-        this.props.onUseLocationSettingChange(e.target.checked);
-    }
-
     // Handle toggle for layerControl
     handleChangeLayerControl(e) {
         this.props.onLayerControlChange(e.target.checked);
@@ -92539,9 +92509,23 @@ class Settings extends React.Component {
         this.props.onZoomMapChange(e.target.checked);
     }
 
-    //handle toggle of hiding/showing location
-    handleShareLocationSettingChange(e) {
-        this.props.onShareLocationSettingChange(e.target.checked);
+    /**
+     * Handle the change of a user setting
+     * @param {Event} e the react event object
+     */
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
+
+        var updatedUser = this.props.currentUser;
+        updatedUser[name] = value;
+        this.props.pushUserUpdate(updatedUser);
+
+        switch (name) {
+            case 'useLocation':
+                this.props.onUseLocationSettingChange(value);
+        }
     }
 
     render() {
@@ -92567,8 +92551,9 @@ class Settings extends React.Component {
                         'div',
                         { className: 'right' },
                         React.createElement(Ons.Switch, {
-                            checked: this.props.useLocation,
-                            onChange: this.handleUseLocationSettingChange })
+                            name: 'useLocation',
+                            checked: this.props.currentUser.useLocation,
+                            onChange: this.handleInputChange })
                     )
                 ),
                 React.createElement(
@@ -92596,8 +92581,9 @@ class Settings extends React.Component {
                         'div',
                         { className: 'right' },
                         React.createElement(Ons.Switch, {
-                            checked: this.props.shareLocation,
-                            onChange: this.handleShareLocationSettingChange })
+                            name: 'shareLocation',
+                            checked: this.props.currentUser.shareLocation,
+                            onChange: this.handleInputChange })
                     )
                 ),
                 React.createElement(
