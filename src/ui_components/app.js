@@ -72,8 +72,7 @@ class App extends React.Component {
             },
         };
 
-        var currentUser;
-
+        // Fetch all user data from database
         fetch("https://geofreebie-backend.herokuapp.com/api/users")
             .then(res => res.json())
             .then(
@@ -81,17 +80,19 @@ class App extends React.Component {
                     // Store current user and remove it from the list
                     for (var i = result.length - 1; i >= 0; --i) {
                         if (result[i]._id == this.state.currentUserId) {
-                            currentUser = result[i];
+                            var currentUser = result[i];
                             result.splice(i, 1);
+
+                            this.setState({
+                                currentUser: currentUser,
+                                currentUserIsLoaded: true,
+                                users: result || [],
+                                usersAreLoaded: true,
+                            });
+
+                            break;
                         }
                     }
-
-                    this.setState({
-                        currentUser: currentUser,
-                        currentUserIsLoaded: true,
-                        users: result || [],
-                        usersAreLoaded: true,
-                    });
                 },
                 (error) => {
                     console.log("There was an error loading the users!");
@@ -109,11 +110,7 @@ class App extends React.Component {
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
             if (app.state.currentUser.useLocation) {
                 // If the user has enabled location tracking, use it
-                var lat = position.coords.latitude;
-                var long = position.coords.longitude;
-                var coords = [lat, long];
-                var message = "You are here!"
-
+                var coords = [position.coords.latitude, position.coords.longitude];
                 var users = app.updateDistancesToUsers(coords, app.state.users);
 
                 app.setState({
@@ -150,38 +147,6 @@ class App extends React.Component {
 
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
-
-        var currentUser;
-
-        // Fetch updated list of active users
-        fetch("https://geofreebie-backend.herokuapp.com/api/users")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    // Store current user and remove it from the list
-                    for (var i = result.length - 1; i >= 0; --i) {
-                        if (result[i]._id == this.state.currentUserId) {
-                            currentUser = result[i];
-                            result.splice(i, 1);
-                        }
-                    }
-
-                    this.setState({
-                        currentUser: currentUser,
-                        currentUserIsLoaded: true,
-                        users: result || [],
-                        usersAreLoaded: true,
-                    });
-                },
-                (error) => {
-                    console.log("There was an error loading the users!");
-                    console.log(error);
-                    this.setState({
-                        usersAreLoaded: true,
-                        errorLoadingUsers: error
-                    });
-                }
-            )
     }
 
     /**
