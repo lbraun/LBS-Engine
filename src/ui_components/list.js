@@ -31,9 +31,15 @@ class List extends React.Component {
         var listItems = [];
 
         if (this.props.errorLoadingUsers) {
+            var errorMessage = this.props.errorLoadingUsers.message;
+
+            if (errorMessage == "Failed to fetch") {
+                errorMessage = "There was a problem finding people to list here. Perhaps you are not connected to the internet?"
+            }
+
             listItems.push(
                 <Ons.ListItem key="0">
-                    Error: {this.state.error.message}
+                    Error: {errorMessage}
                 </Ons.ListItem>
             );
         } else if (!this.props.usersAreLoaded) {
