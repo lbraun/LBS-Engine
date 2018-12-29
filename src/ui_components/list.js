@@ -31,9 +31,15 @@ class List extends React.Component {
         var listItems = [];
 
         if (this.props.errorLoadingUsers) {
+            var errorMessage = this.props.errorLoadingUsers.message;
+
+            if (errorMessage == "Failed to fetch") {
+                errorMessage = "There was a problem finding people to list here. Perhaps you are not connected to the internet?"
+            }
+
             listItems.push(
                 <Ons.ListItem key="0">
-                    Error: {this.state.error.message}
+                    Error: {errorMessage}
                 </Ons.ListItem>
             );
         } else if (!this.props.usersAreLoaded) {
@@ -54,7 +60,7 @@ class List extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = !!(user.shareLocation || this.props.userPosition);
+                var clickable = !!(user.shareLocation || this.props.currentUser.coords);
 
                 listItems.push(
                     <Ons.ListItem
@@ -69,7 +75,7 @@ class List extends React.Component {
                                 {user.name} - {user.offerDescription} - {user.contactInformation}
                             </div>
                             <div className='right'>
-                                {this.props.userPosition && user.distanceToUser ? `${user.distanceToUser} m` : null}
+                                {this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null}
                                 {clickable ? null : "Location is private"}
                             </div>
                     </Ons.ListItem>

@@ -18,11 +18,10 @@ class Settings extends React.Component {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
         this.handleChangeLogging = this.handleChangeLogging.bind(this);
-        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
-        this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.createLog = this.createLog.bind(this);
     }
 
@@ -77,11 +76,6 @@ class Settings extends React.Component {
         this.props.onDataChange(e.target.checked);
     }
 
-    // Handle toggle for using GPS
-    handleUseLocationSettingChange(e) {
-        this.props.onUseLocationSettingChange(e.target.checked);
-    }
-
     // Handle toggle for layerControl
     handleChangeLayerControl(e) {
         this.props.onLayerControlChange(e.target.checked);
@@ -97,9 +91,23 @@ class Settings extends React.Component {
         this.props.onZoomMapChange(e.target.checked);
     }
 
-    //handle toggle of hiding/showing location
-    handleShareLocationSettingChange(e) {
-        this.props.onShareLocationSettingChange(e.target.checked);
+    /**
+     * Handle the change of a user setting
+     * @param {Event} e the react event object
+     */
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
+
+        var updatedUser = this.props.currentUser;
+        updatedUser[name] = value;
+        this.props.pushUserUpdate(updatedUser);
+
+        switch(name) {
+            case 'useLocation':
+                this.props.onUseLocationSettingChange(value);
+        }
     }
 
     render() {
@@ -112,8 +120,9 @@ class Settings extends React.Component {
                         </div>
                         <div className='right'>
                             <Ons.Switch
-                                checked={this.props.useLocation}
-                                onChange={this.handleUseLocationSettingChange} />
+                                name="useLocation"
+                                checked={this.props.currentUser.useLocation}
+                                onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem id='use-location-text-li' key='useLocationText'>
@@ -127,8 +136,9 @@ class Settings extends React.Component {
                         </div>
                         <div className='right'>
                             <Ons.Switch
-                                checked={this.props.shareLocation}
-                                onChange={this.handleShareLocationSettingChange} />
+                                name="shareLocation"
+                                checked={this.props.currentUser.shareLocation}
+                                onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem id='share-location-text-li' key='shareLocationText'>

@@ -36,10 +36,8 @@ class App extends React.Component {
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleUseLocationSettingChange =  this.handleUseLocationSettingChange.bind(this);
-        this.handleShareLocationSettingChange = this.handleShareLocationSettingChange.bind(this);
+        this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
-        this.handleOfferDescriptionChange = this.handleOfferDescriptionChange.bind(this);
-        this.handleContactInformationChange = this.handleContactInformationChange.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
@@ -56,35 +54,72 @@ class App extends React.Component {
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             errorLoadingUsers: null,
+            errorSyncingUser: null,
             usersAreLoaded: false,
+            currentUserIsLoaded: false,
             users: [],
-            userPosition: null,
             centerPosition: config.map.center,
             selectedUserId: null,
-            useLocation: config.app.useLocation,
-            shareLocation: config.app.shareLocation,
             notificationLog: [],
-            currentTab: "About"
+            currentTab: "About",
+            currentUserId: "5c23c5b2c3972800172d3e91",
+            currentUser: {
+                useLocation: config.app.useLocation,
+                shareLocation: config.app.shareLocation,
+                offerDescription: "",
+                contactInformation: "",
+                coords: null,
+            },
         };
+
+        // Fetch all user data from database
+        fetch("https://geofreebie-backend.herokuapp.com/api/users")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    // Store current user and remove it from the list
+                    for (var i = result.length - 1; i >= 0; --i) {
+                        if (result[i]._id == this.state.currentUserId) {
+                            var currentUser = result[i];
+                            result.splice(i, 1);
+
+                            this.setState({
+                                currentUser: currentUser,
+                                currentUserIsLoaded: true,
+                                users: result || [],
+                                usersAreLoaded: true,
+                            });
+
+                            break;
+                        }
+                    }
+                },
+                (error) => {
+                    console.log("There was an error loading the users!");
+                    console.log(error);
+                    this.setState({
+                        usersAreLoaded: true,
+                        errorLoadingUsers: error
+                    });
+                }
+            )
 
 
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
-            if (app.state.useLocation) {
+            if (app.state.currentUser.useLocation) {
                 // If the user has enabled location tracking, use it
-                var lat = position.coords.latitude;
-                var long = position.coords.longitude;
-                var message = `Your current coordinates are ${lat}, ${long} (lat, long).`
-                var coords = [lat, long];
-
+                var coords = [position.coords.latitude, position.coords.longitude];
                 var users = app.updateDistancesToUsers(coords, app.state.users);
 
                 app.setState({
-                    userPosition: coords,
-                    userPositionMarkerText: message,
                     users: users
                 })
+
+                var updatedUser = app.state.currentUser;
+                updatedUser.coords = coords;
+                app.pushUserUpdate(updatedUser);
 
 
                 var closestUser = app.state.users[0];
@@ -99,10 +134,9 @@ class App extends React.Component {
                 }
             } else {
                 // Otherwise set user position to null
-                app.setState({
-                    userPosition: null,
-                    userPositionMarkerText: null
-                })
+                var updatedUser = app.state.currentUser;
+                updatedUser.coords = null;
+                app.pushUserUpdate(updatedUser);
             }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
@@ -113,25 +147,6 @@ class App extends React.Component {
 
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
-
-        fetch("https://geofreebie-backend.herokuapp.com/api/users")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        usersAreLoaded: true,
-                        users: result || []
-                    });
-                },
-                (error) => {
-                    console.log("There was an error loading the users!");
-                    console.log(error);
-                    this.setState({
-                        usersAreLoaded: true,
-                        errorLoadingUsers: error
-                    });
-                }
-            )
     }
 
     /**
@@ -180,10 +195,8 @@ class App extends React.Component {
         if (!bool) {
             this.setState({
                 userPosition: null,
-                userPositionMarkerText: null
             });
         }
-        this.setState({useLocation: bool});
     }
 
     /**
@@ -222,29 +235,37 @@ class App extends React.Component {
     }
 
     /**
-     * Handle the change of the parameter from the lower level
-     * @param {String} description string value after the change
+     * Push the provided user to the database server
+     * @param {User} updatedUser object, representing the user in its most up-to-date form
      */
-    handleOfferDescriptionChange(description) {
-        // TODO: Add logic to publish changes when we have a way to publish user info
-    }
+    pushUserUpdate(updatedUser) {
+        this.setState({
+            currentUser: updatedUser,
+            currentUserIsLoaded: false,
+        });
 
-    /**
-     * Handle the change of the parameter from the lower level
-     * @param {String} contactInformation string value after the change
-     */
-    handleContactInformationChange(contactInformation) {
-        // TODO: Add logic to publish changes when we have a way to publish user info
-    }
-
-    /**
-     * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change
-     */
-    handleShareLocationSettingChange(bool) {
-        this.setState({shareLocation: bool});
-        console.log("Changed location privacy");
-        // TODO: Add logic to publish changes when we have a way to publish user info
+        // Make the call to the update API
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(updatedUser),
+            headers: {'Content-Type': 'application/json'},
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        currentUserIsLoaded: true,
+                    });
+                },
+                (error) => {
+                    console.log("There was an error updating the user!");
+                    console.log(error);
+                    this.setState({
+                        errorSyncingUser: error
+                    });
+                }
+            )
     }
 
 
@@ -282,7 +303,7 @@ class App extends React.Component {
      * @param {Array} coordinates (latitude, longitude) identifying the position
      */
     calculateDistanceTo(position) {
-        return this.calculateDistanceBetween(this.state.userPosition, position);
+        return this.calculateDistanceBetween(this.state.currentUser.coords, position);
     }
 
     /**
@@ -313,67 +334,63 @@ class App extends React.Component {
             // Map element
             {
                 content: <map.Map
-                                logging={this.state.logging}
-                                externalData={this.state.externalData}
-                                useLocation={this.state.useLocation}
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}
-                                zoomable={this.state.zoomable}
-                                userPosition={this.state.userPosition}
-                                userPositionMarkerText={this.state.userPositionMarkerText}
-                                centerPosition={this.state.centerPosition}
-                                selectedUserId={this.state.selectedUserId}
-                                calculateDistanceTo={this.calculateDistanceTo}
-                                users={this.state.users}
-                                key='map' />,
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    currentUser={this.state.currentUser}
+                    centerPosition={this.state.centerPosition}
+                    selectedUserId={this.state.selectedUserId}
+                    calculateDistanceTo={this.calculateDistanceTo}
+                    users={this.state.users}
+                    key='map' />,
                 tab: <Ons.Tab label='Map' icon='md-map' key='map' />
             },
             // List element
             {
                 content: <list.List
-                                logging={this.state.logging}
-                                externalData={this.state.externalData}
-                                useLocation={this.state.useLocation}
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}
-                                zoomable={this.state.zoomable}
-                                userPosition={this.state.userPosition}
-                                userPositionMarkerText={this.state.userPositionMarkerText}
-                                centerPosition={this.state.centerPosition}
-                                selectedUserId={this.state.selectedUserId}
-                                onListItemClick={this.handleListItemClick}
-                                usersAreLoaded={this.state.usersAreLoaded}
-                                errorLoadingUsers={this.state.errorLoadingUsers}
-                                users={this.state.users}
-                                key='list' />,
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    currentUser={this.state.currentUser}
+                    centerPosition={this.state.centerPosition}
+                    selectedUserId={this.state.selectedUserId}
+                    onListItemClick={this.handleListItemClick}
+                    usersAreLoaded={this.state.usersAreLoaded}
+                    errorLoadingUsers={this.state.errorLoadingUsers}
+                    users={this.state.users}
+                    key='list' />,
                 tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
             },
             // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <settings.Settings
-                                onLoggingChange={this.handleLoggingChange}
-                                onDataChange={this.handleExternalDataChange}
-                                onLayerControlChange={this.handleLayerControlChange}
-                                onDragMapChange={this.handleDragMapChange}
-                                onZoomMapChange={this.handleZoomMapChange}
-                                onUseLocationSettingChange={this.handleUseLocationSettingChange}
-                                onShareLocationSettingChange={this.handleShareLocationSettingChange}
-                                useLocation={this.state.useLocation}
-                                shareLocation={this.state.shareLocation}
-                                logging={this.state.logging}
-                                externalData={this.state.externalData}
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}
-                                zoomable={this.state.zoomable}
-                                key='settings' />,
+                    onLoggingChange={this.handleLoggingChange}
+                    onDataChange={this.handleExternalDataChange}
+                    onLayerControlChange={this.handleLayerControlChange}
+                    onDragMapChange={this.handleDragMapChange}
+                    onZoomMapChange={this.handleZoomMapChange}
+                    onUseLocationSettingChange={this.handleUseLocationSettingChange}
+                    pushUserUpdate={this.pushUserUpdate}
+                    currentUser={this.state.currentUser}
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    key='settings' />,
                 tab: <Ons.Tab label='Settings' icon='md-settings' key='settings' style={{display: 'none'}}/>
             },
             // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <offerForm.offerForm
-                                onOfferDescriptionChange={this.handleOfferDescriptionChange}
-                                onContactInformationChange={this.handleContactInformationChange}
-                                key='offerForm' />,
+                    pushUserUpdate={this.pushUserUpdate}
+                    currentUserIsLoaded={this.state.currentUserIsLoaded}
+                    currentUser={this.state.currentUser}
+                    key='offerForm' />,
                 tab: <Ons.Tab label='My Offers' icon='md-edit' key='offerForm' style={{display: 'none'}}/>
             },
             // Help page iframe

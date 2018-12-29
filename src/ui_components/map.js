@@ -22,9 +22,9 @@ class Map extends React.Component {
         this.state = {
             position: config.map.center,
             zoom: config.map.zoom,
-        }
+        };
 
-        // Define marker symbol for the user position marker
+        // Define marker symbol for the current user's position
         this.positionMarker = L.icon({
             iconUrl: 'img/man.png',
             iconSize: [50, 50],
@@ -32,7 +32,7 @@ class Map extends React.Component {
             popupAnchor: [0, -50],
         });
 
-        // Define marker symbol for the user marker
+        // Define marker symbol for other users' positions
         this.userMarker = L.icon({
             iconUrl: 'img/man_blue.png',
             iconSize: [50, 50],
@@ -130,7 +130,7 @@ class Map extends React.Component {
                         id={user.id}
                         isOpen={true}
                         key={user.name}
-                        center={this.props.userPosition}
+                        center={this.props.currentUser.coords}
                         radius={this.props.calculateDistanceTo(user.coords)}>
                         <leaflet.Popup>
                             <span>
@@ -155,16 +155,16 @@ class Map extends React.Component {
 
     renderMapWithLayers() {
         // Check if the user's position is available
-        const marker = this.props.userPosition
+        const marker = this.props.currentUser.coords
             ? (
                 <ExtendedMarker
                     id={"user"}
-                    position={this.props.userPosition}
+                    position={this.props.currentUser.coords}
                     isOpen={false}
                     icon={this.positionMarker}>
                     <leaflet.Popup>
                         <span>
-                            {this.props.userPositionMarkerText}
+                            You are here!
                         </span>
                     </leaflet.Popup>
                 </ExtendedMarker>
@@ -184,7 +184,7 @@ class Map extends React.Component {
                         center = user.coords;
                     } else {
                         // Otherwise just center on the user's position
-                        center = this.props.userPosition;
+                        center = this.props.currentUser.coords;
                     }
                 }
             }
@@ -220,12 +220,12 @@ class Map extends React.Component {
             return this.renderMapWithLayers()
         } else {
             // Check if the location is enabled and available
-            const marker = this.props.useLocation
+            const marker = this.props.currentUser.useLocation
                 ? (
-                    <leaflet.Marker position={this.props.userPosition} icon={this.positionMarker}>
+                    <leaflet.Marker position={this.props.currentUser.coords} icon={this.positionMarker}>
                         <leaflet.Popup>
                             <span>
-                                {this.props.userPositionMarkerText}
+                                You are here!
                             </span>
                         </leaflet.Popup>
                     </leaflet.Marker>
