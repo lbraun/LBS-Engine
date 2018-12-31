@@ -79,4 +79,5 @@
         <variable name="ANDROID_HOST" value="geofreebie.eu.auth0.com" />
         <variable name="ANDROID_PATHPREFIX" value="/cordova/com.lbraun.geofreebie/callback" />
     </plugin>
+    <preference name="AndroidLaunchMode" value="singleTask" />
 </widget>

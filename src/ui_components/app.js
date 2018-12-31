@@ -3,6 +3,7 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 const geolib = require('geolib');
+const Auth0Cordova =  require('@auth0/cordova');
 
 // Custom files
 // Data
@@ -17,6 +18,7 @@ const embededSite = require('./embededSite.js')
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
+
 
 
 /**
