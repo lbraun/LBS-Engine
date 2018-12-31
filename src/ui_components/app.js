@@ -3,6 +3,7 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 const geolib = require('geolib');
+const Auth0 = require('auth0-js');
 const Auth0Cordova =  require('@auth0/cordova');
 
 // Custom files
@@ -26,6 +27,21 @@ const logger = require('../business_components/logger.js');
  * Contains the Toolbar in the top and a sidebar to select the mode
  */
 class App extends React.Component {
+    getAllBySelector(arg) {
+      return document.querySelectorAll(arg);
+    }
+
+    getBySelector(arg) {
+      return document.querySelector(arg);
+    }
+
+    getById(id) {
+      return document.getElementById(id);
+    }
+
+    getAllByClassName(className) {
+      return document.getElementsByClassName(className);
+    }
 
     constructor(props) {
         super(props);
@@ -72,7 +88,58 @@ class App extends React.Component {
                 contactInformation: "",
                 coords: null,
             },
+            authenticated: false,
+            accessToken: false,
+            currentRoute: '/',
+            routes: {
+              '/': {
+                id: 'loading',
+                onMount: function(page) {
+                  if (this.state.authenticated === true) {
+                    return this.redirectTo('/home');
+                  }
+                  return this.redirectTo('/login');
+                }
+              },
+              '/login': {
+                id: 'login',
+                onMount: function(page) {
+                  if (this.state.authenticated === true) {
+                    return this.redirectTo('/home');
+                  }
+                  var loginButton = page.querySelector('.btn-login');
+                  loginButton.addEventListener('click', this.login);
+                }
+              },
+              '/home': {
+                id: 'profile',
+                onMount: function(page) {
+                  if (this.state.authenticated === false) {
+                    return this.redirectTo('/login');
+                  }
+                  var logoutButton = page.querySelector('.btn-logout');
+                  var avatar = page.querySelector('#avatar');
+                  var profileCodeContainer = page.querySelector('.profile-json');
+                  logoutButton.addEventListener('click', this.logout);
+                  this.loadProfile(function(err, profile) {
+                    if (err) {
+                      profileCodeContainer.textContent = 'Error ' + err.message;
+                    }
+                    profileCodeContainer.textContent = JSON.stringify(profile, null, 4);
+                    avatar.src = profile.picture;
+                  });
+                }
+              }
+            }
         };
+
+        // Auth0
+        this.auth0 = new Auth0.Authentication({
+            domain: 'geofreebie.eu.auth0.com',
+            clientID: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv'
+        });
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
 
         // Fetch all user data from database
         fetch("https://geofreebie-backend.herokuapp.com/api/users")
@@ -446,8 +513,74 @@ class App extends React.Component {
         )
     }
 
+    run(id) {
+      this.container = getBySelector(id);
+      this.resumeApp();
+    };
+
+    loadProfile(cb) {
+      this.auth0.userInfo(this.state.accessToken, cb);
+    };
+
+    login(e) {
+      e.target.disabled = true;
+
+      var client = new Auth0Cordova({
+        domain: 'geofreebie.eu.auth0.com',
+        clientId: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv',
+        packageIdentifier: 'YOUR_PACKAGE_ID' // found in config.xml
+      });
+
+      var options = {
+        scope: 'openid profile',
+        audience: 'https://geofreebie.eu.auth0.com/userinfo'
+      };
+      var self = this;
+      client.authorize(options, function(err, authResult) {
+        if (err) {
+          console.log(err);
+          return (e.target.disabled = false);
+        }
+        localStorage.setItem('access_token', authResult.accessToken);
+        self.resumeApp();
+      });
+    };
+
+    logout(e) {
+      localStorage.removeItem('access_token');
+      this.resumeApp();
+    };
+
+    redirectTo(route) {
+      if (!this.state.routes[route]) {
+        throw new Error('Unknown route ' + route + '.');
+      }
+      this.state.currentRoute = route;
+      this.render();
+    };
+
+    resumeApp() {
+      var accessToken = localStorage.getItem('access_token');
+
+      if (accessToken) {
+        this.state.authenticated = true;
+        this.state.accessToken = accessToken;
+      } else {
+        this.state.authenticated = false;
+        this.state.accessToken = null;
+      }
+
+      this.render();
+    };
+
     // Render sidebars and toolbar
     render() {
+        var currRoute = this.state.routes[this.state.currentRoute];
+        var currRouteEl = getById(currRoute.id);
+        var element = document.importNode(currRouteEl.content, true);
+        this.container.innerHTML = '';
+        this.container.appendChild(element);
+        currRoute.onMount.call(this, this.container);
 
         return (
             <Ons.Splitter>
