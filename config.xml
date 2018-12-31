@@ -72,4 +72,11 @@
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^6.4.0" />
+    <plugin name="cordova-plugin-safariviewcontroller" spec="^1.5.4" />
+    <plugin name="cordova-plugin-customurlscheme" spec="^4.3.0">
+        <variable name="URL_SCHEME" value="com.lbraun.geofreebie" />
+        <variable name="ANDROID_SCHEME" value="com.lbraun.geofreebie" />
+        <variable name="ANDROID_HOST" value="geofreebie.eu.auth0.com" />
+        <variable name="ANDROID_PATHPREFIX" value="/cordova/com.lbraun.geofreebie/callback" />
+    </plugin>
 </widget>
