@@ -20,7 +20,9 @@
     "react-onsenui": "^1.10.0"
   },
   "dependencies": {
+    "@auth0/cordova": "^0.3.0",
     "android-versions": "^1.3.0",
+    "auth0-js": "^9.8.2",
     "bluebird": "^3.5.1",
     "cordova-android": "^6.4.0",
     "cordova-browser": "^5.0.4",
