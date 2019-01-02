@@ -27,22 +27,6 @@ const logger = require('../business_components/logger.js');
  * Contains the Toolbar in the top and a sidebar to select the mode
  */
 class App extends React.Component {
-    getAllBySelector(arg) {
-      return document.querySelectorAll(arg);
-    }
-
-    getBySelector(arg) {
-      return document.querySelector(arg);
-    }
-
-    getById(id) {
-      return document.getElementById(id);
-    }
-
-    getAllByClassName(className) {
-      return document.getElementsByClassName(className);
-    }
-
     constructor(props) {
         super(props);
         this.show = this.show.bind(this);
@@ -62,6 +46,10 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.renderList = this.renderList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
+        this.getAllBySelector = this.getAllBySelector.bind(this);
+        this.getBySelector = this.getBySelector.bind(this);
+        this.getById = this.getById.bind(this);
+        this.getAllByClassName = this.getAllByClassName.bind(this);
         this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
         this.state = {
             isOpen: false,
@@ -216,6 +204,23 @@ class App extends React.Component {
 
     componentDidMount() {
         document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
+    }
+
+    // Auth0 methods
+    getAllBySelector(arg) {
+        return document.querySelectorAll(arg);
+    }
+
+    getBySelector(arg) {
+        return document.querySelector(arg);
+    }
+
+    getById(id) {
+        return document.getElementById(id);
+    }
+
+    getAllByClassName(className) {
+        return document.getElementsByClassName(className);
     }
 
     /**
@@ -575,13 +580,6 @@ class App extends React.Component {
 
     // Render sidebars and toolbar
     render() {
-        var currRoute = this.state.routes[this.state.currentRoute];
-        var currRouteEl = getById(currRoute.id);
-        var element = document.importNode(currRouteEl.content, true);
-        this.container.innerHTML = '';
-        this.container.appendChild(element);
-        currRoute.onMount.call(this, this.container);
-
         return (
             <Ons.Splitter>
                 <Ons.SplitterSide

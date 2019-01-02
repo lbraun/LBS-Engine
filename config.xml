@@ -70,8 +70,6 @@
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
-    <engine name="browser" spec="^5.0.4" />
-    <engine name="android" spec="^6.4.0" />
     <plugin name="cordova-plugin-safariviewcontroller" spec="^1.5.4" />
     <plugin name="cordova-plugin-customurlscheme" spec="^4.3.0">
         <variable name="URL_SCHEME" value="com.lbraun.geofreebie" />
@@ -80,4 +78,6 @@
         <variable name="ANDROID_PATHPREFIX" value="/cordova/com.lbraun.geofreebie/callback" />
     </plugin>
     <preference name="AndroidLaunchMode" value="singleTask" />
+    <engine name="browser" spec="^5.0.4" />
+    <engine name="android" spec="^6.4.0" />
 </widget>
