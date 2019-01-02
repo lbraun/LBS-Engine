@@ -370,6 +370,7 @@ class App extends React.Component {
     // Handle a click on a sidebar item --> change state
     handleSidebarClick(tabName, e) {
         this.setState({currentTab: tabName});
+        this.hide();
     }
 
     /**
