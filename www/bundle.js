@@ -91478,9 +91478,9 @@ class App extends React.Component {
         });
     }
 
-    componentDidMount() {
-        document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
-    }
+    componentDidMount() {}
+    // document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
+
 
     /**
      * Update the calculated distance from current user to each other user
@@ -91629,8 +91629,8 @@ class App extends React.Component {
     }
 
     // Handle a click on a sidebar item --> change state
-    handleSidebarClick(e) {
-        this.setState({ currentTab: e.target.innerHTML });
+    handleSidebarClick(tabName, e) {
+        this.setState({ currentTab: tabName });
     }
 
     /**
@@ -91752,7 +91752,7 @@ class App extends React.Component {
                     id: `sidebar-item-${sidebarItem["id"]}`,
                     key: sidebarItem["id"],
                     tappable: true,
-                    onClick: this.handleSidebarClick },
+                    onClick: this.handleSidebarClick.bind(this, sidebarItem["name"]) },
                 React.createElement(
                     'div',
                     { className: 'left' },
@@ -92027,12 +92027,12 @@ class Map extends React.Component {
             locationManager.getLocation().then(function success(position) {
                 entry = [position.latitude, position.longitude, map.props.picture ? 'Streetview' : 'Map', action];
                 // Log the data
-                logger.logEntry(entry);
+                // logger.logEntry(entry);
             }, function error(err) {
                 // If there was an error getting the position, log a '-' for lat/lng
                 entry = ['-', '-', map.props.picture ? 'Streetview' : 'Map', action];
                 // Log the data
-                logger.logEntry(entry);
+                // logger.logEntry(entry);
             });
         }
     }
@@ -92433,12 +92433,12 @@ class Settings extends React.Component {
             locationManager.getLocation().then(function success(position) {
                 entry = [position.latitude, position.longitude, 'Settings', action];
                 // Log the data
-                logger.logEntry(entry);
+                // logger.logEntry(entry);
             }, function error(err) {
                 // If there was an error getting the position, log a '-' for lat/lng
                 entry = ['-', '-', 'Settings', action];
                 // Log the data
-                logger.logEntry(entry);
+                // logger.logEntry(entry);
             });
         }
     }
@@ -92456,12 +92456,12 @@ class Settings extends React.Component {
         locationManager.getLocation().then(function success(position) {
             entry = [position.latitude, position.longitude, 'Settings', action];
             // Log the data
-            logger.logEntry(entry);
+            // logger.logEntry(entry);
         }, function error(err) {
             // If there was an error getting the position, log a '-' for lat/lng
             entry = ['-', '-', 'Settings', action];
             // Log the data
-            logger.logEntry(entry);
+            // logger.logEntry(entry);
         });
     }
 

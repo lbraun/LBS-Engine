@@ -60,12 +60,12 @@ class Map extends React.Component {
             locationManager.getLocation().then(function success(position) {
                 entry = [position.latitude, position.longitude, map.props.picture ? 'Streetview' : 'Map', action];
                 // Log the data
-                logger.logEntry(entry);
+                // logger.logEntry(entry);
             }, function error(err) {
                 // If there was an error getting the position, log a '-' for lat/lng
                 entry = ['-', '-', map.props.picture ? 'Streetview' : 'Map', action];
                 // Log the data
-                logger.logEntry(entry);
+                // logger.logEntry(entry);
             })
         }
     }
