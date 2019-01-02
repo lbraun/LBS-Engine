@@ -92636,6 +92636,16 @@ class App extends React.Component {
                 { className: 'right' },
                 React.createElement(
                     Ons.ToolbarButton,
+                    { onClick: this.login },
+                    'Login'
+                ),
+                React.createElement(
+                    Ons.ToolbarButton,
+                    { onClick: this.logout },
+                    'Logout'
+                ),
+                React.createElement(
+                    Ons.ToolbarButton,
                     { onClick: this.show },
                     React.createElement(Ons.Icon, { icon: 'ion-navicon, material:md-menu' })
                 )

@@ -349,6 +349,12 @@ class App extends React.Component {
             <Ons.Toolbar>
                 <div className='center'>{this.state.currentTab}</div>
                 <div className='right'>
+                    <Ons.ToolbarButton onClick={this.login}>
+                        Login
+                    </Ons.ToolbarButton>
+                    <Ons.ToolbarButton onClick={this.logout}>
+                        Logout
+                    </Ons.ToolbarButton>
                     <Ons.ToolbarButton onClick={this.show}>
                         <Ons.Icon icon='ion-navicon, material:md-menu'></Ons.Icon>
                     </Ons.ToolbarButton>
