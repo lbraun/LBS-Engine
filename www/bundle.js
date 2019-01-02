@@ -92335,7 +92335,7 @@ class App extends React.Component {
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
-        this.renderList = this.renderList.bind(this);
+        this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.getAllBySelector = this.getAllBySelector.bind(this);
         this.getBySelector = this.getBySelector.bind(this);
@@ -92628,6 +92628,15 @@ class App extends React.Component {
             null,
             React.createElement(
                 'div',
+                { className: 'left' },
+                React.createElement(
+                    Ons.ToolbarButton,
+                    { onClick: this.show },
+                    React.createElement(Ons.Icon, { icon: 'ion-navicon, material:md-menu' })
+                )
+            ),
+            React.createElement(
+                'div',
                 { className: 'center' },
                 this.state.currentTab
             ),
@@ -92637,17 +92646,12 @@ class App extends React.Component {
                 React.createElement(
                     Ons.ToolbarButton,
                     { onClick: this.login },
-                    'Login'
+                    'Log in'
                 ),
                 React.createElement(
                     Ons.ToolbarButton,
                     { onClick: this.logout },
-                    'Logout'
-                ),
-                React.createElement(
-                    Ons.ToolbarButton,
-                    { onClick: this.show },
-                    React.createElement(Ons.Icon, { icon: 'ion-navicon, material:md-menu' })
+                    'Log out'
                 )
             )
         );
@@ -92774,7 +92778,7 @@ class App extends React.Component {
     }
 
     // Render the list displayed in the sidebar
-    renderList() {
+    renderSidebarList() {
         var sidebarItems = [{ "id": 1, "name": "My Offers", "icon": "md-edit" }, { "id": 2, "name": "Settings", "icon": "md-settings" }, { "id": 3, "name": "Help", "icon": "md-help" }, { "id": 4, "name": "About", "icon": "md-info" }];
 
         var listItems = [];
@@ -92824,7 +92828,7 @@ class App extends React.Component {
         var client = new Auth0Cordova({
             domain: 'geofreebie.eu.auth0.com',
             clientId: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv',
-            packageIdentifier: 'YOUR_PACKAGE_ID' // found in config.xml
+            packageIdentifier: 'com.lbraun.geofreebie'
         });
 
         var options = {
@@ -92877,7 +92881,7 @@ class App extends React.Component {
             React.createElement(
                 Ons.SplitterSide,
                 {
-                    side: 'right',
+                    side: 'left',
                     width: '50%',
                     style: { boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)' },
                     swipeable: false,
@@ -92888,7 +92892,7 @@ class App extends React.Component {
                 React.createElement(
                     Ons.Page,
                     null,
-                    this.renderList()
+                    this.renderSidebarList()
                 )
             ),
             React.createElement(
