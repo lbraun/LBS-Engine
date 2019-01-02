@@ -38,12 +38,12 @@ class Settings extends React.Component {
             locationManager.getLocation().then(function success(position) {
                 entry = [position.latitude, position.longitude, 'Settings', action];
                 // Log the data
-                logger.logEntry(entry);
+                // logger.logEntry(entry);
             }, function error(err) {
                 // If there was an error getting the position, log a '-' for lat/lng
                 entry = ['-', '-', 'Settings', action];
                 // Log the data
-                logger.logEntry(entry);
+                // logger.logEntry(entry);
             })
         }
     }
@@ -62,12 +62,12 @@ class Settings extends React.Component {
         locationManager.getLocation().then(function success(position) {
             entry = [position.latitude, position.longitude, 'Settings', action];
             // Log the data
-            logger.logEntry(entry);
+            // logger.logEntry(entry);
         }, function error(err) {
             // If there was an error getting the position, log a '-' for lat/lng
             entry = ['-', '-', 'Settings', action];
             // Log the data
-            logger.logEntry(entry);
+            // logger.logEntry(entry);
         })
     }
 
