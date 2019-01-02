@@ -146,7 +146,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
+        // document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
     }
 
     /**
@@ -294,8 +294,8 @@ class App extends React.Component {
     }
 
     // Handle a click on a sidebar item --> change state
-    handleSidebarClick(e) {
-        this.setState({currentTab: e.target.innerHTML});
+    handleSidebarClick(tabName, e) {
+        this.setState({currentTab: tabName});
     }
 
     /**
@@ -426,7 +426,7 @@ class App extends React.Component {
                     id={`sidebar-item-${sidebarItem["id"]}`}
                     key={sidebarItem["id"]}
                     tappable={true}
-                    onClick={this.handleSidebarClick}>
+                    onClick={this.handleSidebarClick.bind(this, sidebarItem["name"])}>
                         <div className='left'>
                             <Ons.Icon icon={sidebarItem["icon"]}/>
                         </div>
