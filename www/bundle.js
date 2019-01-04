@@ -1,5 +1,5 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-(function (process,global){
+(function (process,global,setImmediate){
 /* @preserve
  * The MIT License (MIT)
  * 
@@ -5623,8 +5623,8 @@ module.exports = ret;
 
 },{"./es5":13}]},{},[4])(4)
 });                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
-}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":268}],2:[function(require,module,exports){
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
+},{"_process":268,"timers":269}],2:[function(require,module,exports){
 /**
  * Static Private functions
  */
@@ -30473,7 +30473,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 };
 
 },{}],204:[function(require,module,exports){
-(function (process){
+(function (process,setImmediate){
 /* onsenui v2.9.2 - 2018-02-16 */
 
 (function (global, factory) {
@@ -61965,8 +61965,8 @@ return ons$1;
 })));
 
 
-}).call(this,require('_process'))
-},{"_process":268}],205:[function(require,module,exports){
+}).call(this,require('_process'),require("timers").setImmediate)
+},{"_process":268,"timers":269}],205:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -91404,10 +91404,11 @@ class App extends React.Component {
             currentTab: "About",
             currentUserId: "5c23c5b2c3972800172d3e91",
             currentUser: {
+                name: "Lucas Braun",
                 useLocation: config.app.useLocation,
                 shareLocation: config.app.shareLocation,
-                offerDescription: "",
-                contactInformation: "",
+                offerDescription: "Example offer",
+                contactInformation: "lucas.braun@example.com",
                 coords: null
             }
         };
@@ -91739,9 +91740,28 @@ class App extends React.Component {
 
     // Render the list displayed in the sidebar
     renderList() {
-        var sidebarItems = [{ "id": 1, "name": "My Offers", "icon": "md-edit" }, { "id": 2, "name": "Settings", "icon": "md-settings" }, { "id": 3, "name": "Help", "icon": "md-help" }, { "id": 4, "name": "About", "icon": "md-info" }];
+        var sidebarItems = [{ id: 1, name: "My Offers", icon: "md-edit" }, { id: 2, name: "Settings", icon: "md-settings" }, { id: 3, name: "Help", icon: "md-help" }, { id: 4, name: "About", icon: "md-info" }];
 
-        var listItems = [];
+        var listItems = [React.createElement(
+            Ons.ListItem,
+            {
+                key: '0',
+                tappable: false },
+            React.createElement(
+                'div',
+                { className: 'list-item__title' },
+                React.createElement(
+                    'strong',
+                    null,
+                    this.state.currentUser.name
+                )
+            ),
+            React.createElement(
+                'div',
+                { className: 'list-item__subtitle' },
+                this.state.currentUser.contactInformation
+            )
+        )];
 
         for (let i in sidebarItems) {
             var sidebarItem = sidebarItems[i];
@@ -91749,19 +91769,18 @@ class App extends React.Component {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
-                    id: `sidebar-item-${sidebarItem["id"]}`,
-                    key: sidebarItem["id"],
+                    key: sidebarItem.id,
                     tappable: true,
-                    onClick: this.handleSidebarClick.bind(this, sidebarItem["name"]) },
+                    onClick: this.handleSidebarClick.bind(this, sidebarItem.name) },
                 React.createElement(
                     'div',
                     { className: 'left' },
-                    React.createElement(Ons.Icon, { icon: sidebarItem["icon"] })
+                    React.createElement(Ons.Icon, { icon: sidebarItem.icon })
                 ),
                 React.createElement(
                     'div',
                     { className: 'center' },
-                    sidebarItem["name"]
+                    sidebarItem.name
                 )
             ));
         }
@@ -92769,4 +92788,83 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[261]);
+},{}],269:[function(require,module,exports){
+(function (setImmediate,clearImmediate){
+var nextTick = require('process/browser.js').nextTick;
+var apply = Function.prototype.apply;
+var slice = Array.prototype.slice;
+var immediateIds = {};
+var nextImmediateId = 0;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) { timeout.close(); };
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// That's not how node.js implements it but the exposed api is the same.
+exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
+  var id = nextImmediateId++;
+  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+  immediateIds[id] = true;
+
+  nextTick(function onNextTick() {
+    if (immediateIds[id]) {
+      // fn.call() is faster so we optimize for the common use-case
+      // @see http://jsperf.com/call-apply-segu
+      if (args) {
+        fn.apply(null, args);
+      } else {
+        fn.call(null);
+      }
+      // Prevent ids from leaking
+      exports.clearImmediate(id);
+    }
+  });
+
+  return id;
+};
+
+exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
+  delete immediateIds[id];
+};
+}).call(this,require("timers").setImmediate,require("timers").clearImmediate)
+},{"process/browser.js":268,"timers":269}]},{},[261]);
