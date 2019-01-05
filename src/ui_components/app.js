@@ -279,7 +279,11 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        var loggedIn = this.state.authenticated;
+        var logInLink = (
+            <Ons.ToolbarButton onClick={this.login}>
+                Log in
+            </Ons.ToolbarButton>
+        );
 
         return (
             <Ons.Toolbar>
@@ -290,9 +294,7 @@ class App extends React.Component {
                 </div>
                 <div className='center'>{this.state.currentTab}</div>
                 <div className='right'>
-                    <Ons.ToolbarButton onClick={loggedIn ? this.logout : this.login}>
-                        {loggedIn ? "Log out" : "Log in"}
-                    </Ons.ToolbarButton>
+                    {this.state.authenticated ? null : logInLink}
                 </div>
             </Ons.Toolbar>
         )
@@ -392,6 +394,9 @@ class App extends React.Component {
                     onUseLocationSettingChange={this.handleUseLocationSettingChange}
                     pushUserUpdate={this.pushUserUpdate}
                     currentUser={this.state.currentUser}
+                    authenticated={this.state.authenticated}
+                    logout={this.logout}
+                    login={this.login}
                     logging={this.state.logging}
                     externalData={this.state.externalData}
                     layerControl={this.state.layerControl}
@@ -461,57 +466,64 @@ class App extends React.Component {
     }
 
     run(id) {
-      this.container = getBySelector(id);
-      this.resumeApp();
+        this.container = getBySelector(id);
+        this.resumeApp();
     };
 
     loadProfile(cb) {
-      this.auth0.userInfo(this.state.accessToken, cb);
+        this.auth0.userInfo(this.state.accessToken, cb);
     };
 
+    /**
+     * Start the auth0 login process (launches via an in-app browser)
+     */
     login(e) {
-      var target = e.target;
-      target.disabled = true;
+        var app = this;
+        var target = e.target;
+        target.disabled = true;
 
-      var client = new Auth0Cordova({
-        domain: 'geofreebie.eu.auth0.com',
-        clientId: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv',
-        packageIdentifier: 'com.lbraun.geofreebie'
-      });
+        var client = new Auth0Cordova({
+            domain: 'geofreebie.eu.auth0.com',
+            clientId: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv',
+            packageIdentifier: 'com.lbraun.geofreebie'
+        });
 
-      var options = {
-        scope: 'openid profile',
-        audience: 'https://geofreebie.eu.auth0.com/userinfo'
-      };
-      var app = this;
-      client.authorize(options, function(err, authResult) {
-        if (err) {
-          console.log(err);
-          return (target.disabled = false);
-        }
-        localStorage.setItem('access_token', authResult.accessToken);
-        target.disabled = false;
-        app.resumeApp();
-      });
+        var options = {
+            scope: 'openid profile',
+            audience: 'https://geofreebie.eu.auth0.com/userinfo'
+        };
+
+        client.authorize(options, function(err, authResult) {
+            if (err) {
+                console.log(err);
+                return (target.disabled = false);
+            }
+
+            localStorage.setItem('access_token', authResult.accessToken);
+            target.disabled = false;
+            app.resumeApp();
+        });
     };
 
     logout(e) {
-      localStorage.removeItem('access_token');
-      this.resumeApp();
+        localStorage.removeItem('access_token');
+        this.resumeApp();
     };
 
     resumeApp() {
-      var accessToken = localStorage.getItem('access_token');
+        var accessToken = localStorage.getItem('access_token');
 
-      if (accessToken) {
-        this.state.authenticated = true;
-        this.state.accessToken = accessToken;
-      } else {
-        this.state.authenticated = false;
-        this.state.accessToken = null;
-      }
-
-      this.render();
+        if (accessToken) {
+            this.setState({
+                authenticated: true,
+                accessToken: accessToken,
+            })
+        } else {
+            this.setState({
+                authenticated: false,
+                accessToken: null,
+            })
+        }
     };
 
     // Render sidebars and toolbar

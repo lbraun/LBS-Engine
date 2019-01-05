@@ -92286,11 +92286,21 @@ const ons = require('onsenui');
 // Project files
 const app = require('./ui_components/app.js');
 
+// Auth0 for authentication
+// https://github.com/auth0/auth0-cordova
+const Auth0Cordova = require('@auth0/cordova');
+
 ons.ready(function () {
+    function handleURL(url) {
+        Auth0Cordova.onRedirectUri(url);
+    }
+
+    window.handleOpenURL = handleURL;
+
     ReactDOM.render(React.createElement(app.App, null), document.getElementById('root'));
 });
 
-},{"./ui_components/app.js":274,"onsenui":213,"react":265,"react-dom":222}],274:[function(require,module,exports){
+},{"./ui_components/app.js":274,"@auth0/cordova":5,"onsenui":213,"react":265,"react-dom":222}],274:[function(require,module,exports){
 "use strict";
 
 const React = require('react');
@@ -92364,48 +92374,7 @@ class App extends React.Component {
                 coords: null
             },
             authenticated: false,
-            accessToken: false,
-            currentRoute: '/',
-            routes: {
-                '/': {
-                    id: 'loading',
-                    onMount: function (page) {
-                        if (this.state.authenticated === true) {
-                            return this.redirectTo('/home');
-                        }
-                        return this.redirectTo('/login');
-                    }
-                },
-                '/login': {
-                    id: 'login',
-                    onMount: function (page) {
-                        if (this.state.authenticated === true) {
-                            return this.redirectTo('/home');
-                        }
-                        var loginButton = page.querySelector('.btn-login');
-                        loginButton.addEventListener('click', this.login);
-                    }
-                },
-                '/home': {
-                    id: 'profile',
-                    onMount: function (page) {
-                        if (this.state.authenticated === false) {
-                            return this.redirectTo('/login');
-                        }
-                        var logoutButton = page.querySelector('.btn-logout');
-                        var avatar = page.querySelector('#avatar');
-                        var profileCodeContainer = page.querySelector('.profile-json');
-                        logoutButton.addEventListener('click', this.logout);
-                        this.loadProfile(function (err, profile) {
-                            if (err) {
-                                profileCodeContainer.textContent = 'Error ' + err.message;
-                            }
-                            profileCodeContainer.textContent = JSON.stringify(profile, null, 4);
-                            avatar.src = profile.picture;
-                        });
-                    }
-                }
-            }
+            accessToken: false
         };
 
         // Auth0
@@ -92598,6 +92567,12 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
+        var logInLink = React.createElement(
+            Ons.ToolbarButton,
+            { onClick: this.login },
+            'Log in'
+        );
+
         return React.createElement(
             Ons.Toolbar,
             null,
@@ -92618,16 +92593,7 @@ class App extends React.Component {
             React.createElement(
                 'div',
                 { className: 'right' },
-                React.createElement(
-                    Ons.ToolbarButton,
-                    { onClick: this.login },
-                    'Log in'
-                ),
-                React.createElement(
-                    Ons.ToolbarButton,
-                    { onClick: this.logout },
-                    'Log out'
-                )
+                this.state.authenticated ? null : logInLink
             )
         );
     }
@@ -92722,6 +92688,9 @@ class App extends React.Component {
                 onUseLocationSettingChange: this.handleUseLocationSettingChange,
                 pushUserUpdate: this.pushUserUpdate,
                 currentUser: this.state.currentUser,
+                authenticated: this.state.authenticated,
+                logout: this.logout,
+                login: this.login,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 layerControl: this.state.layerControl,
@@ -92797,8 +92766,13 @@ class App extends React.Component {
         this.auth0.userInfo(this.state.accessToken, cb);
     }
 
+    /**
+     * Start the auth0 login process (launches via an in-app browser)
+     */
     login(e) {
-        e.target.disabled = true;
+        var app = this;
+        var target = e.target;
+        target.disabled = true;
 
         var client = new Auth0Cordova({
             domain: 'geofreebie.eu.auth0.com',
@@ -92810,14 +92784,16 @@ class App extends React.Component {
             scope: 'openid profile',
             audience: 'https://geofreebie.eu.auth0.com/userinfo'
         };
-        var self = this;
+
         client.authorize(options, function (err, authResult) {
             if (err) {
                 console.log(err);
-                return e.target.disabled = false;
+                return target.disabled = false;
             }
+
             localStorage.setItem('access_token', authResult.accessToken);
-            self.resumeApp();
+            target.disabled = false;
+            app.resumeApp();
         });
     }
 
@@ -92826,26 +92802,20 @@ class App extends React.Component {
         this.resumeApp();
     }
 
-    redirectTo(route) {
-        if (!this.state.routes[route]) {
-            throw new Error('Unknown route ' + route + '.');
-        }
-        this.state.currentRoute = route;
-        this.render();
-    }
-
     resumeApp() {
         var accessToken = localStorage.getItem('access_token');
 
         if (accessToken) {
-            this.state.authenticated = true;
-            this.state.accessToken = accessToken;
+            this.setState({
+                authenticated: true,
+                accessToken: accessToken
+            });
         } else {
-            this.state.authenticated = false;
-            this.state.accessToken = null;
+            this.setState({
+                authenticated: false,
+                accessToken: null
+            });
         }
-
-        this.render();
     }
 
     // Render sidebars and toolbar
@@ -92857,7 +92827,7 @@ class App extends React.Component {
                 Ons.SplitterSide,
                 {
                     side: 'left',
-                    width: '50%',
+                    width: '75%',
                     style: { boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)' },
                     swipeable: false,
                     collapse: true,
@@ -93579,6 +93549,22 @@ class Settings extends React.Component {
     }
 
     render() {
+        if (this.props.authenticated) {
+            var authenticationText = `Logged in as ${this.props.currentUser.name}`;
+            var authenticationButton = React.createElement(
+                Ons.Button,
+                { onClick: this.props.logout },
+                'Log out'
+            );
+        } else {
+            var authenticationText = "Not currently logged in";
+            var authenticationButton = React.createElement(
+                Ons.Button,
+                { onClick: this.props.login },
+                'Log in'
+            );
+        }
+
         return React.createElement(
             Ons.Page,
             null,
@@ -93643,6 +93629,24 @@ class Settings extends React.Component {
                         'div',
                         { className: 'list-item__subtitle' },
                         'This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.'
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    { key: 'authentication' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            authenticationText
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        authenticationButton
                     )
                 )
             )

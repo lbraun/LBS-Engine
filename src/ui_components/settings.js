@@ -111,6 +111,14 @@ class Settings extends React.Component {
     }
 
     render() {
+        if (this.props.authenticated) {
+            var authenticationText = `Logged in as ${this.props.currentUser.name}`;
+            var authenticationButton = <Ons.Button onClick={this.props.logout}>Log out</Ons.Button>;
+        } else {
+            var authenticationText = "Not currently logged in";
+            var authenticationButton = <Ons.Button onClick={this.props.login}>Log in</Ons.Button>;
+        }
+
         return (
             <Ons.Page>
                 <Ons.List>
@@ -144,6 +152,14 @@ class Settings extends React.Component {
                     <Ons.ListItem id='share-location-text-li' key='shareLocationText'>
                         <div className="list-item__subtitle">
                             This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.
+                        </div>
+                    </Ons.ListItem>
+                    <Ons.ListItem key='authentication'>
+                        <div className='left'>
+                            <p>{authenticationText}</p>
+                        </div>
+                        <div className='right'>
+                            {authenticationButton}
                         </div>
                     </Ons.ListItem>
                 </Ons.List>
