@@ -92337,10 +92337,6 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
-        this.getAllBySelector = this.getAllBySelector.bind(this);
-        this.getBySelector = this.getBySelector.bind(this);
-        this.getById = this.getById.bind(this);
-        this.getAllByClassName = this.getAllByClassName.bind(this);
         this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
         this.state = {
             isOpen: false,
@@ -92484,27 +92480,6 @@ class App extends React.Component {
         }, {
             timeout: 30000 // Throw an error if no update is received every 30 seconds
         });
-    }
-
-    componentDidMount() {}
-    // document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
-
-
-    // Auth0 methods
-    getAllBySelector(arg) {
-        return document.querySelectorAll(arg);
-    }
-
-    getBySelector(arg) {
-        return document.querySelector(arg);
-    }
-
-    getById(id) {
-        return document.getElementById(id);
-    }
-
-    getAllByClassName(className) {
-        return document.getElementsByClassName(className);
     }
 
     /**
