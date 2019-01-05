@@ -2,13 +2,13 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
-class Dashboard extends React.Component {
+class SignInPage extends React.Component {
 
     constructor(props) {
         super(props);
     }
 
-    // Render the dashboard
+    // Render the sign in page
     render() {
         return (
             <Ons.Page>
@@ -16,7 +16,7 @@ class Dashboard extends React.Component {
                     <Ons.Col verticalAlign="center">
                         <h1 style={{textAlign: "center"}}>GeoFreebie</h1>
                         <p style={{textAlign: "center"}}>
-                            Welcome {this.props.currentUser.name}!
+                            <Ons.Button onClick={this.props.login}>Log in</Ons.Button>
                         </p>
                     </Ons.Col>
                 </Ons.Row>
@@ -26,5 +26,5 @@ class Dashboard extends React.Component {
 }
 
 module.exports = {
-    Dashboard: Dashboard
+    SignInPage: SignInPage
 }

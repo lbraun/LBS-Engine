@@ -11,6 +11,7 @@ const Auth0Cordova =  require('@auth0/cordova');
 const config = require('../data_components/config.json');
 
 // Ui
+const signInPage = require('./signInPage.js');
 const dashboard = require('./dashboard.js');
 const map = require('./map.js');
 const list =  require('./list.js');
@@ -349,6 +350,8 @@ class App extends React.Component {
             {
                 content: <dashboard.Dashboard
                     login={this.login}
+                    authenticated={this.state.authenticated}
+                    currentUser={this.state.currentUser}
                     key='dashboard' />,
                 tab: <Ons.Tab label='Dashboard' icon='md-info' key='dashboard' style={{display: 'none'}} />
             },
@@ -515,6 +518,7 @@ class App extends React.Component {
             this.setState({
                 authenticated: true,
                 accessToken: accessToken,
+                currentTab: "Dashboard",
             })
         } else {
             this.setState({
@@ -526,39 +530,43 @@ class App extends React.Component {
 
     // Render sidebars and toolbar
     render() {
-        return (
-            <Ons.Splitter>
-                <Ons.SplitterSide
-                    side='left'
-                    width={'75%'}
-                    style={{boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'}}
-                    swipeable={false}
-                    collapse={true}
-                    isOpen={this.state.isOpen}
-                    onClose={this.hide}
-                    onOpen={this.show}>
-                    <Ons.Page>
-                        {this.renderSidebarList()}
-                    </Ons.Page>
-                </Ons.SplitterSide>
-
-                <Ons.Page renderToolbar={this.renderToolbar}>
-                    <Ons.Tabbar
+        if (this.state.authenticated) {
+            return (
+                <Ons.Splitter>
+                    <Ons.SplitterSide
+                        side='left'
+                        width={'75%'}
+                        style={{boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'}}
                         swipeable={false}
-                        position='bottom'
-                        index={this.tabNames.indexOf(this.state.currentTab)}
-                        onPreChange={(event) =>
-                            {
-                                if(event.index != this.tabNames.indexOf(this.state.currentTab)) {
-                                    // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
-                                    if(event.target !== event.currentTarget) return;
-                                    this.setState({currentTab: this.tabNames[event.index]});
-                                }
-                            }}
-                        renderTabs={this.renderTabs} />
-                </Ons.Page>
-            </Ons.Splitter>
-        )
+                        collapse={true}
+                        isOpen={this.state.isOpen}
+                        onClose={this.hide}
+                        onOpen={this.show}>
+                        <Ons.Page>
+                            {this.renderSidebarList()}
+                        </Ons.Page>
+                    </Ons.SplitterSide>
+
+                    <Ons.Page renderToolbar={this.renderToolbar}>
+                        <Ons.Tabbar
+                            swipeable={false}
+                            position='bottom'
+                            index={this.tabNames.indexOf(this.state.currentTab)}
+                            onPreChange={(event) =>
+                                {
+                                    if(event.index != this.tabNames.indexOf(this.state.currentTab)) {
+                                        // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
+                                        if(event.target !== event.currentTarget) return;
+                                        this.setState({currentTab: this.tabNames[event.index]});
+                                    }
+                                }}
+                            renderTabs={this.renderTabs} />
+                    </Ons.Page>
+                </Ons.Splitter>
+            );
+        } else {
+            return (<signInPage.SignInPage login={this.login} />);
+        }
     }
 }
 
