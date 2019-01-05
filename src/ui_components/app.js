@@ -11,6 +11,7 @@ const Auth0Cordova =  require('@auth0/cordova');
 const config = require('../data_components/config.json');
 
 // Ui
+const dashboard = require('./dashboard.js');
 const map = require('./map.js');
 const list =  require('./list.js');
 const settings = require('./settings.js');
@@ -46,7 +47,7 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
-        this.tabNames = ["About", "Map", "List", "Settings", "My Offers", "Help"];
+        this.tabNames = ["Dashboard", "Map", "List", "Settings", "My Offers", "Help"];
         this.state = {
             isOpen: false,
             // Elements used for lifted up state of the config file
@@ -63,7 +64,7 @@ class App extends React.Component {
             centerPosition: config.map.center,
             selectedUserId: null,
             notificationLog: [],
-            currentTab: "About",
+            currentTab: "Dashboard",
             currentUserId: "5c23c5b2c3972800172d3e91",
             currentUser: {
                 useLocation: config.app.useLocation,
@@ -344,10 +345,12 @@ class App extends React.Component {
      */
     renderTabs() {
         return [
-            // Welcome page iframe
+            // Dashboard element
             {
-                content: <embededSite.EmbededComponent site='about.html' key='about' name='About' />,
-                tab: <Ons.Tab label='About' icon='' key='about' style={{display: 'none'}}/>
+                content: <dashboard.Dashboard
+                    login={this.login}
+                    key='dashboard' />,
+                tab: <Ons.Tab label='Dashboard' icon='md-info' key='dashboard' style={{display: 'none'}} />
             },
             // Map element
             {
@@ -434,7 +437,7 @@ class App extends React.Component {
             {"id":1, "name": "My Offers", "icon": "md-edit"},
             {"id":2, "name": "Settings", "icon": "md-settings"},
             {"id":3, "name": "Help",     "icon": "md-help"},
-            {"id":4, "name": "About",    "icon": "md-info"}
+            {"id":4, "name": "Dashboard",    "icon": "md-info"}
         ];
 
         var listItems = [];
