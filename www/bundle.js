@@ -92760,11 +92760,6 @@ class App extends React.Component {
         );
     }
 
-    run(id) {
-        this.container = getBySelector(id);
-        this.resumeApp();
-    }
-
     loadProfile(cb) {
         this.auth0.userInfo(this.state.accessToken, cb);
     }
