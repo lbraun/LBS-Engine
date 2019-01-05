@@ -78,47 +78,6 @@ class App extends React.Component {
             },
             authenticated: false,
             accessToken: false,
-            currentRoute: '/',
-            routes: {
-              '/': {
-                id: 'loading',
-                onMount: function(page) {
-                  if (this.state.authenticated === true) {
-                    return this.redirectTo('/home');
-                  }
-                  return this.redirectTo('/login');
-                }
-              },
-              '/login': {
-                id: 'login',
-                onMount: function(page) {
-                  if (this.state.authenticated === true) {
-                    return this.redirectTo('/home');
-                  }
-                  var loginButton = page.querySelector('.btn-login');
-                  loginButton.addEventListener('click', this.login);
-                }
-              },
-              '/home': {
-                id: 'profile',
-                onMount: function(page) {
-                  if (this.state.authenticated === false) {
-                    return this.redirectTo('/login');
-                  }
-                  var logoutButton = page.querySelector('.btn-logout');
-                  var avatar = page.querySelector('#avatar');
-                  var profileCodeContainer = page.querySelector('.profile-json');
-                  logoutButton.addEventListener('click', this.logout);
-                  this.loadProfile(function(err, profile) {
-                    if (err) {
-                      profileCodeContainer.textContent = 'Error ' + err.message;
-                    }
-                    profileCodeContainer.textContent = JSON.stringify(profile, null, 4);
-                    avatar.src = profile.picture;
-                  });
-                }
-              }
-            }
         };
 
         // Auth0
@@ -564,14 +523,6 @@ class App extends React.Component {
     logout(e) {
       localStorage.removeItem('access_token');
       this.resumeApp();
-    };
-
-    redirectTo(route) {
-      if (!this.state.routes[route]) {
-        throw new Error('Unknown route ' + route + '.');
-      }
-      this.state.currentRoute = route;
-      this.render();
     };
 
     resumeApp() {
