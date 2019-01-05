@@ -345,6 +345,8 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
+        var loggedIn = this.state.authenticated;
+
         return (
             <Ons.Toolbar>
                 <div className='left'>
@@ -354,11 +356,8 @@ class App extends React.Component {
                 </div>
                 <div className='center'>{this.state.currentTab}</div>
                 <div className='right'>
-                    <Ons.ToolbarButton onClick={this.login}>
-                        Log in
-                    </Ons.ToolbarButton>
-                    <Ons.ToolbarButton onClick={this.logout}>
-                        Log out
+                    <Ons.ToolbarButton onClick={loggedIn ? this.logout : this.login}>
+                        {loggedIn ? "Log out" : "Log in"}
                     </Ons.ToolbarButton>
                 </div>
             </Ons.Toolbar>
@@ -537,7 +536,8 @@ class App extends React.Component {
     };
 
     login(e) {
-      e.target.disabled = true;
+      var target = e.target;
+      target.disabled = true;
 
       var client = new Auth0Cordova({
         domain: 'geofreebie.eu.auth0.com',
@@ -549,14 +549,15 @@ class App extends React.Component {
         scope: 'openid profile',
         audience: 'https://geofreebie.eu.auth0.com/userinfo'
       };
-      var self = this;
+      var app = this;
       client.authorize(options, function(err, authResult) {
         if (err) {
           console.log(err);
-          return (e.target.disabled = false);
+          return (target.disabled = false);
         }
         localStorage.setItem('access_token', authResult.accessToken);
-        self.resumeApp();
+        target.disabled = false;
+        app.resumeApp();
       });
     };
 
