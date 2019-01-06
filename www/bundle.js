@@ -92341,6 +92341,7 @@ class App extends React.Component {
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
+        this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
@@ -92387,36 +92388,9 @@ class App extends React.Component {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
 
-        // Fetch all user data from database
-        fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
-            // Store current user and remove it from the list
-            for (var i = result.length - 1; i >= 0; --i) {
-                if (result[i]._id == this.state.currentUserId) {
-                    var currentUser = result[i];
-                    result.splice(i, 1);
-
-                    this.setState({
-                        currentUser: currentUser,
-                        currentUserIsLoaded: true,
-                        users: result || [],
-                        usersAreLoaded: true
-                    });
-
-                    break;
-                }
-            }
-        }, error => {
-            console.log("There was an error loading the users!");
-            console.log(error);
-            this.setState({
-                usersAreLoaded: true,
-                errorLoadingUsers: error
-            });
-        });
-
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
-        this.watchID = navigator.geolocation.watchPosition(function onSuccess(position) {
+        this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
             if (app.state.currentUser.useLocation) {
                 // If the user has enabled location tracking, use it
                 var coords = [position.coords.latitude, position.coords.longitude];
@@ -92535,6 +92509,68 @@ class App extends React.Component {
         this.setState({
             selectedUserId: selectedUserId,
             currentTab: "Map"
+        });
+    }
+
+    /**
+     * Fetch or create user in backend base on info from Auth0
+     * @param {Object} userInfo object, returned by auth0.loadUserInfo
+     */
+    fetchOrCreateAuth0User(userInfo) {
+        // Make the call to the "find or create" API endpoint
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/";
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify(userInfo),
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
+            }
+        }).then(res => res.json()).then(result => {
+            console.log("Fetch or create was successful!");
+            console.log(result);
+            this.setState({
+                currentUserId: result._id
+            });
+
+            this.fetchAndLoadAllUsers();
+        }, error => {
+            console.log("There was an error creating or loading the user!");
+            console.log(error);
+            this.setState({
+                errorSyncingUser: error
+            });
+        });
+    }
+
+    /**
+     * Fetches all user data from the database server, including current user's data
+     */
+    fetchAndLoadAllUsers() {
+        fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
+            // Store current user and remove it from the list
+            for (var i = result.length - 1; i >= 0; --i) {
+                if (result[i]._id == this.state.currentUserId) {
+                    var currentUser = result[i];
+                    result.splice(i, 1);
+
+                    this.setState({
+                        currentUser: currentUser,
+                        currentUserIsLoaded: true,
+                        users: result || [],
+                        usersAreLoaded: true
+                    });
+
+                    break;
+                }
+            }
+        }, error => {
+            console.log("There was an error loading the users!");
+            console.log(error);
+            this.setState({
+                usersAreLoaded: true,
+                errorLoadingUsers: error
+            });
         });
     }
 
@@ -92763,8 +92799,8 @@ class App extends React.Component {
         );
     }
 
-    loadProfile(cb) {
-        this.auth0.userInfo(this.state.accessToken, cb);
+    loadUserInfo(callback) {
+        this.auth0.userInfo(this.state.accessToken, callback);
     }
 
     /**
@@ -92818,6 +92854,15 @@ class App extends React.Component {
                 accessToken: null
             });
         }
+
+        var app = this;
+        this.loadUserInfo(function (err, userInfo) {
+            if (err) {
+                console.log('Error: ' + err.message);
+            } else {
+                app.fetchOrCreateAuth0User(userInfo);
+            }
+        });
     }
 
     // Render sidebars and toolbar
