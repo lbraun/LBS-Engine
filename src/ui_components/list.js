@@ -65,9 +65,9 @@ class List extends React.Component {
                 listItems.push(
                     <Ons.ListItem
                         tappable={clickable}
-                        onClick={clickable ? this.handleListItemClick.bind(this, user.id) : null}
-                        id={`user-list-item-${user.id}`}
-                        key={user.id}>
+                        onClick={clickable ? this.handleListItemClick.bind(this, user._id) : null}
+                        id={`user-list-item-${user._id}`}
+                        key={user._id}>
                             <div className='left'>
                                 <Ons.Icon icon='md-face'/>
                             </div>
