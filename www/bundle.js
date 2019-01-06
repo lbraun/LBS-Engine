@@ -92340,7 +92340,6 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.handleUseLocationSettingChange = this.handleUseLocationSettingChange.bind(this);
         this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
@@ -92353,29 +92352,22 @@ class App extends React.Component {
         this.tabNames = ["Dashboard", "Map", "List", "Settings", "My Offers", "Help"];
         this.state = {
             isOpen: false,
-            // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
+            centerPosition: config.map.center,
             errorLoadingUsers: null,
             errorSyncingUser: null,
             usersAreLoaded: false,
             currentUserIsLoaded: false,
             users: [],
-            centerPosition: config.map.center,
             selectedUserId: null,
             notificationLog: [],
             currentTab: "Dashboard",
-            currentUserId: "5c23c5b2c3972800172d3e91",
-            currentUser: {
-                useLocation: config.app.useLocation,
-                shareLocation: config.app.shareLocation,
-                offerDescription: "",
-                contactInformation: "",
-                coords: null
-            },
+            currentUserId: null,
+            currentUser: null,
             authenticated: false,
             accessToken: false
         };
@@ -92408,9 +92400,12 @@ class App extends React.Component {
                 if (closestUser) {
                     // Check if there is a user nearby about whom
                     // the current user has not yet been notified
-                    var alreadyNotified = app.state.notificationLog.includes(closestUser.id);
+                    var alreadyNotified = app.state.notificationLog.includes(closestUser._id);
                     if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
-                        app.setState({ notificationLog: app.state.notificationLog.concat([closestUser.id]) });
+                        var log = app.state.notificationLog.concat([closestUser._id]);
+                        app.setState({
+                            notificationLog: log
+                        });
                         alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
                     }
                 }
@@ -92469,18 +92464,6 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {Boolean} bool value of the change
      */
-    handleUseLocationSettingChange(bool) {
-        if (!bool) {
-            this.setState({
-                userPosition: null
-            });
-        }
-    }
-
-    /**
-     * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change
-     */
     handleLayerControlChange(bool) {
         this.setState({ layerControl: bool });
     }
@@ -92527,8 +92510,6 @@ class App extends React.Component {
                 // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
             }
         }).then(res => res.json()).then(result => {
-            console.log("Fetch or create was successful!");
-            console.log(result);
             this.setState({
                 currentUserId: result._id
             });
@@ -92727,7 +92708,6 @@ class App extends React.Component {
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
-                onUseLocationSettingChange: this.handleUseLocationSettingChange,
                 pushUserUpdate: this.pushUserUpdate,
                 currentUser: this.state.currentUser,
                 authenticated: this.state.authenticated,
@@ -92848,26 +92828,32 @@ class App extends React.Component {
                 accessToken: accessToken,
                 currentTab: "Dashboard"
             });
+
+            var app = this;
+
+            this.loadUserInfo(function (err, userInfo) {
+                if (err) {
+                    console.log('Error: ' + err.message);
+                } else {
+                    app.fetchOrCreateAuth0User(userInfo);
+                }
+            });
         } else {
             this.setState({
                 authenticated: false,
-                accessToken: null
+                usersAreLoaded: false,
+                currentUserIsLoaded: false,
+                accessToken: null,
+                currentUserId: null,
+                currentUser: null,
+                users: null
             });
         }
-
-        var app = this;
-        this.loadUserInfo(function (err, userInfo) {
-            if (err) {
-                console.log('Error: ' + err.message);
-            } else {
-                app.fetchOrCreateAuth0User(userInfo);
-            }
-        });
     }
 
     // Render sidebars and toolbar
     render() {
-        if (this.state.authenticated) {
+        if (this.state.authenticated && this.state.currentUser) {
             return React.createElement(
                 Ons.Splitter,
                 null,
@@ -92906,7 +92892,9 @@ class App extends React.Component {
                 )
             );
         } else {
-            return React.createElement(signInPage.SignInPage, { login: this.login });
+            return React.createElement(signInPage.SignInPage, {
+                login: this.login,
+                authenticated: this.state.authenticated });
         }
     }
 }
@@ -93057,9 +93045,9 @@ class List extends React.Component {
                     Ons.ListItem,
                     {
                         tappable: clickable,
-                        onClick: clickable ? this.handleListItemClick.bind(this, user.id) : null,
-                        id: `user-list-item-${user.id}`,
-                        key: user.id },
+                        onClick: clickable ? this.handleListItemClick.bind(this, user._id) : null,
+                        id: `user-list-item-${user._id}`,
+                        key: user._id },
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -93190,7 +93178,6 @@ class Map extends React.Component {
      * @param {Object} e Layer Object fired by leaflet
      */
     handleOverlayRemove(e) {
-
         this.createLog(false, e.name);
     }
 
@@ -93210,10 +93197,10 @@ class Map extends React.Component {
                     userLayer.push(React.createElement(
                         ExtendedMarker,
                         {
-                            id: user.id,
+                            id: user._id,
                             position: user.coords,
-                            isOpen: user.id == this.props.selectedUserId,
-                            key: user.name,
+                            isOpen: user._id == this.props.selectedUserId,
+                            key: user._id,
                             icon: this.userMarker },
                         React.createElement(
                             leaflet.Popup,
@@ -93228,19 +93215,19 @@ class Map extends React.Component {
                 } else {
                     userLayer.push(React.createElement(leaflet.Marker, {
                         position: user.coords,
-                        key: user.name }));
+                        key: user._id }));
                 }
             } else {
                 // If user chooses NOT to be public, insert a buffer instead of a marker into the map
                 // Only do this if the user is selected
-                if (user.id == this.props.selectedUserId) {
+                if (user._id == this.props.selectedUserId) {
                     var popup = user.name + " is offering " + user.offerDescription + " and can be contacted at " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedCircle,
                         {
-                            id: user.id,
+                            id: user._id,
                             isOpen: true,
-                            key: user.name,
+                            key: user._id,
                             center: this.props.currentUser.coords,
                             radius: this.props.calculateDistanceTo(user.coords) },
                         React.createElement(
@@ -93298,7 +93285,7 @@ class Map extends React.Component {
             var users = this.props.users;
             for (var i = users.length - 1; i >= 0; i--) {
                 var user = users[i];
-                if (user.id == this.props.selectedUserId) {
+                if (user._id == this.props.selectedUserId) {
                     if (user.shareLocation) {
                         // If the user's position is public, move map to user
                         center = user.coords;
@@ -93461,7 +93448,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        'What do you have to give?'
+                        'I am offering...'
                     ),
                     React.createElement(
                         'div',
@@ -93490,7 +93477,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        'How can other users contact you?'
+                        'I can be contacted at...'
                     ),
                     React.createElement(
                         'div',
@@ -93637,11 +93624,6 @@ class Settings extends React.Component {
         var updatedUser = this.props.currentUser;
         updatedUser[name] = value;
         this.props.pushUserUpdate(updatedUser);
-
-        switch (name) {
-            case 'useLocation':
-                this.props.onUseLocationSettingChange(value);
-        }
     }
 
     render() {
@@ -93767,6 +93749,7 @@ class SignInPage extends React.Component {
 
     constructor(props) {
         super(props);
+        this.renderLoginButton = this.renderLoginButton.bind(this);
     }
 
     // Render the sign in page
@@ -93788,15 +93771,27 @@ class SignInPage extends React.Component {
                     React.createElement(
                         'p',
                         { style: { textAlign: "center" } },
-                        React.createElement(
-                            Ons.Button,
-                            { onClick: this.props.login },
-                            'Log in'
-                        )
+                        this.renderLoginButton()
                     )
                 )
             )
         );
+    }
+
+    renderLoginButton() {
+        if (this.props.authenticated) {
+            return React.createElement(
+                'span',
+                null,
+                'Loading...'
+            );
+        } else {
+            return React.createElement(
+                Ons.Button,
+                { onClick: this.props.login },
+                'Log in'
+            );
+        }
     }
 }
 

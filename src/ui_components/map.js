@@ -83,7 +83,6 @@ class Map extends React.Component {
      * @param {Object} e Layer Object fired by leaflet
      */
     handleOverlayRemove(e) {
-
         this.createLog(false, e.name);
     }
 
@@ -102,42 +101,46 @@ class Map extends React.Component {
                     var popup = user.name
                         + " is offering " + user.offerDescription
                         + " and can be contacted at " + user.contactInformation;
-                    userLayer.push(<ExtendedMarker
-                        id={user.id}
-                        position={user.coords}
-                        isOpen={user.id == this.props.selectedUserId}
-                        key={user.name}
-                        icon={this.userMarker}>
-                        <leaflet.Popup>
-                            <span>
-                                {popup}
-                            </span>
-                        </leaflet.Popup>
-                    </ExtendedMarker>)
+                    userLayer.push(
+                        <ExtendedMarker
+                            id={user._id}
+                            position={user.coords}
+                            isOpen={user._id == this.props.selectedUserId}
+                            key={user._id}
+                            icon={this.userMarker}>
+                            <leaflet.Popup>
+                                <span>
+                                    {popup}
+                                </span>
+                            </leaflet.Popup>
+                        </ExtendedMarker>
+                    );
                 } else {
                     userLayer.push(<leaflet.Marker
                         position={user.coords}
-                        key={user.name} />)
+                        key={user._id} />)
                 }
             } else {
                 // If user chooses NOT to be public, insert a buffer instead of a marker into the map
                 // Only do this if the user is selected
-                if (user.id == this.props.selectedUserId) {
+                if (user._id == this.props.selectedUserId) {
                     var popup = user.name
                         + " is offering " + user.offerDescription
                         + " and can be contacted at " + user.contactInformation;
-                    userLayer.push(<ExtendedCircle
-                        id={user.id}
-                        isOpen={true}
-                        key={user.name}
-                        center={this.props.currentUser.coords}
-                        radius={this.props.calculateDistanceTo(user.coords)}>
-                        <leaflet.Popup>
-                            <span>
-                                {popup}
-                            </span>
-                        </leaflet.Popup>
-                    </ExtendedCircle>)
+                    userLayer.push(
+                        <ExtendedCircle
+                            id={user._id}
+                            isOpen={true}
+                            key={user._id}
+                            center={this.props.currentUser.coords}
+                            radius={this.props.calculateDistanceTo(user.coords)}>
+                            <leaflet.Popup>
+                                <span>
+                                    {popup}
+                                </span>
+                            </leaflet.Popup>
+                        </ExtendedCircle>
+                    );
                 }
             }
         }
@@ -149,7 +152,8 @@ class Map extends React.Component {
                 <leaflet.FeatureGroup key="userLayer">
                     {userLayer}
                 </leaflet.FeatureGroup>
-            </leaflet.LayersControl.Overlay>)
+            </leaflet.LayersControl.Overlay>
+        );
         return layers;
     }
 
@@ -178,7 +182,7 @@ class Map extends React.Component {
             var users = this.props.users;
             for (var i = users.length - 1; i >= 0; i--) {
                 var user = users[i];
-                if (user.id == this.props.selectedUserId) {
+                if (user._id == this.props.selectedUserId) {
                     if (user.shareLocation) {
                         // If the user's position is public, move map to user
                         center = user.coords;

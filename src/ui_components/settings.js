@@ -103,11 +103,6 @@ class Settings extends React.Component {
         var updatedUser = this.props.currentUser;
         updatedUser[name] = value;
         this.props.pushUserUpdate(updatedUser);
-
-        switch(name) {
-            case 'useLocation':
-                this.props.onUseLocationSettingChange(value);
-        }
     }
 
     render() {

@@ -39,7 +39,6 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.handleUseLocationSettingChange =  this.handleUseLocationSettingChange.bind(this);
         this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
@@ -52,29 +51,22 @@ class App extends React.Component {
         this.tabNames = ["Dashboard", "Map", "List", "Settings", "My Offers", "Help"];
         this.state = {
             isOpen: false,
-            // Elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
             layerControl: config.app.layerControl,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
+            centerPosition: config.map.center,
             errorLoadingUsers: null,
             errorSyncingUser: null,
             usersAreLoaded: false,
             currentUserIsLoaded: false,
             users: [],
-            centerPosition: config.map.center,
             selectedUserId: null,
             notificationLog: [],
             currentTab: "Dashboard",
-            currentUserId: "5c23c5b2c3972800172d3e91",
-            currentUser: {
-                useLocation: config.app.useLocation,
-                shareLocation: config.app.shareLocation,
-                offerDescription: "",
-                contactInformation: "",
-                coords: null,
-            },
+            currentUserId: null,
+            currentUser: null,
             authenticated: false,
             accessToken: false,
         };
@@ -108,9 +100,12 @@ class App extends React.Component {
                 if (closestUser) {
                     // Check if there is a user nearby about whom
                     // the current user has not yet been notified
-                    var alreadyNotified = app.state.notificationLog.includes(closestUser.id)
+                    var alreadyNotified = app.state.notificationLog.includes(closestUser._id)
                     if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
-                        app.setState({notificationLog: app.state.notificationLog.concat([closestUser.id])})
+                        var log = app.state.notificationLog.concat([closestUser._id]);
+                        app.setState({
+                            notificationLog: log,
+                        });
                         alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
                     }
                 }
@@ -169,18 +164,6 @@ class App extends React.Component {
      * Handle the change of the parameter from the lower level
      * @param {Boolean} bool value of the change
      */
-    handleUseLocationSettingChange(bool) {
-        if (!bool) {
-            this.setState({
-                userPosition: null,
-            });
-        }
-    }
-
-    /**
-     * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change
-     */
     handleLayerControlChange(bool) {
         this.setState({layerControl: bool});
     }
@@ -230,8 +213,6 @@ class App extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    console.log("Fetch or create was successful!");
-                    console.log(result);
                     this.setState({
                         currentUserId: result._id
                     });
@@ -437,7 +418,6 @@ class App extends React.Component {
                     onLayerControlChange={this.handleLayerControlChange}
                     onDragMapChange={this.handleDragMapChange}
                     onZoomMapChange={this.handleZoomMapChange}
-                    onUseLocationSettingChange={this.handleUseLocationSettingChange}
                     pushUserUpdate={this.pushUserUpdate}
                     currentUser={this.state.currentUser}
                     authenticated={this.state.authenticated}
@@ -560,27 +540,32 @@ class App extends React.Component {
                 accessToken: accessToken,
                 currentTab: "Dashboard",
             })
+
+            var app = this;
+
+            this.loadUserInfo(function(err, userInfo) {
+                if (err) {
+                    console.log('Error: ' + err.message);
+                } else {
+                    app.fetchOrCreateAuth0User(userInfo);
+                }
+            });
         } else {
             this.setState({
                 authenticated: false,
+                usersAreLoaded: false,
+                currentUserIsLoaded: false,
                 accessToken: null,
+                currentUserId: null,
+                currentUser: null,
+                users: null,
             })
         }
-
-        var app = this;
-        this.loadUserInfo(function(err, userInfo) {
-            if (err) {
-                console.log('Error: ' + err.message);
-            } else {
-                app.fetchOrCreateAuth0User(userInfo);
-            }
-        });
-
     };
 
     // Render sidebars and toolbar
     render() {
-        if (this.state.authenticated) {
+        if (this.state.authenticated && this.state.currentUser) {
             return (
                 <Ons.Splitter>
                     <Ons.SplitterSide
@@ -615,7 +600,9 @@ class App extends React.Component {
                 </Ons.Splitter>
             );
         } else {
-            return (<signInPage.SignInPage login={this.login} />);
+            return (<signInPage.SignInPage
+                login={this.login}
+                authenticated={this.state.authenticated} />);
         }
     }
 }

@@ -38,7 +38,7 @@ class offerForm extends React.Component {
                 <Ons.List>
                     <Ons.ListItem id="offer-description-title-li">
                         <div className="list-item__title">
-                            What do you have to give?
+                            I am offering...
                         </div>
                         <div className="list-item__subtitle">
                             Please give a nice short description of the offer.
@@ -59,7 +59,7 @@ class offerForm extends React.Component {
 
                     <Ons.ListItem id="contact-information-title-li">
                         <div className="list-item__title">
-                            How can other users contact you?
+                            I can be contacted at...
                         </div>
                         <div className="list-item__subtitle">
                             Please provide a phone number, email, or other instructions.
