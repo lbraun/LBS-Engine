@@ -327,6 +327,8 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
+        var tabName = this.l(`tabs.${this.state.currentTab}`);
+
         return (
             <Ons.Toolbar>
                 <div className='left'>
@@ -334,7 +336,7 @@ class App extends React.Component {
                         <Ons.Icon icon='ion-navicon, material:md-menu'></Ons.Icon>
                     </Ons.ToolbarButton>
                 </div>
-                <div className='center'>{this.l(`tabs.${this.state.currentTab}`)}</div>
+                <div className='center'>{tabName}</div>
             </Ons.Toolbar>
         )
     }
@@ -390,7 +392,11 @@ class App extends React.Component {
                     authenticated={this.state.authenticated}
                     currentUser={this.state.currentUser}
                     key='dashboard' />,
-                tab: <Ons.Tab label={this.l('tabs.dashboard')} icon='md-info' key='dashboard' style={{display: 'none'}} />
+                tab: <Ons.Tab
+                    label={this.l('tabs.dashboard')}
+                    icon='md-info'
+                    key='dashboard'
+                    style={{display: 'none'}} />
             },
             // Map element
             {
@@ -406,7 +412,10 @@ class App extends React.Component {
                     calculateDistanceTo={this.calculateDistanceTo}
                     users={this.state.users}
                     key='map' />,
-                tab: <Ons.Tab label={this.l('tabs.map')} icon='md-map' key='map' />
+                tab: <Ons.Tab
+                    label={this.l('tabs.map')}
+                    icon='md-map'
+                    key='map' />
             },
             // List element
             {
@@ -424,7 +433,10 @@ class App extends React.Component {
                     errorLoadingUsers={this.state.errorLoadingUsers}
                     users={this.state.users}
                     key='list' />,
-                tab: <Ons.Tab label={this.l('tabs.list')} icon='md-view-list' key='list' />
+                tab: <Ons.Tab
+                    label={this.l('tabs.list')}
+                    icon='md-view-list'
+                    key='list' />
             },
             // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
@@ -445,7 +457,11 @@ class App extends React.Component {
                     draggable={this.state.draggable}
                     zoomable={this.state.zoomable}
                     key='settings' />,
-                tab: <Ons.Tab label={this.l('tabs.settings')} icon='md-settings' key='settings' style={{display: 'none'}}/>
+                tab: <Ons.Tab
+                    label={this.l('tabs.settings')}
+                    icon='md-settings'
+                    key='settings'
+                    style={{display: 'none'}} />
             },
             // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
@@ -454,12 +470,20 @@ class App extends React.Component {
                     currentUserIsLoaded={this.state.currentUserIsLoaded}
                     currentUser={this.state.currentUser}
                     key='offerForm' />,
-                tab: <Ons.Tab label={this.l('tabs.offers')} icon='md-edit' key='offerForm' style={{display: 'none'}}/>
+                tab: <Ons.Tab
+                    label={this.l('tabs.offers')}
+                    icon='md-edit'
+                    key='offerForm'
+                    style={{display: 'none'}} />
             },
             // Help page iframe
             {
                 content: <embededSite.EmbededComponent site='help.html' key='help' name='Help' />,
-                tab: <Ons.Tab label={this.l('tabs.help')} icon='md-help' key='help' style={{display: 'none'}}/>
+                tab: <Ons.Tab
+                    label={this.l('tabs.help')}
+                    icon='md-help'
+                    key='help'
+                    style={{display: 'none'}} />
             },
             // Ship around an error in current onsen release
             // Can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
@@ -578,6 +602,7 @@ class App extends React.Component {
                 }
             });
         } else {
+            // User logged out, so clear out stored user data
             this.setState({
                 authenticated: false,
                 usersAreLoaded: false,
