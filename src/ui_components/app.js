@@ -470,6 +470,7 @@ class App extends React.Component {
             // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <offerForm.offerForm
+                    l={this.l}
                     pushUserUpdate={this.pushUserUpdate}
                     currentUserIsLoaded={this.state.currentUserIsLoaded}
                     currentUser={this.state.currentUser}

@@ -92294,14 +92294,21 @@ module.exports={
         "map.isOffering": "is offering",
         "map.showOtherUsers": "Show other users",
         "map.youAreHere": "You are here!",
+        "offerForm.contactInformationPlaceholder": "Contact information",
+        "offerForm.iAmOffering": "I am offering...",
+        "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
+        "offerForm.iCanBeContactedAt": "I can be contacted at...",
+        "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
+        "offerForm.offerDescriptionPlaceholder": "Offer description",
+        "offerForm.syncing": "Syncing...",
         "settings.loggedInAs": "Logged in as",
         "settings.logIn": "Log in",
         "settings.logOut": "Log out",
-        "settings.useLocation": "Use my location",
-        "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
+        "settings.notCurrentlyLoggedIn": "Not currently logged in",
         "settings.shareLocation": "Share my location",
         "settings.shareLocationText": "This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.",
-        "settings.notCurrentlyLoggedIn": "Not currently logged in",
+        "settings.useLocation": "Use my location",
+        "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92789,6 +92796,7 @@ class App extends React.Component {
         // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
         {
             content: React.createElement(offerForm.offerForm, {
+                l: this.l,
                 pushUserUpdate: this.pushUserUpdate,
                 currentUserIsLoaded: this.state.currentUserIsLoaded,
                 currentUser: this.state.currentUser,
@@ -93460,18 +93468,21 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
-// Custom files
-// Logic
-const logger = require('../business_components/logger.js');
-
 /**
  * Offer form where the user can list items they are giving away.
  */
 class offerForm extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the offer form
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`offerForm.${string}`);
     }
 
     /**
@@ -93501,12 +93512,12 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        'I am offering...'
+                        this.l("iAmOffering")
                     ),
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        'Please give a nice short description of the offer.'
+                        this.l("iAmOfferingHelpText")
                     )
                 ),
                 React.createElement(
@@ -93519,7 +93530,7 @@ class offerForm extends React.Component {
                             id: 'offerDescription',
                             name: 'offerDescription',
                             className: 'textarea textarea--transparent',
-                            placeholder: 'Offer description',
+                            placeholder: this.l("offerDescriptionPlaceholder"),
                             value: this.props.currentUser.offerDescription,
                             onChange: this.handleInputChange })
                     )
@@ -93530,12 +93541,12 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        'I can be contacted at...'
+                        this.l("iCanBeContactedAt")
                     ),
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        'Please provide a phone number, email, or other instructions.'
+                        this.l("iCanBeContactedAtHelpText")
                     )
                 ),
                 React.createElement(
@@ -93548,7 +93559,7 @@ class offerForm extends React.Component {
                             id: 'contactInformation',
                             name: 'contactInformation',
                             className: 'textarea textarea--transparent',
-                            placeholder: 'Contact information',
+                            placeholder: this.l("contactInformationPlaceholder"),
                             value: this.props.currentUser.contactInformation,
                             onChange: this.handleInputChange })
                     )
@@ -93559,7 +93570,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        this.props.currentUserIsLoaded ? "✔︎" : "Syncing..."
+                        this.props.currentUserIsLoaded ? "✔︎" : this.l("syncing")
                     )
                 )
             )
@@ -93574,7 +93585,7 @@ module.exports = {
     offerFormComponent: offerFormComponent
 };
 
-},{"../business_components/logger.js":270,"react":265,"react-onsenui":262}],281:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],281:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
