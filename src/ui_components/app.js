@@ -457,28 +457,39 @@ class App extends React.Component {
     // Render the list displayed in the sidebar
     renderSidebarList() {
         var sidebarItems = [
-            {"id":1, "name": "My Offers", "icon": "md-edit"},
-            {"id":2, "name": "Settings", "icon": "md-settings"},
-            {"id":3, "name": "Help",     "icon": "md-help"},
-            {"id":4, "name": "Dashboard",    "icon": "md-info"}
+            {name: "My Offers", key: "offers",    icon: "md-edit"},
+            {name: "Settings",  key: "settings",  icon: "md-settings"},
+            {name: "Help",      key: "help",      icon: "md-help"},
+            {name: "Dashboard", key: "dashboard", icon: "md-info"},
+
         ];
 
-        var listItems = [];
+        var listItems = [
+            <Ons.ListItem
+                key='user'
+                tappable={false}>
+                    <div className='list-item__title'>
+                        <strong>{this.state.currentUser.name}</strong>
+                    </div>
+                    <div className='list-item__subtitle'>
+                        {this.state.currentUser.contactInformation}
+                    </div>
+            </Ons.ListItem>
+        ];
 
         for (let i in sidebarItems) {
             var sidebarItem = sidebarItems[i];
 
             listItems.push(
                 <Ons.ListItem
-                    id={`sidebar-item-${sidebarItem["id"]}`}
-                    key={sidebarItem["id"]}
+                    key={sidebarItem.key}
                     tappable={true}
-                    onClick={this.handleSidebarClick.bind(this, sidebarItem["name"])}>
+                    onClick={this.handleSidebarClick.bind(this, sidebarItem.name)}>
                         <div className='left'>
-                            <Ons.Icon icon={sidebarItem["icon"]}/>
+                            <Ons.Icon icon={sidebarItem.icon}/>
                         </div>
                         <div className='center'>
-                            {sidebarItem["name"]}
+                            {sidebarItem.name}
                         </div>
                 </Ons.ListItem>
             )
