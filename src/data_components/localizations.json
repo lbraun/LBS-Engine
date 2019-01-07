@@ -1,0 +1,10 @@
+{
+    "en": {
+        "tabs.dashboard": "Dashboard",
+        "tabs.help": "Help",
+        "tabs.list": "List",
+        "tabs.map": "Map",
+        "tabs.offers": "My Offers",
+        "tabs.settings": "Settings"
+    }
+}
