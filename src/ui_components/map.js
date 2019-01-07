@@ -67,8 +67,10 @@ class Map extends React.Component {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
                     var popup = user.name
-                        + " is offering " + user.offerDescription
-                        + " and can be contacted at " + user.contactInformation;
+                        + " " + this.props.l("map.isOffering")
+                        + " " + user.offerDescription
+                        + " " + this.props.l("map.andCanBeContactedAt")
+                        + " " + user.contactInformation;
                     userLayer.push(
                         <ExtendedMarker
                             id={user._id}
@@ -93,8 +95,10 @@ class Map extends React.Component {
                 // Only do this if the user is selected
                 if (user._id == this.props.selectedUserId) {
                     var popup = user.name
-                        + " is offering " + user.offerDescription
-                        + " and can be contacted at " + user.contactInformation;
+                        + " " + this.props.l("map.isOffering")
+                        + " " + user.offerDescription
+                        + " " + this.props.l("map.andCanBeContactedAt")
+                        + " " + user.contactInformation;
                     userLayer.push(
                         <ExtendedCircle
                             id={user._id}
@@ -115,7 +119,7 @@ class Map extends React.Component {
         layers.push(
             <leaflet.LayersControl.Overlay
                 key="userLayer"
-                name="Show other users"
+                name={this.props.l("map.showOtherUsers")}
                 checked={true}>
                 <leaflet.FeatureGroup key="userLayer">
                     {userLayer}
@@ -136,7 +140,7 @@ class Map extends React.Component {
                     icon={this.positionMarker}>
                     <leaflet.Popup>
                         <span>
-                            You are here!
+                            {this.props.l("map.youAreHere")}
                         </span>
                     </leaflet.Popup>
                 </ExtendedMarker>
@@ -174,7 +178,7 @@ class Map extends React.Component {
                 onOverlayremove={this.handleOverlayRemove}>
                 <OfflineLayer.OfflineLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution="Map data &copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                    attribution={this.props.l("map.attribution")}
                 />
                 <leaflet.LayersControl position="topleft">
                     {this.addLayers()}
@@ -197,7 +201,7 @@ class Map extends React.Component {
                     <leaflet.Marker position={this.props.currentUser.coords} icon={this.positionMarker}>
                         <leaflet.Popup>
                             <span>
-                                You are here!
+                                {this.props.l("map.youAreHere")}
                             </span>
                         </leaflet.Popup>
                     </leaflet.Marker>
@@ -214,7 +218,7 @@ class Map extends React.Component {
                     zoomDelta={this.props.zoomable == false ? 0 : 1}>
                     <OfflineLayer.OfflineLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution="Map data &copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                        attribution={this.props.l("map.attribution")}
                     />
                     <OfflineLayer.OfflineControl />
                     {marker}

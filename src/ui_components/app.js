@@ -111,11 +111,11 @@ class App extends React.Component {
                         app.setState({
                             notificationLog: log,
                         });
-                        alert(closestUser.name + " " +
-                            this.l("alert.isLessThan") + " " +
-                            closestUser.distanceToUser + " " +
-                            this.l("alert.metersAwayWith") + " " +
-                            closestUser.offerDescription);
+                        alert(closestUser.name
+                            + " " + this.l("alert.isLessThan")
+                            + " " + closestUser.distanceToUser
+                            + " " + this.l("alert.metersAwayWith")
+                            + " " + closestUser.offerDescription);
                     }
                 }
             } else {
@@ -402,6 +402,7 @@ class App extends React.Component {
             // Map element
             {
                 content: <map.Map
+                    l={this.l}
                     logging={this.state.logging}
                     externalData={this.state.externalData}
                     layerControl={this.state.layerControl}

@@ -92284,6 +92284,11 @@ module.exports={
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
         "dashboard.welcome": "Welcome",
+        "map.isOffering": "is offering",
+        "map.andCanBeContactedAt": "and can be contacted at",
+        "map.showOtherUsers": "Show other users",
+        "map.youAreHere": "You are here!",
+        "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92703,6 +92708,7 @@ class App extends React.Component {
         // Map element
         {
             content: React.createElement(map.Map, {
+                l: this.l,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 layerControl: this.state.layerControl,
@@ -93167,18 +93173,19 @@ module.exports = {
 },{"../data_components/config.json":272,"geolib":26,"react":265,"react-onsenui":262}],279:[function(require,module,exports){
 'use strict';
 
+// Load third-party modules
+
 const React = require('react');
 const leaflet = require('react-leaflet');
-// Custom files required
+
+// Load custom files
 // Data
 const config = require('../data_components/config.json');
+
 // Logic
-const locationManager = require('../business_components/locationManager.js');
-const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
-
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
@@ -93210,48 +93217,16 @@ class Map extends React.Component {
     }
 
     /**
-     * Write a log that notes the change of active layers
-     * @param {boolean} change If the layer was added or removed
-     * @param {String} data Name of the layer that was toggled
-     */
-    createLog(change, data) {
-        var action;
-        var map = this;
-        if (this.props.logging) {
-            // Define the log
-            if (change) {
-                action = 'Activate ' + data;
-            } else action = 'Deactivate ' + data;
-            var entry;
-            // Get the current position for the log
-            locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, map.props.picture ? 'Streetview' : 'Map', action];
-                // Log the data
-                // logger.logEntry(entry);
-            }, function error(err) {
-                // If there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', map.props.picture ? 'Streetview' : 'Map', action];
-                // Log the data
-                // logger.logEntry(entry);
-            });
-        }
-    }
-
-    /**
      * Handle the activation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayAdd(e) {
-        this.createLog(true, e.name);
-    }
+    handleOverlayAdd(e) {}
 
     /**
      * Handle the deactivation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayRemove(e) {
-        this.createLog(false, e.name);
-    }
+    handleOverlayRemove(e) {}
 
     // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
     addLayers() {
@@ -93265,7 +93240,7 @@ class Map extends React.Component {
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
-                    var popup = user.name + " is offering " + user.offerDescription + " and can be contacted at " + user.contactInformation;
+                    var popup = user.name + " " + this.props.l("map.isOffering") + " " + user.offerDescription + " " + this.props.l("map.andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedMarker,
                         {
@@ -93293,7 +93268,7 @@ class Map extends React.Component {
                 // If user chooses NOT to be public, insert a buffer instead of a marker into the map
                 // Only do this if the user is selected
                 if (user._id == this.props.selectedUserId) {
-                    var popup = user.name + " is offering " + user.offerDescription + " and can be contacted at " + user.contactInformation;
+                    var popup = user.name + " " + this.props.l("map.isOffering") + " " + user.offerDescription + " " + this.props.l("map.andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedCircle,
                         {
@@ -93319,7 +93294,7 @@ class Map extends React.Component {
             leaflet.LayersControl.Overlay,
             {
                 key: 'userLayer',
-                name: 'Show other users',
+                name: this.props.l("map.showOtherUsers"),
                 checked: true },
             React.createElement(
                 leaflet.FeatureGroup,
@@ -93345,7 +93320,7 @@ class Map extends React.Component {
                 React.createElement(
                     'span',
                     null,
-                    'You are here!'
+                    this.props.l("map.youAreHere")
                 )
             )
         ) : null;
@@ -93382,7 +93357,7 @@ class Map extends React.Component {
                 onOverlayremove: this.handleOverlayRemove },
             React.createElement(OfflineLayer.OfflineLayer, {
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                attribution: 'Map data \xA9 <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                attribution: this.props.l("map.attribution")
             }),
             React.createElement(
                 leaflet.LayersControl,
@@ -93410,7 +93385,7 @@ class Map extends React.Component {
                     React.createElement(
                         'span',
                         null,
-                        'You are here!'
+                        this.props.l("map.youAreHere")
                     )
                 )
             ) : null;
@@ -93426,7 +93401,7 @@ class Map extends React.Component {
                     zoomDelta: this.props.zoomable == false ? 0 : 1 },
                 React.createElement(OfflineLayer.OfflineLayer, {
                     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    attribution: 'Map data \xA9 <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    attribution: this.props.l("map.attribution")
                 }),
                 React.createElement(OfflineLayer.OfflineControl, null),
                 marker
@@ -93473,7 +93448,7 @@ module.exports = {
     Map: Map
 };
 
-},{"../business_components/locationManager.js":269,"../business_components/logger.js":270,"../business_components/offlineLayer.js":271,"../data_components/config.json":272,"react":265,"react-leaflet":250}],280:[function(require,module,exports){
+},{"../business_components/offlineLayer.js":271,"../data_components/config.json":272,"react":265,"react-leaflet":250}],280:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -93599,11 +93574,6 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
-// Custom files
-// Logic
-const logger = require('../business_components/logger.js');
-const locationManager = require('../business_components/locationManager.js');
-
 /**
  * Settings for the app. Modifies the state of the settings
  */
@@ -93612,56 +93582,10 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
-        this.handleChangeLogging = this.handleChangeLogging.bind(this);
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.createLog = this.createLog.bind(this);
-    }
-
-    createLog(mode, change) {
-        var action;
-        if (this.props.logging) {
-            // Define the log
-            if (change) {
-                action = 'Activate ' + mode;
-            } else action = 'Deactivate ' + mode;
-            var entry;
-            // Get the current position for the log
-            locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, 'Settings', action];
-                // Log the data
-                // logger.logEntry(entry);
-            }, function error(err) {
-                // If there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', 'Settings', action];
-                // Log the data
-                // logger.logEntry(entry);
-            });
-        }
-    }
-
-    // Handle toggle for logging
-    handleChangeLogging(e) {
-        this.props.onLoggingChange(e.target.checked);
-        var action;
-        // Define the log
-        if (e.target.checked) {
-            action = 'Activate logging';
-        } else action = 'Deactivate logging';
-        var entry;
-        // Get the current position for the log
-        locationManager.getLocation().then(function success(position) {
-            entry = [position.latitude, position.longitude, 'Settings', action];
-            // Log the data
-            // logger.logEntry(entry);
-        }, function error(err) {
-            // If there was an error getting the position, log a '-' for lat/lng
-            entry = ['-', '-', 'Settings', action];
-            // Log the data
-            // logger.logEntry(entry);
-        });
     }
 
     // Handle toggle for using external data
@@ -93811,7 +93735,7 @@ module.exports = {
     settingsComponent: settingsComponent
 };
 
-},{"../business_components/locationManager.js":269,"../business_components/logger.js":270,"react":265,"react-onsenui":262}],282:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],282:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
