@@ -92285,15 +92285,23 @@ module.exports={
         "alert.metersAwayWith": "m away with the following offer:",
         "dashboard.welcome": "Welcome",
         "list.error": "Error",
+        "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
         "list.locationIsPrivate": "Location is private",
         "list.noUsers": "There are no other users in the system right now. Please check back later!",
-        "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "map.andCanBeContactedAt": "and can be contacted at",
         "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
         "map.isOffering": "is offering",
         "map.showOtherUsers": "Show other users",
         "map.youAreHere": "You are here!",
+        "settings.loggedInAs": "Logged in as",
+        "settings.logIn": "Log in",
+        "settings.logOut": "Log out",
+        "settings.useLocation": "Use my location",
+        "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
+        "settings.shareLocation": "Share my location",
+        "settings.shareLocationText": "This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.",
+        "settings.notCurrentlyLoggedIn": "Not currently logged in",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92755,6 +92763,7 @@ class App extends React.Component {
         // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
         {
             content: React.createElement(settings.Settings, {
+                l: this.l,
                 onLoggingChange: this.handleLoggingChange,
                 onDataChange: this.handleExternalDataChange,
                 onLayerControlChange: this.handleLayerControlChange,
@@ -93621,18 +93630,18 @@ class Settings extends React.Component {
 
     render() {
         if (this.props.authenticated) {
-            var authenticationText = `Logged in as ${this.props.currentUser.name}`;
+            var authenticationText = `${this.props.l("settings.loggedInAs")} ${this.props.currentUser.name}`;
             var authenticationButton = React.createElement(
                 Ons.Button,
                 { onClick: this.props.logout },
-                'Log out'
+                this.props.l("settings.logOut")
             );
         } else {
-            var authenticationText = "Not currently logged in";
+            var authenticationText = this.props.l("settings.notCurrentlyLoggedIn");
             var authenticationButton = React.createElement(
                 Ons.Button,
                 { onClick: this.props.login },
-                'Log in'
+                this.props.l("settings.logIn")
             );
         }
 
@@ -93651,7 +93660,7 @@ class Settings extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            'Use my location'
+                            this.props.l("settings.useLocation")
                         )
                     ),
                     React.createElement(
@@ -93669,7 +93678,7 @@ class Settings extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        'This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.'
+                        this.props.l("settings.useLocationText")
                     )
                 ),
                 React.createElement(
@@ -93681,7 +93690,7 @@ class Settings extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            'Share my location'
+                            this.props.l("settings.shareLocation")
                         )
                     ),
                     React.createElement(
@@ -93699,7 +93708,7 @@ class Settings extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        'This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.'
+                        this.props.l("settings.shareLocationText")
                     )
                 ),
                 React.createElement(

@@ -53,11 +53,11 @@ class Settings extends React.Component {
 
     render() {
         if (this.props.authenticated) {
-            var authenticationText = `Logged in as ${this.props.currentUser.name}`;
-            var authenticationButton = <Ons.Button onClick={this.props.logout}>Log out</Ons.Button>;
+            var authenticationText = `${this.props.l("settings.loggedInAs")} ${this.props.currentUser.name}`;
+            var authenticationButton = <Ons.Button onClick={this.props.logout}>{this.props.l("settings.logOut")}</Ons.Button>;
         } else {
-            var authenticationText = "Not currently logged in";
-            var authenticationButton = <Ons.Button onClick={this.props.login}>Log in</Ons.Button>;
+            var authenticationText = this.props.l("settings.notCurrentlyLoggedIn");
+            var authenticationButton = <Ons.Button onClick={this.props.login}>{this.props.l("settings.logIn")}</Ons.Button>;
         }
 
         return (
@@ -65,7 +65,7 @@ class Settings extends React.Component {
                 <Ons.List>
                     <Ons.ListItem id='use-location-li' key='useLocation'>
                         <div className='left'>
-                            <p>Use my location</p>
+                            <p>{this.props.l("settings.useLocation")}</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
@@ -76,12 +76,12 @@ class Settings extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem id='use-location-text-li' key='useLocationText'>
                         <div className="list-item__subtitle">
-                            This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.
+                            {this.props.l("settings.useLocationText")}
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem id='share-location-li' key='shareLocation'>
                         <div className='left'>
-                            <p>Share my location</p>
+                            <p>{this.props.l("settings.shareLocation")}</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
@@ -92,7 +92,7 @@ class Settings extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem id='share-location-text-li' key='shareLocationText'>
                         <div className="list-item__subtitle">
-                            This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.
+                            {this.props.l("settings.shareLocationText")}
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem key='authentication'>

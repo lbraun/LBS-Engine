@@ -444,6 +444,7 @@ class App extends React.Component {
             // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <settings.Settings
+                    l={this.l}
                     onLoggingChange={this.handleLoggingChange}
                     onDataChange={this.handleExternalDataChange}
                     onLayerControlChange={this.handleLayerControlChange}
