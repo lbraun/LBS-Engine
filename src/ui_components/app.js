@@ -327,12 +327,6 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        var logInLink = (
-            <Ons.ToolbarButton onClick={this.login}>
-                Log in
-            </Ons.ToolbarButton>
-        );
-
         return (
             <Ons.Toolbar>
                 <div className='left'>
@@ -341,9 +335,6 @@ class App extends React.Component {
                     </Ons.ToolbarButton>
                 </div>
                 <div className='center'>{this.l(`tabs.${this.state.currentTab}`)}</div>
-                <div className='right'>
-                    {this.state.authenticated ? null : logInLink}
-                </div>
             </Ons.Toolbar>
         )
     }

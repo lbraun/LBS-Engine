@@ -92623,12 +92623,6 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        var logInLink = React.createElement(
-            Ons.ToolbarButton,
-            { onClick: this.login },
-            'Log in'
-        );
-
         return React.createElement(
             Ons.Toolbar,
             null,
@@ -92645,11 +92639,6 @@ class App extends React.Component {
                 'div',
                 { className: 'center' },
                 this.l(`tabs.${this.state.currentTab}`)
-            ),
-            React.createElement(
-                'div',
-                { className: 'right' },
-                this.state.authenticated ? null : logInLink
             )
         );
     }
