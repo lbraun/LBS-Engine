@@ -92210,7 +92210,7 @@ class OfflineLayer extends leaflet.GridLayer {
         };
     }
 
-    //create the custom layer
+    // Create the custom layer
     createLeafletElement(props) {
         tilesDb = this.tilesDb;
         layer = new L.TileLayer.Offline(this.props.url, this.tilesDb, {
@@ -92234,17 +92234,27 @@ class OfflineLayer extends leaflet.GridLayer {
  */
 class OfflineControl extends leaflet.MapControl {
 
+    /**
+     * Localize a string in the context of the offline layer
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`offlineLayer.${string}`);
+    }
+
     createLeafletElement(props) {
+        var offlineControl = this;
+
         return new L.control.offline(layer, tilesDb, {
             saveButtonHtml: '<i class="fa fa-download" aria-hidden="true"></i>',
             removeButtonHtml: '<i class="fa fa-trash" aria-hidden="true"></i>',
             confirmSavingCallback: function (nTilesToSave, continueSaveTiles) {
-                if (window.confirm('Save ' + nTilesToSave + '?')) {
+                if (window.confirm(offlineControl.l("save") + ' ' + nTilesToSave + '?')) {
                     continueSaveTiles();
                 }
             },
             confirmRemovalCallback: function (continueRemoveTiles) {
-                if (window.confirm('Remove all the tiles?')) {
+                if (window.confirm(offlineControl.l("removeTiles"))) {
                     continueRemoveTiles();
                 }
             },
@@ -92302,6 +92312,8 @@ module.exports={
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
         "offerForm.offerDescriptionPlaceholder": "Offer description",
         "offerForm.syncing": "Syncing...",
+        "offlineLayer.removeTiles": "Are you sure you want to remove all saved tiles?",
+        "offlineLayer.save": "Save",
         "settings.loggedInAs": "Logged in as",
         "settings.logIn": "Log in",
         "settings.logOut": "Log out",
@@ -93406,7 +93418,8 @@ class Map extends React.Component {
                 { position: 'topleft' },
                 this.addLayers()
             ),
-            React.createElement(OfflineLayer.OfflineControl, null),
+            React.createElement(OfflineLayer.OfflineControl, {
+                l: this.props.l }),
             marker
         );
     }

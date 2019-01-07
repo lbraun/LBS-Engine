@@ -186,7 +186,8 @@ class Map extends React.Component {
                 <leaflet.LayersControl position="topleft">
                     {this.addLayers()}
                 </leaflet.LayersControl>
-                <OfflineLayer.OfflineControl />
+                <OfflineLayer.OfflineControl
+                    l={this.props.l} />
                 {marker}
             </leaflet.Map>
         )

@@ -21,6 +21,8 @@
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
         "offerForm.offerDescriptionPlaceholder": "Offer description",
         "offerForm.syncing": "Syncing...",
+        "offlineLayer.removeTiles": "Are you sure you want to remove all saved tiles?",
+        "offlineLayer.save": "Save",
         "settings.loggedInAs": "Logged in as",
         "settings.logIn": "Log in",
         "settings.logOut": "Log out",
