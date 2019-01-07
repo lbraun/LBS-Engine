@@ -16,7 +16,7 @@ class Dashboard extends React.Component {
                     <Ons.Col verticalAlign="center">
                         <h1 style={{textAlign: "center"}}>GeoFreebie</h1>
                         <p style={{textAlign: "center"}}>
-                            Welcome {this.props.currentUser.name}!
+                            {this.props.l("dashboard.welcome")} {this.props.currentUser.name}!
                         </p>
                     </Ons.Col>
                 </Ons.Row>

@@ -388,6 +388,7 @@ class App extends React.Component {
             // Dashboard element
             {
                 content: <dashboard.Dashboard
+                    l={this.l}
                     login={this.login}
                     authenticated={this.state.authenticated}
                     currentUser={this.state.currentUser}

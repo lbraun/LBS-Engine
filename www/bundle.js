@@ -92283,6 +92283,7 @@ module.exports={
     "en": {
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
+        "dashboard.welcome": "Welcome",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92688,6 +92689,7 @@ class App extends React.Component {
         // Dashboard element
         {
             content: React.createElement(dashboard.Dashboard, {
+                l: this.l,
                 login: this.login,
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser,
@@ -93003,7 +93005,8 @@ class Dashboard extends React.Component {
                     React.createElement(
                         'p',
                         { style: { textAlign: "center" } },
-                        'Welcome ',
+                        this.props.l("dashboard.welcome"),
+                        ' ',
                         this.props.currentUser.name,
                         '!'
                     )
