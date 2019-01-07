@@ -2,10 +2,6 @@
 
 const React = require('react');
 const Ons = require('react-onsenui');
-const geolib = require('geolib');
-
-// Custom imports
-const config = require('../data_components/config.json');
 
 /**
  * Component for displaying the list view.
@@ -34,25 +30,24 @@ class List extends React.Component {
             var errorMessage = this.props.errorLoadingUsers.message;
 
             if (errorMessage == "Failed to fetch") {
-                errorMessage = "There was a problem finding people to list here. Perhaps you are not connected to the internet?"
+                errorMessage = this.props.l("list.fetchFailure");
             }
 
             listItems.push(
                 <Ons.ListItem key="0">
-                    Error: {errorMessage}
+                    {this.props.l("list.error")}: {errorMessage}
                 </Ons.ListItem>
             );
         } else if (!this.props.usersAreLoaded) {
             listItems.push(
                 <Ons.ListItem key="0">
-                    Loading...
+                    {this.props.l("list.loading")}
                 </Ons.ListItem>
             );
         } else if (this.props.users.length == 0) {
             listItems.push(
                 <Ons.ListItem key="0">
-                    There are no other users in the system right now.
-                    Please check back later!
+                    {this.props.l("list.noUsers")}
                 </Ons.ListItem>
             );
         } else {
@@ -76,7 +71,7 @@ class List extends React.Component {
                             </div>
                             <div className='right'>
                                 {this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null}
-                                {clickable ? null : "Location is private"}
+                                {clickable ? null : this.props.l("list.locationIsPrivate")}
                             </div>
                     </Ons.ListItem>
                 )

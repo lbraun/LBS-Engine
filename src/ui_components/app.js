@@ -422,6 +422,7 @@ class App extends React.Component {
             // List element
             {
                 content: <list.List
+                    l={this.l}
                     logging={this.state.logging}
                     externalData={this.state.externalData}
                     layerControl={this.state.layerControl}

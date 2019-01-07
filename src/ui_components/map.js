@@ -1,14 +1,9 @@
 'use strict';
 
-// Load third-party modules
 const React = require('react');
 const leaflet = require('react-leaflet');
 
-// Load custom files
-// Data
 const config = require('../data_components/config.json');
-
-// Logic
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {

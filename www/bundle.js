@@ -92284,11 +92284,16 @@ module.exports={
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
         "dashboard.welcome": "Welcome",
-        "map.isOffering": "is offering",
+        "list.error": "Error",
+        "list.loading": "Loading...",
+        "list.locationIsPrivate": "Location is private",
+        "list.noUsers": "There are no other users in the system right now. Please check back later!",
+        "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "map.andCanBeContactedAt": "and can be contacted at",
+        "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
+        "map.isOffering": "is offering",
         "map.showOtherUsers": "Show other users",
         "map.youAreHere": "You are here!",
-        "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92728,6 +92733,7 @@ class App extends React.Component {
         // List element
         {
             content: React.createElement(list.List, {
+                l: this.l,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 layerControl: this.state.layerControl,
@@ -93059,10 +93065,6 @@ module.exports = {
 
 const React = require('react');
 const Ons = require('react-onsenui');
-const geolib = require('geolib');
-
-// Custom imports
-const config = require('../data_components/config.json');
 
 /**
  * Component for displaying the list view.
@@ -93091,26 +93093,27 @@ class List extends React.Component {
             var errorMessage = this.props.errorLoadingUsers.message;
 
             if (errorMessage == "Failed to fetch") {
-                errorMessage = "There was a problem finding people to list here. Perhaps you are not connected to the internet?";
+                errorMessage = this.props.l("list.fetchFailure");
             }
 
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                'Error: ',
+                this.props.l("list.error"),
+                ': ',
                 errorMessage
             ));
         } else if (!this.props.usersAreLoaded) {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                'Loading...'
+                this.props.l("list.loading")
             ));
         } else if (this.props.users.length == 0) {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                'There are no other users in the system right now. Please check back later!'
+                this.props.l("list.noUsers")
             ));
         } else {
             var users = this.props.users;
@@ -93144,7 +93147,7 @@ class List extends React.Component {
                         'div',
                         { className: 'right' },
                         this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null,
-                        clickable ? null : "Location is private"
+                        clickable ? null : this.props.l("list.locationIsPrivate")
                     )
                 ));
             }
@@ -93170,19 +93173,13 @@ module.exports = {
     List: List
 };
 
-},{"../data_components/config.json":272,"geolib":26,"react":265,"react-onsenui":262}],279:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],279:[function(require,module,exports){
 'use strict';
-
-// Load third-party modules
 
 const React = require('react');
 const leaflet = require('react-leaflet');
 
-// Load custom files
-// Data
 const config = require('../data_components/config.json');
-
-// Logic
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
