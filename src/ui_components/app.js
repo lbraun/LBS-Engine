@@ -457,16 +457,16 @@ class App extends React.Component {
     // Render the list displayed in the sidebar
     renderSidebarList() {
         var sidebarItems = [
-            {id: 1, name: "My Offers", icon: "md-edit"},
-            {id: 2, name: "Settings",  icon: "md-settings"},
-            {id: 3, name: "Help",      icon: "md-help"},
-            {id: 4, name: "Dashboard", icon: "md-info"},
+            {name: "My Offers", key: "offers",    icon: "md-edit"},
+            {name: "Settings",  key: "settings",  icon: "md-settings"},
+            {name: "Help",      key: "help",      icon: "md-help"},
+            {name: "Dashboard", key: "dashboard", icon: "md-info"},
 
         ];
 
         var listItems = [
             <Ons.ListItem
-                key='0'
+                key='user'
                 tappable={false}>
                     <div className='list-item__title'>
                         <strong>{this.state.currentUser.name}</strong>
@@ -482,7 +482,7 @@ class App extends React.Component {
 
             listItems.push(
                 <Ons.ListItem
-                    key={sidebarItem.id}
+                    key={sidebarItem.key}
                     tappable={true}
                     onClick={this.handleSidebarClick.bind(this, sidebarItem.name)}>
                         <div className='left'>

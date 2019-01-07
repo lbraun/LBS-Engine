@@ -92745,12 +92745,12 @@ class App extends React.Component {
 
     // Render the list displayed in the sidebar
     renderSidebarList() {
-        var sidebarItems = [{ id: 1, name: "My Offers", icon: "md-edit" }, { id: 2, name: "Settings", icon: "md-settings" }, { id: 3, name: "Help", icon: "md-help" }, { id: 4, name: "Dashboard", icon: "md-info" }];
+        var sidebarItems = [{ name: "My Offers", key: "offers", icon: "md-edit" }, { name: "Settings", key: "settings", icon: "md-settings" }, { name: "Help", key: "help", icon: "md-help" }, { name: "Dashboard", key: "dashboard", icon: "md-info" }];
 
         var listItems = [React.createElement(
             Ons.ListItem,
             {
-                key: '0',
+                key: 'user',
                 tappable: false },
             React.createElement(
                 'div',
@@ -92774,7 +92774,7 @@ class App extends React.Component {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 {
-                    key: sidebarItem.id,
+                    key: sidebarItem.key,
                     tappable: true,
                     onClick: this.handleSidebarClick.bind(this, sidebarItem.name) },
                 React.createElement(
