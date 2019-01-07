@@ -1,16 +1,17 @@
 'use strict';
+
+// Load third-party modules
 const React = require('react');
 const leaflet = require('react-leaflet');
-// Custom files required
+
+// Load custom files
 // Data
 const config = require('../data_components/config.json');
+
 // Logic
-const locationManager = require('../business_components/locationManager.js');
-const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
-
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
@@ -42,49 +43,16 @@ class Map extends React.Component {
     }
 
     /**
-     * Write a log that notes the change of active layers
-     * @param {boolean} change If the layer was added or removed
-     * @param {String} data Name of the layer that was toggled
-     */
-    createLog(change, data) {
-        var action;
-        var map = this;
-        if(this.props.logging) {
-            // Define the log
-            if(change) {
-                action =  'Activate ' + data;
-            }
-            else action = 'Deactivate ' + data;
-            var entry;
-            // Get the current position for the log
-            locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, map.props.picture ? 'Streetview' : 'Map', action];
-                // Log the data
-                // logger.logEntry(entry);
-            }, function error(err) {
-                // If there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', map.props.picture ? 'Streetview' : 'Map', action];
-                // Log the data
-                // logger.logEntry(entry);
-            })
-        }
-    }
-
-    /**
      * Handle the activation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayAdd(e) {
-        this.createLog(true, e.name);
-    }
+    handleOverlayAdd(e) {}
 
     /**
      * Handle the deactivation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayRemove(e) {
-        this.createLog(false, e.name);
-    }
+    handleOverlayRemove(e) {}
 
     // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
     addLayers() {
