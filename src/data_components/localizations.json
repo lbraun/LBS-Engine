@@ -1,5 +1,7 @@
 {
     "en": {
+        "alert.isLessThan": "is less than",
+        "alert.metersAwayWith": "m away with the following offer:",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",

@@ -58,6 +58,7 @@ class App extends React.Component {
             logging: config.app.logging,
             externalData: config.app.externalData,
             layerControl: config.app.layerControl,
+            locale: config.app.defaultLocale,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             centerPosition: config.map.center,
@@ -110,7 +111,11 @@ class App extends React.Component {
                         app.setState({
                             notificationLog: log,
                         });
-                        alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
+                        alert(closestUser.name + " " +
+                            this.l("alert.isLessThan") + " " +
+                            closestUser.distanceToUser + " " +
+                            this.l("alert.metersAwayWith") + " " +
+                            closestUser.offerDescription);
                     }
                 }
             } else {
@@ -130,14 +135,15 @@ class App extends React.Component {
      * Localize a string
      * @param {string} string to be localized
      */
-    l(string) {
-        var locale = config.app.defaultLocale;
+    l(string, locale = this.state.locale) {
+        var localization = localizations[locale][string];
 
-        if (this.currentUser && this.currentUser.locale) {
-            locale = this.currentUser.locale;
+        if (!localization) {
+            console.log(`Error: localization "${string}" not found for locale "${locale}"`)
+            return "";
         }
 
-        return localizations[locale][string];
+        return localization;
     }
 
     /**
@@ -263,6 +269,7 @@ class App extends React.Component {
 
                             this.setState({
                                 currentUser: currentUser,
+                                locale: currentUser.locale || this.state.locale,
                                 currentUserIsLoaded: true,
                                 users: result || [],
                                 usersAreLoaded: true,
