@@ -2,6 +2,7 @@
     "en": {
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
+        "dashboard.appName": "Geofreebie",
         "dashboard.welcome": "Welcome",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
@@ -28,6 +29,9 @@
         "settings.shareLocationText": "This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.",
         "settings.useLocation": "Use my location",
         "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
+        "signInPage.appName": "Geofreebie",
+        "signInPage.loading": "Loading...",
+        "signInPage.logIn": "Log in",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",

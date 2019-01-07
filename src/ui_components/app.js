@@ -658,6 +658,7 @@ class App extends React.Component {
             );
         } else {
             return (<signInPage.SignInPage
+                l={this.l}
                 login={this.login}
                 authenticated={this.state.authenticated} />);
         }

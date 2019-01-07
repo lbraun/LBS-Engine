@@ -22,7 +22,9 @@ class Dashboard extends React.Component {
             <Ons.Page>
                 <Ons.Row height="100%">
                     <Ons.Col verticalAlign="center">
-                        <h1 style={{textAlign: "center"}}>GeoFreebie</h1>
+                        <h1 style={{textAlign: "center"}}>
+                            {this.l("appName")}
+                        </h1>
                         <p style={{textAlign: "center"}}>
                             {this.l("welcome")} {this.props.currentUser.name}!
                         </p>

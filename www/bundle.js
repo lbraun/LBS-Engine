@@ -92283,6 +92283,7 @@ module.exports={
     "en": {
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
+        "dashboard.appName": "Geofreebie",
         "dashboard.welcome": "Welcome",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
@@ -92309,6 +92310,9 @@ module.exports={
         "settings.shareLocationText": "This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.",
         "settings.useLocation": "Use my location",
         "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
+        "signInPage.appName": "Geofreebie",
+        "signInPage.loading": "Loading...",
+        "signInPage.logIn": "Log in",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92993,6 +92997,7 @@ class App extends React.Component {
             );
         } else {
             return React.createElement(signInPage.SignInPage, {
+                l: this.l,
                 login: this.login,
                 authenticated: this.state.authenticated });
         }
@@ -93037,7 +93042,7 @@ class Dashboard extends React.Component {
                     React.createElement(
                         'h1',
                         { style: { textAlign: "center" } },
-                        'GeoFreebie'
+                        this.l("appName")
                     ),
                     React.createElement(
                         'p',
@@ -93789,10 +93794,17 @@ const React = require('react');
 const Ons = require('react-onsenui');
 
 class SignInPage extends React.Component {
-
     constructor(props) {
         super(props);
         this.renderLoginButton = this.renderLoginButton.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the sign-in page
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`signInPage.${string}`);
     }
 
     // Render the sign in page
@@ -93809,7 +93821,7 @@ class SignInPage extends React.Component {
                     React.createElement(
                         'h1',
                         { style: { textAlign: "center" } },
-                        'GeoFreebie'
+                        this.l("appName")
                     ),
                     React.createElement(
                         'p',
@@ -93826,13 +93838,13 @@ class SignInPage extends React.Component {
             return React.createElement(
                 'span',
                 null,
-                'Loading...'
+                this.l("loading")
             );
         } else {
             return React.createElement(
                 Ons.Button,
                 { onClick: this.props.login },
-                'Log in'
+                this.l("logIn")
             );
         }
     }
