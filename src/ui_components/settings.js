@@ -7,7 +7,6 @@ const Ons = require('react-onsenui');
  * Settings for the app. Modifies the state of the settings
  */
 class Settings extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
@@ -15,6 +14,14 @@ class Settings extends React.Component {
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`settings.${string}`);
     }
 
     // Handle toggle for using external data
@@ -53,11 +60,11 @@ class Settings extends React.Component {
 
     render() {
         if (this.props.authenticated) {
-            var authenticationText = `${this.props.l("settings.loggedInAs")} ${this.props.currentUser.name}`;
-            var authenticationButton = <Ons.Button onClick={this.props.logout}>{this.props.l("settings.logOut")}</Ons.Button>;
+            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
+            var authenticationButton = <Ons.Button onClick={this.props.logout}>{this.l("logOut")}</Ons.Button>;
         } else {
-            var authenticationText = this.props.l("settings.notCurrentlyLoggedIn");
-            var authenticationButton = <Ons.Button onClick={this.props.login}>{this.props.l("settings.logIn")}</Ons.Button>;
+            var authenticationText = this.l("notCurrentlyLoggedIn");
+            var authenticationButton = <Ons.Button onClick={this.props.login}>{this.l("logIn")}</Ons.Button>;
         }
 
         return (
@@ -65,7 +72,7 @@ class Settings extends React.Component {
                 <Ons.List>
                     <Ons.ListItem id='use-location-li' key='useLocation'>
                         <div className='left'>
-                            <p>{this.props.l("settings.useLocation")}</p>
+                            <p>{this.l("useLocation")}</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
@@ -76,12 +83,12 @@ class Settings extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem id='use-location-text-li' key='useLocationText'>
                         <div className="list-item__subtitle">
-                            {this.props.l("settings.useLocationText")}
+                            {this.l("useLocationText")}
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem id='share-location-li' key='shareLocation'>
                         <div className='left'>
-                            <p>{this.props.l("settings.shareLocation")}</p>
+                            <p>{this.l("shareLocation")}</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
@@ -92,7 +99,7 @@ class Settings extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem id='share-location-text-li' key='shareLocationText'>
                         <div className="list-item__subtitle">
-                            {this.props.l("settings.shareLocationText")}
+                            {this.l("shareLocationText")}
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem key='authentication'>

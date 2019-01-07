@@ -93015,6 +93015,14 @@ class Dashboard extends React.Component {
         super(props);
     }
 
+    /**
+     * Localize a string in the context of the dashboard
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`dashboard.${string}`);
+    }
+
     // Render the dashboard
     render() {
         return React.createElement(
@@ -93034,7 +93042,7 @@ class Dashboard extends React.Component {
                     React.createElement(
                         'p',
                         { style: { textAlign: "center" } },
-                        this.props.l("dashboard.welcome"),
+                        this.l("welcome"),
                         ' ',
                         this.props.currentUser.name,
                         '!'
@@ -93087,10 +93095,17 @@ const Ons = require('react-onsenui');
  * Component for displaying the list view.
  */
 class List extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the list
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`list.${string}`);
     }
 
     /**
@@ -93110,13 +93125,13 @@ class List extends React.Component {
             var errorMessage = this.props.errorLoadingUsers.message;
 
             if (errorMessage == "Failed to fetch") {
-                errorMessage = this.props.l("list.fetchFailure");
+                errorMessage = this.l("fetchFailure");
             }
 
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                this.props.l("list.error"),
+                this.l("error"),
                 ': ',
                 errorMessage
             ));
@@ -93124,13 +93139,13 @@ class List extends React.Component {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                this.props.l("list.loading")
+                this.l("loading")
             ));
         } else if (this.props.users.length == 0) {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                this.props.l("list.noUsers")
+                this.l("noUsers")
             ));
         } else {
             var users = this.props.users;
@@ -93164,7 +93179,7 @@ class List extends React.Component {
                         'div',
                         { className: 'right' },
                         this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null,
-                        clickable ? null : this.props.l("list.locationIsPrivate")
+                        clickable ? null : this.l("locationIsPrivate")
                     )
                 ));
             }
@@ -93231,6 +93246,14 @@ class Map extends React.Component {
     }
 
     /**
+     * Localize a string in the context of the map
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`map.${string}`);
+    }
+
+    /**
      * Handle the activation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
@@ -93254,7 +93277,7 @@ class Map extends React.Component {
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
-                    var popup = user.name + " " + this.props.l("map.isOffering") + " " + user.offerDescription + " " + this.props.l("map.andCanBeContactedAt") + " " + user.contactInformation;
+                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedMarker,
                         {
@@ -93282,7 +93305,7 @@ class Map extends React.Component {
                 // If user chooses NOT to be public, insert a buffer instead of a marker into the map
                 // Only do this if the user is selected
                 if (user._id == this.props.selectedUserId) {
-                    var popup = user.name + " " + this.props.l("map.isOffering") + " " + user.offerDescription + " " + this.props.l("map.andCanBeContactedAt") + " " + user.contactInformation;
+                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedCircle,
                         {
@@ -93308,7 +93331,7 @@ class Map extends React.Component {
             leaflet.LayersControl.Overlay,
             {
                 key: 'userLayer',
-                name: this.props.l("map.showOtherUsers"),
+                name: this.l("showOtherUsers"),
                 checked: true },
             React.createElement(
                 leaflet.FeatureGroup,
@@ -93334,7 +93357,7 @@ class Map extends React.Component {
                 React.createElement(
                     'span',
                     null,
-                    this.props.l("map.youAreHere")
+                    this.l("youAreHere")
                 )
             )
         ) : null;
@@ -93371,7 +93394,7 @@ class Map extends React.Component {
                 onOverlayremove: this.handleOverlayRemove },
             React.createElement(OfflineLayer.OfflineLayer, {
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                attribution: this.props.l("map.attribution")
+                attribution: this.l("attribution")
             }),
             React.createElement(
                 leaflet.LayersControl,
@@ -93399,7 +93422,7 @@ class Map extends React.Component {
                     React.createElement(
                         'span',
                         null,
-                        this.props.l("map.youAreHere")
+                        this.l("youAreHere")
                     )
                 )
             ) : null;
@@ -93415,7 +93438,7 @@ class Map extends React.Component {
                     zoomDelta: this.props.zoomable == false ? 0 : 1 },
                 React.createElement(OfflineLayer.OfflineLayer, {
                     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    attribution: this.props.l("map.attribution")
+                    attribution: this.l("attribution")
                 }),
                 React.createElement(OfflineLayer.OfflineControl, null),
                 marker
@@ -93595,7 +93618,6 @@ const Ons = require('react-onsenui');
  * Settings for the app. Modifies the state of the settings
  */
 class Settings extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
@@ -93603,6 +93625,14 @@ class Settings extends React.Component {
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`settings.${string}`);
     }
 
     // Handle toggle for using external data
@@ -93641,18 +93671,18 @@ class Settings extends React.Component {
 
     render() {
         if (this.props.authenticated) {
-            var authenticationText = `${this.props.l("settings.loggedInAs")} ${this.props.currentUser.name}`;
+            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
             var authenticationButton = React.createElement(
                 Ons.Button,
                 { onClick: this.props.logout },
-                this.props.l("settings.logOut")
+                this.l("logOut")
             );
         } else {
-            var authenticationText = this.props.l("settings.notCurrentlyLoggedIn");
+            var authenticationText = this.l("notCurrentlyLoggedIn");
             var authenticationButton = React.createElement(
                 Ons.Button,
                 { onClick: this.props.login },
-                this.props.l("settings.logIn")
+                this.l("logIn")
             );
         }
 
@@ -93671,7 +93701,7 @@ class Settings extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            this.props.l("settings.useLocation")
+                            this.l("useLocation")
                         )
                     ),
                     React.createElement(
@@ -93689,7 +93719,7 @@ class Settings extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        this.props.l("settings.useLocationText")
+                        this.l("useLocationText")
                     )
                 ),
                 React.createElement(
@@ -93701,7 +93731,7 @@ class Settings extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            this.props.l("settings.shareLocation")
+                            this.l("shareLocation")
                         )
                     ),
                     React.createElement(
@@ -93719,7 +93749,7 @@ class Settings extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        this.props.l("settings.shareLocationText")
+                        this.l("shareLocationText")
                     )
                 ),
                 React.createElement(

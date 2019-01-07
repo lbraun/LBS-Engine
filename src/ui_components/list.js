@@ -7,10 +7,17 @@ const Ons = require('react-onsenui');
  * Component for displaying the list view.
  */
 class List extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the list
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`list.${string}`);
     }
 
     /**
@@ -30,24 +37,24 @@ class List extends React.Component {
             var errorMessage = this.props.errorLoadingUsers.message;
 
             if (errorMessage == "Failed to fetch") {
-                errorMessage = this.props.l("list.fetchFailure");
+                errorMessage = this.l("fetchFailure");
             }
 
             listItems.push(
                 <Ons.ListItem key="0">
-                    {this.props.l("list.error")}: {errorMessage}
+                    {this.l("error")}: {errorMessage}
                 </Ons.ListItem>
             );
         } else if (!this.props.usersAreLoaded) {
             listItems.push(
                 <Ons.ListItem key="0">
-                    {this.props.l("list.loading")}
+                    {this.l("loading")}
                 </Ons.ListItem>
             );
         } else if (this.props.users.length == 0) {
             listItems.push(
                 <Ons.ListItem key="0">
-                    {this.props.l("list.noUsers")}
+                    {this.l("noUsers")}
                 </Ons.ListItem>
             );
         } else {
@@ -71,7 +78,7 @@ class List extends React.Component {
                             </div>
                             <div className='right'>
                                 {this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null}
-                                {clickable ? null : this.props.l("list.locationIsPrivate")}
+                                {clickable ? null : this.l("locationIsPrivate")}
                             </div>
                     </Ons.ListItem>
                 )
