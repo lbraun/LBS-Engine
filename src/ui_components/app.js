@@ -347,6 +347,12 @@ class App extends React.Component {
             currentUserIsLoaded: false,
         });
 
+        // Don't sync user coordinates if user is not available
+        // but still keep them locally
+        if (!updatedUser.available) {
+            updatedUser.coords = null;
+        }
+
         // Make the call to the update API
         var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
         fetch(url, {
