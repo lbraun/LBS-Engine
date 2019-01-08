@@ -57,14 +57,23 @@ class Map extends React.Component {
      */
     handleOverlayRemove(e) {}
 
-    // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
+    // Add each layer with a layercontrol.Overlay to the map
     addLayers() {
         var layers = [];
+
+        // Right now there is only one layer, the user layer
         var userLayer = [];
         var users = this.props.users;
 
+        // Add each user to the layer
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
+
+            // Skip if the user is not available or hasn't shared their coordinates
+            if (!user.available || !user.coords) {
+                continue;
+            }
+
             // If user chooses to be public (shareLocation:true), insert marker into the map
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map

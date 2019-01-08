@@ -47,6 +47,7 @@ class App extends React.Component {
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
@@ -157,7 +158,8 @@ class App extends React.Component {
             // Add a distanceToUser attribute to the array, used for list sorting
             for (let i in users) {
                 var user = users[i];
-                user.distanceToUser = this.calculateDistanceBetween(userPosition, user.coords)
+                user.distanceToUser = user.coords ?
+                    this.calculateDistanceBetween(userPosition, user.coords) : null;
             }
 
             // Sort the list by distance, ascending
@@ -220,6 +222,16 @@ class App extends React.Component {
     }
 
     /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} tab the tab to display
+     */
+    handleTabChange(tab) {
+        this.setState({
+            currentTab: tab
+        });
+    }
+
+    /**
      * Fetch or create user in backend base on info from Auth0
      * @param {Object} userInfo object, returned by auth0.loadUserInfo
      */
@@ -274,6 +286,16 @@ class App extends React.Component {
                                 users: result || [],
                                 usersAreLoaded: true,
                             });
+
+                            // Set defaults from config file if user just signed up
+                            if (currentUser.newlyCreated) {
+                                currentUser.available = config.app.available;
+                                currentUser.shareLocation = config.app.shareLocation;
+                                currentUser.useLocation = config.app.useLocation;
+                                currentUser.newlyCreated = false;
+
+                                pushUserUpdate(currentUser);
+                            }
 
                             break;
                         }
@@ -390,6 +412,7 @@ class App extends React.Component {
                 content: <dashboard.Dashboard
                     l={this.l}
                     login={this.login}
+                    handleTabChange={this.handleTabChange}
                     authenticated={this.state.authenticated}
                     currentUser={this.state.currentUser}
                     key='dashboard' />,
@@ -629,7 +652,7 @@ class App extends React.Component {
                         side='left'
                         width={'75%'}
                         style={{boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'}}
-                        swipeable={false}
+                        swipeable={true}
                         collapse={true}
                         isOpen={this.state.isOpen}
                         onClose={this.hide}

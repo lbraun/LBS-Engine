@@ -92272,13 +92272,14 @@ module.exports = {
 },{"leaflet-offline":29,"localforage":31,"prop-types":217,"react":265,"react-leaflet":250}],272:[function(require,module,exports){
 module.exports={
     "app": {
+        "available": false,
         "defaultLocale": "de",
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
-        "shareLocation": true,
-        "useLocation": true
+        "shareLocation": false,
+        "useLocation": false
     },
     "map": {
         "center": [51.962522, 7.625615],
@@ -92293,23 +92294,29 @@ module.exports={
     "de": {
         "alert.isLessThan": "ist weniger als",
         "alert.metersAwayWith": "m entfernt mit dem folgenden Angebot:",
-        "dashboard.appName": "Geofreebie",
+        "dashboard.andYouAreAvailable": "und Sie sind jetzt verfügbar",
+        "dashboard.becomeAvailable": "Verfügbar werden",
+        "dashboard.butYouAreNotAvailable": "aber Sie sind derzeit nicht verfügbar",
+        "dashboard.editOffer": "Angebot bearbeiten",
         "dashboard.welcome": "Willkommen",
+        "dashboard.youAreOffering": "Sie bieten",
         "list.error": "Fehler",
         "list.fetchFailure": "Es gab ein Problem, Leute zu finden, um hier zu zeigen. Vielleicht haben Sie keine Internetverbindung?",
         "list.loading": "Wird geladen...",
-        "list.locationIsPrivate": "Standort ist privat",
-        "list.noUsers": "Derzeit sind keine anderen Benutzer im System. Bitte versuchen Sie später nochmal!",
+        "list.locationIsUnavailable": "Standort ist nicht verfügbar",
+        "list.noUsers": "Derzeit sind keine anderen Benutzer im System. Bitte versuchen Sie später nochmal.",
         "map.andCanBeContactedAt": "und kann unter folgendes kontaktiert werden:",
         "map.attribution": "Kartendaten &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>-Beiträger",
         "map.isOffering": "bietet",
         "map.showOtherUsers": "Andere Benutzer anzeigen",
         "map.youAreHere": "Ihre Standort",
+        "offerForm.available": "Jetzt verfügbar",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte geben Sie eine kurze Beschreibung des Angebots.",
         "offerForm.iCanBeContactedAt": "Man kann mich unter folgendes kontaktieren:",
         "offerForm.iCanBeContactedAtHelpText": "Bitte geben Sie eine Telefonnummer, E-Mail-Adresse oder andere Anweisungen an.",
+        "offerForm.notAvailable": "Jetzt nicht verfügbar",
         "offerForm.offerDescriptionPlaceholder": "Angebotsbeschreibung",
         "offerForm.syncing": "Wird synchronisiert...",
         "offlineLayer.removeTiles": "Möchten Sie wirklich alle gespeicherten Kartenkachel entfernen?",
@@ -92335,23 +92342,29 @@ module.exports={
     "en": {
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
-        "dashboard.appName": "Geofreebie",
+        "dashboard.andYouAreAvailable": "and you are available now.",
+        "dashboard.becomeAvailable": "Become available",
+        "dashboard.butYouAreNotAvailable": "but you are not available right now.",
+        "dashboard.editOffer": "Edit offer",
         "dashboard.welcome": "Welcome",
+        "dashboard.youAreOffering": "You are offering",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
-        "list.locationIsPrivate": "Location is private",
-        "list.noUsers": "There are no other users in the system right now. Please check back later!",
+        "list.locationIsUnavailable": "Location is unavailable",
+        "list.noUsers": "There are no other users in the system right now. Please check back later.",
         "map.andCanBeContactedAt": "and can be contacted at",
         "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
         "map.isOffering": "is offering",
         "map.showOtherUsers": "Show other users",
-        "map.youAreHere": "You are here!",
+        "map.youAreHere": "You are here",
+        "offerForm.available": "Available now",
         "offerForm.contactInformationPlaceholder": "Contact information",
         "offerForm.iAmOffering": "I am offering...",
         "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
         "offerForm.iCanBeContactedAt": "I can be contacted at...",
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
+        "offerForm.notAvailable": "Not available now",
         "offerForm.offerDescriptionPlaceholder": "Offer description",
         "offerForm.syncing": "Syncing...",
         "offlineLayer.removeTiles": "Are you sure you want to remove all saved tiles?",
@@ -92448,6 +92461,7 @@ class App extends React.Component {
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
@@ -92553,7 +92567,7 @@ class App extends React.Component {
             // Add a distanceToUser attribute to the array, used for list sorting
             for (let i in users) {
                 var user = users[i];
-                user.distanceToUser = this.calculateDistanceBetween(userPosition, user.coords);
+                user.distanceToUser = user.coords ? this.calculateDistanceBetween(userPosition, user.coords) : null;
             }
 
             // Sort the list by distance, ascending
@@ -92616,6 +92630,16 @@ class App extends React.Component {
     }
 
     /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} tab the tab to display
+     */
+    handleTabChange(tab) {
+        this.setState({
+            currentTab: tab
+        });
+    }
+
+    /**
      * Fetch or create user in backend base on info from Auth0
      * @param {Object} userInfo object, returned by auth0.loadUserInfo
      */
@@ -92662,6 +92686,16 @@ class App extends React.Component {
                         users: result || [],
                         usersAreLoaded: true
                     });
+
+                    // Set defaults from config file if user just signed up
+                    if (currentUser.newlyCreated) {
+                        currentUser.available = config.app.available;
+                        currentUser.shareLocation = config.app.shareLocation;
+                        currentUser.useLocation = config.app.useLocation;
+                        currentUser.newlyCreated = false;
+
+                        pushUserUpdate(currentUser);
+                    }
 
                     break;
                 }
@@ -92774,6 +92808,7 @@ class App extends React.Component {
             content: React.createElement(dashboard.Dashboard, {
                 l: this.l,
                 login: this.login,
+                handleTabChange: this.handleTabChange,
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser,
                 key: 'dashboard' }),
@@ -93021,7 +93056,7 @@ class App extends React.Component {
                         side: 'left',
                         width: '75%',
                         style: { boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)' },
-                        swipeable: false,
+                        swipeable: true,
                         collapse: true,
                         isOpen: this.state.isOpen,
                         onClose: this.hide,
@@ -93072,6 +93107,7 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
+        this.goToOffersTab = this.goToOffersTab.bind(this);
     }
 
     /**
@@ -93082,6 +93118,22 @@ class Dashboard extends React.Component {
         return this.props.l(`dashboard.${string}`);
     }
 
+    /**
+     * Call app method that navigates to the offers tab
+     * @param {Event} e the react event object
+     */
+    goToOffersTab(e) {
+        this.props.handleTabChange("offers");
+    }
+
+    statusInfo() {
+        if (this.props.currentUser.available) {
+            return this.l("youAreOffering") + " " + this.props.currentUser.offerDescription + " " + this.l("andYouAreAvailable");
+        } else {
+            return this.l("youAreOffering") + " " + this.props.currentUser.offerDescription + " " + this.l("butYouAreNotAvailable");
+        }
+    }
+
     // Render the dashboard
     render() {
         return React.createElement(
@@ -93089,22 +93141,34 @@ class Dashboard extends React.Component {
             null,
             React.createElement(
                 Ons.Row,
-                { height: '100%' },
+                { style: { textAlign: "center" } },
                 React.createElement(
                     Ons.Col,
                     { verticalAlign: 'center' },
                     React.createElement(
                         'h1',
-                        { style: { textAlign: "center" } },
-                        this.l("appName")
+                        null,
+                        this.l("welcome"),
+                        ' ',
+                        this.props.currentUser.name
+                    ),
+                    React.createElement('img', { src: this.props.currentUser.picture,
+                        alt: 'Profile picture',
+                        height: '42',
+                        width: '42' }),
+                    React.createElement(
+                        'p',
+                        null,
+                        this.statusInfo()
                     ),
                     React.createElement(
                         'p',
-                        { style: { textAlign: "center" } },
-                        this.l("welcome"),
-                        ' ',
-                        this.props.currentUser.name,
-                        '!'
+                        null,
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.goToOffersTab },
+                            this.props.currentUser.available ? this.l("editOffer") : this.l("becomeAvailable")
+                        )
                     )
                 )
             )
@@ -93176,6 +93240,25 @@ class List extends React.Component {
         this.props.onListItemClick(userId);
     }
 
+    /**
+     * Returns text describing the user's availability
+     * @param {User} the user to describe
+     */
+    availablityText(user) {
+        if (user.available) {
+            var text = this.props.l("offerForm.available");
+
+            // Show distance to user if it has been calculated
+            if (user.distanceToUser) {
+                return text += ` - ${user.distanceToUser} m`;
+            } else {
+                return text += ` - ${this.l("locationIsUnavailable")}`;
+            }
+        } else {
+            return this.props.l("offerForm.notAvailable");
+        }
+    }
+
     // Render the list
     renderUserList() {
         var listItems = [];
@@ -93211,7 +93294,7 @@ class List extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = !!(user.shareLocation || this.props.currentUser.coords);
+                var clickable = user.available && user.coords && !!(user.shareLocation || this.props.currentUser.coords);
 
                 listItems.push(React.createElement(
                     Ons.ListItem,
@@ -93228,17 +93311,23 @@ class List extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'center' },
-                        user.name,
-                        ' - ',
-                        user.offerDescription,
-                        ' - ',
-                        user.contactInformation
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null,
-                        clickable ? null : this.l("locationIsPrivate")
+                        React.createElement(
+                            'div',
+                            { className: 'list-item__title' },
+                            user.name
+                        ),
+                        React.createElement(
+                            'div',
+                            null,
+                            user.offerDescription,
+                            ' - ',
+                            user.contactInformation
+                        ),
+                        React.createElement(
+                            'div',
+                            { className: 'list-item__subtitle' },
+                            this.availablityText(user)
+                        )
                     )
                 ));
             }
@@ -93324,14 +93413,23 @@ class Map extends React.Component {
      */
     handleOverlayRemove(e) {}
 
-    // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
+    // Add each layer with a layercontrol.Overlay to the map
     addLayers() {
         var layers = [];
+
+        // Right now there is only one layer, the user layer
         var userLayer = [];
         var users = this.props.users;
 
+        // Add each user to the layer
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
+
+            // Skip if the user is not available or hasn't shared their coordinates
+            if (!user.available || !user.coords) {
+                continue;
+            }
+
             // If user chooses to be public (shareLocation:true), insert marker into the map
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map
@@ -93575,7 +93673,7 @@ class offerForm extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
         var updatedUser = this.props.currentUser;
         updatedUser[name] = value;
@@ -93589,6 +93687,27 @@ class offerForm extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
+                React.createElement(
+                    Ons.ListItem,
+                    { id: 'use-location-li', key: 'available' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            this.props.currentUser.available ? this.l("available") : this.l("notAvailable")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(Ons.Switch, {
+                            name: 'available',
+                            checked: this.props.currentUser.available,
+                            onChange: this.handleInputChange })
+                    )
+                ),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'offer-description-title-li' },

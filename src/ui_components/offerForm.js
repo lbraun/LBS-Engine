@@ -27,7 +27,7 @@ class offerForm extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
         var updatedUser = this.props.currentUser;
         updatedUser[name] = value;
@@ -38,6 +38,18 @@ class offerForm extends React.Component {
         return (
             <Ons.Page>
                 <Ons.List>
+                    <Ons.ListItem id='use-location-li' key='available'>
+                        <div className='left'>
+                            <p>{this.props.currentUser.available ? this.l("available") : this.l("notAvailable")}</p>
+                        </div>
+                        <div className='right'>
+                            <Ons.Switch
+                                name="available"
+                                checked={this.props.currentUser.available}
+                                onChange={this.handleInputChange} />
+                        </div>
+                    </Ons.ListItem>
+
                     <Ons.ListItem id="offer-description-title-li">
                         <div className="list-item__title">
                             {this.l("iAmOffering")}
@@ -46,6 +58,7 @@ class offerForm extends React.Component {
                             {this.l("iAmOfferingHelpText")}
                         </div>
                     </Ons.ListItem>
+
                     <Ons.ListItem id="offer-description-textarea-li">
                         <p>
                             <textarea
@@ -67,6 +80,7 @@ class offerForm extends React.Component {
                             {this.l("iCanBeContactedAtHelpText")}
                         </div>
                     </Ons.ListItem>
+
                     <Ons.ListItem id="contact-information-textarea-li">
                         <p>
                             <textarea
@@ -79,6 +93,7 @@ class offerForm extends React.Component {
                             </textarea>
                         </p>
                     </Ons.ListItem>
+
                     <Ons.ListItem>
                         <div className="list-item__subtitle">
                             {this.props.currentUserIsLoaded ? "✔︎" : this.l("syncing")}

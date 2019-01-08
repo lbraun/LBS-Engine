@@ -1,12 +1,13 @@
 {
     "app": {
+        "available": false,
         "defaultLocale": "de",
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
-        "shareLocation": true,
-        "useLocation": true
+        "shareLocation": false,
+        "useLocation": false
     },
     "map": {
         "center": [51.962522, 7.625615],
