@@ -157,7 +157,8 @@ class App extends React.Component {
             // Add a distanceToUser attribute to the array, used for list sorting
             for (let i in users) {
                 var user = users[i];
-                user.distanceToUser = this.calculateDistanceBetween(userPosition, user.coords)
+                user.distanceToUser = user.coords ?
+                    this.calculateDistanceBetween(userPosition, user.coords) : null;
             }
 
             // Sort the list by distance, ascending
