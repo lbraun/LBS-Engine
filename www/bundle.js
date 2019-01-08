@@ -129,7 +129,7 @@ exports.generateState = function generateState() {
   return base64UrlSafeEncode(crypto.randomBytes(32));
 };
 
-},{"crypto":336}],5:[function(require,module,exports){
+},{"crypto":337}],5:[function(require,module,exports){
 var parse = require('url-parse');
 var auth0 = require('auth0-js');
 var getAgent = require('./agent');
@@ -6010,7 +6010,7 @@ module.exports = ret;
 },{"./es5":13}]},{},[4])(4)
 });                    ;if (typeof window !== 'undefined' && window !== null) {                               window.P = window.Promise;                                                     } else if (typeof self !== 'undefined' && self !== null) {                             self.P = self.Promise;                                                         }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":398}],11:[function(require,module,exports){
+},{"_process":399}],11:[function(require,module,exports){
 /**
  * Static Private functions
  */
@@ -6847,7 +6847,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":398}],18:[function(require,module,exports){
+},{"_process":399}],18:[function(require,module,exports){
 'use strict';
 
 /**
@@ -7008,7 +7008,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":398}],22:[function(require,module,exports){
+},{"_process":399}],22:[function(require,module,exports){
 'use strict';
 
 /**
@@ -7185,7 +7185,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":16,"_process":398}],26:[function(require,module,exports){
+},{"./emptyFunction":16,"_process":399}],26:[function(require,module,exports){
 /*! geolib 2.0.23 by Manuel Bieh
 * Library to provide geo functions like distance calculation,
 * conversion of decimal coordinates to sexagesimal and vice versa, etc.
@@ -62352,7 +62352,7 @@ return ons$1;
 
 
 }).call(this,require('_process'))
-},{"_process":398}],214:[function(require,module,exports){
+},{"_process":399}],214:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -62415,7 +62415,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":218,"_process":398,"fbjs/lib/invariant":21,"fbjs/lib/warning":25}],215:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":218,"_process":399,"fbjs/lib/invariant":21,"fbjs/lib/warning":25}],215:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -63021,7 +63021,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 };
 
 }).call(this,require('_process'))
-},{"./checkPropTypes":214,"./lib/ReactPropTypesSecret":218,"_process":398,"fbjs/lib/emptyFunction":16,"fbjs/lib/invariant":21,"fbjs/lib/warning":25,"object-assign":212}],217:[function(require,module,exports){
+},{"./checkPropTypes":214,"./lib/ReactPropTypesSecret":218,"_process":399,"fbjs/lib/emptyFunction":16,"fbjs/lib/invariant":21,"fbjs/lib/warning":25,"object-assign":212}],217:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -63053,7 +63053,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./factoryWithThrowingShims":215,"./factoryWithTypeCheckers":216,"_process":398}],218:[function(require,module,exports){
+},{"./factoryWithThrowingShims":215,"./factoryWithTypeCheckers":216,"_process":399}],218:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -79815,7 +79815,7 @@ module.exports = reactDom;
 }
 
 }).call(this,require('_process'))
-},{"_process":398,"fbjs/lib/ExecutionEnvironment":12,"fbjs/lib/camelizeStyleName":14,"fbjs/lib/containsNode":15,"fbjs/lib/emptyFunction":16,"fbjs/lib/emptyObject":17,"fbjs/lib/getActiveElement":18,"fbjs/lib/hyphenateStyleName":20,"fbjs/lib/invariant":21,"fbjs/lib/shallowEqual":24,"fbjs/lib/warning":25,"object-assign":212,"prop-types/checkPropTypes":214,"react":265}],221:[function(require,module,exports){
+},{"_process":399,"fbjs/lib/ExecutionEnvironment":12,"fbjs/lib/camelizeStyleName":14,"fbjs/lib/containsNode":15,"fbjs/lib/emptyFunction":16,"fbjs/lib/emptyObject":17,"fbjs/lib/getActiveElement":18,"fbjs/lib/hyphenateStyleName":20,"fbjs/lib/invariant":21,"fbjs/lib/shallowEqual":24,"fbjs/lib/warning":25,"object-assign":212,"prop-types/checkPropTypes":214,"react":265}],221:[function(require,module,exports){
 /** @license React v16.3.2
  * react-dom.production.min.js
  *
@@ -80105,7 +80105,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react-dom.development.js":220,"./cjs/react-dom.production.min.js":221,"_process":398}],223:[function(require,module,exports){
+},{"./cjs/react-dom.development.js":220,"./cjs/react-dom.production.min.js":221,"_process":399}],223:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81945,7 +81945,7 @@ Pane.childContextTypes = {
 };
 exports.default = Pane;
 }).call(this,require('_process'))
-},{"./propTypes/children":252,"./propTypes/map":259,"_process":398,"lodash/forEach":181,"lodash/omit":204,"lodash/uniqueId":211,"prop-types":217,"react":265,"warning":268}],239:[function(require,module,exports){
+},{"./propTypes/children":252,"./propTypes/map":259,"_process":399,"lodash/forEach":181,"lodash/omit":204,"lodash/uniqueId":211,"prop-types":217,"react":265,"warning":268}],239:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -91415,7 +91415,7 @@ module.exports = react;
 }
 
 }).call(this,require('_process'))
-},{"_process":398,"fbjs/lib/emptyFunction":16,"fbjs/lib/emptyObject":17,"fbjs/lib/invariant":21,"fbjs/lib/warning":25,"object-assign":212,"prop-types/checkPropTypes":214}],264:[function(require,module,exports){
+},{"_process":399,"fbjs/lib/emptyFunction":16,"fbjs/lib/emptyObject":17,"fbjs/lib/invariant":21,"fbjs/lib/warning":25,"object-assign":212,"prop-types/checkPropTypes":214}],264:[function(require,module,exports){
 /** @license React v16.3.2
  * react.production.min.js
  *
@@ -91450,7 +91450,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 }).call(this,require('_process'))
-},{"./cjs/react.development.js":263,"./cjs/react.production.min.js":264,"_process":398}],266:[function(require,module,exports){
+},{"./cjs/react.development.js":263,"./cjs/react.production.min.js":264,"_process":399}],266:[function(require,module,exports){
 'use strict';
 
 /**
@@ -91990,7 +91990,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":398}],269:[function(require,module,exports){
+},{"_process":399}],269:[function(require,module,exports){
 'use strict';
 
 /**
@@ -92210,7 +92210,7 @@ class OfflineLayer extends leaflet.GridLayer {
         };
     }
 
-    //create the custom layer
+    // Create the custom layer
     createLeafletElement(props) {
         tilesDb = this.tilesDb;
         layer = new L.TileLayer.Offline(this.props.url, this.tilesDb, {
@@ -92234,17 +92234,27 @@ class OfflineLayer extends leaflet.GridLayer {
  */
 class OfflineControl extends leaflet.MapControl {
 
+    /**
+     * Localize a string in the context of the offline layer
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`offlineLayer.${string}`);
+    }
+
     createLeafletElement(props) {
+        var offlineControl = this;
+
         return new L.control.offline(layer, tilesDb, {
             saveButtonHtml: '<i class="fa fa-download" aria-hidden="true"></i>',
             removeButtonHtml: '<i class="fa fa-trash" aria-hidden="true"></i>',
             confirmSavingCallback: function (nTilesToSave, continueSaveTiles) {
-                if (window.confirm('Save ' + nTilesToSave + '?')) {
+                if (window.confirm(offlineControl.l("save") + ' ' + nTilesToSave + '?')) {
                     continueSaveTiles();
                 }
             },
             confirmRemovalCallback: function (continueRemoveTiles) {
-                if (window.confirm('Remove all the tiles?')) {
+                if (window.confirm(offlineControl.l("removeTiles"))) {
                     continueRemoveTiles();
                 }
             },
@@ -92262,22 +92272,69 @@ module.exports = {
 },{"leaflet-offline":29,"localforage":31,"prop-types":217,"react":265,"react-leaflet":250}],272:[function(require,module,exports){
 module.exports={
     "app": {
-        "logging": true,
+        "defaultLocale": "en",
         "externalData": false,
         "layerControl": true,
+        "logging": true,
         "numberOfImages": 3,
-        "useLocation": true,
-        "shareLocation": true
+        "shareLocation": true,
+        "useLocation": true
     },
     "map": {
         "center": [51.962522, 7.625615],
-        "zoomable": true,
         "draggable": true,
-        "zoom": 12
+        "zoom": 12,
+        "zoomable": true
     }
 }
 
 },{}],273:[function(require,module,exports){
+module.exports={
+    "en": {
+        "alert.isLessThan": "is less than",
+        "alert.metersAwayWith": "m away with the following offer:",
+        "dashboard.appName": "Geofreebie",
+        "dashboard.welcome": "Welcome",
+        "list.error": "Error",
+        "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
+        "list.loading": "Loading...",
+        "list.locationIsPrivate": "Location is private",
+        "list.noUsers": "There are no other users in the system right now. Please check back later!",
+        "map.andCanBeContactedAt": "and can be contacted at",
+        "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
+        "map.isOffering": "is offering",
+        "map.showOtherUsers": "Show other users",
+        "map.youAreHere": "You are here!",
+        "offerForm.contactInformationPlaceholder": "Contact information",
+        "offerForm.iAmOffering": "I am offering...",
+        "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
+        "offerForm.iCanBeContactedAt": "I can be contacted at...",
+        "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
+        "offerForm.offerDescriptionPlaceholder": "Offer description",
+        "offerForm.syncing": "Syncing...",
+        "offlineLayer.removeTiles": "Are you sure you want to remove all saved tiles?",
+        "offlineLayer.save": "Save",
+        "settings.loggedInAs": "Logged in as",
+        "settings.logIn": "Log in",
+        "settings.logOut": "Log out",
+        "settings.notCurrentlyLoggedIn": "Not currently logged in",
+        "settings.shareLocation": "Share my location",
+        "settings.shareLocationText": "This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.",
+        "settings.useLocation": "Use my location",
+        "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
+        "signInPage.appName": "Geofreebie",
+        "signInPage.loading": "Loading...",
+        "signInPage.logIn": "Log in",
+        "tabs.dashboard": "Dashboard",
+        "tabs.help": "Help",
+        "tabs.list": "List",
+        "tabs.map": "Map",
+        "tabs.offers": "My Offers",
+        "tabs.settings": "Settings"
+    }
+}
+
+},{}],274:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92300,8 +92357,10 @@ ons.ready(function () {
     ReactDOM.render(React.createElement(app.App, null), document.getElementById('root'));
 });
 
-},{"./ui_components/app.js":274,"@auth0/cordova":5,"onsenui":213,"react":265,"react-dom":222}],274:[function(require,module,exports){
+},{"./ui_components/app.js":275,"@auth0/cordova":5,"onsenui":213,"react":265,"react-dom":222}],275:[function(require,module,exports){
 "use strict";
+
+// Load third-party modules
 
 const React = require('react');
 const Ons = require('react-onsenui');
@@ -92309,11 +92368,12 @@ const geolib = require('geolib');
 const Auth0 = require('auth0-js');
 const Auth0Cordova = require('@auth0/cordova');
 
-// Custom files
+// Load custom files
 // Data
 const config = require('../data_components/config.json');
+const localizations = require('../data_components/localizations.json');
 
-// Ui
+// UI
 const signInPage = require('./signInPage.js');
 const dashboard = require('./dashboard.js');
 const map = require('./map.js');
@@ -92321,17 +92381,19 @@ const list = require('./list.js');
 const settings = require('./settings.js');
 const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js');
+
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
 
 /**
  * Main frame for the app.
- * Contains the Toolbar in the top and a sidebar to select the mode
+ * Contains the toolbar in the top and a sidebar to select the mode
  */
 class App extends React.Component {
     constructor(props) {
         super(props);
+        this.l = this.l.bind(this);
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.renderToolbar = this.renderToolbar.bind(this);
@@ -92349,12 +92411,13 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
-        this.tabNames = ["Dashboard", "Map", "List", "Settings", "My Offers", "Help"];
+        this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
         this.state = {
             isOpen: false,
             logging: config.app.logging,
             externalData: config.app.externalData,
             layerControl: config.app.layerControl,
+            locale: config.app.defaultLocale,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             centerPosition: config.map.center,
@@ -92365,7 +92428,7 @@ class App extends React.Component {
             users: [],
             selectedUserId: null,
             notificationLog: [],
-            currentTab: "Dashboard",
+            currentTab: "dashboard",
             currentUserId: null,
             currentUser: null,
             authenticated: false,
@@ -92406,7 +92469,7 @@ class App extends React.Component {
                         app.setState({
                             notificationLog: log
                         });
-                        alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
+                        alert(closestUser.name + " " + this.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + this.l("alert.metersAwayWith") + " " + closestUser.offerDescription);
                     }
                 }
             } else {
@@ -92420,6 +92483,21 @@ class App extends React.Component {
         }, {
             timeout: 30000 // Throw an error if no update is received every 30 seconds
         });
+    }
+
+    /**
+     * Localize a string
+     * @param {string} string to be localized
+     */
+    l(string, locale = this.state.locale) {
+        var localization = localizations[locale][string];
+
+        if (!localization) {
+            console.log(`Error: localization "${string}" not found for locale "${locale}"`);
+            return "";
+        }
+
+        return localization;
     }
 
     /**
@@ -92491,7 +92569,7 @@ class App extends React.Component {
     handleListItemClick(selectedUserId) {
         this.setState({
             selectedUserId: selectedUserId,
-            currentTab: "Map"
+            currentTab: "map"
         });
     }
 
@@ -92537,6 +92615,7 @@ class App extends React.Component {
 
                     this.setState({
                         currentUser: currentUser,
+                        locale: currentUser.locale || this.state.locale,
                         currentUserIsLoaded: true,
                         users: result || [],
                         usersAreLoaded: true
@@ -92586,11 +92665,7 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        var logInLink = React.createElement(
-            Ons.ToolbarButton,
-            { onClick: this.login },
-            'Log in'
-        );
+        var tabName = this.l(`tabs.${this.state.currentTab}`);
 
         return React.createElement(
             Ons.Toolbar,
@@ -92607,12 +92682,7 @@ class App extends React.Component {
             React.createElement(
                 'div',
                 { className: 'center' },
-                this.state.currentTab
-            ),
-            React.createElement(
-                'div',
-                { className: 'right' },
-                this.state.authenticated ? null : logInLink
+                tabName
             )
         );
     }
@@ -92628,8 +92698,8 @@ class App extends React.Component {
     }
 
     // Handle a click on a sidebar item --> change state
-    handleSidebarClick(tabName, e) {
-        this.setState({ currentTab: tabName });
+    handleSidebarClick(tab, e) {
+        this.setState({ currentTab: tab });
         this.hide();
     }
 
@@ -92660,15 +92730,21 @@ class App extends React.Component {
         // Dashboard element
         {
             content: React.createElement(dashboard.Dashboard, {
+                l: this.l,
                 login: this.login,
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser,
                 key: 'dashboard' }),
-            tab: React.createElement(Ons.Tab, { label: 'Dashboard', icon: 'md-info', key: 'dashboard', style: { display: 'none' } })
+            tab: React.createElement(Ons.Tab, {
+                label: this.l('tabs.dashboard'),
+                icon: 'md-info',
+                key: 'dashboard',
+                style: { display: 'none' } })
         },
         // Map element
         {
             content: React.createElement(map.Map, {
+                l: this.l,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 layerControl: this.state.layerControl,
@@ -92680,11 +92756,15 @@ class App extends React.Component {
                 calculateDistanceTo: this.calculateDistanceTo,
                 users: this.state.users,
                 key: 'map' }),
-            tab: React.createElement(Ons.Tab, { label: 'Map', icon: 'md-map', key: 'map' })
+            tab: React.createElement(Ons.Tab, {
+                label: this.l('tabs.map'),
+                icon: 'md-map',
+                key: 'map' })
         },
         // List element
         {
             content: React.createElement(list.List, {
+                l: this.l,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
                 layerControl: this.state.layerControl,
@@ -92698,11 +92778,15 @@ class App extends React.Component {
                 errorLoadingUsers: this.state.errorLoadingUsers,
                 users: this.state.users,
                 key: 'list' }),
-            tab: React.createElement(Ons.Tab, { label: 'List', icon: 'md-view-list', key: 'list' })
+            tab: React.createElement(Ons.Tab, {
+                label: this.l('tabs.list'),
+                icon: 'md-view-list',
+                key: 'list' })
         },
         // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
         {
             content: React.createElement(settings.Settings, {
+                l: this.l,
                 onLoggingChange: this.handleLoggingChange,
                 onDataChange: this.handleExternalDataChange,
                 onLayerControlChange: this.handleLayerControlChange,
@@ -92719,21 +92803,34 @@ class App extends React.Component {
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
                 key: 'settings' }),
-            tab: React.createElement(Ons.Tab, { label: 'Settings', icon: 'md-settings', key: 'settings', style: { display: 'none' } })
+            tab: React.createElement(Ons.Tab, {
+                label: this.l('tabs.settings'),
+                icon: 'md-settings',
+                key: 'settings',
+                style: { display: 'none' } })
         },
         // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
         {
             content: React.createElement(offerForm.offerForm, {
+                l: this.l,
                 pushUserUpdate: this.pushUserUpdate,
                 currentUserIsLoaded: this.state.currentUserIsLoaded,
                 currentUser: this.state.currentUser,
                 key: 'offerForm' }),
-            tab: React.createElement(Ons.Tab, { label: 'My Offers', icon: 'md-edit', key: 'offerForm', style: { display: 'none' } })
+            tab: React.createElement(Ons.Tab, {
+                label: this.l('tabs.offers'),
+                icon: 'md-edit',
+                key: 'offerForm',
+                style: { display: 'none' } })
         },
         // Help page iframe
         {
             content: React.createElement(embededSite.EmbededComponent, { site: 'help.html', key: 'help', name: 'Help' }),
-            tab: React.createElement(Ons.Tab, { label: 'Help', icon: 'md-help', key: 'help', style: { display: 'none' } })
+            tab: React.createElement(Ons.Tab, {
+                label: this.l('tabs.help'),
+                icon: 'md-help',
+                key: 'help',
+                style: { display: 'none' } })
         },
         // Ship around an error in current onsen release
         // Can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
@@ -92745,7 +92842,7 @@ class App extends React.Component {
 
     // Render the list displayed in the sidebar
     renderSidebarList() {
-        var sidebarItems = [{ name: "My Offers", key: "offers", icon: "md-edit" }, { name: "Settings", key: "settings", icon: "md-settings" }, { name: "Help", key: "help", icon: "md-help" }, { name: "Dashboard", key: "dashboard", icon: "md-info" }];
+        var sidebarItems = [{ key: "offers", icon: "md-edit" }, { key: "settings", icon: "md-settings" }, { key: "help", icon: "md-help" }, { key: "dashboard", icon: "md-info" }];
 
         var listItems = [React.createElement(
             Ons.ListItem,
@@ -92776,7 +92873,7 @@ class App extends React.Component {
                 {
                     key: sidebarItem.key,
                     tappable: true,
-                    onClick: this.handleSidebarClick.bind(this, sidebarItem.name) },
+                    onClick: this.handleSidebarClick.bind(this, sidebarItem.key) },
                 React.createElement(
                     'div',
                     { className: 'left' },
@@ -92785,7 +92882,7 @@ class App extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'center' },
-                    sidebarItem.name
+                    this.l(`tabs.${sidebarItem.key}`)
                 )
             ));
         }
@@ -92844,7 +92941,7 @@ class App extends React.Component {
             this.setState({
                 authenticated: true,
                 accessToken: accessToken,
-                currentTab: "Dashboard"
+                currentTab: "dashboard"
             });
 
             var app = this;
@@ -92857,6 +92954,7 @@ class App extends React.Component {
                 }
             });
         } else {
+            // User logged out, so clear out stored user data
             this.setState({
                 authenticated: false,
                 usersAreLoaded: false,
@@ -92898,12 +92996,12 @@ class App extends React.Component {
                     React.createElement(Ons.Tabbar, {
                         swipeable: false,
                         position: 'bottom',
-                        index: this.tabNames.indexOf(this.state.currentTab),
+                        index: this.tabs.indexOf(this.state.currentTab),
                         onPreChange: event => {
-                            if (event.index != this.tabNames.indexOf(this.state.currentTab)) {
+                            if (event.index != this.tabs.indexOf(this.state.currentTab)) {
                                 // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
                                 if (event.target !== event.currentTarget) return;
-                                this.setState({ currentTab: this.tabNames[event.index] });
+                                this.setState({ currentTab: this.tabs[event.index] });
                             }
                         },
                         renderTabs: this.renderTabs })
@@ -92911,6 +93009,7 @@ class App extends React.Component {
             );
         } else {
             return React.createElement(signInPage.SignInPage, {
+                l: this.l,
                 login: this.login,
                 authenticated: this.state.authenticated });
         }
@@ -92921,7 +93020,7 @@ module.exports = {
     App: App
 };
 
-},{"../business_components/locationManager.js":269,"../business_components/logger.js":270,"../data_components/config.json":272,"./dashboard.js":275,"./embededSite.js":276,"./list.js":277,"./map.js":278,"./offerForm.js":279,"./settings.js":280,"./signInPage.js":281,"@auth0/cordova":5,"auth0-js":9,"geolib":26,"react":265,"react-onsenui":262}],275:[function(require,module,exports){
+},{"../business_components/locationManager.js":269,"../business_components/logger.js":270,"../data_components/config.json":272,"../data_components/localizations.json":273,"./dashboard.js":276,"./embededSite.js":277,"./list.js":278,"./map.js":279,"./offerForm.js":280,"./settings.js":281,"./signInPage.js":282,"@auth0/cordova":5,"auth0-js":9,"geolib":26,"react":265,"react-onsenui":262}],276:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92931,6 +93030,14 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
+    }
+
+    /**
+     * Localize a string in the context of the dashboard
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`dashboard.${string}`);
     }
 
     // Render the dashboard
@@ -92947,12 +93054,13 @@ class Dashboard extends React.Component {
                     React.createElement(
                         'h1',
                         { style: { textAlign: "center" } },
-                        'GeoFreebie'
+                        this.l("appName")
                     ),
                     React.createElement(
                         'p',
                         { style: { textAlign: "center" } },
-                        'Welcome ',
+                        this.l("welcome"),
+                        ' ',
                         this.props.currentUser.name,
                         '!'
                     )
@@ -92966,7 +93074,7 @@ module.exports = {
     Dashboard: Dashboard
 };
 
-},{"react":265,"react-onsenui":262}],276:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],277:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -92994,24 +93102,27 @@ module.exports = {
     EmbededComponent: EmbededComponent
 };
 
-},{"react":265}],277:[function(require,module,exports){
+},{"react":265}],278:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
 const Ons = require('react-onsenui');
-const geolib = require('geolib');
-
-// Custom imports
-const config = require('../data_components/config.json');
 
 /**
  * Component for displaying the list view.
  */
 class List extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the list
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`list.${string}`);
     }
 
     /**
@@ -93031,26 +93142,27 @@ class List extends React.Component {
             var errorMessage = this.props.errorLoadingUsers.message;
 
             if (errorMessage == "Failed to fetch") {
-                errorMessage = "There was a problem finding people to list here. Perhaps you are not connected to the internet?";
+                errorMessage = this.l("fetchFailure");
             }
 
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                'Error: ',
+                this.l("error"),
+                ': ',
                 errorMessage
             ));
         } else if (!this.props.usersAreLoaded) {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                'Loading...'
+                this.l("loading")
             ));
         } else if (this.props.users.length == 0) {
             listItems.push(React.createElement(
                 Ons.ListItem,
                 { key: '0' },
-                'There are no other users in the system right now. Please check back later!'
+                this.l("noUsers")
             ));
         } else {
             var users = this.props.users;
@@ -93084,7 +93196,7 @@ class List extends React.Component {
                         'div',
                         { className: 'right' },
                         this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null,
-                        clickable ? null : "Location is private"
+                        clickable ? null : this.l("locationIsPrivate")
                     )
                 ));
             }
@@ -93110,21 +93222,16 @@ module.exports = {
     List: List
 };
 
-},{"../data_components/config.json":272,"geolib":26,"react":265,"react-onsenui":262}],278:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],279:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
 const leaflet = require('react-leaflet');
-// Custom files required
-// Data
+
 const config = require('../data_components/config.json');
-// Logic
-const locationManager = require('../business_components/locationManager.js');
-const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
-
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
@@ -93156,48 +93263,24 @@ class Map extends React.Component {
     }
 
     /**
-     * Write a log that notes the change of active layers
-     * @param {boolean} change If the layer was added or removed
-     * @param {String} data Name of the layer that was toggled
+     * Localize a string in the context of the map
+     * @param {string} string to be localized
      */
-    createLog(change, data) {
-        var action;
-        var map = this;
-        if (this.props.logging) {
-            // Define the log
-            if (change) {
-                action = 'Activate ' + data;
-            } else action = 'Deactivate ' + data;
-            var entry;
-            // Get the current position for the log
-            locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, map.props.picture ? 'Streetview' : 'Map', action];
-                // Log the data
-                // logger.logEntry(entry);
-            }, function error(err) {
-                // If there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', map.props.picture ? 'Streetview' : 'Map', action];
-                // Log the data
-                // logger.logEntry(entry);
-            });
-        }
+    l(string) {
+        return this.props.l(`map.${string}`);
     }
 
     /**
      * Handle the activation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayAdd(e) {
-        this.createLog(true, e.name);
-    }
+    handleOverlayAdd(e) {}
 
     /**
      * Handle the deactivation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayRemove(e) {
-        this.createLog(false, e.name);
-    }
+    handleOverlayRemove(e) {}
 
     // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
     addLayers() {
@@ -93211,7 +93294,7 @@ class Map extends React.Component {
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
-                    var popup = user.name + " is offering " + user.offerDescription + " and can be contacted at " + user.contactInformation;
+                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedMarker,
                         {
@@ -93239,7 +93322,7 @@ class Map extends React.Component {
                 // If user chooses NOT to be public, insert a buffer instead of a marker into the map
                 // Only do this if the user is selected
                 if (user._id == this.props.selectedUserId) {
-                    var popup = user.name + " is offering " + user.offerDescription + " and can be contacted at " + user.contactInformation;
+                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedCircle,
                         {
@@ -93265,7 +93348,7 @@ class Map extends React.Component {
             leaflet.LayersControl.Overlay,
             {
                 key: 'userLayer',
-                name: 'Show other users',
+                name: this.l("showOtherUsers"),
                 checked: true },
             React.createElement(
                 leaflet.FeatureGroup,
@@ -93291,7 +93374,7 @@ class Map extends React.Component {
                 React.createElement(
                     'span',
                     null,
-                    'You are here!'
+                    this.l("youAreHere")
                 )
             )
         ) : null;
@@ -93328,14 +93411,15 @@ class Map extends React.Component {
                 onOverlayremove: this.handleOverlayRemove },
             React.createElement(OfflineLayer.OfflineLayer, {
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                attribution: 'Map data \xA9 <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                attribution: this.l("attribution")
             }),
             React.createElement(
                 leaflet.LayersControl,
                 { position: 'topleft' },
                 this.addLayers()
             ),
-            React.createElement(OfflineLayer.OfflineControl, null),
+            React.createElement(OfflineLayer.OfflineControl, {
+                l: this.props.l }),
             marker
         );
     }
@@ -93356,7 +93440,7 @@ class Map extends React.Component {
                     React.createElement(
                         'span',
                         null,
-                        'You are here!'
+                        this.l("youAreHere")
                     )
                 )
             ) : null;
@@ -93372,7 +93456,7 @@ class Map extends React.Component {
                     zoomDelta: this.props.zoomable == false ? 0 : 1 },
                 React.createElement(OfflineLayer.OfflineLayer, {
                     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    attribution: 'Map data \xA9 <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    attribution: this.l("attribution")
                 }),
                 React.createElement(OfflineLayer.OfflineControl, null),
                 marker
@@ -93419,24 +93503,27 @@ module.exports = {
     Map: Map
 };
 
-},{"../business_components/locationManager.js":269,"../business_components/logger.js":270,"../business_components/offlineLayer.js":271,"../data_components/config.json":272,"react":265,"react-leaflet":250}],279:[function(require,module,exports){
+},{"../business_components/offlineLayer.js":271,"../data_components/config.json":272,"react":265,"react-leaflet":250}],280:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
 const Ons = require('react-onsenui');
 
-// Custom files
-// Logic
-const logger = require('../business_components/logger.js');
-
 /**
  * Offer form where the user can list items they are giving away.
  */
 class offerForm extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the offer form
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`offerForm.${string}`);
     }
 
     /**
@@ -93466,12 +93553,12 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        'I am offering...'
+                        this.l("iAmOffering")
                     ),
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        'Please give a nice short description of the offer.'
+                        this.l("iAmOfferingHelpText")
                     )
                 ),
                 React.createElement(
@@ -93484,7 +93571,7 @@ class offerForm extends React.Component {
                             id: 'offerDescription',
                             name: 'offerDescription',
                             className: 'textarea textarea--transparent',
-                            placeholder: 'Offer description',
+                            placeholder: this.l("offerDescriptionPlaceholder"),
                             value: this.props.currentUser.offerDescription,
                             onChange: this.handleInputChange })
                     )
@@ -93495,12 +93582,12 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        'I can be contacted at...'
+                        this.l("iCanBeContactedAt")
                     ),
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        'Please provide a phone number, email, or other instructions.'
+                        this.l("iCanBeContactedAtHelpText")
                     )
                 ),
                 React.createElement(
@@ -93513,7 +93600,7 @@ class offerForm extends React.Component {
                             id: 'contactInformation',
                             name: 'contactInformation',
                             className: 'textarea textarea--transparent',
-                            placeholder: 'Contact information',
+                            placeholder: this.l("contactInformationPlaceholder"),
                             value: this.props.currentUser.contactInformation,
                             onChange: this.handleInputChange })
                     )
@@ -93524,7 +93611,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        this.props.currentUserIsLoaded ? "✔︎" : "Syncing..."
+                        this.props.currentUserIsLoaded ? "✔︎" : this.l("syncing")
                     )
                 )
             )
@@ -93539,75 +93626,31 @@ module.exports = {
     offerFormComponent: offerFormComponent
 };
 
-},{"../business_components/logger.js":270,"react":265,"react-onsenui":262}],280:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],281:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
 const Ons = require('react-onsenui');
 
-// Custom files
-// Logic
-const logger = require('../business_components/logger.js');
-const locationManager = require('../business_components/locationManager.js');
-
 /**
  * Settings for the app. Modifies the state of the settings
  */
 class Settings extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
-        this.handleChangeLogging = this.handleChangeLogging.bind(this);
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.createLog = this.createLog.bind(this);
     }
 
-    createLog(mode, change) {
-        var action;
-        if (this.props.logging) {
-            // Define the log
-            if (change) {
-                action = 'Activate ' + mode;
-            } else action = 'Deactivate ' + mode;
-            var entry;
-            // Get the current position for the log
-            locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, 'Settings', action];
-                // Log the data
-                // logger.logEntry(entry);
-            }, function error(err) {
-                // If there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', 'Settings', action];
-                // Log the data
-                // logger.logEntry(entry);
-            });
-        }
-    }
-
-    // Handle toggle for logging
-    handleChangeLogging(e) {
-        this.props.onLoggingChange(e.target.checked);
-        var action;
-        // Define the log
-        if (e.target.checked) {
-            action = 'Activate logging';
-        } else action = 'Deactivate logging';
-        var entry;
-        // Get the current position for the log
-        locationManager.getLocation().then(function success(position) {
-            entry = [position.latitude, position.longitude, 'Settings', action];
-            // Log the data
-            // logger.logEntry(entry);
-        }, function error(err) {
-            // If there was an error getting the position, log a '-' for lat/lng
-            entry = ['-', '-', 'Settings', action];
-            // Log the data
-            // logger.logEntry(entry);
-        });
+    /**
+     * Localize a string in the context of the settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`settings.${string}`);
     }
 
     // Handle toggle for using external data
@@ -93646,18 +93689,18 @@ class Settings extends React.Component {
 
     render() {
         if (this.props.authenticated) {
-            var authenticationText = `Logged in as ${this.props.currentUser.name}`;
+            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
             var authenticationButton = React.createElement(
                 Ons.Button,
                 { onClick: this.props.logout },
-                'Log out'
+                this.l("logOut")
             );
         } else {
-            var authenticationText = "Not currently logged in";
+            var authenticationText = this.l("notCurrentlyLoggedIn");
             var authenticationButton = React.createElement(
                 Ons.Button,
                 { onClick: this.props.login },
-                'Log in'
+                this.l("logIn")
             );
         }
 
@@ -93676,7 +93719,7 @@ class Settings extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            'Use my location'
+                            this.l("useLocation")
                         )
                     ),
                     React.createElement(
@@ -93694,7 +93737,7 @@ class Settings extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        'This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.'
+                        this.l("useLocationText")
                     )
                 ),
                 React.createElement(
@@ -93706,7 +93749,7 @@ class Settings extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            'Share my location'
+                            this.l("shareLocation")
                         )
                     ),
                     React.createElement(
@@ -93724,7 +93767,7 @@ class Settings extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        'This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.'
+                        this.l("shareLocationText")
                     )
                 ),
                 React.createElement(
@@ -93757,17 +93800,24 @@ module.exports = {
     settingsComponent: settingsComponent
 };
 
-},{"../business_components/locationManager.js":269,"../business_components/logger.js":270,"react":265,"react-onsenui":262}],281:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],282:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
 const Ons = require('react-onsenui');
 
 class SignInPage extends React.Component {
-
     constructor(props) {
         super(props);
         this.renderLoginButton = this.renderLoginButton.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the sign-in page
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`signInPage.${string}`);
     }
 
     // Render the sign in page
@@ -93784,7 +93834,7 @@ class SignInPage extends React.Component {
                     React.createElement(
                         'h1',
                         { style: { textAlign: "center" } },
-                        'GeoFreebie'
+                        this.l("appName")
                     ),
                     React.createElement(
                         'p',
@@ -93801,13 +93851,13 @@ class SignInPage extends React.Component {
             return React.createElement(
                 'span',
                 null,
-                'Loading...'
+                this.l("loading")
             );
         } else {
             return React.createElement(
                 Ons.Button,
                 { onClick: this.props.login },
-                'Log in'
+                this.l("logIn")
             );
         }
     }
@@ -93817,7 +93867,7 @@ module.exports = {
     SignInPage: SignInPage
 };
 
-},{"react":265,"react-onsenui":262}],282:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],283:[function(require,module,exports){
 var asn1 = exports;
 
 asn1.bignum = require('bn.js');
@@ -93828,7 +93878,7 @@ asn1.constants = require('./asn1/constants');
 asn1.decoders = require('./asn1/decoders');
 asn1.encoders = require('./asn1/encoders');
 
-},{"./asn1/api":283,"./asn1/base":285,"./asn1/constants":289,"./asn1/decoders":291,"./asn1/encoders":294,"bn.js":297}],283:[function(require,module,exports){
+},{"./asn1/api":284,"./asn1/base":286,"./asn1/constants":290,"./asn1/decoders":292,"./asn1/encoders":295,"bn.js":298}],284:[function(require,module,exports){
 var asn1 = require('../asn1');
 var inherits = require('inherits');
 
@@ -93891,7 +93941,7 @@ Entity.prototype.encode = function encode(data, enc, /* internal */ reporter) {
   return this._getEncoder(enc).encode(data, reporter);
 };
 
-},{"../asn1":282,"inherits":380,"vm":433}],284:[function(require,module,exports){
+},{"../asn1":283,"inherits":381,"vm":434}],285:[function(require,module,exports){
 var inherits = require('inherits');
 var Reporter = require('../base').Reporter;
 var Buffer = require('buffer').Buffer;
@@ -94009,7 +94059,7 @@ EncoderBuffer.prototype.join = function join(out, offset) {
   return out;
 };
 
-},{"../base":285,"buffer":328,"inherits":380}],285:[function(require,module,exports){
+},{"../base":286,"buffer":329,"inherits":381}],286:[function(require,module,exports){
 var base = exports;
 
 base.Reporter = require('./reporter').Reporter;
@@ -94017,7 +94067,7 @@ base.DecoderBuffer = require('./buffer').DecoderBuffer;
 base.EncoderBuffer = require('./buffer').EncoderBuffer;
 base.Node = require('./node');
 
-},{"./buffer":284,"./node":286,"./reporter":287}],286:[function(require,module,exports){
+},{"./buffer":285,"./node":287,"./reporter":288}],287:[function(require,module,exports){
 var Reporter = require('../base').Reporter;
 var EncoderBuffer = require('../base').EncoderBuffer;
 var DecoderBuffer = require('../base').DecoderBuffer;
@@ -94653,7 +94703,7 @@ Node.prototype._isPrintstr = function isPrintstr(str) {
   return /^[A-Za-z0-9 '\(\)\+,\-\.\/:=\?]*$/.test(str);
 };
 
-},{"../base":285,"minimalistic-assert":385}],287:[function(require,module,exports){
+},{"../base":286,"minimalistic-assert":386}],288:[function(require,module,exports){
 var inherits = require('inherits');
 
 function Reporter(options) {
@@ -94776,7 +94826,7 @@ ReporterError.prototype.rethrow = function rethrow(msg) {
   return this;
 };
 
-},{"inherits":380}],288:[function(require,module,exports){
+},{"inherits":381}],289:[function(require,module,exports){
 var constants = require('../constants');
 
 exports.tagClass = {
@@ -94820,7 +94870,7 @@ exports.tag = {
 };
 exports.tagByName = constants._reverse(exports.tag);
 
-},{"../constants":289}],289:[function(require,module,exports){
+},{"../constants":290}],290:[function(require,module,exports){
 var constants = exports;
 
 // Helper
@@ -94841,7 +94891,7 @@ constants._reverse = function reverse(map) {
 
 constants.der = require('./der');
 
-},{"./der":288}],290:[function(require,module,exports){
+},{"./der":289}],291:[function(require,module,exports){
 var inherits = require('inherits');
 
 var asn1 = require('../../asn1');
@@ -95167,13 +95217,13 @@ function derDecodeLen(buf, primitive, fail) {
   return len;
 }
 
-},{"../../asn1":282,"inherits":380}],291:[function(require,module,exports){
+},{"../../asn1":283,"inherits":381}],292:[function(require,module,exports){
 var decoders = exports;
 
 decoders.der = require('./der');
 decoders.pem = require('./pem');
 
-},{"./der":290,"./pem":292}],292:[function(require,module,exports){
+},{"./der":291,"./pem":293}],293:[function(require,module,exports){
 var inherits = require('inherits');
 var Buffer = require('buffer').Buffer;
 
@@ -95224,7 +95274,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
   return DERDecoder.prototype.decode.call(this, input, options);
 };
 
-},{"./der":290,"buffer":328,"inherits":380}],293:[function(require,module,exports){
+},{"./der":291,"buffer":329,"inherits":381}],294:[function(require,module,exports){
 var inherits = require('inherits');
 var Buffer = require('buffer').Buffer;
 
@@ -95521,13 +95571,13 @@ function encodeTag(tag, primitive, cls, reporter) {
   return res;
 }
 
-},{"../../asn1":282,"buffer":328,"inherits":380}],294:[function(require,module,exports){
+},{"../../asn1":283,"buffer":329,"inherits":381}],295:[function(require,module,exports){
 var encoders = exports;
 
 encoders.der = require('./der');
 encoders.pem = require('./pem');
 
-},{"./der":293,"./pem":295}],295:[function(require,module,exports){
+},{"./der":294,"./pem":296}],296:[function(require,module,exports){
 var inherits = require('inherits');
 
 var DEREncoder = require('./der');
@@ -95550,7 +95600,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
   return out.join('\n');
 };
 
-},{"./der":293,"inherits":380}],296:[function(require,module,exports){
+},{"./der":294,"inherits":381}],297:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -95703,7 +95753,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],297:[function(require,module,exports){
+},{}],298:[function(require,module,exports){
 (function (module, exports) {
   'use strict';
 
@@ -99132,7 +99182,7 @@ function fromByteArray (uint8) {
   };
 })(typeof module === 'undefined' || module, this);
 
-},{"buffer":299}],298:[function(require,module,exports){
+},{"buffer":300}],299:[function(require,module,exports){
 var r;
 
 module.exports = function rand(len) {
@@ -99199,9 +99249,9 @@ if (typeof self === 'object') {
   }
 }
 
-},{"crypto":299}],299:[function(require,module,exports){
+},{"crypto":300}],300:[function(require,module,exports){
 
-},{}],300:[function(require,module,exports){
+},{}],301:[function(require,module,exports){
 // based on the aes implimentation in triple sec
 // https://github.com/keybase/triplesec
 // which is in turn based on the one from crypto-js
@@ -99431,7 +99481,7 @@ AES.prototype.scrub = function () {
 
 module.exports.AES = AES
 
-},{"safe-buffer":421}],301:[function(require,module,exports){
+},{"safe-buffer":422}],302:[function(require,module,exports){
 var aes = require('./aes')
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('cipher-base')
@@ -99550,7 +99600,7 @@ StreamCipher.prototype.setAAD = function setAAD (buf) {
 
 module.exports = StreamCipher
 
-},{"./aes":300,"./ghash":305,"./incr32":306,"buffer-xor":327,"cipher-base":329,"inherits":380,"safe-buffer":421}],302:[function(require,module,exports){
+},{"./aes":301,"./ghash":306,"./incr32":307,"buffer-xor":328,"cipher-base":330,"inherits":381,"safe-buffer":422}],303:[function(require,module,exports){
 var ciphers = require('./encrypter')
 var deciphers = require('./decrypter')
 var modes = require('./modes/list.json')
@@ -99565,7 +99615,7 @@ exports.createDecipher = exports.Decipher = deciphers.createDecipher
 exports.createDecipheriv = exports.Decipheriv = deciphers.createDecipheriv
 exports.listCiphers = exports.getCiphers = getCiphers
 
-},{"./decrypter":303,"./encrypter":304,"./modes/list.json":314}],303:[function(require,module,exports){
+},{"./decrypter":304,"./encrypter":305,"./modes/list.json":315}],304:[function(require,module,exports){
 var AuthCipher = require('./authCipher')
 var Buffer = require('safe-buffer').Buffer
 var MODES = require('./modes')
@@ -99691,7 +99741,7 @@ function createDecipher (suite, password) {
 exports.createDecipher = createDecipher
 exports.createDecipheriv = createDecipheriv
 
-},{"./aes":300,"./authCipher":301,"./modes":313,"./streamCipher":316,"cipher-base":329,"evp_bytestokey":364,"inherits":380,"safe-buffer":421}],304:[function(require,module,exports){
+},{"./aes":301,"./authCipher":302,"./modes":314,"./streamCipher":317,"cipher-base":330,"evp_bytestokey":365,"inherits":381,"safe-buffer":422}],305:[function(require,module,exports){
 var MODES = require('./modes')
 var AuthCipher = require('./authCipher')
 var Buffer = require('safe-buffer').Buffer
@@ -99807,7 +99857,7 @@ function createCipher (suite, password) {
 exports.createCipheriv = createCipheriv
 exports.createCipher = createCipher
 
-},{"./aes":300,"./authCipher":301,"./modes":313,"./streamCipher":316,"cipher-base":329,"evp_bytestokey":364,"inherits":380,"safe-buffer":421}],305:[function(require,module,exports){
+},{"./aes":301,"./authCipher":302,"./modes":314,"./streamCipher":317,"cipher-base":330,"evp_bytestokey":365,"inherits":381,"safe-buffer":422}],306:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var ZEROES = Buffer.alloc(16, 0)
 
@@ -99898,7 +99948,7 @@ GHASH.prototype.final = function (abl, bl) {
 
 module.exports = GHASH
 
-},{"safe-buffer":421}],306:[function(require,module,exports){
+},{"safe-buffer":422}],307:[function(require,module,exports){
 function incr32 (iv) {
   var len = iv.length
   var item
@@ -99915,7 +99965,7 @@ function incr32 (iv) {
 }
 module.exports = incr32
 
-},{}],307:[function(require,module,exports){
+},{}],308:[function(require,module,exports){
 var xor = require('buffer-xor')
 
 exports.encrypt = function (self, block) {
@@ -99934,7 +99984,7 @@ exports.decrypt = function (self, block) {
   return xor(out, pad)
 }
 
-},{"buffer-xor":327}],308:[function(require,module,exports){
+},{"buffer-xor":328}],309:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var xor = require('buffer-xor')
 
@@ -99969,7 +100019,7 @@ exports.encrypt = function (self, data, decrypt) {
   return out
 }
 
-},{"buffer-xor":327,"safe-buffer":421}],309:[function(require,module,exports){
+},{"buffer-xor":328,"safe-buffer":422}],310:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 function encryptByte (self, byteParam, decrypt) {
@@ -100013,7 +100063,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   return out
 }
 
-},{"safe-buffer":421}],310:[function(require,module,exports){
+},{"safe-buffer":422}],311:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 function encryptByte (self, byteParam, decrypt) {
@@ -100040,7 +100090,7 @@ exports.encrypt = function (self, chunk, decrypt) {
   return out
 }
 
-},{"safe-buffer":421}],311:[function(require,module,exports){
+},{"safe-buffer":422}],312:[function(require,module,exports){
 var xor = require('buffer-xor')
 var Buffer = require('safe-buffer').Buffer
 var incr32 = require('../incr32')
@@ -100072,7 +100122,7 @@ exports.encrypt = function (self, chunk) {
   return xor(chunk, pad)
 }
 
-},{"../incr32":306,"buffer-xor":327,"safe-buffer":421}],312:[function(require,module,exports){
+},{"../incr32":307,"buffer-xor":328,"safe-buffer":422}],313:[function(require,module,exports){
 exports.encrypt = function (self, block) {
   return self._cipher.encryptBlock(block)
 }
@@ -100081,7 +100131,7 @@ exports.decrypt = function (self, block) {
   return self._cipher.decryptBlock(block)
 }
 
-},{}],313:[function(require,module,exports){
+},{}],314:[function(require,module,exports){
 var modeModules = {
   ECB: require('./ecb'),
   CBC: require('./cbc'),
@@ -100101,7 +100151,7 @@ for (var key in modes) {
 
 module.exports = modes
 
-},{"./cbc":307,"./cfb":308,"./cfb1":309,"./cfb8":310,"./ctr":311,"./ecb":312,"./list.json":314,"./ofb":315}],314:[function(require,module,exports){
+},{"./cbc":308,"./cfb":309,"./cfb1":310,"./cfb8":311,"./ctr":312,"./ecb":313,"./list.json":315,"./ofb":316}],315:[function(require,module,exports){
 module.exports={
   "aes-128-ecb": {
     "cipher": "AES",
@@ -100294,7 +100344,7 @@ module.exports={
   }
 }
 
-},{}],315:[function(require,module,exports){
+},{}],316:[function(require,module,exports){
 (function (Buffer){
 var xor = require('buffer-xor')
 
@@ -100314,7 +100364,7 @@ exports.encrypt = function (self, chunk) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":328,"buffer-xor":327}],316:[function(require,module,exports){
+},{"buffer":329,"buffer-xor":328}],317:[function(require,module,exports){
 var aes = require('./aes')
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('cipher-base')
@@ -100343,7 +100393,7 @@ StreamCipher.prototype._final = function () {
 
 module.exports = StreamCipher
 
-},{"./aes":300,"cipher-base":329,"inherits":380,"safe-buffer":421}],317:[function(require,module,exports){
+},{"./aes":301,"cipher-base":330,"inherits":381,"safe-buffer":422}],318:[function(require,module,exports){
 var DES = require('browserify-des')
 var aes = require('browserify-aes/browser')
 var aesModes = require('browserify-aes/modes')
@@ -100412,7 +100462,7 @@ exports.createDecipher = exports.Decipher = createDecipher
 exports.createDecipheriv = exports.Decipheriv = createDecipheriv
 exports.listCiphers = exports.getCiphers = getCiphers
 
-},{"browserify-aes/browser":302,"browserify-aes/modes":313,"browserify-des":318,"browserify-des/modes":319,"evp_bytestokey":364}],318:[function(require,module,exports){
+},{"browserify-aes/browser":303,"browserify-aes/modes":314,"browserify-des":319,"browserify-des/modes":320,"evp_bytestokey":365}],319:[function(require,module,exports){
 (function (Buffer){
 var CipherBase = require('cipher-base')
 var des = require('des.js')
@@ -100459,7 +100509,7 @@ DES.prototype._final = function () {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":328,"cipher-base":329,"des.js":337,"inherits":380}],319:[function(require,module,exports){
+},{"buffer":329,"cipher-base":330,"des.js":338,"inherits":381}],320:[function(require,module,exports){
 exports['des-ecb'] = {
   key: 8,
   iv: 0
@@ -100485,7 +100535,7 @@ exports['des-ede'] = {
   iv: 0
 }
 
-},{}],320:[function(require,module,exports){
+},{}],321:[function(require,module,exports){
 (function (Buffer){
 var bn = require('bn.js');
 var randomBytes = require('randombytes');
@@ -100529,10 +100579,10 @@ function getr(priv) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"bn.js":297,"buffer":328,"randombytes":405}],321:[function(require,module,exports){
+},{"bn.js":298,"buffer":329,"randombytes":406}],322:[function(require,module,exports){
 module.exports = require('./browser/algorithms.json')
 
-},{"./browser/algorithms.json":322}],322:[function(require,module,exports){
+},{"./browser/algorithms.json":323}],323:[function(require,module,exports){
 module.exports={
   "sha224WithRSAEncryption": {
     "sign": "rsa",
@@ -100686,7 +100736,7 @@ module.exports={
   }
 }
 
-},{}],323:[function(require,module,exports){
+},{}],324:[function(require,module,exports){
 module.exports={
   "1.3.132.0.10": "secp256k1",
   "1.3.132.0.33": "p224",
@@ -100696,7 +100746,7 @@ module.exports={
   "1.3.132.0.35": "p521"
 }
 
-},{}],324:[function(require,module,exports){
+},{}],325:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('create-hash')
 var stream = require('stream')
@@ -100791,7 +100841,7 @@ module.exports = {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./algorithms.json":322,"./sign":325,"./verify":326,"buffer":328,"create-hash":332,"inherits":380,"stream":430}],325:[function(require,module,exports){
+},{"./algorithms.json":323,"./sign":326,"./verify":327,"buffer":329,"create-hash":333,"inherits":381,"stream":431}],326:[function(require,module,exports){
 (function (Buffer){
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var createHmac = require('create-hmac')
@@ -100940,7 +100990,7 @@ module.exports.getKey = getKey
 module.exports.makeKey = makeKey
 
 }).call(this,require("buffer").Buffer)
-},{"./curves.json":323,"bn.js":297,"browserify-rsa":320,"buffer":328,"create-hmac":334,"elliptic":347,"parse-asn1":391}],326:[function(require,module,exports){
+},{"./curves.json":324,"bn.js":298,"browserify-rsa":321,"buffer":329,"create-hmac":335,"elliptic":348,"parse-asn1":392}],327:[function(require,module,exports){
 (function (Buffer){
 // much of this based on https://github.com/indutny/self-signed/blob/gh-pages/lib/rsa.js
 var BN = require('bn.js')
@@ -101027,7 +101077,7 @@ function checkValue (b, q) {
 module.exports = verify
 
 }).call(this,require("buffer").Buffer)
-},{"./curves.json":323,"bn.js":297,"buffer":328,"elliptic":347,"parse-asn1":391}],327:[function(require,module,exports){
+},{"./curves.json":324,"bn.js":298,"buffer":329,"elliptic":348,"parse-asn1":392}],328:[function(require,module,exports){
 (function (Buffer){
 module.exports = function xor (a, b) {
   var length = Math.min(a.length, b.length)
@@ -101041,7 +101091,7 @@ module.exports = function xor (a, b) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":328}],328:[function(require,module,exports){
+},{"buffer":329}],329:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -102779,7 +102829,7 @@ function numberIsNaN (obj) {
   return obj !== obj // eslint-disable-line no-self-compare
 }
 
-},{"base64-js":296,"ieee754":379}],329:[function(require,module,exports){
+},{"base64-js":297,"ieee754":380}],330:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
 var StringDecoder = require('string_decoder').StringDecoder
@@ -102880,7 +102930,7 @@ CipherBase.prototype._toString = function (value, enc, fin) {
 
 module.exports = CipherBase
 
-},{"inherits":380,"safe-buffer":421,"stream":430,"string_decoder":431}],330:[function(require,module,exports){
+},{"inherits":381,"safe-buffer":422,"stream":431,"string_decoder":432}],331:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -102991,7 +103041,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":381}],331:[function(require,module,exports){
+},{"../../is-buffer/index.js":382}],332:[function(require,module,exports){
 (function (Buffer){
 var elliptic = require('elliptic');
 var BN = require('bn.js');
@@ -103117,7 +103167,7 @@ function formatReturnValue(bn, enc, len) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"bn.js":297,"buffer":328,"elliptic":347}],332:[function(require,module,exports){
+},{"bn.js":298,"buffer":329,"elliptic":348}],333:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var MD5 = require('md5.js')
@@ -103149,14 +103199,14 @@ module.exports = function createHash (alg) {
   return new Hash(sha(alg))
 }
 
-},{"cipher-base":329,"inherits":380,"md5.js":383,"ripemd160":420,"sha.js":423}],333:[function(require,module,exports){
+},{"cipher-base":330,"inherits":381,"md5.js":384,"ripemd160":421,"sha.js":424}],334:[function(require,module,exports){
 var MD5 = require('md5.js')
 
 module.exports = function (buffer) {
   return new MD5().update(buffer).digest()
 }
 
-},{"md5.js":383}],334:[function(require,module,exports){
+},{"md5.js":384}],335:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var Legacy = require('./legacy')
@@ -103220,7 +103270,7 @@ module.exports = function createHmac (alg, key) {
   return new Hmac(alg, key)
 }
 
-},{"./legacy":335,"cipher-base":329,"create-hash/md5":333,"inherits":380,"ripemd160":420,"safe-buffer":421,"sha.js":423}],335:[function(require,module,exports){
+},{"./legacy":336,"cipher-base":330,"create-hash/md5":334,"inherits":381,"ripemd160":421,"safe-buffer":422,"sha.js":424}],336:[function(require,module,exports){
 'use strict'
 var inherits = require('inherits')
 var Buffer = require('safe-buffer').Buffer
@@ -103268,7 +103318,7 @@ Hmac.prototype._final = function () {
 }
 module.exports = Hmac
 
-},{"cipher-base":329,"inherits":380,"safe-buffer":421}],336:[function(require,module,exports){
+},{"cipher-base":330,"inherits":381,"safe-buffer":422}],337:[function(require,module,exports){
 'use strict'
 
 exports.randomBytes = exports.rng = exports.pseudoRandomBytes = exports.prng = require('randombytes')
@@ -103367,7 +103417,7 @@ exports.constants = {
   'POINT_CONVERSION_HYBRID': 6
 }
 
-},{"browserify-cipher":317,"browserify-sign":324,"browserify-sign/algos":321,"create-ecdh":331,"create-hash":332,"create-hmac":334,"diffie-hellman":343,"pbkdf2":392,"public-encrypt":399,"randombytes":405,"randomfill":406}],337:[function(require,module,exports){
+},{"browserify-cipher":318,"browserify-sign":325,"browserify-sign/algos":322,"create-ecdh":332,"create-hash":333,"create-hmac":335,"diffie-hellman":344,"pbkdf2":393,"public-encrypt":400,"randombytes":406,"randomfill":407}],338:[function(require,module,exports){
 'use strict';
 
 exports.utils = require('./des/utils');
@@ -103376,7 +103426,7 @@ exports.DES = require('./des/des');
 exports.CBC = require('./des/cbc');
 exports.EDE = require('./des/ede');
 
-},{"./des/cbc":338,"./des/cipher":339,"./des/des":340,"./des/ede":341,"./des/utils":342}],338:[function(require,module,exports){
+},{"./des/cbc":339,"./des/cipher":340,"./des/des":341,"./des/ede":342,"./des/utils":343}],339:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -103443,7 +103493,7 @@ proto._update = function _update(inp, inOff, out, outOff) {
   }
 };
 
-},{"inherits":380,"minimalistic-assert":385}],339:[function(require,module,exports){
+},{"inherits":381,"minimalistic-assert":386}],340:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -103586,7 +103636,7 @@ Cipher.prototype._finalDecrypt = function _finalDecrypt() {
   return this._unpad(out);
 };
 
-},{"minimalistic-assert":385}],340:[function(require,module,exports){
+},{"minimalistic-assert":386}],341:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -103731,7 +103781,7 @@ DES.prototype._decrypt = function _decrypt(state, lStart, rStart, out, off) {
   utils.rip(l, r, out, off);
 };
 
-},{"../des":337,"inherits":380,"minimalistic-assert":385}],341:[function(require,module,exports){
+},{"../des":338,"inherits":381,"minimalistic-assert":386}],342:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -103788,7 +103838,7 @@ EDE.prototype._update = function _update(inp, inOff, out, outOff) {
 EDE.prototype._pad = DES.prototype._pad;
 EDE.prototype._unpad = DES.prototype._unpad;
 
-},{"../des":337,"inherits":380,"minimalistic-assert":385}],342:[function(require,module,exports){
+},{"../des":338,"inherits":381,"minimalistic-assert":386}],343:[function(require,module,exports){
 'use strict';
 
 exports.readUInt32BE = function readUInt32BE(bytes, off) {
@@ -104046,7 +104096,7 @@ exports.padSplit = function padSplit(num, size, group) {
   return out.join(' ');
 };
 
-},{}],343:[function(require,module,exports){
+},{}],344:[function(require,module,exports){
 (function (Buffer){
 var generatePrime = require('./lib/generatePrime')
 var primes = require('./lib/primes.json')
@@ -104092,7 +104142,7 @@ exports.DiffieHellmanGroup = exports.createDiffieHellmanGroup = exports.getDiffi
 exports.createDiffieHellman = exports.DiffieHellman = createDiffieHellman
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/dh":344,"./lib/generatePrime":345,"./lib/primes.json":346,"buffer":328}],344:[function(require,module,exports){
+},{"./lib/dh":345,"./lib/generatePrime":346,"./lib/primes.json":347,"buffer":329}],345:[function(require,module,exports){
 (function (Buffer){
 var BN = require('bn.js');
 var MillerRabin = require('miller-rabin');
@@ -104260,7 +104310,7 @@ function formatReturnValue(bn, enc) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./generatePrime":345,"bn.js":297,"buffer":328,"miller-rabin":384,"randombytes":405}],345:[function(require,module,exports){
+},{"./generatePrime":346,"bn.js":298,"buffer":329,"miller-rabin":385,"randombytes":406}],346:[function(require,module,exports){
 var randomBytes = require('randombytes');
 module.exports = findPrime;
 findPrime.simpleSieve = simpleSieve;
@@ -104367,7 +104417,7 @@ function findPrime(bits, gen) {
 
 }
 
-},{"bn.js":297,"miller-rabin":384,"randombytes":405}],346:[function(require,module,exports){
+},{"bn.js":298,"miller-rabin":385,"randombytes":406}],347:[function(require,module,exports){
 module.exports={
     "modp1": {
         "gen": "02",
@@ -104402,7 +104452,7 @@ module.exports={
         "prime": "ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece45b3dc2007cb8a163bf0598da48361c55d39a69163fa8fd24cf5f83655d23dca3ad961c62f356208552bb9ed529077096966d670c354e4abc9804f1746c08ca18217c32905e462e36ce3be39e772c180e86039b2783a2ec07a28fb5c55df06f4c52c9de2bcbf6955817183995497cea956ae515d2261898fa051015728e5a8aaac42dad33170d04507a33a85521abdf1cba64ecfb850458dbef0a8aea71575d060c7db3970f85a6e1e4c7abf5ae8cdb0933d71e8c94e04a25619dcee3d2261ad2ee6bf12ffa06d98a0864d87602733ec86a64521f2b18177b200cbbe117577a615d6c770988c0bad946e208e24fa074e5ab3143db5bfce0fd108e4b82d120a92108011a723c12a787e6d788719a10bdba5b2699c327186af4e23c1a946834b6150bda2583e9ca2ad44ce8dbbbc2db04de8ef92e8efc141fbecaa6287c59474e6bc05d99b2964fa090c3a2233ba186515be7ed1f612970cee2d7afb81bdd762170481cd0069127d5b05aa993b4ea988d8fddc186ffb7dc90a6c08f4df435c93402849236c3fab4d27c7026c1d4dcb2602646dec9751e763dba37bdf8ff9406ad9e530ee5db382f413001aeb06a53ed9027d831179727b0865a8918da3edbebcf9b14ed44ce6cbaced4bb1bdb7f1447e6cc254b332051512bd7af426fb8f401378cd2bf5983ca01c64b92ecf032ea15d1721d03f482d7ce6e74fef6d55e702f46980c82b5a84031900b1c9e59e7c97fbec7e8f323a97a7e36cc88be0f1d45b7ff585ac54bd407b22b4154aacc8f6d7ebf48e1d814cc5ed20f8037e0a79715eef29be32806a1d58bb7c5da76f550aa3d8a1fbff0eb19ccb1a313d55cda56c9ec2ef29632387fe8d76e3c0468043e8f663f4860ee12bf2d5b0b7474d6e694f91e6dbe115974a3926f12fee5e438777cb6a932df8cd8bec4d073b931ba3bc832b68d9dd300741fa7bf8afc47ed2576f6936ba424663aab639c5ae4f5683423b4742bf1c978238f16cbe39d652de3fdb8befc848ad922222e04a4037c0713eb57a81a23f0c73473fc646cea306b4bcbc8862f8385ddfa9d4b7fa2c087e879683303ed5bdd3a062b3cf5b3a278a66d2a13f83f44f82ddf310ee074ab6a364597e899a0255dc164f31cc50846851df9ab48195ded7ea1b1d510bd7ee74d73faf36bc31ecfa268359046f4eb879f924009438b481c6cd7889a002ed5ee382bc9190da6fc026e479558e4475677e9aa9e3050e2765694dfc81f56e880b96e7160c980dd98edd3dfffffffffffffffff"
     }
 }
-},{}],347:[function(require,module,exports){
+},{}],348:[function(require,module,exports){
 'use strict';
 
 var elliptic = exports;
@@ -104417,7 +104467,7 @@ elliptic.curves = require('./elliptic/curves');
 elliptic.ec = require('./elliptic/ec');
 elliptic.eddsa = require('./elliptic/eddsa');
 
-},{"../package.json":362,"./elliptic/curve":350,"./elliptic/curves":353,"./elliptic/ec":354,"./elliptic/eddsa":357,"./elliptic/utils":361,"brorand":298}],348:[function(require,module,exports){
+},{"../package.json":363,"./elliptic/curve":351,"./elliptic/curves":354,"./elliptic/ec":355,"./elliptic/eddsa":358,"./elliptic/utils":362,"brorand":299}],349:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -104794,7 +104844,7 @@ BasePoint.prototype.dblp = function dblp(k) {
   return r;
 };
 
-},{"../../elliptic":347,"bn.js":297}],349:[function(require,module,exports){
+},{"../../elliptic":348,"bn.js":298}],350:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -105229,7 +105279,7 @@ Point.prototype.eqXToP = function eqXToP(x) {
 Point.prototype.toP = Point.prototype.normalize;
 Point.prototype.mixedAdd = Point.prototype.add;
 
-},{"../../elliptic":347,"../curve":350,"bn.js":297,"inherits":380}],350:[function(require,module,exports){
+},{"../../elliptic":348,"../curve":351,"bn.js":298,"inherits":381}],351:[function(require,module,exports){
 'use strict';
 
 var curve = exports;
@@ -105239,7 +105289,7 @@ curve.short = require('./short');
 curve.mont = require('./mont');
 curve.edwards = require('./edwards');
 
-},{"./base":348,"./edwards":349,"./mont":351,"./short":352}],351:[function(require,module,exports){
+},{"./base":349,"./edwards":350,"./mont":352,"./short":353}],352:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -105421,7 +105471,7 @@ Point.prototype.getX = function getX() {
   return this.x.fromRed();
 };
 
-},{"../../elliptic":347,"../curve":350,"bn.js":297,"inherits":380}],352:[function(require,module,exports){
+},{"../../elliptic":348,"../curve":351,"bn.js":298,"inherits":381}],353:[function(require,module,exports){
 'use strict';
 
 var curve = require('../curve');
@@ -106361,7 +106411,7 @@ JPoint.prototype.isInfinity = function isInfinity() {
   return this.z.cmpn(0) === 0;
 };
 
-},{"../../elliptic":347,"../curve":350,"bn.js":297,"inherits":380}],353:[function(require,module,exports){
+},{"../../elliptic":348,"../curve":351,"bn.js":298,"inherits":381}],354:[function(require,module,exports){
 'use strict';
 
 var curves = exports;
@@ -106568,7 +106618,7 @@ defineCurve('secp256k1', {
   ]
 });
 
-},{"../elliptic":347,"./precomputed/secp256k1":360,"hash.js":366}],354:[function(require,module,exports){
+},{"../elliptic":348,"./precomputed/secp256k1":361,"hash.js":367}],355:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -106810,7 +106860,7 @@ EC.prototype.getKeyRecoveryParam = function(e, signature, Q, enc) {
   throw new Error('Unable to find valid recovery factor');
 };
 
-},{"../../elliptic":347,"./key":355,"./signature":356,"bn.js":297,"hmac-drbg":378}],355:[function(require,module,exports){
+},{"../../elliptic":348,"./key":356,"./signature":357,"bn.js":298,"hmac-drbg":379}],356:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -106931,7 +106981,7 @@ KeyPair.prototype.inspect = function inspect() {
          ' pub: ' + (this.pub && this.pub.inspect()) + ' >';
 };
 
-},{"../../elliptic":347,"bn.js":297}],356:[function(require,module,exports){
+},{"../../elliptic":348,"bn.js":298}],357:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -107068,7 +107118,7 @@ Signature.prototype.toDER = function toDER(enc) {
   return utils.encode(res, enc);
 };
 
-},{"../../elliptic":347,"bn.js":297}],357:[function(require,module,exports){
+},{"../../elliptic":348,"bn.js":298}],358:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -107188,7 +107238,7 @@ EDDSA.prototype.isPoint = function isPoint(val) {
   return val instanceof this.pointClass;
 };
 
-},{"../../elliptic":347,"./key":358,"./signature":359,"hash.js":366}],358:[function(require,module,exports){
+},{"../../elliptic":348,"./key":359,"./signature":360,"hash.js":367}],359:[function(require,module,exports){
 'use strict';
 
 var elliptic = require('../../elliptic');
@@ -107286,7 +107336,7 @@ KeyPair.prototype.getPublic = function getPublic(enc) {
 
 module.exports = KeyPair;
 
-},{"../../elliptic":347}],359:[function(require,module,exports){
+},{"../../elliptic":348}],360:[function(require,module,exports){
 'use strict';
 
 var BN = require('bn.js');
@@ -107354,7 +107404,7 @@ Signature.prototype.toHex = function toHex() {
 
 module.exports = Signature;
 
-},{"../../elliptic":347,"bn.js":297}],360:[function(require,module,exports){
+},{"../../elliptic":348,"bn.js":298}],361:[function(require,module,exports){
 module.exports = {
   doubles: {
     step: 4,
@@ -108136,7 +108186,7 @@ module.exports = {
   }
 };
 
-},{}],361:[function(require,module,exports){
+},{}],362:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -108258,7 +108308,7 @@ function intFromLE(bytes) {
 utils.intFromLE = intFromLE;
 
 
-},{"bn.js":297,"minimalistic-assert":385,"minimalistic-crypto-utils":386}],362:[function(require,module,exports){
+},{"bn.js":298,"minimalistic-assert":386,"minimalistic-crypto-utils":387}],363:[function(require,module,exports){
 module.exports={
   "_from": "elliptic@^6.0.0",
   "_id": "elliptic@6.4.0",
@@ -108347,7 +108397,7 @@ module.exports={
   "version": "6.4.0"
 }
 
-},{}],363:[function(require,module,exports){
+},{}],364:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -108868,7 +108918,7 @@ function functionBindPolyfill(context) {
   };
 }
 
-},{}],364:[function(require,module,exports){
+},{}],365:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 var MD5 = require('md5.js')
 
@@ -108915,7 +108965,7 @@ function EVP_BytesToKey (password, salt, keyBits, ivLen) {
 
 module.exports = EVP_BytesToKey
 
-},{"md5.js":383,"safe-buffer":421}],365:[function(require,module,exports){
+},{"md5.js":384,"safe-buffer":422}],366:[function(require,module,exports){
 'use strict'
 var Buffer = require('safe-buffer').Buffer
 var Transform = require('stream').Transform
@@ -109012,7 +109062,7 @@ HashBase.prototype._digest = function () {
 
 module.exports = HashBase
 
-},{"inherits":380,"safe-buffer":421,"stream":430}],366:[function(require,module,exports){
+},{"inherits":381,"safe-buffer":422,"stream":431}],367:[function(require,module,exports){
 var hash = exports;
 
 hash.utils = require('./hash/utils');
@@ -109029,7 +109079,7 @@ hash.sha384 = hash.sha.sha384;
 hash.sha512 = hash.sha.sha512;
 hash.ripemd160 = hash.ripemd.ripemd160;
 
-},{"./hash/common":367,"./hash/hmac":368,"./hash/ripemd":369,"./hash/sha":370,"./hash/utils":377}],367:[function(require,module,exports){
+},{"./hash/common":368,"./hash/hmac":369,"./hash/ripemd":370,"./hash/sha":371,"./hash/utils":378}],368:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -109123,7 +109173,7 @@ BlockHash.prototype._pad = function pad() {
   return res;
 };
 
-},{"./utils":377,"minimalistic-assert":385}],368:[function(require,module,exports){
+},{"./utils":378,"minimalistic-assert":386}],369:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -109172,7 +109222,7 @@ Hmac.prototype.digest = function digest(enc) {
   return this.outer.digest(enc);
 };
 
-},{"./utils":377,"minimalistic-assert":385}],369:[function(require,module,exports){
+},{"./utils":378,"minimalistic-assert":386}],370:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -109320,7 +109370,7 @@ var sh = [
   8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
 ];
 
-},{"./common":367,"./utils":377}],370:[function(require,module,exports){
+},{"./common":368,"./utils":378}],371:[function(require,module,exports){
 'use strict';
 
 exports.sha1 = require('./sha/1');
@@ -109329,7 +109379,7 @@ exports.sha256 = require('./sha/256');
 exports.sha384 = require('./sha/384');
 exports.sha512 = require('./sha/512');
 
-},{"./sha/1":371,"./sha/224":372,"./sha/256":373,"./sha/384":374,"./sha/512":375}],371:[function(require,module,exports){
+},{"./sha/1":372,"./sha/224":373,"./sha/256":374,"./sha/384":375,"./sha/512":376}],372:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -109405,7 +109455,7 @@ SHA1.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":367,"../utils":377,"./common":376}],372:[function(require,module,exports){
+},{"../common":368,"../utils":378,"./common":377}],373:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -109437,7 +109487,7 @@ SHA224.prototype._digest = function digest(enc) {
 };
 
 
-},{"../utils":377,"./256":373}],373:[function(require,module,exports){
+},{"../utils":378,"./256":374}],374:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -109544,7 +109594,7 @@ SHA256.prototype._digest = function digest(enc) {
     return utils.split32(this.h, 'big');
 };
 
-},{"../common":367,"../utils":377,"./common":376,"minimalistic-assert":385}],374:[function(require,module,exports){
+},{"../common":368,"../utils":378,"./common":377,"minimalistic-assert":386}],375:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -109581,7 +109631,7 @@ SHA384.prototype._digest = function digest(enc) {
     return utils.split32(this.h.slice(0, 12), 'big');
 };
 
-},{"../utils":377,"./512":375}],375:[function(require,module,exports){
+},{"../utils":378,"./512":376}],376:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -109913,7 +109963,7 @@ function g1_512_lo(xh, xl) {
   return r;
 }
 
-},{"../common":367,"../utils":377,"minimalistic-assert":385}],376:[function(require,module,exports){
+},{"../common":368,"../utils":378,"minimalistic-assert":386}],377:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -109964,7 +110014,7 @@ function g1_256(x) {
 }
 exports.g1_256 = g1_256;
 
-},{"../utils":377}],377:[function(require,module,exports){
+},{"../utils":378}],378:[function(require,module,exports){
 'use strict';
 
 var assert = require('minimalistic-assert');
@@ -110219,7 +110269,7 @@ function shr64_lo(ah, al, num) {
 }
 exports.shr64_lo = shr64_lo;
 
-},{"inherits":380,"minimalistic-assert":385}],378:[function(require,module,exports){
+},{"inherits":381,"minimalistic-assert":386}],379:[function(require,module,exports){
 'use strict';
 
 var hash = require('hash.js');
@@ -110334,7 +110384,7 @@ HmacDRBG.prototype.generate = function generate(len, enc, add, addEnc) {
   return utils.encode(res, enc);
 };
 
-},{"hash.js":366,"minimalistic-assert":385,"minimalistic-crypto-utils":386}],379:[function(require,module,exports){
+},{"hash.js":367,"minimalistic-assert":386,"minimalistic-crypto-utils":387}],380:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -110420,7 +110470,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],380:[function(require,module,exports){
+},{}],381:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -110445,7 +110495,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],381:[function(require,module,exports){
+},{}],382:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -110468,14 +110518,14 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],382:[function(require,module,exports){
+},{}],383:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],383:[function(require,module,exports){
+},{}],384:[function(require,module,exports){
 (function (Buffer){
 'use strict'
 var inherits = require('inherits')
@@ -110624,7 +110674,7 @@ function fnI (a, b, c, d, m, k, s) {
 module.exports = MD5
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":328,"hash-base":365,"inherits":380}],384:[function(require,module,exports){
+},{"buffer":329,"hash-base":366,"inherits":381}],385:[function(require,module,exports){
 var bn = require('bn.js');
 var brorand = require('brorand');
 
@@ -110741,7 +110791,7 @@ MillerRabin.prototype.getDivisor = function getDivisor(n, k) {
   return false;
 };
 
-},{"bn.js":297,"brorand":298}],385:[function(require,module,exports){
+},{"bn.js":298,"brorand":299}],386:[function(require,module,exports){
 module.exports = assert;
 
 function assert(val, msg) {
@@ -110754,7 +110804,7 @@ assert.equal = function assertEqual(l, r, msg) {
     throw new Error(msg || ('Assertion failed: ' + l + ' != ' + r));
 };
 
-},{}],386:[function(require,module,exports){
+},{}],387:[function(require,module,exports){
 'use strict';
 
 var utils = exports;
@@ -110814,7 +110864,7 @@ utils.encode = function encode(arr, enc) {
     return arr;
 };
 
-},{}],387:[function(require,module,exports){
+},{}],388:[function(require,module,exports){
 module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.2": "aes-128-cbc",
 "2.16.840.1.101.3.4.1.3": "aes-128-ofb",
@@ -110828,7 +110878,7 @@ module.exports={"2.16.840.1.101.3.4.1.1": "aes-128-ecb",
 "2.16.840.1.101.3.4.1.43": "aes-256-ofb",
 "2.16.840.1.101.3.4.1.44": "aes-256-cfb"
 }
-},{}],388:[function(require,module,exports){
+},{}],389:[function(require,module,exports){
 // from https://github.com/indutny/self-signed/blob/gh-pages/lib/asn1.js
 // Fedor, you are amazing.
 'use strict'
@@ -110952,7 +111002,7 @@ exports.signature = asn1.define('signature', function () {
   )
 })
 
-},{"./certificate":389,"asn1.js":282}],389:[function(require,module,exports){
+},{"./certificate":390,"asn1.js":283}],390:[function(require,module,exports){
 // from https://github.com/Rantanen/node-dtls/blob/25a7dc861bda38cfeac93a723500eea4f0ac2e86/Certificate.js
 // thanks to @Rantanen
 
@@ -111042,7 +111092,7 @@ var X509Certificate = asn.define('X509Certificate', function () {
 
 module.exports = X509Certificate
 
-},{"asn1.js":282}],390:[function(require,module,exports){
+},{"asn1.js":283}],391:[function(require,module,exports){
 (function (Buffer){
 // adapted from https://github.com/apatil/pemstrip
 var findProc = /Proc-Type: 4,ENCRYPTED[\n\r]+DEK-Info: AES-((?:128)|(?:192)|(?:256))-CBC,([0-9A-H]+)[\n\r]+([0-9A-z\n\r\+\/\=]+)[\n\r]+/m
@@ -111076,7 +111126,7 @@ module.exports = function (okey, password) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"browserify-aes":302,"buffer":328,"evp_bytestokey":364}],391:[function(require,module,exports){
+},{"browserify-aes":303,"buffer":329,"evp_bytestokey":365}],392:[function(require,module,exports){
 (function (Buffer){
 var asn1 = require('./asn1')
 var aesid = require('./aesid.json')
@@ -111186,11 +111236,11 @@ function decrypt (data, password) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./aesid.json":387,"./asn1":388,"./fixProc":390,"browserify-aes":302,"buffer":328,"pbkdf2":392}],392:[function(require,module,exports){
+},{"./aesid.json":388,"./asn1":389,"./fixProc":391,"browserify-aes":303,"buffer":329,"pbkdf2":393}],393:[function(require,module,exports){
 exports.pbkdf2 = require('./lib/async')
 exports.pbkdf2Sync = require('./lib/sync')
 
-},{"./lib/async":393,"./lib/sync":396}],393:[function(require,module,exports){
+},{"./lib/async":394,"./lib/sync":397}],394:[function(require,module,exports){
 (function (process,global){
 var checkParameters = require('./precondition')
 var defaultEncoding = require('./default-encoding')
@@ -111294,7 +111344,7 @@ module.exports = function (password, salt, iterations, keylen, digest, callback)
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./default-encoding":394,"./precondition":395,"./sync":396,"_process":398,"safe-buffer":421}],394:[function(require,module,exports){
+},{"./default-encoding":395,"./precondition":396,"./sync":397,"_process":399,"safe-buffer":422}],395:[function(require,module,exports){
 (function (process){
 var defaultEncoding
 /* istanbul ignore next */
@@ -111308,7 +111358,7 @@ if (process.browser) {
 module.exports = defaultEncoding
 
 }).call(this,require('_process'))
-},{"_process":398}],395:[function(require,module,exports){
+},{"_process":399}],396:[function(require,module,exports){
 (function (Buffer){
 var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
 
@@ -111340,7 +111390,7 @@ module.exports = function (password, salt, iterations, keylen) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":381}],396:[function(require,module,exports){
+},{"../../is-buffer/index.js":382}],397:[function(require,module,exports){
 var md5 = require('create-hash/md5')
 var rmd160 = require('ripemd160')
 var sha = require('sha.js')
@@ -111443,7 +111493,7 @@ function pbkdf2 (password, salt, iterations, keylen, digest) {
 
 module.exports = pbkdf2
 
-},{"./default-encoding":394,"./precondition":395,"create-hash/md5":333,"ripemd160":420,"safe-buffer":421,"sha.js":423}],397:[function(require,module,exports){
+},{"./default-encoding":395,"./precondition":396,"create-hash/md5":334,"ripemd160":421,"safe-buffer":422,"sha.js":424}],398:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -111491,7 +111541,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 
 
 }).call(this,require('_process'))
-},{"_process":398}],398:[function(require,module,exports){
+},{"_process":399}],399:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -111677,7 +111727,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],399:[function(require,module,exports){
+},{}],400:[function(require,module,exports){
 exports.publicEncrypt = require('./publicEncrypt');
 exports.privateDecrypt = require('./privateDecrypt');
 
@@ -111688,7 +111738,7 @@ exports.privateEncrypt = function privateEncrypt(key, buf) {
 exports.publicDecrypt = function publicDecrypt(key, buf) {
   return exports.privateDecrypt(key, buf, true);
 };
-},{"./privateDecrypt":401,"./publicEncrypt":402}],400:[function(require,module,exports){
+},{"./privateDecrypt":402,"./publicEncrypt":403}],401:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('create-hash');
 module.exports = function (seed, len) {
@@ -111707,7 +111757,7 @@ function i2ops(c) {
   return out;
 }
 }).call(this,require("buffer").Buffer)
-},{"buffer":328,"create-hash":332}],401:[function(require,module,exports){
+},{"buffer":329,"create-hash":333}],402:[function(require,module,exports){
 (function (Buffer){
 var parseKeys = require('parse-asn1');
 var mgf = require('./mgf');
@@ -111818,7 +111868,7 @@ function compare(a, b){
   return dif;
 }
 }).call(this,require("buffer").Buffer)
-},{"./mgf":400,"./withPublic":403,"./xor":404,"bn.js":297,"browserify-rsa":320,"buffer":328,"create-hash":332,"parse-asn1":391}],402:[function(require,module,exports){
+},{"./mgf":401,"./withPublic":404,"./xor":405,"bn.js":298,"browserify-rsa":321,"buffer":329,"create-hash":333,"parse-asn1":392}],403:[function(require,module,exports){
 (function (Buffer){
 var parseKeys = require('parse-asn1');
 var randomBytes = require('randombytes');
@@ -111916,7 +111966,7 @@ function nonZero(len, crypto) {
   return out;
 }
 }).call(this,require("buffer").Buffer)
-},{"./mgf":400,"./withPublic":403,"./xor":404,"bn.js":297,"browserify-rsa":320,"buffer":328,"create-hash":332,"parse-asn1":391,"randombytes":405}],403:[function(require,module,exports){
+},{"./mgf":401,"./withPublic":404,"./xor":405,"bn.js":298,"browserify-rsa":321,"buffer":329,"create-hash":333,"parse-asn1":392,"randombytes":406}],404:[function(require,module,exports){
 (function (Buffer){
 var bn = require('bn.js');
 function withPublic(paddedMsg, key) {
@@ -111929,7 +111979,7 @@ function withPublic(paddedMsg, key) {
 
 module.exports = withPublic;
 }).call(this,require("buffer").Buffer)
-},{"bn.js":297,"buffer":328}],404:[function(require,module,exports){
+},{"bn.js":298,"buffer":329}],405:[function(require,module,exports){
 module.exports = function xor(a, b) {
   var len = a.length;
   var i = -1;
@@ -111938,7 +111988,7 @@ module.exports = function xor(a, b) {
   }
   return a
 };
-},{}],405:[function(require,module,exports){
+},{}],406:[function(require,module,exports){
 (function (process,global){
 'use strict'
 
@@ -111980,7 +112030,7 @@ function randomBytes (size, cb) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":398,"safe-buffer":421}],406:[function(require,module,exports){
+},{"_process":399,"safe-buffer":422}],407:[function(require,module,exports){
 (function (process,global){
 'use strict'
 
@@ -112092,10 +112142,10 @@ function randomFillSync (buf, offset, size) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":398,"randombytes":405,"safe-buffer":421}],407:[function(require,module,exports){
+},{"_process":399,"randombytes":406,"safe-buffer":422}],408:[function(require,module,exports){
 module.exports = require('./lib/_stream_duplex.js');
 
-},{"./lib/_stream_duplex.js":408}],408:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":409}],409:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -112227,7 +112277,7 @@ Duplex.prototype._destroy = function (err, cb) {
 
   pna.nextTick(cb, err);
 };
-},{"./_stream_readable":410,"./_stream_writable":412,"core-util-is":330,"inherits":380,"process-nextick-args":397}],409:[function(require,module,exports){
+},{"./_stream_readable":411,"./_stream_writable":413,"core-util-is":331,"inherits":381,"process-nextick-args":398}],410:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -112275,7 +112325,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":411,"core-util-is":330,"inherits":380}],410:[function(require,module,exports){
+},{"./_stream_transform":412,"core-util-is":331,"inherits":381}],411:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -113297,7 +113347,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":408,"./internal/streams/BufferList":413,"./internal/streams/destroy":414,"./internal/streams/stream":415,"_process":398,"core-util-is":330,"events":363,"inherits":380,"isarray":382,"process-nextick-args":397,"safe-buffer":421,"string_decoder/":431,"util":299}],411:[function(require,module,exports){
+},{"./_stream_duplex":409,"./internal/streams/BufferList":414,"./internal/streams/destroy":415,"./internal/streams/stream":416,"_process":399,"core-util-is":331,"events":364,"inherits":381,"isarray":383,"process-nextick-args":398,"safe-buffer":422,"string_decoder/":432,"util":300}],412:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -113512,7 +113562,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":408,"core-util-is":330,"inherits":380}],412:[function(require,module,exports){
+},{"./_stream_duplex":409,"core-util-is":331,"inherits":381}],413:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -114202,7 +114252,7 @@ Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":408,"./internal/streams/destroy":414,"./internal/streams/stream":415,"_process":398,"core-util-is":330,"inherits":380,"process-nextick-args":397,"safe-buffer":421,"util-deprecate":432}],413:[function(require,module,exports){
+},{"./_stream_duplex":409,"./internal/streams/destroy":415,"./internal/streams/stream":416,"_process":399,"core-util-is":331,"inherits":381,"process-nextick-args":398,"safe-buffer":422,"util-deprecate":433}],414:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -114282,7 +114332,7 @@ if (util && util.inspect && util.inspect.custom) {
     return this.constructor.name + ' ' + obj;
   };
 }
-},{"safe-buffer":421,"util":299}],414:[function(require,module,exports){
+},{"safe-buffer":422,"util":300}],415:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -114357,13 +114407,13 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":397}],415:[function(require,module,exports){
+},{"process-nextick-args":398}],416:[function(require,module,exports){
 module.exports = require('events').EventEmitter;
 
-},{"events":363}],416:[function(require,module,exports){
+},{"events":364}],417:[function(require,module,exports){
 module.exports = require('./readable').PassThrough
 
-},{"./readable":417}],417:[function(require,module,exports){
+},{"./readable":418}],418:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -114372,13 +114422,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":408,"./lib/_stream_passthrough.js":409,"./lib/_stream_readable.js":410,"./lib/_stream_transform.js":411,"./lib/_stream_writable.js":412}],418:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":409,"./lib/_stream_passthrough.js":410,"./lib/_stream_readable.js":411,"./lib/_stream_transform.js":412,"./lib/_stream_writable.js":413}],419:[function(require,module,exports){
 module.exports = require('./readable').Transform
 
-},{"./readable":417}],419:[function(require,module,exports){
+},{"./readable":418}],420:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":412}],420:[function(require,module,exports){
+},{"./lib/_stream_writable.js":413}],421:[function(require,module,exports){
 'use strict'
 var Buffer = require('buffer').Buffer
 var inherits = require('inherits')
@@ -114543,7 +114593,7 @@ function fn5 (a, b, c, d, e, m, k, s) {
 
 module.exports = RIPEMD160
 
-},{"buffer":328,"hash-base":365,"inherits":380}],421:[function(require,module,exports){
+},{"buffer":329,"hash-base":366,"inherits":381}],422:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -114607,7 +114657,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":328}],422:[function(require,module,exports){
+},{"buffer":329}],423:[function(require,module,exports){
 var Buffer = require('safe-buffer').Buffer
 
 // prototype class for hash functions
@@ -114690,7 +114740,7 @@ Hash.prototype._update = function () {
 
 module.exports = Hash
 
-},{"safe-buffer":421}],423:[function(require,module,exports){
+},{"safe-buffer":422}],424:[function(require,module,exports){
 var exports = module.exports = function SHA (algorithm) {
   algorithm = algorithm.toLowerCase()
 
@@ -114707,7 +114757,7 @@ exports.sha256 = require('./sha256')
 exports.sha384 = require('./sha384')
 exports.sha512 = require('./sha512')
 
-},{"./sha":424,"./sha1":425,"./sha224":426,"./sha256":427,"./sha384":428,"./sha512":429}],424:[function(require,module,exports){
+},{"./sha":425,"./sha1":426,"./sha224":427,"./sha256":428,"./sha384":429,"./sha512":430}],425:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-0, as defined
  * in FIPS PUB 180-1
@@ -114803,7 +114853,7 @@ Sha.prototype._hash = function () {
 
 module.exports = Sha
 
-},{"./hash":422,"inherits":380,"safe-buffer":421}],425:[function(require,module,exports){
+},{"./hash":423,"inherits":381,"safe-buffer":422}],426:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -114904,7 +114954,7 @@ Sha1.prototype._hash = function () {
 
 module.exports = Sha1
 
-},{"./hash":422,"inherits":380,"safe-buffer":421}],426:[function(require,module,exports){
+},{"./hash":423,"inherits":381,"safe-buffer":422}],427:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -114959,7 +115009,7 @@ Sha224.prototype._hash = function () {
 
 module.exports = Sha224
 
-},{"./hash":422,"./sha256":427,"inherits":380,"safe-buffer":421}],427:[function(require,module,exports){
+},{"./hash":423,"./sha256":428,"inherits":381,"safe-buffer":422}],428:[function(require,module,exports){
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
  * in FIPS 180-2
@@ -115096,7 +115146,7 @@ Sha256.prototype._hash = function () {
 
 module.exports = Sha256
 
-},{"./hash":422,"inherits":380,"safe-buffer":421}],428:[function(require,module,exports){
+},{"./hash":423,"inherits":381,"safe-buffer":422}],429:[function(require,module,exports){
 var inherits = require('inherits')
 var SHA512 = require('./sha512')
 var Hash = require('./hash')
@@ -115155,7 +115205,7 @@ Sha384.prototype._hash = function () {
 
 module.exports = Sha384
 
-},{"./hash":422,"./sha512":429,"inherits":380,"safe-buffer":421}],429:[function(require,module,exports){
+},{"./hash":423,"./sha512":430,"inherits":381,"safe-buffer":422}],430:[function(require,module,exports){
 var inherits = require('inherits')
 var Hash = require('./hash')
 var Buffer = require('safe-buffer').Buffer
@@ -115417,7 +115467,7 @@ Sha512.prototype._hash = function () {
 
 module.exports = Sha512
 
-},{"./hash":422,"inherits":380,"safe-buffer":421}],430:[function(require,module,exports){
+},{"./hash":423,"inherits":381,"safe-buffer":422}],431:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -115546,7 +115596,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":363,"inherits":380,"readable-stream/duplex.js":407,"readable-stream/passthrough.js":416,"readable-stream/readable.js":417,"readable-stream/transform.js":418,"readable-stream/writable.js":419}],431:[function(require,module,exports){
+},{"events":364,"inherits":381,"readable-stream/duplex.js":408,"readable-stream/passthrough.js":417,"readable-stream/readable.js":418,"readable-stream/transform.js":419,"readable-stream/writable.js":420}],432:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -115843,7 +115893,7 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":421}],432:[function(require,module,exports){
+},{"safe-buffer":422}],433:[function(require,module,exports){
 (function (global){
 
 /**
@@ -115914,7 +115964,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],433:[function(require,module,exports){
+},{}],434:[function(require,module,exports){
 var indexOf = function (xs, item) {
     if (xs.indexOf) return xs.indexOf(item);
     else for (var i = 0; i < xs.length; i++) {
@@ -116061,4 +116111,4 @@ exports.createContext = Script.createContext = function (context) {
     return copy;
 };
 
-},{}]},{},[273]);
+},{}]},{},[274]);

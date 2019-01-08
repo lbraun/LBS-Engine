@@ -22,15 +22,15 @@ class OfflineLayer extends leaflet.GridLayer {
             getItem: function (key) {
                 return localforage.getItem(key);
             },
-        
+
             saveTiles: function (tileUrls) {
                 var self = this;
-        
+
                 var promises = [];
-        
+
                 for (var i = 0; i < tileUrls.length; i++) {
                     var tileUrl = tileUrls[i];
-        
+
                     (function (i, tileUrl) {
                         promises[i] = new Promise(function (resolve, reject) {
                             var request = new XMLHttpRequest();
@@ -52,28 +52,28 @@ class OfflineLayer extends leaflet.GridLayer {
                         });
                     })(i, tileUrl);
                 }
-        
+
                 return Promise.all(promises);
             },
-        
+
             clear: function () {
                 return localforage.clear();
             },
-        
+
             _saveTile: function (key, value) {
                 console.log('Saved: ' + key);
                 return this._removeItem(key).then(function () {
                     return localforage.setItem(key, value);
                 });
             },
-        
+
             _removeItem: function (key) {
                 return localforage.removeItem(key);
             }
         };
     }
 
-    //create the custom layer
+    // Create the custom layer
     createLeafletElement(props) {
         tilesDb = this.tilesDb;
         layer = new L.TileLayer.Offline(this.props.url, this.tilesDb, {
@@ -97,17 +97,27 @@ class OfflineLayer extends leaflet.GridLayer {
  */
 class OfflineControl extends leaflet.MapControl {
 
+    /**
+     * Localize a string in the context of the offline layer
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`offlineLayer.${string}`);
+    }
+
     createLeafletElement(props) {
+        var offlineControl = this;
+
         return new L.control.offline(layer, tilesDb, {
             saveButtonHtml: '<i class="fa fa-download" aria-hidden="true"></i>',
             removeButtonHtml: '<i class="fa fa-trash" aria-hidden="true"></i>',
             confirmSavingCallback: function (nTilesToSave, continueSaveTiles) {
-                if (window.confirm('Save ' + nTilesToSave + '?')) {
+                if (window.confirm(offlineControl.l("save") + ' ' + nTilesToSave + '?')) {
                     continueSaveTiles();
                 }
             },
             confirmRemovalCallback: function (continueRemoveTiles) {
-                if (window.confirm('Remove all the tiles?')) {
+                if (window.confirm(offlineControl.l("removeTiles"))) {
                     continueRemoveTiles();
                 }
             },

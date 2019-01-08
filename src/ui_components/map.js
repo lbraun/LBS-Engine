@@ -1,16 +1,12 @@
 'use strict';
+
 const React = require('react');
 const leaflet = require('react-leaflet');
-// Custom files required
-// Data
+
 const config = require('../data_components/config.json');
-// Logic
-const locationManager = require('../business_components/locationManager.js');
-const logger = require('../business_components/logger.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
-
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
@@ -42,49 +38,24 @@ class Map extends React.Component {
     }
 
     /**
-     * Write a log that notes the change of active layers
-     * @param {boolean} change If the layer was added or removed
-     * @param {String} data Name of the layer that was toggled
+     * Localize a string in the context of the map
+     * @param {string} string to be localized
      */
-    createLog(change, data) {
-        var action;
-        var map = this;
-        if(this.props.logging) {
-            // Define the log
-            if(change) {
-                action =  'Activate ' + data;
-            }
-            else action = 'Deactivate ' + data;
-            var entry;
-            // Get the current position for the log
-            locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, map.props.picture ? 'Streetview' : 'Map', action];
-                // Log the data
-                // logger.logEntry(entry);
-            }, function error(err) {
-                // If there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', map.props.picture ? 'Streetview' : 'Map', action];
-                // Log the data
-                // logger.logEntry(entry);
-            })
-        }
+    l(string) {
+        return this.props.l(`map.${string}`);
     }
 
     /**
      * Handle the activation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayAdd(e) {
-        this.createLog(true, e.name);
-    }
+    handleOverlayAdd(e) {}
 
     /**
      * Handle the deactivation of a layer on the map
      * @param {Object} e Layer Object fired by leaflet
      */
-    handleOverlayRemove(e) {
-        this.createLog(false, e.name);
-    }
+    handleOverlayRemove(e) {}
 
     // Get the elements from the layer.json file and add each layer with a layercontrol.Overlay to the map
     addLayers() {
@@ -99,8 +70,10 @@ class Map extends React.Component {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
                     var popup = user.name
-                        + " is offering " + user.offerDescription
-                        + " and can be contacted at " + user.contactInformation;
+                        + " " + this.l("isOffering")
+                        + " " + user.offerDescription
+                        + " " + this.l("andCanBeContactedAt")
+                        + " " + user.contactInformation;
                     userLayer.push(
                         <ExtendedMarker
                             id={user._id}
@@ -125,8 +98,10 @@ class Map extends React.Component {
                 // Only do this if the user is selected
                 if (user._id == this.props.selectedUserId) {
                     var popup = user.name
-                        + " is offering " + user.offerDescription
-                        + " and can be contacted at " + user.contactInformation;
+                        + " " + this.l("isOffering")
+                        + " " + user.offerDescription
+                        + " " + this.l("andCanBeContactedAt")
+                        + " " + user.contactInformation;
                     userLayer.push(
                         <ExtendedCircle
                             id={user._id}
@@ -147,7 +122,7 @@ class Map extends React.Component {
         layers.push(
             <leaflet.LayersControl.Overlay
                 key="userLayer"
-                name="Show other users"
+                name={this.l("showOtherUsers")}
                 checked={true}>
                 <leaflet.FeatureGroup key="userLayer">
                     {userLayer}
@@ -168,7 +143,7 @@ class Map extends React.Component {
                     icon={this.positionMarker}>
                     <leaflet.Popup>
                         <span>
-                            You are here!
+                            {this.l("youAreHere")}
                         </span>
                     </leaflet.Popup>
                 </ExtendedMarker>
@@ -206,12 +181,13 @@ class Map extends React.Component {
                 onOverlayremove={this.handleOverlayRemove}>
                 <OfflineLayer.OfflineLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution="Map data &copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                    attribution={this.l("attribution")}
                 />
                 <leaflet.LayersControl position="topleft">
                     {this.addLayers()}
                 </leaflet.LayersControl>
-                <OfflineLayer.OfflineControl />
+                <OfflineLayer.OfflineControl
+                    l={this.props.l} />
                 {marker}
             </leaflet.Map>
         )
@@ -229,7 +205,7 @@ class Map extends React.Component {
                     <leaflet.Marker position={this.props.currentUser.coords} icon={this.positionMarker}>
                         <leaflet.Popup>
                             <span>
-                                You are here!
+                                {this.l("youAreHere")}
                             </span>
                         </leaflet.Popup>
                     </leaflet.Marker>
@@ -246,7 +222,7 @@ class Map extends React.Component {
                     zoomDelta={this.props.zoomable == false ? 0 : 1}>
                     <OfflineLayer.OfflineLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution="Map data &copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                        attribution={this.l("attribution")}
                     />
                     <OfflineLayer.OfflineControl />
                     {marker}

@@ -3,19 +3,21 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
-// Custom files
-// Logic
-const logger = require('../business_components/logger.js');
-
-
 /**
  * Offer form where the user can list items they are giving away.
  */
 class offerForm extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    /**
+     * Localize a string in the context of the offer form
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`offerForm.${string}`);
     }
 
     /**
@@ -38,10 +40,10 @@ class offerForm extends React.Component {
                 <Ons.List>
                     <Ons.ListItem id="offer-description-title-li">
                         <div className="list-item__title">
-                            I am offering...
+                            {this.l("iAmOffering")}
                         </div>
                         <div className="list-item__subtitle">
-                            Please give a nice short description of the offer.
+                            {this.l("iAmOfferingHelpText")}
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem id="offer-description-textarea-li">
@@ -50,7 +52,7 @@ class offerForm extends React.Component {
                                 id="offerDescription"
                                 name="offerDescription"
                                 className="textarea textarea--transparent"
-                                placeholder="Offer description"
+                                placeholder={this.l("offerDescriptionPlaceholder")}
                                 value={this.props.currentUser.offerDescription}
                                 onChange={this.handleInputChange}>
                             </textarea>
@@ -59,10 +61,10 @@ class offerForm extends React.Component {
 
                     <Ons.ListItem id="contact-information-title-li">
                         <div className="list-item__title">
-                            I can be contacted at...
+                            {this.l("iCanBeContactedAt")}
                         </div>
                         <div className="list-item__subtitle">
-                            Please provide a phone number, email, or other instructions.
+                            {this.l("iCanBeContactedAtHelpText")}
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem id="contact-information-textarea-li">
@@ -71,7 +73,7 @@ class offerForm extends React.Component {
                                 id="contactInformation"
                                 name="contactInformation"
                                 className="textarea textarea--transparent"
-                                placeholder="Contact information"
+                                placeholder={this.l("contactInformationPlaceholder")}
                                 value={this.props.currentUser.contactInformation}
                                 onChange={this.handleInputChange}>
                             </textarea>
@@ -79,7 +81,7 @@ class offerForm extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem>
                         <div className="list-item__subtitle">
-                            {this.props.currentUserIsLoaded ? "✔︎" : "Syncing..."}
+                            {this.props.currentUserIsLoaded ? "✔︎" : this.l("syncing")}
                         </div>
                     </Ons.ListItem>
                 </Ons.List>

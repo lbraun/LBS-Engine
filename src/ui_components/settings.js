@@ -3,72 +3,25 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
-// Custom files
-// Logic
-const logger = require('../business_components/logger.js');
-const locationManager = require('../business_components/locationManager.js');
-
-
 /**
  * Settings for the app. Modifies the state of the settings
  */
 class Settings extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
-        this.handleChangeLogging = this.handleChangeLogging.bind(this);
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.createLog = this.createLog.bind(this);
     }
 
-    createLog(mode, change) {
-        var action;
-        if(this.props.logging) {
-            // Define the log
-            if(change) {
-                action =  'Activate ' + mode;
-            }
-            else action = 'Deactivate ' + mode;
-            var entry;
-            // Get the current position for the log
-            locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, 'Settings', action];
-                // Log the data
-                // logger.logEntry(entry);
-            }, function error(err) {
-                // If there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', 'Settings', action];
-                // Log the data
-                // logger.logEntry(entry);
-            })
-        }
-    }
-
-    // Handle toggle for logging
-    handleChangeLogging(e) {
-        this.props.onLoggingChange(e.target.checked);
-        var action;
-        // Define the log
-        if(e.target.checked) {
-            action =  'Activate logging';
-        }
-        else action = 'Deactivate logging';
-        var entry;
-        // Get the current position for the log
-        locationManager.getLocation().then(function success(position) {
-            entry = [position.latitude, position.longitude, 'Settings', action];
-            // Log the data
-            // logger.logEntry(entry);
-        }, function error(err) {
-            // If there was an error getting the position, log a '-' for lat/lng
-            entry = ['-', '-', 'Settings', action];
-            // Log the data
-            // logger.logEntry(entry);
-        })
+    /**
+     * Localize a string in the context of the settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`settings.${string}`);
     }
 
     // Handle toggle for using external data
@@ -107,11 +60,11 @@ class Settings extends React.Component {
 
     render() {
         if (this.props.authenticated) {
-            var authenticationText = `Logged in as ${this.props.currentUser.name}`;
-            var authenticationButton = <Ons.Button onClick={this.props.logout}>Log out</Ons.Button>;
+            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
+            var authenticationButton = <Ons.Button onClick={this.props.logout}>{this.l("logOut")}</Ons.Button>;
         } else {
-            var authenticationText = "Not currently logged in";
-            var authenticationButton = <Ons.Button onClick={this.props.login}>Log in</Ons.Button>;
+            var authenticationText = this.l("notCurrentlyLoggedIn");
+            var authenticationButton = <Ons.Button onClick={this.props.login}>{this.l("logIn")}</Ons.Button>;
         }
 
         return (
@@ -119,7 +72,7 @@ class Settings extends React.Component {
                 <Ons.List>
                     <Ons.ListItem id='use-location-li' key='useLocation'>
                         <div className='left'>
-                            <p>Use my location</p>
+                            <p>{this.l("useLocation")}</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
@@ -130,12 +83,12 @@ class Settings extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem id='use-location-text-li' key='useLocationText'>
                         <div className="list-item__subtitle">
-                            This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.
+                            {this.l("useLocationText")}
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem id='share-location-li' key='shareLocation'>
                         <div className='left'>
-                            <p>Share my location</p>
+                            <p>{this.l("shareLocation")}</p>
                         </div>
                         <div className='right'>
                             <Ons.Switch
@@ -146,7 +99,7 @@ class Settings extends React.Component {
                     </Ons.ListItem>
                     <Ons.ListItem id='share-location-text-li' key='shareLocationText'>
                         <div className="list-item__subtitle">
-                            This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.
+                            {this.l("shareLocationText")}
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem key='authentication'>

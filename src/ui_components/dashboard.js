@@ -8,15 +8,25 @@ class Dashboard extends React.Component {
         super(props);
     }
 
+    /**
+     * Localize a string in the context of the dashboard
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`dashboard.${string}`);
+    }
+
     // Render the dashboard
     render() {
         return (
             <Ons.Page>
                 <Ons.Row height="100%">
                     <Ons.Col verticalAlign="center">
-                        <h1 style={{textAlign: "center"}}>GeoFreebie</h1>
+                        <h1 style={{textAlign: "center"}}>
+                            {this.l("appName")}
+                        </h1>
                         <p style={{textAlign: "center"}}>
-                            Welcome {this.props.currentUser.name}!
+                            {this.l("welcome")} {this.props.currentUser.name}!
                         </p>
                     </Ons.Col>
                 </Ons.Row>

@@ -1,16 +1,18 @@
 "use strict";
 
+// Load third-party modules
 const React = require('react');
 const Ons = require('react-onsenui');
 const geolib = require('geolib');
 const Auth0 = require('auth0-js');
 const Auth0Cordova =  require('@auth0/cordova');
 
-// Custom files
+// Load custom files
 // Data
 const config = require('../data_components/config.json');
+const localizations = require('../data_components/localizations.json');
 
-// Ui
+// UI
 const signInPage = require('./signInPage.js');
 const dashboard = require('./dashboard.js');
 const map = require('./map.js');
@@ -18,6 +20,7 @@ const list =  require('./list.js');
 const settings = require('./settings.js');
 const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js')
+
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
@@ -26,11 +29,12 @@ const logger = require('../business_components/logger.js');
 
 /**
  * Main frame for the app.
- * Contains the Toolbar in the top and a sidebar to select the mode
+ * Contains the toolbar in the top and a sidebar to select the mode
  */
 class App extends React.Component {
     constructor(props) {
         super(props);
+        this.l = this.l.bind(this);
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.renderToolbar = this.renderToolbar.bind(this);
@@ -48,12 +52,13 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
-        this.tabNames = ["Dashboard", "Map", "List", "Settings", "My Offers", "Help"];
+        this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
         this.state = {
             isOpen: false,
             logging: config.app.logging,
             externalData: config.app.externalData,
             layerControl: config.app.layerControl,
+            locale: config.app.defaultLocale,
             draggable: config.map.draggable,
             zoomable: config.map.zoomable,
             centerPosition: config.map.center,
@@ -64,7 +69,7 @@ class App extends React.Component {
             users: [],
             selectedUserId: null,
             notificationLog: [],
-            currentTab: "Dashboard",
+            currentTab: "dashboard",
             currentUserId: null,
             currentUser: null,
             authenticated: false,
@@ -106,7 +111,11 @@ class App extends React.Component {
                         app.setState({
                             notificationLog: log,
                         });
-                        alert(`${closestUser.name} is less than ${closestUser.distanceToUser} m away with the following offer: ${closestUser.offerDescription}`);
+                        alert(closestUser.name
+                            + " " + this.l("alert.isLessThan")
+                            + " " + closestUser.distanceToUser
+                            + " " + this.l("alert.metersAwayWith")
+                            + " " + closestUser.offerDescription);
                     }
                 }
             } else {
@@ -120,6 +129,21 @@ class App extends React.Component {
         }, {
             timeout: 30000 // Throw an error if no update is received every 30 seconds
         });
+    }
+
+    /**
+     * Localize a string
+     * @param {string} string to be localized
+     */
+    l(string, locale = this.state.locale) {
+        var localization = localizations[locale][string];
+
+        if (!localization) {
+            console.log(`Error: localization "${string}" not found for locale "${locale}"`)
+            return "";
+        }
+
+        return localization;
     }
 
     /**
@@ -191,7 +215,7 @@ class App extends React.Component {
     handleListItemClick(selectedUserId) {
         this.setState({
             selectedUserId: selectedUserId,
-            currentTab: "Map"
+            currentTab: "map"
         });
     }
 
@@ -245,6 +269,7 @@ class App extends React.Component {
 
                             this.setState({
                                 currentUser: currentUser,
+                                locale: currentUser.locale || this.state.locale,
                                 currentUserIsLoaded: true,
                                 users: result || [],
                                 usersAreLoaded: true,
@@ -302,11 +327,7 @@ class App extends React.Component {
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        var logInLink = (
-            <Ons.ToolbarButton onClick={this.login}>
-                Log in
-            </Ons.ToolbarButton>
-        );
+        var tabName = this.l(`tabs.${this.state.currentTab}`);
 
         return (
             <Ons.Toolbar>
@@ -315,10 +336,7 @@ class App extends React.Component {
                         <Ons.Icon icon='ion-navicon, material:md-menu'></Ons.Icon>
                     </Ons.ToolbarButton>
                 </div>
-                <div className='center'>{this.state.currentTab}</div>
-                <div className='right'>
-                    {this.state.authenticated ? null : logInLink}
-                </div>
+                <div className='center'>{tabName}</div>
             </Ons.Toolbar>
         )
     }
@@ -334,8 +352,8 @@ class App extends React.Component {
     }
 
     // Handle a click on a sidebar item --> change state
-    handleSidebarClick(tabName, e) {
-        this.setState({currentTab: tabName});
+    handleSidebarClick(tab, e) {
+        this.setState({currentTab: tab});
         this.hide();
     }
 
@@ -370,15 +388,21 @@ class App extends React.Component {
             // Dashboard element
             {
                 content: <dashboard.Dashboard
+                    l={this.l}
                     login={this.login}
                     authenticated={this.state.authenticated}
                     currentUser={this.state.currentUser}
                     key='dashboard' />,
-                tab: <Ons.Tab label='Dashboard' icon='md-info' key='dashboard' style={{display: 'none'}} />
+                tab: <Ons.Tab
+                    label={this.l('tabs.dashboard')}
+                    icon='md-info'
+                    key='dashboard'
+                    style={{display: 'none'}} />
             },
             // Map element
             {
                 content: <map.Map
+                    l={this.l}
                     logging={this.state.logging}
                     externalData={this.state.externalData}
                     layerControl={this.state.layerControl}
@@ -390,11 +414,15 @@ class App extends React.Component {
                     calculateDistanceTo={this.calculateDistanceTo}
                     users={this.state.users}
                     key='map' />,
-                tab: <Ons.Tab label='Map' icon='md-map' key='map' />
+                tab: <Ons.Tab
+                    label={this.l('tabs.map')}
+                    icon='md-map'
+                    key='map' />
             },
             // List element
             {
                 content: <list.List
+                    l={this.l}
                     logging={this.state.logging}
                     externalData={this.state.externalData}
                     layerControl={this.state.layerControl}
@@ -408,11 +436,15 @@ class App extends React.Component {
                     errorLoadingUsers={this.state.errorLoadingUsers}
                     users={this.state.users}
                     key='list' />,
-                tab: <Ons.Tab label='List' icon='md-view-list' key='list' />
+                tab: <Ons.Tab
+                    label={this.l('tabs.list')}
+                    icon='md-view-list'
+                    key='list' />
             },
             // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <settings.Settings
+                    l={this.l}
                     onLoggingChange={this.handleLoggingChange}
                     onDataChange={this.handleExternalDataChange}
                     onLayerControlChange={this.handleLayerControlChange}
@@ -429,21 +461,34 @@ class App extends React.Component {
                     draggable={this.state.draggable}
                     zoomable={this.state.zoomable}
                     key='settings' />,
-                tab: <Ons.Tab label='Settings' icon='md-settings' key='settings' style={{display: 'none'}}/>
+                tab: <Ons.Tab
+                    label={this.l('tabs.settings')}
+                    icon='md-settings'
+                    key='settings'
+                    style={{display: 'none'}} />
             },
             // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
                 content: <offerForm.offerForm
+                    l={this.l}
                     pushUserUpdate={this.pushUserUpdate}
                     currentUserIsLoaded={this.state.currentUserIsLoaded}
                     currentUser={this.state.currentUser}
                     key='offerForm' />,
-                tab: <Ons.Tab label='My Offers' icon='md-edit' key='offerForm' style={{display: 'none'}}/>
+                tab: <Ons.Tab
+                    label={this.l('tabs.offers')}
+                    icon='md-edit'
+                    key='offerForm'
+                    style={{display: 'none'}} />
             },
             // Help page iframe
             {
                 content: <embededSite.EmbededComponent site='help.html' key='help' name='Help' />,
-                tab: <Ons.Tab label='Help' icon='md-help' key='help' style={{display: 'none'}}/>
+                tab: <Ons.Tab
+                    label={this.l('tabs.help')}
+                    icon='md-help'
+                    key='help'
+                    style={{display: 'none'}} />
             },
             // Ship around an error in current onsen release
             // Can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
@@ -457,10 +502,10 @@ class App extends React.Component {
     // Render the list displayed in the sidebar
     renderSidebarList() {
         var sidebarItems = [
-            {name: "My Offers", key: "offers",    icon: "md-edit"},
-            {name: "Settings",  key: "settings",  icon: "md-settings"},
-            {name: "Help",      key: "help",      icon: "md-help"},
-            {name: "Dashboard", key: "dashboard", icon: "md-info"},
+            {key: "offers",    icon: "md-edit"},
+            {key: "settings",  icon: "md-settings"},
+            {key: "help",      icon: "md-help"},
+            {key: "dashboard", icon: "md-info"},
 
         ];
 
@@ -484,12 +529,12 @@ class App extends React.Component {
                 <Ons.ListItem
                     key={sidebarItem.key}
                     tappable={true}
-                    onClick={this.handleSidebarClick.bind(this, sidebarItem.name)}>
+                    onClick={this.handleSidebarClick.bind(this, sidebarItem.key)}>
                         <div className='left'>
                             <Ons.Icon icon={sidebarItem.icon}/>
                         </div>
                         <div className='center'>
-                            {sidebarItem.name}
+                            {this.l(`tabs.${sidebarItem.key}`)}
                         </div>
                 </Ons.ListItem>
             )
@@ -549,7 +594,7 @@ class App extends React.Component {
             this.setState({
                 authenticated: true,
                 accessToken: accessToken,
-                currentTab: "Dashboard",
+                currentTab: "dashboard",
             })
 
             var app = this;
@@ -562,6 +607,7 @@ class App extends React.Component {
                 }
             });
         } else {
+            // User logged out, so clear out stored user data
             this.setState({
                 authenticated: false,
                 usersAreLoaded: false,
@@ -597,13 +643,13 @@ class App extends React.Component {
                         <Ons.Tabbar
                             swipeable={false}
                             position='bottom'
-                            index={this.tabNames.indexOf(this.state.currentTab)}
+                            index={this.tabs.indexOf(this.state.currentTab)}
                             onPreChange={(event) =>
                                 {
-                                    if(event.index != this.tabNames.indexOf(this.state.currentTab)) {
+                                    if(event.index != this.tabs.indexOf(this.state.currentTab)) {
                                         // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
                                         if(event.target !== event.currentTarget) return;
-                                        this.setState({currentTab: this.tabNames[event.index]});
+                                        this.setState({currentTab: this.tabs[event.index]});
                                     }
                                 }}
                             renderTabs={this.renderTabs} />
@@ -612,6 +658,7 @@ class App extends React.Component {
             );
         } else {
             return (<signInPage.SignInPage
+                l={this.l}
                 login={this.login}
                 authenticated={this.state.authenticated} />);
         }
