@@ -275,6 +275,16 @@ class App extends React.Component {
                                 usersAreLoaded: true,
                             });
 
+                            // Set defaults from config file if user just signed up
+                            if (currentUser.newlyCreated) {
+                                currentUser.available = config.app.available;
+                                currentUser.shareLocation = config.app.shareLocation;
+                                currentUser.useLocation = config.app.useLocation;
+                                currentUser.newlyCreated = false;
+
+                                pushUserUpdate(currentUser);
+                            }
+
                             break;
                         }
                     }
@@ -629,7 +639,7 @@ class App extends React.Component {
                         side='left'
                         width={'75%'}
                         style={{boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'}}
-                        swipeable={false}
+                        swipeable={true}
                         collapse={true}
                         isOpen={this.state.isOpen}
                         onClose={this.hide}
