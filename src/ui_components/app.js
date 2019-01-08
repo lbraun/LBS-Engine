@@ -47,6 +47,7 @@ class App extends React.Component {
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
@@ -217,6 +218,16 @@ class App extends React.Component {
         this.setState({
             selectedUserId: selectedUserId,
             currentTab: "map"
+        });
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} tab the tab to display
+     */
+    handleTabChange(tab) {
+        this.setState({
+            currentTab: tab
         });
     }
 
@@ -401,6 +412,7 @@ class App extends React.Component {
                 content: <dashboard.Dashboard
                     l={this.l}
                     login={this.login}
+                    handleTabChange={this.handleTabChange}
                     authenticated={this.state.authenticated}
                     currentUser={this.state.currentUser}
                     key='dashboard' />,

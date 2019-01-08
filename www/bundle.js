@@ -92338,8 +92338,13 @@ module.exports={
     "en": {
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
+        "dashboard.andYouAreAvailable": "and you are available now!",
         "dashboard.appName": "Geofreebie",
+        "dashboard.becomeAvailable": "Become available",
+        "dashboard.butYouAreNotAvailable": "but you are not available right now.",
+        "dashboard.editOffer": "Edit offer",
         "dashboard.welcome": "Welcome",
+        "dashboard.youAreOffering": "You are offering",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
@@ -92453,6 +92458,7 @@ class App extends React.Component {
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
@@ -92617,6 +92623,16 @@ class App extends React.Component {
         this.setState({
             selectedUserId: selectedUserId,
             currentTab: "map"
+        });
+    }
+
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} tab the tab to display
+     */
+    handleTabChange(tab) {
+        this.setState({
+            currentTab: tab
         });
     }
 
@@ -92789,6 +92805,7 @@ class App extends React.Component {
             content: React.createElement(dashboard.Dashboard, {
                 l: this.l,
                 login: this.login,
+                handleTabChange: this.handleTabChange,
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser,
                 key: 'dashboard' }),
@@ -93087,6 +93104,7 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
+        this.goToOffersTab = this.goToOffersTab.bind(this);
     }
 
     /**
@@ -93097,6 +93115,22 @@ class Dashboard extends React.Component {
         return this.props.l(`dashboard.${string}`);
     }
 
+    /**
+     * Call app method that navigates to the offers tab
+     * @param {Event} e the react event object
+     */
+    goToOffersTab(e) {
+        this.props.handleTabChange("offers");
+    }
+
+    statusInfo() {
+        if (this.props.currentUser.available) {
+            return this.l("youAreOffering") + " " + this.props.currentUser.offerDescription + " " + this.l("andYouAreAvailable");
+        } else {
+            return this.l("youAreOffering") + " " + this.props.currentUser.offerDescription + " " + this.l("butYouAreNotAvailable");
+        }
+    }
+
     // Render the dashboard
     render() {
         return React.createElement(
@@ -93104,22 +93138,36 @@ class Dashboard extends React.Component {
             null,
             React.createElement(
                 Ons.Row,
-                { height: '100%' },
+                { style: { textAlign: "center" } },
                 React.createElement(
                     Ons.Col,
                     { verticalAlign: 'center' },
                     React.createElement(
                         'h1',
-                        { style: { textAlign: "center" } },
+                        null,
                         this.l("appName")
                     ),
                     React.createElement(
-                        'p',
-                        { style: { textAlign: "center" } },
+                        'h2',
+                        null,
                         this.l("welcome"),
                         ' ',
                         this.props.currentUser.name,
                         '!'
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        this.statusInfo()
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.goToOffersTab },
+                            this.props.currentUser.available ? this.l("editOffer") : this.l("becomeAvailable")
+                        )
                     )
                 )
             )
