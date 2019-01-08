@@ -34,10 +34,25 @@ class offerForm extends React.Component {
         this.props.pushUserUpdate(updatedUser);
     }
 
+    renderGeofenceWarning() {
+        if (this.props.outOfGeofence) {
+            return (
+                <Ons.ListItem>
+                    <div className="list-item__subtitle">
+                        {this.l("geofenceWarning")}
+                    </div>
+                </Ons.ListItem>
+            );
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <Ons.Page>
                 <Ons.List>
+                    {this.renderGeofenceWarning()}
                     <Ons.ListItem id='use-location-li' key='available'>
                         <div className='left'>
                             <p>{this.props.currentUser.available ? this.l("available") : this.l("notAvailable")}</p>
@@ -46,6 +61,7 @@ class offerForm extends React.Component {
                             <Ons.Switch
                                 name="available"
                                 checked={this.props.currentUser.available}
+                                disabled={this.props.outOfGeofence ? "true" : false}
                                 onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>

@@ -91999,7 +91999,6 @@ module.exports = warning;
  */
 
 function getLocation() {
-
     return new Promise(function (resolve, reject) {
         navigator.geolocation.getCurrentPosition(function success(position) {
             console.log("Current position: ", position);
@@ -92312,6 +92311,7 @@ module.exports={
         "map.youAreHere": "Ihre Standort",
         "offerForm.available": "Jetzt verfügbar",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
+        "offerForm.geofenceWarning": "Sie können nur verfügbar werden, wenn Sie in Münster Sind",
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte geben Sie eine kurze Beschreibung des Angebots.",
         "offerForm.iCanBeContactedAt": "Man kann mich unter folgendes kontaktieren:",
@@ -92360,6 +92360,7 @@ module.exports={
         "map.youAreHere": "You are here",
         "offerForm.available": "Available now",
         "offerForm.contactInformationPlaceholder": "Contact information",
+        "offerForm.geofenceWarning": "You can only be available when you are in Münster",
         "offerForm.iAmOffering": "I am offering...",
         "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
         "offerForm.iCanBeContactedAt": "I can be contacted at...",
@@ -92459,6 +92460,7 @@ class App extends React.Component {
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
+        this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
@@ -92502,18 +92504,21 @@ class App extends React.Component {
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
+            // If the user has enabled location tracking, use it
             if (app.state.currentUser.useLocation) {
-                // If the user has enabled location tracking, use it
                 var coords = [position.coords.latitude, position.coords.longitude];
+
+                if (!app.withinGeofence(coords)) {
+                    app.setState({ outOfGeofence: true });
+                    app.pushUserUpdates({ available: false });
+                } else {
+                    app.setState({ outOfGeofence: false });
+                }
+
                 var users = app.updateDistancesToUsers(coords, app.state.users);
 
-                app.setState({
-                    users: users
-                });
-
-                var updatedUser = app.state.currentUser;
-                updatedUser.coords = coords;
-                app.pushUserUpdate(updatedUser);
+                app.setState({ users: users });
+                app.pushUserUpdates({ coords: coords });
 
                 var closestUser = app.state.users[0];
                 if (closestUser) {
@@ -92522,17 +92527,14 @@ class App extends React.Component {
                     var alreadyNotified = app.state.notificationLog.includes(closestUser._id);
                     if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
                         var log = app.state.notificationLog.concat([closestUser._id]);
-                        app.setState({
-                            notificationLog: log
-                        });
+                        app.setState({ notificationLog: log });
+
                         alert(closestUser.name + " " + this.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + this.l("alert.metersAwayWith") + " " + closestUser.offerDescription);
                     }
                 }
             } else {
                 // Otherwise set user position to null
-                var updatedUser = app.state.currentUser;
-                updatedUser.coords = null;
-                app.pushUserUpdate(updatedUser);
+                app.pushUserUpdates({ coords: null });
             }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
@@ -92711,6 +92713,31 @@ class App extends React.Component {
     }
 
     /**
+     * Determines if the given coordinates fall within the app's bounds
+     * @param {Array} coordinates (latitude, longitude) to be tested
+     */
+    withinGeofence(coordinates) {
+        var lat = coordinates[0];
+        var lon = coordinates[1];
+        var lat1 = 51.85868336894736;
+        var lon1 = 7.483062744140626;
+        var lat2 = 52.05586831074774;
+        var lon2 = 7.768707275390625;
+
+        return lat1 < lat && lat < lat2 && lon1 < lon && lon < lon2;
+    }
+
+    /**
+     * Push the provided updates to the user to the database server
+     * @param {Object} attributes object, representing attributes to be updated
+     */
+    pushUserUpdates(attributes) {
+        var currentUserCopy = JSON.parse(JSON.stringify(this.state.currentUser));
+        Object.assign(currentUserCopy, attributes);
+        this.pushUserUpdate(currentUserCopy);
+    }
+
+    /**
      * Push the provided user to the database server
      * @param {User} updatedUser object, representing the user in its most up-to-date form
      */
@@ -92719,6 +92746,12 @@ class App extends React.Component {
             currentUser: updatedUser,
             currentUserIsLoaded: false
         });
+
+        // Don't sync user coordinates if user is not available
+        // but still keep them locally
+        if (!updatedUser.available) {
+            updatedUser.coords = null;
+        }
 
         // Make the call to the update API
         var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
@@ -92893,6 +92926,7 @@ class App extends React.Component {
                 pushUserUpdate: this.pushUserUpdate,
                 currentUserIsLoaded: this.state.currentUserIsLoaded,
                 currentUser: this.state.currentUser,
+                outOfGeofence: this.state.outOfGeofence,
                 key: 'offerForm' }),
             tab: React.createElement(Ons.Tab, {
                 label: this.l('tabs.offers'),
@@ -93680,6 +93714,22 @@ class offerForm extends React.Component {
         this.props.pushUserUpdate(updatedUser);
     }
 
+    renderGeofenceWarning() {
+        if (this.props.outOfGeofence) {
+            return React.createElement(
+                Ons.ListItem,
+                null,
+                React.createElement(
+                    'div',
+                    { className: 'list-item__subtitle' },
+                    this.l("geofenceWarning")
+                )
+            );
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return React.createElement(
             Ons.Page,
@@ -93687,6 +93737,7 @@ class offerForm extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
+                this.renderGeofenceWarning(),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'use-location-li', key: 'available' },
@@ -93705,6 +93756,7 @@ class offerForm extends React.Component {
                         React.createElement(Ons.Switch, {
                             name: 'available',
                             checked: this.props.currentUser.available,
+                            disabled: this.props.outOfGeofence ? "true" : false,
                             onChange: this.handleInputChange })
                     )
                 ),
