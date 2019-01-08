@@ -44,8 +44,13 @@ class Dashboard extends React.Component {
                 <Ons.Row style={{textAlign: "center"}}>
                     <Ons.Col verticalAlign="center">
                         <h1>
-                            {this.l("welcome")} {this.props.currentUser.name}!
+                            {this.l("welcome")} {this.props.currentUser.name}
                         </h1>
+
+                        <img src={this.props.currentUser.picture}
+                            alt="Profile picture"
+                            height="42"
+                            width="42" />
 
                         <p>{this.statusInfo()}</p>
 
