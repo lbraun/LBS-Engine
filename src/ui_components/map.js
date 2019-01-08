@@ -69,8 +69,8 @@ class Map extends React.Component {
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
 
-            // Skip if the user is not available
-            if (!user.available) {
+            // Skip if the user is not available or hasn't shared their coordinates
+            if (!user.available || !user.coords) {
                 continue;
             }
 

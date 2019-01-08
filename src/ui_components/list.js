@@ -81,7 +81,7 @@ class List extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = user.available && !!(user.shareLocation || this.props.currentUser.coords);
+                var clickable = user.available && user.coords && !!(user.shareLocation || this.props.currentUser.coords);
 
                 listItems.push(
                     <Ons.ListItem

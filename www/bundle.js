@@ -93245,7 +93245,7 @@ class List extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = user.available && !!(user.shareLocation || this.props.currentUser.coords);
+                var clickable = user.available && user.coords && !!(user.shareLocation || this.props.currentUser.coords);
 
                 listItems.push(React.createElement(
                     Ons.ListItem,
@@ -93376,8 +93376,8 @@ class Map extends React.Component {
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
 
-            // Skip if the user is not available
-            if (!user.available) {
+            // Skip if the user is not available or hasn't shared their coordinates
+            if (!user.available || !user.coords) {
                 continue;
             }
 
