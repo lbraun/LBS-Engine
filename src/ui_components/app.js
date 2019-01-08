@@ -522,6 +522,7 @@ class App extends React.Component {
                     pushUserUpdate={this.pushUserUpdate}
                     currentUserIsLoaded={this.state.currentUserIsLoaded}
                     currentUser={this.state.currentUser}
+                    outOfGeofence={this.state.outOfGeofence}
                     key='offerForm' />,
                 tab: <Ons.Tab
                     label={this.l('tabs.offers')}

@@ -92311,6 +92311,7 @@ module.exports={
         "map.youAreHere": "Ihre Standort",
         "offerForm.available": "Jetzt verfügbar",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
+        "offerForm.geofenceWarning": "Sie können nur verfügbar werden, wenn Sie in Münster Sind",
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte geben Sie eine kurze Beschreibung des Angebots.",
         "offerForm.iCanBeContactedAt": "Man kann mich unter folgendes kontaktieren:",
@@ -92359,6 +92360,7 @@ module.exports={
         "map.youAreHere": "You are here",
         "offerForm.available": "Available now",
         "offerForm.contactInformationPlaceholder": "Contact information",
+        "offerForm.geofenceWarning": "You can only be available when you are in Münster",
         "offerForm.iAmOffering": "I am offering...",
         "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
         "offerForm.iCanBeContactedAt": "I can be contacted at...",
@@ -92918,6 +92920,7 @@ class App extends React.Component {
                 pushUserUpdate: this.pushUserUpdate,
                 currentUserIsLoaded: this.state.currentUserIsLoaded,
                 currentUser: this.state.currentUser,
+                outOfGeofence: this.state.outOfGeofence,
                 key: 'offerForm' }),
             tab: React.createElement(Ons.Tab, {
                 label: this.l('tabs.offers'),
@@ -93705,6 +93708,22 @@ class offerForm extends React.Component {
         this.props.pushUserUpdate(updatedUser);
     }
 
+    renderGeofenceWarning() {
+        if (this.props.outOfGeofence) {
+            return React.createElement(
+                Ons.ListItem,
+                null,
+                React.createElement(
+                    'div',
+                    { className: 'list-item__subtitle' },
+                    this.l("geofenceWarning")
+                )
+            );
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return React.createElement(
             Ons.Page,
@@ -93712,6 +93731,7 @@ class offerForm extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
+                this.renderGeofenceWarning(),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'use-location-li', key: 'available' },
@@ -93730,6 +93750,7 @@ class offerForm extends React.Component {
                         React.createElement(Ons.Switch, {
                             name: 'available',
                             checked: this.props.currentUser.available,
+                            disabled: this.props.outOfGeofence ? "true" : false,
                             onChange: this.handleInputChange })
                     )
                 ),
