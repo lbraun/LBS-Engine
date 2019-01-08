@@ -92272,13 +92272,14 @@ module.exports = {
 },{"leaflet-offline":29,"localforage":31,"prop-types":217,"react":265,"react-leaflet":250}],272:[function(require,module,exports){
 module.exports={
     "app": {
+        "available": false,
         "defaultLocale": "de",
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
-        "shareLocation": true,
-        "useLocation": true
+        "shareLocation": false,
+        "useLocation": false
     },
     "map": {
         "center": [51.962522, 7.625615],
@@ -92305,11 +92306,13 @@ module.exports={
         "map.isOffering": "bietet",
         "map.showOtherUsers": "Andere Benutzer anzeigen",
         "map.youAreHere": "Ihre Standort",
+        "offerForm.available": "Jetzt verfügbar",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte geben Sie eine kurze Beschreibung des Angebots.",
         "offerForm.iCanBeContactedAt": "Man kann mich unter folgendes kontaktieren:",
         "offerForm.iCanBeContactedAtHelpText": "Bitte geben Sie eine Telefonnummer, E-Mail-Adresse oder andere Anweisungen an.",
+        "offerForm.notAvailable": "Jetzt nicht verfügbar",
         "offerForm.offerDescriptionPlaceholder": "Angebotsbeschreibung",
         "offerForm.syncing": "Wird synchronisiert...",
         "offlineLayer.removeTiles": "Möchten Sie wirklich alle gespeicherten Kartenkachel entfernen?",
@@ -92347,11 +92350,13 @@ module.exports={
         "map.isOffering": "is offering",
         "map.showOtherUsers": "Show other users",
         "map.youAreHere": "You are here!",
+        "offerForm.available": "Available now",
         "offerForm.contactInformationPlaceholder": "Contact information",
         "offerForm.iAmOffering": "I am offering...",
         "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
         "offerForm.iCanBeContactedAt": "I can be contacted at...",
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
+        "offerForm.notAvailable": "Not available now",
         "offerForm.offerDescriptionPlaceholder": "Offer description",
         "offerForm.syncing": "Syncing...",
         "offlineLayer.removeTiles": "Are you sure you want to remove all saved tiles?",
@@ -92662,6 +92667,16 @@ class App extends React.Component {
                         users: result || [],
                         usersAreLoaded: true
                     });
+
+                    // Set defaults from config file if user just signed up
+                    if (currentUser.newlyCreated) {
+                        currentUser.available = config.app.available;
+                        currentUser.shareLocation = config.app.shareLocation;
+                        currentUser.useLocation = config.app.useLocation;
+                        currentUser.newlyCreated = false;
+
+                        pushUserUpdate(currentUser);
+                    }
 
                     break;
                 }
@@ -93021,7 +93036,7 @@ class App extends React.Component {
                         side: 'left',
                         width: '75%',
                         style: { boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)' },
-                        swipeable: false,
+                        swipeable: true,
                         collapse: true,
                         isOpen: this.state.isOpen,
                         onClose: this.hide,
@@ -93575,7 +93590,7 @@ class offerForm extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
         var updatedUser = this.props.currentUser;
         updatedUser[name] = value;
@@ -93589,6 +93604,27 @@ class offerForm extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
+                React.createElement(
+                    Ons.ListItem,
+                    { id: 'use-location-li', key: 'available' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            this.props.currentUser.available ? this.l("available") : this.l("notAvailable")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(Ons.Switch, {
+                            name: 'available',
+                            checked: this.props.currentUser.available,
+                            onChange: this.handleInputChange })
+                    )
+                ),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'offer-description-title-li' },
