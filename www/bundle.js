@@ -92299,7 +92299,7 @@ module.exports={
         "list.error": "Fehler",
         "list.fetchFailure": "Es gab ein Problem, Leute zu finden, um hier zu zeigen. Vielleicht haben Sie keine Internetverbindung?",
         "list.loading": "Wird geladen...",
-        "list.locationIsPrivate": "Standort ist privat",
+        "list.locationIsUnavailable": "Standort ist nicht verfügbar",
         "list.noUsers": "Derzeit sind keine anderen Benutzer im System. Bitte versuchen Sie später nochmal!",
         "map.andCanBeContactedAt": "und kann unter folgendes kontaktiert werden:",
         "map.attribution": "Kartendaten &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>-Beiträger",
@@ -92343,7 +92343,7 @@ module.exports={
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
-        "list.locationIsPrivate": "Location is private",
+        "list.locationIsUnavailable": "Location is unavailable",
         "list.noUsers": "There are no other users in the system right now. Please check back later!",
         "map.andCanBeContactedAt": "and can be contacted at",
         "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
@@ -93191,6 +93191,25 @@ class List extends React.Component {
         this.props.onListItemClick(userId);
     }
 
+    /**
+     * Returns text describing the user's availability
+     * @param {User} the user to describe
+     */
+    availablityText(user) {
+        if (user.available) {
+            var text = this.props.l("offerForm.available");
+
+            // Show distance to user if it has been calculated
+            if (user.distanceToUser) {
+                return text += ` - ${user.distanceToUser} m`;
+            } else {
+                return text += ` - ${this.l("locationIsUnavailable")}`;
+            }
+        } else {
+            return this.props.l("offerForm.notAvailable");
+        }
+    }
+
     // Render the list
     renderUserList() {
         var listItems = [];
@@ -93243,17 +93262,23 @@ class List extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'center' },
-                        user.name,
-                        ' - ',
-                        user.offerDescription,
-                        ' - ',
-                        user.contactInformation
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null,
-                        clickable ? null : this.l("locationIsPrivate")
+                        React.createElement(
+                            'div',
+                            { className: 'list-item__title' },
+                            user.name
+                        ),
+                        React.createElement(
+                            'div',
+                            null,
+                            user.offerDescription,
+                            ' - ',
+                            user.contactInformation
+                        ),
+                        React.createElement(
+                            'div',
+                            { className: 'list-item__subtitle' },
+                            this.availablityText(user)
+                        )
                     )
                 ));
             }

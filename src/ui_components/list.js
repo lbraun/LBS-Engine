@@ -29,6 +29,25 @@ class List extends React.Component {
         this.props.onListItemClick(userId);
     }
 
+    /**
+     * Returns text describing the user's availability
+     * @param {User} the user to describe
+     */
+    availablityText(user) {
+        if (user.available) {
+            var text = this.props.l("offerForm.available");
+
+            // Show distance to user if it has been calculated
+            if (user.distanceToUser) {
+                return text += ` - ${user.distanceToUser} m`;
+            } else {
+                return text += ` - ${this.l("locationIsUnavailable")}`;
+            }
+        } else {
+            return this.props.l("offerForm.notAvailable");
+        }
+    }
+
     // Render the list
     renderUserList() {
         var listItems = [];
@@ -70,15 +89,19 @@ class List extends React.Component {
                         onClick={clickable ? this.handleListItemClick.bind(this, user._id) : null}
                         id={`user-list-item-${user._id}`}
                         key={user._id}>
-                            <div className='left'>
-                                <Ons.Icon icon='md-face'/>
+                            <div className="left">
+                                <Ons.Icon icon="md-face"/>
                             </div>
-                            <div className='center'>
-                                {user.name} - {user.offerDescription} - {user.contactInformation}
-                            </div>
-                            <div className='right'>
-                                {this.props.currentUser.coords && user.distanceToUser ? `${user.distanceToUser} m` : null}
-                                {clickable ? null : this.l("locationIsPrivate")}
+                            <div className="center">
+                                <div className="list-item__title">
+                                    {user.name}
+                                </div>
+                                <div>
+                                    {user.offerDescription} - {user.contactInformation}
+                                </div>
+                                <div className="list-item__subtitle">
+                                    {this.availablityText(user)}
+                                </div>
                             </div>
                     </Ons.ListItem>
                 )
