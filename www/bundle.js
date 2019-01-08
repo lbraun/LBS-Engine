@@ -91999,7 +91999,6 @@ module.exports = warning;
  */
 
 function getLocation() {
-
     return new Promise(function (resolve, reject) {
         navigator.geolocation.getCurrentPosition(function success(position) {
             console.log("Current position: ", position);
@@ -92459,6 +92458,7 @@ class App extends React.Component {
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
+        this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
@@ -92502,18 +92502,21 @@ class App extends React.Component {
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
+            // If the user has enabled location tracking, use it
             if (app.state.currentUser.useLocation) {
-                // If the user has enabled location tracking, use it
                 var coords = [position.coords.latitude, position.coords.longitude];
+
+                if (!app.withinGeofence(coords)) {
+                    app.setState({ outOfGeofence: true });
+                    app.pushUserUpdates({ available: false });
+                } else {
+                    app.setState({ outOfGeofence: false });
+                }
+
                 var users = app.updateDistancesToUsers(coords, app.state.users);
 
-                app.setState({
-                    users: users
-                });
-
-                var updatedUser = app.state.currentUser;
-                updatedUser.coords = coords;
-                app.pushUserUpdate(updatedUser);
+                app.setState({ users: users });
+                app.pushUserUpdates({ coords: coords });
 
                 var closestUser = app.state.users[0];
                 if (closestUser) {
@@ -92522,17 +92525,14 @@ class App extends React.Component {
                     var alreadyNotified = app.state.notificationLog.includes(closestUser._id);
                     if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
                         var log = app.state.notificationLog.concat([closestUser._id]);
-                        app.setState({
-                            notificationLog: log
-                        });
+                        app.setState({ notificationLog: log });
+
                         alert(closestUser.name + " " + this.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + this.l("alert.metersAwayWith") + " " + closestUser.offerDescription);
                     }
                 }
             } else {
                 // Otherwise set user position to null
-                var updatedUser = app.state.currentUser;
-                updatedUser.coords = null;
-                app.pushUserUpdate(updatedUser);
+                app.pushUserUpdates({ coords: null });
             }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
@@ -92708,6 +92708,31 @@ class App extends React.Component {
                 errorLoadingUsers: error
             });
         });
+    }
+
+    /**
+     * Determines if the given coordinates fall within the app's bounds
+     * @param {Array} coordinates (latitude, longitude) to be tested
+     */
+    withinGeofence(coordinates) {
+        var lat = coordinates[0];
+        var lon = coordinates[1];
+        var lat1 = 51.85868336894736;
+        var lon1 = 7.483062744140626;
+        var lat2 = 52.05586831074774;
+        var lon2 = 7.768707275390625;
+
+        return lat1 < lat && lat < lat2 && lon1 < lon && lon < lon2;
+    }
+
+    /**
+     * Push the provided updates to the user to the database server
+     * @param {Object} attributes object, representing attributes to be updated
+     */
+    pushUserUpdates(attributes) {
+        var currentUserCopy = JSON.parse(JSON.stringify(this.state.currentUser));
+        Object.assign(currentUserCopy, attributes);
+        this.pushUserUpdate(currentUserCopy);
     }
 
     /**
