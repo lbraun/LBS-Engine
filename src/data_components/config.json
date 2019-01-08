@@ -1,7 +1,7 @@
 {
     "app": {
         "available": false,
-        "defaultLocale": "en",
+        "defaultLocale": "de",
         "externalData": false,
         "layerControl": true,
         "logging": true,
