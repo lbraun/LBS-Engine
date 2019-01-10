@@ -93389,9 +93389,17 @@ class List extends React.Component {
 
     render() {
         return React.createElement(
-            'div',
-            { className: 'center', style: { height: '100%' } },
-            this.renderUserList()
+            Ons.Page,
+            null,
+            React.createElement(
+                Ons.Row,
+                { height: '100%' },
+                React.createElement(
+                    Ons.Col,
+                    { verticalAlign: 'center' },
+                    this.renderUserList()
+                )
+            )
         );
     }
 }

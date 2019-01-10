@@ -130,9 +130,13 @@ class List extends React.Component {
 
     render() {
         return (
-            <div className="center" style={{height: '100%'}}>
-                {this.renderUserList()}
-            </div>
+            <Ons.Page>
+                <Ons.Row height="100%">
+                    <Ons.Col verticalAlign="center">
+                        {this.renderUserList()}
+                    </Ons.Col>
+                </Ons.Row>
+            </Ons.Page>
         )
     }
 }
