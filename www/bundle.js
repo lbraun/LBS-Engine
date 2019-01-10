@@ -93295,6 +93295,17 @@ class List extends React.Component {
         }
     }
 
+    renderUserPicture(user) {
+        if (user.picture) {
+            return React.createElement('img', { src: user.picture,
+                alt: 'Profile picture',
+                height: '42',
+                width: '42' });
+        } else {
+            return React.createElement(Ons.Icon, { icon: 'md-face' });
+        }
+    }
+
     // Render the list
     renderUserList() {
         var listItems = [];
@@ -93342,7 +93353,7 @@ class List extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'left' },
-                        React.createElement(Ons.Icon, { icon: 'md-face' })
+                        this.renderUserPicture(user)
                     ),
                     React.createElement(
                         'div',
