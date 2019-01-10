@@ -92529,7 +92529,7 @@ class App extends React.Component {
                         var log = app.state.notificationLog.concat([closestUser._id]);
                         app.setState({ notificationLog: log });
 
-                        alert(closestUser.name + " " + this.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + this.l("alert.metersAwayWith") + " " + closestUser.offerDescription);
+                        alert(closestUser.name + " " + app.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + app.l("alert.metersAwayWith") + " " + closestUser.offerDescription);
                     }
                 }
             } else {
@@ -92574,7 +92574,9 @@ class App extends React.Component {
 
             // Sort the list by distance, ascending
             users.sort(function (a, b) {
-                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+                var distanceA = a.distanceToUser || 9999999;
+                var distanceB = b.distanceToUser || 9999999;
+                return distanceA > distanceB ? 1 : -1;
             });
         }
         return users;

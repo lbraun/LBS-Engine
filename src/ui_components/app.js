@@ -115,9 +115,9 @@ class App extends React.Component {
                         app.setState({notificationLog: log});
 
                         alert(closestUser.name
-                            + " " + this.l("alert.isLessThan")
+                            + " " + app.l("alert.isLessThan")
                             + " " + closestUser.distanceToUser
-                            + " " + this.l("alert.metersAwayWith")
+                            + " " + app.l("alert.metersAwayWith")
                             + " " + closestUser.offerDescription);
                     }
                 }
@@ -164,7 +164,9 @@ class App extends React.Component {
 
             // Sort the list by distance, ascending
             users.sort(function(a, b) {
-                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+                var distanceA = a.distanceToUser || 9999999;
+                var distanceB = b.distanceToUser || 9999999;
+                return (distanceA > distanceB) ? 1 : -1;
             });
         }
         return users;
