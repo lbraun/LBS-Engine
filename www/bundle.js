@@ -92529,7 +92529,7 @@ class App extends React.Component {
                         var log = app.state.notificationLog.concat([closestUser._id]);
                         app.setState({ notificationLog: log });
 
-                        alert(closestUser.name + " " + this.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + this.l("alert.metersAwayWith") + " " + closestUser.offerDescription);
+                        alert(closestUser.name + " " + app.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + app.l("alert.metersAwayWith") + " " + closestUser.offerDescription);
                     }
                 }
             } else {
@@ -92574,7 +92574,9 @@ class App extends React.Component {
 
             // Sort the list by distance, ascending
             users.sort(function (a, b) {
-                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+                var distanceA = a.distanceToUser || 9999999;
+                var distanceB = b.distanceToUser || 9999999;
+                return distanceA > distanceB ? 1 : -1;
             });
         }
         return users;
@@ -93293,6 +93295,17 @@ class List extends React.Component {
         }
     }
 
+    renderUserPicture(user) {
+        if (user.picture) {
+            return React.createElement('img', { src: user.picture,
+                alt: 'Profile picture',
+                height: '42',
+                width: '42' });
+        } else {
+            return React.createElement(Ons.Icon, { icon: 'md-face' });
+        }
+    }
+
     // Render the list
     renderUserList() {
         var listItems = [];
@@ -93340,7 +93353,7 @@ class List extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'left' },
-                        React.createElement(Ons.Icon, { icon: 'md-face' })
+                        this.renderUserPicture(user)
                     ),
                     React.createElement(
                         'div',
@@ -93376,9 +93389,17 @@ class List extends React.Component {
 
     render() {
         return React.createElement(
-            'div',
-            { className: 'center', style: { height: '100%' } },
-            this.renderUserList()
+            Ons.Page,
+            null,
+            React.createElement(
+                Ons.Row,
+                { height: '100%' },
+                React.createElement(
+                    Ons.Col,
+                    { verticalAlign: 'center' },
+                    this.renderUserList()
+                )
+            )
         );
     }
 }

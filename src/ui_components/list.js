@@ -48,6 +48,19 @@ class List extends React.Component {
         }
     }
 
+    renderUserPicture(user) {
+        if (user.picture) {
+            return (
+                <img src={user.picture}
+                    alt="Profile picture"
+                    height="42"
+                    width="42" />
+            );
+        } else {
+            return (<Ons.Icon icon="md-face"/>);
+        }
+    }
+
     // Render the list
     renderUserList() {
         var listItems = [];
@@ -90,7 +103,7 @@ class List extends React.Component {
                         id={`user-list-item-${user._id}`}
                         key={user._id}>
                             <div className="left">
-                                <Ons.Icon icon="md-face"/>
+                                {this.renderUserPicture(user)}
                             </div>
                             <div className="center">
                                 <div className="list-item__title">
@@ -117,9 +130,13 @@ class List extends React.Component {
 
     render() {
         return (
-            <div className="center" style={{height: '100%'}}>
-                {this.renderUserList()}
-            </div>
+            <Ons.Page>
+                <Ons.Row height="100%">
+                    <Ons.Col verticalAlign="center">
+                        {this.renderUserList()}
+                    </Ons.Col>
+                </Ons.Row>
+            </Ons.Page>
         )
     }
 }
