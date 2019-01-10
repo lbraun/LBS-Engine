@@ -1,15 +1,18 @@
 {
     "app": {
-        "logging": true,
+        "available": false,
+        "defaultLocale": "de",
         "externalData": false,
-        "gps": true,
         "layerControl": true,
-        "numberOfImages": 3
+        "logging": true,
+        "numberOfImages": 3,
+        "shareLocation": false,
+        "useLocation": false
     },
     "map": {
         "center": [51.962522, 7.625615],
-        "zoomable": true,
         "draggable": true,
-        "zoom": 8
+        "zoom": 12,
+        "zoomable": true
     }
 }

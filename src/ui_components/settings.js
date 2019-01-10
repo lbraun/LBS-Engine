@@ -3,166 +3,111 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
-//custom files
-//logic
-const logger = require('../business_components/logger.js');
-const locationManager = require('../business_components/locationManager.js');
-
-
 /**
- * Settings for the app. Modifys the state of the settings
+ * Settings for the app. Modifies the state of the settings
  */
 class Settings extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
-        this.handleChangeLogging = this.handleChangeLogging.bind(this);
-        this.handleChangeGPS = this.handleChangeGPS.bind(this);
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
-        this.handleChangeDragMap =  this.handleChangeDragMap.bind(this);
+        this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
-        this.createLog = this.createLog.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    createLog(mode, change) {
-        var action;
-        if(this.props.logging) {
-            //define the log
-            if(change) {
-                action =  'Activate ' + mode;
-            }
-            else action = 'Deactivate ' + mode;
-            var entry;
-            //get the current position for the log
-            locationManager.getLocation().then(function success(position) {
-                entry = [position.latitude, position.longitude, 'Settings', action];
-                //log the data
-                logger.logEntry(entry);
-            }, function error(err) {
-                //if there was an error getting the position, log a '-' for lat/lng
-                entry = ['-', '-', 'Settings', action];
-                //log the data
-                logger.logEntry(entry);
-            })
-        }
+    /**
+     * Localize a string in the context of the settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`settings.${string}`);
     }
 
-    //handle toggle for logging
-    handleChangeLogging(e) {
-        this.props.onLoggingChange(e.target.checked);
-        var action;
-        //define the log
-        if(e.target.checked) {
-            action =  'Activate logging';
-        }
-        else action = 'Deactivate logging';
-        var entry;
-        //get the current position for the log
-        locationManager.getLocation().then(function success(position) {
-            entry = [position.latitude, position.longitude, 'Settings', action];
-            //log the data
-            logger.logEntry(entry);
-        }, function error(err) {
-            //if there was an error getting the position, log a '-' for lat/lng
-            entry = ['-', '-', 'Settigns', action];
-            //log the data
-            logger.logEntry(entry);
-        })
-    }
-
-    //handle toggle for using external data
+    // Handle toggle for using external data
     handleChangeData(e) {
         this.props.onDataChange(e.target.checked);
-        this.createLog('external data', e.target.checked);
     }
 
-    //handle toggle for using GPS
-    handleChangeGPS(e) {
-        this.props.onGpsChange(e.target.checked);
-        this.createLog('GPS', e.target.checked);
-    }
-
-    //handle toggle for layerControl
+    // Handle toggle for layerControl
     handleChangeLayerControl(e) {
         this.props.onLayerControlChange(e.target.checked);
-        this.createLog('Layer Control', e.target.checked);
     }
 
-    //handle toggle of map dragging 
+    // Handle toggle of map dragging
     handleChangeDragMap(e) {
         this.props.onDragMapChange(e.target.checked);
-        this.createLog('Map Dragging', e.target.checked);
     }
 
-    //handle toggle of map zooming
+    // Handle toggle of map zooming
     handleChangeZoomMap(e) {
         this.props.onZoomMapChange(e.target.checked);
-        this.createLog('Map Zooming', e.target.checked);
+    }
+
+    /**
+     * Handle the change of a user setting
+     * @param {Event} e the react event object
+     */
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
+
+        var updatedUser = this.props.currentUser;
+        updatedUser[name] = value;
+        this.props.pushUserUpdate(updatedUser);
     }
 
     render() {
+        if (this.props.authenticated) {
+            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
+            var authenticationButton = <Ons.Button onClick={this.props.logout}>{this.l("logOut")}</Ons.Button>;
+        } else {
+            var authenticationText = this.l("notCurrentlyLoggedIn");
+            var authenticationButton = <Ons.Button onClick={this.props.login}>{this.l("logIn")}</Ons.Button>;
+        }
+
         return (
             <Ons.Page>
                 <Ons.List>
-                    <Ons.ListItem key='logging'>
+                    <Ons.ListItem id='use-location-li' key='useLocation'>
                         <div className='left'>
-                            <p>Logging </p>
+                            <p>{this.l("useLocation")}</p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
-                                checked={this.props.logging}
-                                onChange={this.handleChangeLogging} />
+                            <Ons.Switch
+                                name="useLocation"
+                                checked={this.props.currentUser.useLocation}
+                                onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='externalData'>
-                        <div className='left'>
-                            <p>External data </p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch 
-                                checked={this.props.externalData}
-                                onChange={this.handleChangeData} />
+                    <Ons.ListItem id='use-location-text-li' key='useLocationText'>
+                        <div className="list-item__subtitle">
+                            {this.l("useLocationText")}
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='gps'>
+                    <Ons.ListItem id='share-location-li' key='shareLocation'>
                         <div className='left'>
-                            <p>GPS </p>
+                            <p>{this.l("shareLocation")}</p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
-                                checked={this.props.gps}
-                                onChange={this.handleChangeGPS} />
+                            <Ons.Switch
+                                name="shareLocation"
+                                checked={this.props.currentUser.shareLocation}
+                                onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='layerControl'>
-                        <div className='left'>
-                            <p>Layer Control</p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch 
-                                checked={this.props.layerControl}
-                                onChange={this.handleChangeLayerControl} />
+                    <Ons.ListItem id='share-location-text-li' key='shareLocationText'>
+                        <div className="list-item__subtitle">
+                            {this.l("shareLocationText")}
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='dragging'>
+                    <Ons.ListItem key='authentication'>
                         <div className='left'>
-                            <p>Drag Map</p>
+                            <p>{authenticationText}</p>
                         </div>
                         <div className='right'>
-                            <Ons.Switch 
-                                checked={this.props.draggable}
-                                onChange={this.handleChangeDragMap} />
-                        </div>
-                    </Ons.ListItem>
-                    <Ons.ListItem key='zoom'>
-                        <div className='left'>
-                            <p>Zoom Map</p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch 
-                                checked={this.props.zoomable}
-                                onChange={this.handleChangeZoomMap} />
+                            {authenticationButton}
                         </div>
                     </Ons.ListItem>
                 </Ons.List>

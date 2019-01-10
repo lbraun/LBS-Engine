@@ -5,7 +5,6 @@
  * Return promise with the gps data
  */
 function getLocation() {
-    
     return new Promise(function(resolve, reject) {
         navigator.geolocation.getCurrentPosition(function success(position) {
             console.log("Current position: ", position);

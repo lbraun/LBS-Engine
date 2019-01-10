@@ -1,64 +1,178 @@
 "use strict";
 
+// Load third-party modules
 const React = require('react');
 const Ons = require('react-onsenui');
+const geolib = require('geolib');
+const Auth0 = require('auth0-js');
+const Auth0Cordova =  require('@auth0/cordova');
 
-//custom files
-//data
+// Load custom files
+// Data
 const config = require('../data_components/config.json');
-const layers = require('../data_components/layers.json');
-//ui
+const localizations = require('../data_components/localizations.json');
+
+// UI
+const signInPage = require('./signInPage.js');
+const dashboard = require('./dashboard.js');
 const map = require('./map.js');
-const pictureView =  require('./pictureView.js');
+const list =  require('./list.js');
 const settings = require('./settings.js');
+const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js')
-//logic
+
+// Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
 
 
+
 /**
  * Main frame for the app.
- * Contains the Toolbar in the top and a sidebar to select the mode
+ * Contains the toolbar in the top and a sidebar to select the mode
  */
 class App extends React.Component {
-
     constructor(props) {
         super(props);
+        this.l = this.l.bind(this);
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
         this.renderToolbar = this.renderToolbar.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
-        this.handleGpsChange =  this.handleGpsChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.handleClickAbout = this.handleClickAbout.bind(this);
-        this.handleClickSettings = this.handleClickSettings.bind(this);
-        this.handleClickHelp = this.handleClickHelp.bind(this);
-        this.renderList = this.renderList.bind(this);
+        this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
+        this.pushUserUpdate = this.pushUserUpdate.bind(this);
+        this.pushUserUpdates = this.pushUserUpdates.bind(this);
+        this.handleSidebarClick = this.handleSidebarClick.bind(this);
+        this.handleListItemClick = this.handleListItemClick.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
+        this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
+        this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
+        this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
+        this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
+        this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
         this.state = {
             isOpen: false,
-            //elements used for lifted up state of the config file
             logging: config.app.logging,
             externalData: config.app.externalData,
-            gps: config.app.gps,
             layerControl: config.app.layerControl,
-            zoomable: config.map.draggable,
-            draggable: config.map.zoomable,
-            index: 0
+            locale: config.app.defaultLocale,
+            draggable: config.map.draggable,
+            zoomable: config.map.zoomable,
+            centerPosition: config.map.center,
+            errorLoadingUsers: null,
+            errorSyncingUser: null,
+            usersAreLoaded: false,
+            currentUserIsLoaded: false,
+            users: [],
+            selectedUserId: null,
+            notificationLog: [],
+            currentTab: "dashboard",
+            currentUserId: null,
+            currentUser: null,
+            authenticated: false,
+            accessToken: false,
         };
+
+        // Auth0
+        this.auth0 = new Auth0.Authentication({
+            domain: 'geofreebie.eu.auth0.com',
+            clientID: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv'
+        });
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
+
+        // Update the user's position on the map whenever a new position is reported by the device
+        var app = this;
+        this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
+            // If the user has enabled location tracking, use it
+            if (app.state.currentUser.useLocation) {
+                var coords = [position.coords.latitude, position.coords.longitude];
+
+                if (!app.withinGeofence(coords)) {
+                    app.setState({outOfGeofence: true});
+                    app.pushUserUpdates({available: false});
+                } else {
+                    app.setState({outOfGeofence: false});
+                }
+
+                var users = app.updateDistancesToUsers(coords, app.state.users);
+
+                app.setState({users: users})
+                app.pushUserUpdates({coords: coords});
+
+                var closestUser = app.state.users[0];
+                if (closestUser) {
+                    // Check if there is a user nearby about whom
+                    // the current user has not yet been notified
+                    var alreadyNotified = app.state.notificationLog.includes(closestUser._id)
+                    if (closestUser.distanceToUser <= 400 && !alreadyNotified) {
+                        var log = app.state.notificationLog.concat([closestUser._id]);
+                        app.setState({notificationLog: log});
+
+                        alert(closestUser.name
+                            + " " + this.l("alert.isLessThan")
+                            + " " + closestUser.distanceToUser
+                            + " " + this.l("alert.metersAwayWith")
+                            + " " + closestUser.offerDescription);
+                    }
+                }
+            } else {
+                // Otherwise set user position to null
+                app.pushUserUpdates({coords: null});
+            }
+        }, function onError(error) {
+            console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
+        }, {
+            timeout: 30000 // Throw an error if no update is received every 30 seconds
+        });
     }
 
-    componentDidMount() {
-        document.addEventListener("pause", logger.stopLoggingAndWriteFile, false);
+    /**
+     * Localize a string
+     * @param {string} string to be localized
+     */
+    l(string, locale = this.state.locale) {
+        var localization = localizations[locale][string];
+
+        if (!localization) {
+            console.log(`Error: localization "${string}" not found for locale "${locale}"`)
+            return "";
+        }
+
+        return localization;
+    }
+
+    /**
+     * Update the calculated distance from current user to each other user
+     * @param {Array} coordinate tuple representing the current user's position
+     * @param {Array} array of users
+     */
+    updateDistancesToUsers(userPosition, users) {
+        // If the user's position is available
+        if (userPosition) {
+            // Add a distanceToUser attribute to the array, used for list sorting
+            for (let i in users) {
+                var user = users[i];
+                user.distanceToUser = user.coords ?
+                    this.calculateDistanceBetween(userPosition, user.coords) : null;
+            }
+
+            // Sort the list by distance, ascending
+            users.sort(function(a, b) {
+                return parseInt(a.distanceToUser) - parseInt(b.distanceToUser);
+            });
+        }
+        return users;
     }
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleLoggingChange(bool) {
         this.setState({logging: bool});
@@ -66,7 +180,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleExternalDataChange(bool) {
         this.setState({externalData: bool});
@@ -74,15 +188,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
-     */
-    handleGpsChange(bool) {
-        this.setState({gps: bool});
-    }
-
-    /**
-     * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleLayerControlChange(bool) {
         this.setState({layerControl: bool});
@@ -90,7 +196,7 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleDragMapChange(bool) {
         this.setState({draggable: bool});
@@ -98,51 +204,232 @@ class App extends React.Component {
 
     /**
      * Handle the change of the parameter from the lower level
-     * @param {Boolean} bool value of the change 
+     * @param {Boolean} bool value of the change
      */
     handleZoomMapChange(bool) {
         this.setState({zoomable: bool});
     }
 
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {int} selectedUserId identifier of the user that was selected
+     */
+    handleListItemClick(selectedUserId) {
+        this.setState({
+            selectedUserId: selectedUserId,
+            currentTab: "map"
+        });
+    }
 
-    //toolbar on top of the app, contains name of the app and the menu button
+    /**
+     * Handle the change of the parameter from the lower level
+     * @param {String} tab the tab to display
+     */
+    handleTabChange(tab) {
+        this.setState({
+            currentTab: tab
+        });
+    }
+
+    /**
+     * Fetch or create user in backend base on info from Auth0
+     * @param {Object} userInfo object, returned by auth0.loadUserInfo
+     */
+    fetchOrCreateAuth0User(userInfo) {
+        // Make the call to the "find or create" API endpoint
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/";
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify(userInfo),
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
+            },
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        currentUserId: result._id
+                    });
+
+                    this.fetchAndLoadAllUsers();
+                },
+                (error) => {
+                    console.log("There was an error creating or loading the user!");
+                    console.log(error);
+                    this.setState({
+                        errorSyncingUser: error
+                    });
+                }
+            )
+    }
+
+    /**
+     * Fetches all user data from the database server, including current user's data
+     */
+    fetchAndLoadAllUsers() {
+        fetch("https://geofreebie-backend.herokuapp.com/api/users")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    // Store current user and remove it from the list
+                    for (var i = result.length - 1; i >= 0; --i) {
+                        if (result[i]._id == this.state.currentUserId) {
+                            var currentUser = result[i];
+                            result.splice(i, 1);
+
+                            this.setState({
+                                currentUser: currentUser,
+                                locale: currentUser.locale || this.state.locale,
+                                currentUserIsLoaded: true,
+                                users: result || [],
+                                usersAreLoaded: true,
+                            });
+
+                            // Set defaults from config file if user just signed up
+                            if (currentUser.newlyCreated) {
+                                currentUser.available = config.app.available;
+                                currentUser.shareLocation = config.app.shareLocation;
+                                currentUser.useLocation = config.app.useLocation;
+                                currentUser.newlyCreated = false;
+
+                                pushUserUpdate(currentUser);
+                            }
+
+                            break;
+                        }
+                    }
+                },
+                (error) => {
+                    console.log("There was an error loading the users!");
+                    console.log(error);
+                    this.setState({
+                        usersAreLoaded: true,
+                        errorLoadingUsers: error
+                    });
+                }
+            )
+    }
+
+    /**
+     * Determines if the given coordinates fall within the app's bounds
+     * @param {Array} coordinates (latitude, longitude) to be tested
+     */
+    withinGeofence(coordinates) {
+        var lat = coordinates[0];
+        var lon = coordinates[1];
+        var lat1 = 51.85868336894736;
+        var lon1 = 7.483062744140626;
+        var lat2 = 52.05586831074774;
+        var lon2 = 7.768707275390625;
+
+        return (lat1 < lat && lat < lat2) && (lon1 < lon && lon < lon2);
+    }
+
+    /**
+     * Push the provided updates to the user to the database server
+     * @param {Object} attributes object, representing attributes to be updated
+     */
+    pushUserUpdates(attributes) {
+        var currentUserCopy = JSON.parse(JSON.stringify(this.state.currentUser));
+        Object.assign(currentUserCopy, attributes);
+        this.pushUserUpdate(currentUserCopy);
+    }
+
+    /**
+     * Push the provided user to the database server
+     * @param {User} updatedUser object, representing the user in its most up-to-date form
+     */
+    pushUserUpdate(updatedUser) {
+        this.setState({
+            currentUser: updatedUser,
+            currentUserIsLoaded: false,
+        });
+
+        // Don't sync user coordinates if user is not available
+        // but still keep them locally
+        if (!updatedUser.available) {
+            updatedUser.coords = null;
+        }
+
+        // Make the call to the update API
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(updatedUser),
+            headers: {'Content-Type': 'application/json'},
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        currentUserIsLoaded: true,
+                    });
+                },
+                (error) => {
+                    console.log("There was an error updating the user!");
+                    console.log(error);
+                    this.setState({
+                        errorSyncingUser: error
+                    });
+                }
+            )
+    }
+
+
+    // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
-        const titles = ['About', 'Map', 'Streetview', 'Settings', 'Help'];
+        var tabName = this.l(`tabs.${this.state.currentTab}`);
+
         return (
             <Ons.Toolbar>
-                <div className='center'>{titles[this.state.index]}</div>
-                <div className='right'>
+                <div className='left'>
                     <Ons.ToolbarButton onClick={this.show}>
                         <Ons.Icon icon='ion-navicon, material:md-menu'></Ons.Icon>
                     </Ons.ToolbarButton>
                 </div>
+                <div className='center'>{tabName}</div>
             </Ons.Toolbar>
         )
     }
 
-    //hide sidebar
+    // Hide sidebar
     hide() {
         this.setState({isOpen: false});
     }
 
-    //show sidebar
+    // Show sidebar
     show() {
         this.setState({isOpen: true});
     }
 
-    //handle a click o settings --> change state
-    handleClickSettings() {
-        this.setState({index: 3});
+    // Handle a click on a sidebar item --> change state
+    handleSidebarClick(tab, e) {
+        this.setState({currentTab: tab});
+        this.hide();
     }
 
-    //handle a click o about --> change state
-    handleClickAbout() {
-        this.setState({index: 0});
+    /**
+     * Calculate the distance from the user's location to a given position
+     * @param {Array} coordinates (latitude, longitude) identifying the position
+     */
+    calculateDistanceTo(position) {
+        return this.calculateDistanceBetween(this.state.currentUser.coords, position);
     }
 
-    //handle a click o about --> change state
-    handleClickHelp() {
-        this.setState({index: 4});
+    /**
+     * Calculate the distance between two positions
+     * @param {Array} coordinates (latitude, longitude) identifying the first position
+     * @param {Array} coordinates (latitude, longitude) identifying the second position
+     */
+    calculateDistanceBetween(position1, position2) {
+        var accuracy = 50; // Restrict accuracy to 50 m to protect location privacy
+        return geolib.getDistance(
+            {latitude: position1[0], longitude: position1[1]},
+            {latitude: position2[0], longitude: position2[1]},
+            accuracy
+        );
     }
 
     /**
@@ -151,60 +438,115 @@ class App extends React.Component {
      */
     renderTabs() {
         return [
-            //Welcome page iframe 
+            // Dashboard element
             {
-                content: <embededSite.EmbededComponent site='about.html' key='about' name='About' />,
-                tab: <Ons.Tab label='About' icon='' key='about' style={{display: 'none'}}/>
+                content: <dashboard.Dashboard
+                    l={this.l}
+                    login={this.login}
+                    handleTabChange={this.handleTabChange}
+                    authenticated={this.state.authenticated}
+                    currentUser={this.state.currentUser}
+                    key='dashboard' />,
+                tab: <Ons.Tab
+                    label={this.l('tabs.dashboard')}
+                    icon='md-info'
+                    key='dashboard'
+                    style={{display: 'none'}} />
             },
-            //map element
+            // Map element
             {
-                content: <map.Map 
-                                logging={this.state.logging} 
-                                externalData={this.state.externalData} 
-                                gps={this.state.gps} 
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}  
-                                zoomable={this.state.zoomable} 
-                                key='map' />,
-                tab: <Ons.Tab label='Map' icon='md-map' key='map' />
+                content: <map.Map
+                    l={this.l}
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    currentUser={this.state.currentUser}
+                    centerPosition={this.state.centerPosition}
+                    selectedUserId={this.state.selectedUserId}
+                    calculateDistanceTo={this.calculateDistanceTo}
+                    users={this.state.users}
+                    key='map' />,
+                tab: <Ons.Tab
+                    label={this.l('tabs.map')}
+                    icon='md-map'
+                    key='map' />
             },
-            //pictureView element
+            // List element
             {
-                content: <pictureView.PictureView 
-                                logging={this.state.logging} 
-                                externalData={this.state.externalData} 
-                                gps={this.state.gps} 
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable}  
-                                zoomable={this.state.zoomable} 
-                                key='picture' />,
-                tab: <Ons.Tab label='Streetview' icon='md-image' key='picture' />
+                content: <list.List
+                    l={this.l}
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    currentUser={this.state.currentUser}
+                    centerPosition={this.state.centerPosition}
+                    selectedUserId={this.state.selectedUserId}
+                    onListItemClick={this.handleListItemClick}
+                    usersAreLoaded={this.state.usersAreLoaded}
+                    errorLoadingUsers={this.state.errorLoadingUsers}
+                    users={this.state.users}
+                    key='list' />,
+                tab: <Ons.Tab
+                    label={this.l('tabs.list')}
+                    icon='md-view-list'
+                    key='list' />
             },
-            //settings element, with no tab displayed in the tabbar, as it is accessible via the sidebar
+            // Settings element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
-                content: <settings.Settings 
-                                onLoggingChange={this.handleLoggingChange} 
-                                onDataChange={this.handleExternalDataChange} 
-                                onGpsChange={this.handleGpsChange}
-                                onLayerControlChange={this.handleLayerControlChange} 
-                                onDragMapChange={this.handleDragMapChange} 
-                                onZoomMapChange={this.handleZoomMapChange}
-                                logging={this.state.logging} 
-                                externalData={this.state.externalData} 
-                                gps={this.state.gps} 
-                                layerControl={this.state.layerControl}
-                                draggable={this.state.draggable} 
-                                zoomable={this.state.zoomable} 
-                                key='settings' />,
-                tab: <Ons.Tab label='Settings' icon='md-settings' key='settings' style={{display: 'none'}}/>
+                content: <settings.Settings
+                    l={this.l}
+                    onLoggingChange={this.handleLoggingChange}
+                    onDataChange={this.handleExternalDataChange}
+                    onLayerControlChange={this.handleLayerControlChange}
+                    onDragMapChange={this.handleDragMapChange}
+                    onZoomMapChange={this.handleZoomMapChange}
+                    pushUserUpdate={this.pushUserUpdate}
+                    currentUser={this.state.currentUser}
+                    authenticated={this.state.authenticated}
+                    logout={this.logout}
+                    login={this.login}
+                    logging={this.state.logging}
+                    externalData={this.state.externalData}
+                    layerControl={this.state.layerControl}
+                    draggable={this.state.draggable}
+                    zoomable={this.state.zoomable}
+                    key='settings' />,
+                tab: <Ons.Tab
+                    label={this.l('tabs.settings')}
+                    icon='md-settings'
+                    key='settings'
+                    style={{display: 'none'}} />
             },
-            //about page iframe 
+            // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
+            {
+                content: <offerForm.offerForm
+                    l={this.l}
+                    pushUserUpdate={this.pushUserUpdate}
+                    currentUserIsLoaded={this.state.currentUserIsLoaded}
+                    currentUser={this.state.currentUser}
+                    outOfGeofence={this.state.outOfGeofence}
+                    key='offerForm' />,
+                tab: <Ons.Tab
+                    label={this.l('tabs.offers')}
+                    icon='md-edit'
+                    key='offerForm'
+                    style={{display: 'none'}} />
+            },
+            // Help page iframe
             {
                 content: <embededSite.EmbededComponent site='help.html' key='help' name='Help' />,
-                tab: <Ons.Tab label='Help' icon='md-help' key='help' style={{display: 'none'}}/>
+                tab: <Ons.Tab
+                    label={this.l('tabs.help')}
+                    icon='md-help'
+                    key='help'
+                    style={{display: 'none'}} />
             },
-            //ship  around an error in current onsen release
-            //can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
+            // Ship around an error in current onsen release
+            // Can be solved with an update of onsen/onsen react --> issue: https://github.com/OnsenUI/OnsenUI/issues/2307
             {
                 content: <div key='placeholder' />,
                 tab: null
@@ -212,108 +554,169 @@ class App extends React.Component {
         ]
     }
 
-    //render the list displayed in the sidebar
-    renderList() {
+    // Render the list displayed in the sidebar
+    renderSidebarList() {
+        var sidebarItems = [
+            {key: "offers",    icon: "md-edit"},
+            {key: "settings",  icon: "md-settings"},
+            {key: "help",      icon: "md-help"},
+            {key: "dashboard", icon: "md-info"},
+
+        ];
+
+        var listItems = [
+            <Ons.ListItem
+                key='user'
+                tappable={false}>
+                    <div className='list-item__title'>
+                        <strong>{this.state.currentUser.name}</strong>
+                    </div>
+                    <div className='list-item__subtitle'>
+                        {this.state.currentUser.contactInformation}
+                    </div>
+            </Ons.ListItem>
+        ];
+
+        for (let i in sidebarItems) {
+            var sidebarItem = sidebarItems[i];
+
+            listItems.push(
+                <Ons.ListItem
+                    key={sidebarItem.key}
+                    tappable={true}
+                    onClick={this.handleSidebarClick.bind(this, sidebarItem.key)}>
+                        <div className='left'>
+                            <Ons.Icon icon={sidebarItem.icon}/>
+                        </div>
+                        <div className='center'>
+                            {this.l(`tabs.${sidebarItem.key}`)}
+                        </div>
+                </Ons.ListItem>
+            )
+        }
+
         return (
             <Ons.List>
-                <Ons.ListItem 
-                    tappable={true}
-                    onClick={this.handleClickAbout}>
-                        <div className='left'>
-                            <Ons.Icon icon='md-info'/>
-                        </div>
-                        <div className='center'>
-                            About
-                        </div>
-                </Ons.ListItem>
-                <Ons.ListItem 
-                    tappable={true}
-                    onClick={this.handleClickSettings}>
-                        <div className='left'>
-                            <Ons.Icon icon='md-settings'/>
-                        </div>
-                        <div className='center'>
-                            Settings
-                        </div>
-                </Ons.ListItem>
-                <Ons.ListItem 
-                    tappable={true}
-                    onClick={this.handleClickHelp}>
-                        <div className='left'>
-                            <Ons.Icon icon='md-help'/>
-                        </div>
-                        <div className='center'>
-                            Help
-                        </div>
-                </Ons.ListItem>
+                {listItems}
             </Ons.List>
         )
     }
 
-    //render sidebars and toolbar
+    loadUserInfo(callback) {
+        this.auth0.userInfo(this.state.accessToken, callback);
+    };
+
+    /**
+     * Start the auth0 login process (launches via an in-app browser)
+     */
+    login(e) {
+        var app = this;
+        var target = e.target;
+        target.disabled = true;
+
+        var client = new Auth0Cordova({
+            domain: 'geofreebie.eu.auth0.com',
+            clientId: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv',
+            packageIdentifier: 'com.lbraun.geofreebie'
+        });
+
+        var options = {
+            scope: 'openid profile',
+            audience: 'https://geofreebie.eu.auth0.com/userinfo'
+        };
+
+        client.authorize(options, function(err, authResult) {
+            if (err) {
+                console.log(err);
+                return (target.disabled = false);
+            }
+
+            localStorage.setItem('access_token', authResult.accessToken);
+            target.disabled = false;
+            app.resumeApp();
+        });
+    };
+
+    logout(e) {
+        localStorage.removeItem('access_token');
+        this.resumeApp();
+    };
+
+    resumeApp() {
+        var accessToken = localStorage.getItem('access_token');
+
+        if (accessToken) {
+            this.setState({
+                authenticated: true,
+                accessToken: accessToken,
+                currentTab: "dashboard",
+            })
+
+            var app = this;
+
+            this.loadUserInfo(function(err, userInfo) {
+                if (err) {
+                    console.log('Error: ' + err.message);
+                } else {
+                    app.fetchOrCreateAuth0User(userInfo);
+                }
+            });
+        } else {
+            // User logged out, so clear out stored user data
+            this.setState({
+                authenticated: false,
+                usersAreLoaded: false,
+                currentUserIsLoaded: false,
+                accessToken: null,
+                currentUserId: null,
+                currentUser: null,
+                users: null,
+            })
+        }
+    };
+
+    // Render sidebars and toolbar
     render() {
+        if (this.state.authenticated && this.state.currentUser) {
+            return (
+                <Ons.Splitter>
+                    <Ons.SplitterSide
+                        side='left'
+                        width={'75%'}
+                        style={{boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'}}
+                        swipeable={true}
+                        collapse={true}
+                        isOpen={this.state.isOpen}
+                        onClose={this.hide}
+                        onOpen={this.show}>
+                        <Ons.Page>
+                            {this.renderSidebarList()}
+                        </Ons.Page>
+                    </Ons.SplitterSide>
 
-        return (
-            <Ons.Splitter>
-                <Ons.SplitterSide 
-                    side='right' 
-                    width={'50%'} 
-                    style={{boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'}}
-                    swipeable={false}
-                    collapse={true}
-                    isOpen={this.state.isOpen} 
-                    onClose={this.hide} 
-                    onOpen={this.show}>
-                    <Ons.Page>
-                        {this.renderList()}
-                    </Ons.Page>
-                </Ons.SplitterSide>
-                <Ons.Page renderToolbar={this.renderToolbar}>
-                    <Ons.Tabbar 
-                        swipeable={false}
-                        position='bottom'
-                        index={this.state.index}
-                        onPreChange={(event) => 
-                            {
-                                if(event.index != this.state.index) {
-                                    //handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
-                                    if(event.target !== event.currentTarget) return;
-                                    this.setState({index: event.index});
-                                }
-                                
-                                //check if logging is enabled and create a log if so
-                                if(this.state.logging) {
-                                    var modeName;
-                                    switch(event.index) {
-                                        case 0: modeName = 'About'
-                                            break;
-                                        case 1: modeName = 'Map'
-                                            break;
-                                        case 2: modeName = 'Streetview'
-                                            break;
-                                        case 3: modeName = 'Settings'
-                                            break;
-                                        case 4: modeName = 'Help';
+                    <Ons.Page renderToolbar={this.renderToolbar}>
+                        <Ons.Tabbar
+                            swipeable={false}
+                            position='bottom'
+                            index={this.tabs.indexOf(this.state.currentTab)}
+                            onPreChange={(event) =>
+                                {
+                                    if(event.index != this.tabs.indexOf(this.state.currentTab)) {
+                                        // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
+                                        if(event.target !== event.currentTarget) return;
+                                        this.setState({currentTab: this.tabs[event.index]});
                                     }
-
-                                    var entry;
-                                    //get the current position for the log
-                                    locationManager.getLocation().then(function success(position) {
-                                        entry = [position.latitude, position.longitude, modeName, 'Changed View'];
-                                        //log the data
-                                        logger.logEntry(entry);
-                                    }, function error(err) {
-                                        //if there was an error getting the position, log a '-' for lat/lng
-                                        entry = ['-', '-', modeName, 'Changed View'];
-                                        //log the data
-                                        logger.logEntry(entry);
-                                    })
-                                }
-                            }}
-                        renderTabs={this.renderTabs} />
-                </Ons.Page>
-            </Ons.Splitter>
-        )
+                                }}
+                            renderTabs={this.renderTabs} />
+                    </Ons.Page>
+                </Ons.Splitter>
+            );
+        } else {
+            return (<signInPage.SignInPage
+                l={this.l}
+                login={this.login}
+                authenticated={this.state.authenticated} />);
+        }
     }
 }
 
