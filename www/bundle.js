@@ -93711,6 +93711,11 @@ class offerForm extends React.Component {
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handlePhotoButtonClick = this.handlePhotoButtonClick.bind(this);
+
+        this.state = {
+            imageURI: null
+        };
     }
 
     /**
@@ -93725,8 +93730,8 @@ class offerForm extends React.Component {
      * Handle the change of a user property
      * @param {Event} e the react event object
      */
-    handleInputChange(event) {
-        const target = event.target;
+    handleInputChange(e) {
+        const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
@@ -93735,7 +93740,27 @@ class offerForm extends React.Component {
         this.props.pushUserUpdate(updatedUser);
     }
 
-    renderGeofenceWarning() {
+    /**
+     * Handle a click on the photo button
+     * @param {Event} e the react event object
+     */
+    handlePhotoButtonClick(e) {
+        var formInstance = this;
+
+        navigator.camera.getPicture(function onSuccess(imageURI) {
+            // var image = document.getElementById('offer-picture');
+            // image.src = imageURI
+            formInstance.setState({ imageURI: imageURI });
+        }, function onFail(message) {
+            console.log('Error getting picture: ' + message);
+        }, {
+            quality: 50,
+            allowEdit: true,
+            destinationType: Camera.DestinationType.FILE_URI
+        });
+    }
+
+    renderGeofenceWarningListItem() {
         if (this.props.outOfGeofence) {
             return React.createElement(
                 Ons.ListItem,
@@ -93751,6 +93776,33 @@ class offerForm extends React.Component {
         }
     }
 
+    renderImageArea() {
+        if (this.state.imageURI) {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement('img', { src: this.state.imageURI,
+                    id: 'offer-picture',
+                    style: { width: "100%" } }),
+                React.createElement(
+                    Ons.Button,
+                    {
+                        onClick: this.handlePhotoButtonClick,
+                        style: { margin: "20px" } },
+                    "Change picture"
+                )
+            );
+        } else {
+            return React.createElement(
+                Ons.Button,
+                {
+                    onClick: this.handlePhotoButtonClick,
+                    style: { margin: "30px" } },
+                "Add a picture"
+            );
+        }
+    }
+
     render() {
         return React.createElement(
             Ons.Page,
@@ -93758,10 +93810,10 @@ class offerForm extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
-                this.renderGeofenceWarning(),
+                this.renderGeofenceWarningListItem(),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'use-location-li', key: 'available' },
+                    { id: 'availablility-switch-li' },
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -93783,28 +93835,63 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'offer-description-title-li' },
+                    { id: 'offer-title-li' },
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        this.l("iAmOffering")
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("offerTitlePlaceholder")
+                        )
                     ),
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        this.l("iAmOfferingHelpText")
+                        React.createElement('input', { type: 'text',
+                            id: 'offerTitle',
+                            name: 'offerTitle',
+                            className: 'text-input text-input--transparent',
+                            style: { width: "100%" },
+                            placeholder: this.l("offerTitlePlaceholder"),
+                            value: this.props.currentUser.offerTitle,
+                            onChange: this.handleInputChange })
                     )
-                ),
+                )
+            ),
+            React.createElement(
+                Ons.Row,
+                { id: 'offer-picture-row' },
+                React.createElement(
+                    Ons.Col,
+                    null,
+                    this.renderImageArea()
+                )
+            ),
+            React.createElement(
+                Ons.List,
+                null,
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'offer-description-textarea-li' },
+                    { id: 'offer-description-li' },
                     React.createElement(
-                        'p',
+                        'div',
+                        { className: 'list-item__title' },
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("offerDescriptionPlaceholder")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
                         null,
                         React.createElement('textarea', {
                             id: 'offerDescription',
                             name: 'offerDescription',
                             className: 'textarea textarea--transparent',
+                            style: { width: "100%" },
+                            rows: '3',
                             placeholder: this.l("offerDescriptionPlaceholder"),
                             value: this.props.currentUser.offerDescription,
                             onChange: this.handleInputChange })
@@ -93812,28 +93899,30 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'contact-information-title-li' },
+                    { id: 'contact-information-li' },
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        this.l("iCanBeContactedAt")
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("iCanBeContactedAt")
+                        )
                     ),
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
                         this.l("iCanBeContactedAtHelpText")
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    { id: 'contact-information-textarea-li' },
+                    ),
                     React.createElement(
-                        'p',
+                        'div',
                         null,
                         React.createElement('textarea', {
                             id: 'contactInformation',
                             name: 'contactInformation',
                             className: 'textarea textarea--transparent',
+                            style: { width: "100%" },
+                            rows: '1',
                             placeholder: this.l("contactInformationPlaceholder"),
                             value: this.props.currentUser.contactInformation,
                             onChange: this.handleInputChange })
