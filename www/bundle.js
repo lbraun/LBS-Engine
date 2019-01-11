@@ -93182,7 +93182,7 @@ class Dashboard extends React.Component {
                 { style: { textAlign: "center" } },
                 React.createElement(
                     Ons.Col,
-                    { verticalAlign: 'center' },
+                    { style: { margin: "15px" } },
                     React.createElement(
                         'h1',
                         null,

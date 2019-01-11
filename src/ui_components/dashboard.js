@@ -42,7 +42,7 @@ class Dashboard extends React.Component {
         return (
             <Ons.Page>
                 <Ons.Row style={{textAlign: "center"}}>
-                    <Ons.Col verticalAlign="center">
+                    <Ons.Col style={{margin: "15px"}}>
                         <h1>
                             {this.l("welcome")} {this.props.currentUser.name}
                         </h1>
