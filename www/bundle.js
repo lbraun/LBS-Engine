@@ -94150,22 +94150,19 @@ class SignInPage extends React.Component {
         return React.createElement(
             Ons.Page,
             null,
+            React.createElement(Ons.Row, { style: { height: "50px" } }),
             React.createElement(
                 Ons.Row,
-                { height: '100%' },
+                null,
                 React.createElement(
                     Ons.Col,
-                    { verticalAlign: 'center' },
+                    { style: { textAlign: "center" } },
                     React.createElement(
                         'h1',
-                        { style: { textAlign: "center" } },
+                        null,
                         this.l("appName")
                     ),
-                    React.createElement(
-                        'p',
-                        { style: { textAlign: "center" } },
-                        this.renderLoginButton()
-                    )
+                    this.renderLoginButton()
                 )
             )
         );
@@ -94174,9 +94171,28 @@ class SignInPage extends React.Component {
     renderLoginButton() {
         if (this.props.authenticated) {
             return React.createElement(
-                'span',
+                'div',
                 null,
-                this.l("loading")
+                React.createElement(
+                    'p',
+                    null,
+                    React.createElement(
+                        'svg',
+                        { className: 'progress-circular progress-circular--indeterminate' },
+                        React.createElement('circle', { className: 'progress-circular__background' }),
+                        React.createElement('circle', { className: 'progress-circular__primary progress-circular--indeterminate__primary' }),
+                        React.createElement('circle', { className: 'progress-circular__secondary progress-circular--indeterminate__secondary' })
+                    )
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    React.createElement(
+                        'span',
+                        null,
+                        this.l("loading")
+                    )
+                )
             );
         } else {
             return React.createElement(
