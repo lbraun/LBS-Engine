@@ -82,7 +82,7 @@ class offerForm extends React.Component {
                     <Ons.Button
                         onClick={this.handlePhotoButtonClick}
                         style={{margin: "20px"}}>
-                            {"Change picture"}
+                            {this.l("changePicture")}
                     </Ons.Button>
                 </div>
             );
@@ -91,7 +91,7 @@ class offerForm extends React.Component {
                 <Ons.Button
                     onClick={this.handlePhotoButtonClick}
                     style={{margin: "30px"}}>
-                        {"Add a picture"}
+                        {this.l("addAPicture")}
                 </Ons.Button>
             );
         }

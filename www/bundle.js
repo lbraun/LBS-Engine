@@ -92309,7 +92309,9 @@ module.exports={
         "map.isOffering": "bietet",
         "map.showOtherUsers": "Andere Benutzer anzeigen",
         "map.youAreHere": "Ihr Standort",
+        "offerForm.addAPicture": "Ein Bild hinzufügen",
         "offerForm.available": "Jetzt verfügbar",
+        "offerForm.changePicture": "Bild ändern",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
         "offerForm.geofenceWarning": "Sie können nur verfügbar werden, wenn Sie in Münster Sind",
         "offerForm.iAmOffering": "Ich biete:",
@@ -92360,7 +92362,9 @@ module.exports={
         "map.isOffering": "is offering",
         "map.showOtherUsers": "Show other users",
         "map.youAreHere": "You are here",
+        "offerForm.addAPicture": "Add a picture",
         "offerForm.available": "Available now",
+        "offerForm.changePicture": "Change picture",
         "offerForm.contactInformationPlaceholder": "Contact information",
         "offerForm.geofenceWarning": "You can only be available when you are in Münster",
         "offerForm.iAmOffering": "I am offering...",
@@ -92411,7 +92415,9 @@ module.exports={
         "map.isOffering": "يعرض",
         "map.showOtherUsers": "اظهار مستخدمين آخرين",
         "map.youAreHere": "أنت هنا اﻵن",
+        "offerForm.addAPicture": "TODO",
         "offerForm.available": "متاح اﻵن",
+        "offerForm.changePicture": "TODO",
         "offerForm.contactInformationPlaceholder": "معلومات اﻹتصال",
         "offerForm.geofenceWarning": "تستطيع أن تكون متاحاً فقط في مونستر",
         "offerForm.iAmOffering": "أنا أعرض ...",
@@ -93897,7 +93903,7 @@ class offerForm extends React.Component {
                     {
                         onClick: this.handlePhotoButtonClick,
                         style: { margin: "20px" } },
-                    "Change picture"
+                    this.l("changePicture")
                 )
             );
         } else {
@@ -93906,7 +93912,7 @@ class offerForm extends React.Component {
                 {
                     onClick: this.handlePhotoButtonClick,
                     style: { margin: "30px" } },
-                "Add a picture"
+                this.l("addAPicture")
             );
         }
     }
