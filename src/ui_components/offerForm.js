@@ -13,7 +13,7 @@ class offerForm extends React.Component {
         this.handlePhotoButtonClick = this.handlePhotoButtonClick.bind(this);
 
         this.state = {
-            imageURI: null,
+            imageData: this.props.currentUser.offerPicture,
         };
     }
 
@@ -34,9 +34,9 @@ class offerForm extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var updatedUser = this.props.currentUser;
-        updatedUser[name] = value;
-        this.props.pushUserUpdate(updatedUser);
+        var attributes = {};
+        attributes[name] = value;
+        this.props.pushUserUpdates(attributes);
     }
 
     /**
@@ -46,16 +46,14 @@ class offerForm extends React.Component {
     handlePhotoButtonClick(e) {
         var formInstance = this;
 
-        navigator.camera.getPicture(function onSuccess(imageURI) {
-            // var image = document.getElementById('offer-picture');
-            // image.src = imageURI
-            formInstance.setState({imageURI: imageURI});
+        navigator.camera.getPicture(function onSuccess(imageData) {
+            formInstance.props.pushUserUpdates({offerPicture: imageData});
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
         }, {
-            quality: 50,
+            quality: 10,
             allowEdit: true,
-            destinationType: Camera.DestinationType.FILE_URI
+            destinationType: Camera.DestinationType.DATA_URL
         });
     }
 
@@ -74,10 +72,10 @@ class offerForm extends React.Component {
     }
 
     renderImageArea() {
-        if (this.state.imageURI) {
+        if (this.props.currentUser.offerPicture) {
             return (
                 <div>
-                    <img src={this.state.imageURI}
+                    <img src={`data:image/jpeg;base64, ${this.props.currentUser.offerPicture}`}
                         id='offer-picture'
                         style={{width: "100%"}} />
 
