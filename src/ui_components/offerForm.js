@@ -51,7 +51,7 @@ class offerForm extends React.Component {
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
         }, {
-            quality: 10,
+            quality: 50,
             allowEdit: true,
             destinationType: Camera.DestinationType.DATA_URL
         });
