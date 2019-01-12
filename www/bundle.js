@@ -92389,8 +92389,58 @@ module.exports={
         "tabs.map": "Map",
         "tabs.offers": "My Offers",
         "tabs.settings": "Settings"
+    },
+    "ar": {
+        "alert.isLessThan": "أصغر من",
+        "alert.metersAwayWith": "متر (أمتار) من العرض التالي:",
+        "dashboard.andYouAreAvailable": "و أنت متاح اﻵن.",
+        "dashboard.becomeAvailable": "للمتاح",
+        "dashboard.butYouAreNotAvailable": "و لكن أنت غير متاح اﻵن",
+        "dashboard.editOffer": "تعديل العرض",
+        "dashboard.welcome": "أهلاً و سهلاً",
+        "dashboard.youAreOffering": "أنت تعرض",
+        "list.error": "خطأ",
+        "list.fetchFailure": "حدث خطأ بينما يتم البحث عن أشخاص هنا. يبدو أنك غير متصل باﻹنترنت?",
+        "list.loading": "جاري التحميل ...",
+        "list.locationIsUnavailable": "الموقع غير متاح",
+        "list.noUsers": "لا يوجد مستخدمون آخرون في المنظومة اﻵن. من فضلك حاول مجدداً لاحقاً.",
+        "map.andCanBeContactedAt": "و يمكن الاتصال من خلال",
+        "map.attribution": "معلومات الخريطة &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> المساهمين",
+        "map.isOffering": "يعرض",
+        "map.showOtherUsers": "اظهار مستخدمين آخرين",
+        "map.youAreHere": "أنت هنا اﻵن",
+        "offerForm.available": "متاح اﻵن",
+        "offerForm.contactInformationPlaceholder": "معلومات اﻹتصال",
+        "offerForm.geofenceWarning": "تستطيع أن تكون متاحاً فقط في مونستر",
+        "offerForm.iAmOffering": "أنا أعرض ...",
+        "offerForm.iAmOfferingHelpText": "من فضلك ادخل وصف جيد للعرض",
+        "offerForm.iCanBeContactedAt": "يمكنك الإتصال بي على...",
+        "offerForm.iCanBeContactedAtHelpText": "من فضلك ادخل رقم هاتف، عنوان بريد الكتروني أو آية تعليمات اخرى.",
+        "offerForm.notAvailable": "غير متاح اﻵن",
+        "offerForm.offerDescriptionPlaceholder": "وصف العرض",
+        "offerForm.syncing": "تتم المزامنة...",
+        "offlineLayer.removeTiles": "هل أنت متأكد أنك تريد حذف جميع الاجزاء المحفوظة",
+        "offlineLayer.save": "حفظ",
+        "settings.loggedInAs": "متصل ك",
+        "settings.logIn": "تسجيل الدخول",
+        "settings.logOut": "تسجيل الخروج",
+        "settings.notCurrentlyLoggedIn": "حالياً متصل",
+        "settings.shareLocation": "مشاركة موقعي",
+        "settings.shareLocationText": "يتيح لك هذا تبديل موقعك إلى عام أو خاص. سيتم عرض موقعك التقريبي (على بُعد 50 مترًا فقط) على الخريطة إذا تم تعيينه على خاص.",
+        "settings.useLocation": "استخدم موقعي",
+        "settings.useLocationText": "هذا يسمح للتطبيق بالحصول على موقعك الفعلي من هاتفك. يمكنك تشغيل هذا لترى موقعك على الخريطة. موقعك خاص ولن يتم تخزينه أبدًا بواسطة التطبيق.",
+        "signInPage.appName": "جيوفريبي",
+        "signInPage.loading": "جاري التحميل ...",
+        "signInPage.logIn": "تسجيل الدخول",
+        "tabs.dashboard": "لوحة التحكم الرئيسية",
+        "tabs.help": "مساعدة",
+        "tabs.list": "قائمة",
+        "tabs.map": "خريطة",
+        "tabs.offers": "عروضي",
+        "tabs.settings": "اﻹعدادات"
     }
 }
+
 
 },{}],274:[function(require,module,exports){
 'use strict';
@@ -92466,6 +92516,7 @@ class App extends React.Component {
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.handleLocaleChange = this.handleLocaleChange.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
@@ -92698,6 +92749,7 @@ class App extends React.Component {
                         currentUser.available = config.app.available;
                         currentUser.shareLocation = config.app.shareLocation;
                         currentUser.useLocation = config.app.useLocation;
+                        currentUser.locale = this.state.locale;
                         currentUser.newlyCreated = false;
 
                         pushUserUpdate(currentUser);
@@ -93049,6 +93101,16 @@ class App extends React.Component {
         this.resumeApp();
     }
 
+    handleLocaleChange(e) {
+        var newLocale = e.target.value;
+
+        this.setState({ locale: newLocale });
+
+        if (this.currentUser) {
+            pushUserUpdates({ locale: newLocale });
+        }
+    }
+
     resumeApp() {
         var accessToken = localStorage.getItem('access_token');
 
@@ -93125,6 +93187,8 @@ class App extends React.Component {
         } else {
             return React.createElement(signInPage.SignInPage, {
                 l: this.l,
+                locale: this.state.locale,
+                handleLocaleChange: this.handleLocaleChange,
                 login: this.login,
                 authenticated: this.state.authenticated });
         }
@@ -94147,20 +94211,36 @@ class SignInPage extends React.Component {
     render() {
         return React.createElement(
             Ons.Page,
-            null,
-            React.createElement(Ons.Row, { style: { height: "50px" } }),
+            { style: { textAlign: "center" } },
+            React.createElement(
+                Ons.Row,
+                { style: { marginTop: "50px" } },
+                React.createElement(
+                    Ons.Col,
+                    null,
+                    React.createElement(
+                        'h1',
+                        null,
+                        this.l("appName")
+                    )
+                )
+            ),
             React.createElement(
                 Ons.Row,
                 null,
                 React.createElement(
                     Ons.Col,
-                    { style: { textAlign: "center" } },
-                    React.createElement(
-                        'h1',
-                        null,
-                        this.l("appName")
-                    ),
+                    null,
                     this.renderLoginButton()
+                )
+            ),
+            React.createElement(
+                Ons.Row,
+                { style: { marginTop: "50px" } },
+                React.createElement(
+                    Ons.Col,
+                    null,
+                    this.renderLocaleMenu()
                 )
             )
         );
@@ -94199,6 +94279,28 @@ class SignInPage extends React.Component {
                 this.l("logIn")
             );
         }
+    }
+
+    renderLocaleMenu() {
+        return React.createElement(
+            Ons.Select,
+            { value: this.props.locale, onChange: this.props.handleLocaleChange },
+            React.createElement(
+                'option',
+                { value: 'de' },
+                'Deutsch'
+            ),
+            React.createElement(
+                'option',
+                { value: 'en' },
+                'English'
+            ),
+            React.createElement(
+                'option',
+                { value: 'ar' },
+                '\u0639\u0631\u0628\u0649'
+            )
+        );
     }
 }
 

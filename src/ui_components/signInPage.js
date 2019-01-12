@@ -19,14 +19,24 @@ class SignInPage extends React.Component {
     // Render the sign in page
     render() {
         return (
-            <Ons.Page>
-                <Ons.Row style={{height: "50px"}} />
-                <Ons.Row>
-                    <Ons.Col style={{textAlign: "center"}}>
+            <Ons.Page style={{textAlign: "center"}}>
+                <Ons.Row style={{marginTop: "50px"}}>
+                    <Ons.Col>
                         <h1>
                             {this.l("appName")}
                         </h1>
+                    </Ons.Col>
+                </Ons.Row>
+
+                <Ons.Row>
+                    <Ons.Col>
                         {this.renderLoginButton()}
+                    </Ons.Col>
+                </Ons.Row>
+
+                <Ons.Row style={{marginTop: "50px"}}>
+                    <Ons.Col>
+                        {this.renderLocaleMenu()}
                     </Ons.Col>
                 </Ons.Row>
             </Ons.Page>
@@ -50,6 +60,16 @@ class SignInPage extends React.Component {
         } else {
             return (<Ons.Button onClick={this.props.login}>{this.l("logIn")}</Ons.Button>)
         }
+    }
+
+    renderLocaleMenu() {
+        return (
+            <Ons.Select value={this.props.locale} onChange={this.props.handleLocaleChange}>
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+                <option value="ar">عربى</option>
+            </Ons.Select>
+        )
     }
 }
 
