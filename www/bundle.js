@@ -92897,8 +92897,6 @@ class App extends React.Component {
             content: React.createElement(dashboard.Dashboard, {
                 l: this.l,
                 login: this.login,
-                locale: this.state.locale,
-                handleLocaleChange: this.handleLocaleChange,
                 handleTabChange: this.handleTabChange,
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser,
@@ -92955,6 +92953,8 @@ class App extends React.Component {
         {
             content: React.createElement(settings.Settings, {
                 l: this.l,
+                locale: this.state.locale,
+                handleLocaleChange: this.handleLocaleChange,
                 onLoggingChange: this.handleLoggingChange,
                 onDataChange: this.handleExternalDataChange,
                 onLayerControlChange: this.handleLayerControlChange,
@@ -93207,8 +93207,6 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
-const localeMenu = require('./localeMenu.js');
-
 class Dashboard extends React.Component {
 
     constructor(props) {
@@ -93277,17 +93275,6 @@ class Dashboard extends React.Component {
                         )
                     )
                 )
-            ),
-            React.createElement(
-                Ons.Row,
-                { style: { marginTop: "50px" } },
-                React.createElement(
-                    Ons.Col,
-                    null,
-                    React.createElement(localeMenu.LocaleMenu, {
-                        locale: this.props.locale,
-                        handleLocaleChange: this.props.handleLocaleChange })
-                )
             )
         );
     }
@@ -93297,7 +93284,7 @@ module.exports = {
     Dashboard: Dashboard
 };
 
-},{"./localeMenu.js":279,"react":265,"react-onsenui":262}],277:[function(require,module,exports){
+},{"react":265,"react-onsenui":262}],277:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -94073,6 +94060,8 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const localeMenu = require('./localeMenu.js');
+
 /**
  * Settings for the app. Modifies the state of the settings
  */
@@ -94151,6 +94140,26 @@ class Settings extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
+                React.createElement(
+                    Ons.ListItem,
+                    { id: 'language-li', key: 'language' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            this.l("language")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(localeMenu.LocaleMenu, {
+                            locale: this.props.locale,
+                            handleLocaleChange: this.props.handleLocaleChange })
+                    )
+                ),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'use-location-li', key: 'useLocation' },
@@ -94241,7 +94250,7 @@ module.exports = {
     settingsComponent: settingsComponent
 };
 
-},{"react":265,"react-onsenui":262}],283:[function(require,module,exports){
+},{"./localeMenu.js":279,"react":265,"react-onsenui":262}],283:[function(require,module,exports){
 'use strict';
 
 const React = require('react');

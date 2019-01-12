@@ -447,8 +447,6 @@ class App extends React.Component {
                 content: <dashboard.Dashboard
                     l={this.l}
                     login={this.login}
-                    locale={this.state.locale}
-                    handleLocaleChange={this.handleLocaleChange}
                     handleTabChange={this.handleTabChange}
                     authenticated={this.state.authenticated}
                     currentUser={this.state.currentUser}
@@ -505,6 +503,8 @@ class App extends React.Component {
             {
                 content: <settings.Settings
                     l={this.l}
+                    locale={this.state.locale}
+                    handleLocaleChange={this.handleLocaleChange}
                     onLoggingChange={this.handleLoggingChange}
                     onDataChange={this.handleExternalDataChange}
                     onLayerControlChange={this.handleLayerControlChange}
