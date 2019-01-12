@@ -527,7 +527,7 @@ class App extends React.Component {
             {
                 content: <offerForm.offerForm
                     l={this.l}
-                    pushUserUpdate={this.pushUserUpdate}
+                    pushUserUpdates={this.pushUserUpdates}
                     currentUserIsLoaded={this.state.currentUserIsLoaded}
                     currentUser={this.state.currentUser}
                     outOfGeofence={this.state.outOfGeofence}

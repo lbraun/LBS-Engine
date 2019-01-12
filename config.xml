@@ -78,6 +78,7 @@
         <variable name="ANDROID_PATHPREFIX" value="/cordova/com.lbraun.geofreebie/callback" />
     </plugin>
     <preference name="AndroidLaunchMode" value="singleTask" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="^6.4.0" />
 </widget>

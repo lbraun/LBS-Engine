@@ -92318,6 +92318,7 @@ module.exports={
         "offerForm.iCanBeContactedAtHelpText": "Bitte geben Sie eine Telefonnummer, E-Mail-Adresse oder andere Anweisungen an.",
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
         "offerForm.offerDescriptionPlaceholder": "Angebotsbeschreibung",
+        "offerForm.offerTitlePlaceholder": "TODO",
         "offerForm.syncing": "Wird synchronisiert...",
         "offlineLayer.removeTiles": "Möchten Sie wirklich alle gespeicherten Kartenkachel entfernen?",
         "offlineLayer.save": "Speichern",
@@ -92367,6 +92368,7 @@ module.exports={
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
         "offerForm.notAvailable": "Not available now",
         "offerForm.offerDescriptionPlaceholder": "Offer description",
+        "offerForm.offerTitlePlaceholder": "Offer title",
         "offerForm.syncing": "Syncing...",
         "offlineLayer.removeTiles": "Are you sure you want to remove all saved tiles?",
         "offlineLayer.save": "Save",
@@ -92925,7 +92927,7 @@ class App extends React.Component {
         {
             content: React.createElement(offerForm.offerForm, {
                 l: this.l,
-                pushUserUpdate: this.pushUserUpdate,
+                pushUserUpdates: this.pushUserUpdates,
                 currentUserIsLoaded: this.state.currentUserIsLoaded,
                 currentUser: this.state.currentUser,
                 outOfGeofence: this.state.outOfGeofence,
@@ -93180,7 +93182,7 @@ class Dashboard extends React.Component {
                 { style: { textAlign: "center" } },
                 React.createElement(
                     Ons.Col,
-                    { verticalAlign: 'center' },
+                    { style: { margin: "15px" } },
                     React.createElement(
                         'h1',
                         null,
@@ -93711,6 +93713,11 @@ class offerForm extends React.Component {
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handlePhotoButtonClick = this.handlePhotoButtonClick.bind(this);
+
+        this.state = {
+            imageData: this.props.currentUser.offerPicture
+        };
     }
 
     /**
@@ -93725,17 +93732,35 @@ class offerForm extends React.Component {
      * Handle the change of a user property
      * @param {Event} e the react event object
      */
-    handleInputChange(event) {
-        const target = event.target;
+    handleInputChange(e) {
+        const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var updatedUser = this.props.currentUser;
-        updatedUser[name] = value;
-        this.props.pushUserUpdate(updatedUser);
+        var attributes = {};
+        attributes[name] = value;
+        this.props.pushUserUpdates(attributes);
     }
 
-    renderGeofenceWarning() {
+    /**
+     * Handle a click on the photo button
+     * @param {Event} e the react event object
+     */
+    handlePhotoButtonClick(e) {
+        var formInstance = this;
+
+        navigator.camera.getPicture(function onSuccess(imageData) {
+            formInstance.props.pushUserUpdates({ offerPicture: imageData });
+        }, function onFail(message) {
+            console.log('Error getting picture: ' + message);
+        }, {
+            quality: 10,
+            allowEdit: true,
+            destinationType: Camera.DestinationType.DATA_URL
+        });
+    }
+
+    renderGeofenceWarningListItem() {
         if (this.props.outOfGeofence) {
             return React.createElement(
                 Ons.ListItem,
@@ -93751,6 +93776,33 @@ class offerForm extends React.Component {
         }
     }
 
+    renderImageArea() {
+        if (this.props.currentUser.offerPicture) {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement('img', { src: `data:image/jpeg;base64, ${this.props.currentUser.offerPicture}`,
+                    id: 'offer-picture',
+                    style: { width: "100%" } }),
+                React.createElement(
+                    Ons.Button,
+                    {
+                        onClick: this.handlePhotoButtonClick,
+                        style: { margin: "20px" } },
+                    "Change picture"
+                )
+            );
+        } else {
+            return React.createElement(
+                Ons.Button,
+                {
+                    onClick: this.handlePhotoButtonClick,
+                    style: { margin: "30px" } },
+                "Add a picture"
+            );
+        }
+    }
+
     render() {
         return React.createElement(
             Ons.Page,
@@ -93758,10 +93810,10 @@ class offerForm extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
-                this.renderGeofenceWarning(),
+                this.renderGeofenceWarningListItem(),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'use-location-li', key: 'available' },
+                    { id: 'availablility-switch-li' },
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -93783,28 +93835,63 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'offer-description-title-li' },
+                    { id: 'offer-title-li' },
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        this.l("iAmOffering")
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("offerTitlePlaceholder")
+                        )
                     ),
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        this.l("iAmOfferingHelpText")
+                        React.createElement('input', { type: 'text',
+                            id: 'offerTitle',
+                            name: 'offerTitle',
+                            className: 'text-input text-input--transparent',
+                            style: { width: "100%" },
+                            placeholder: this.l("offerTitlePlaceholder"),
+                            value: this.props.currentUser.offerTitle,
+                            onChange: this.handleInputChange })
                     )
-                ),
+                )
+            ),
+            React.createElement(
+                Ons.Row,
+                { id: 'offer-picture-row' },
+                React.createElement(
+                    Ons.Col,
+                    null,
+                    this.renderImageArea()
+                )
+            ),
+            React.createElement(
+                Ons.List,
+                null,
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'offer-description-textarea-li' },
+                    { id: 'offer-description-li' },
                     React.createElement(
-                        'p',
+                        'div',
+                        { className: 'list-item__title' },
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("offerDescriptionPlaceholder")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
                         null,
                         React.createElement('textarea', {
                             id: 'offerDescription',
                             name: 'offerDescription',
                             className: 'textarea textarea--transparent',
+                            style: { width: "100%" },
+                            rows: '3',
                             placeholder: this.l("offerDescriptionPlaceholder"),
                             value: this.props.currentUser.offerDescription,
                             onChange: this.handleInputChange })
@@ -93812,28 +93899,30 @@ class offerForm extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'contact-information-title-li' },
+                    { id: 'contact-information-li' },
                     React.createElement(
                         'div',
                         { className: 'list-item__title' },
-                        this.l("iCanBeContactedAt")
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("iCanBeContactedAt")
+                        )
                     ),
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
                         this.l("iCanBeContactedAtHelpText")
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    { id: 'contact-information-textarea-li' },
+                    ),
                     React.createElement(
-                        'p',
+                        'div',
                         null,
                         React.createElement('textarea', {
                             id: 'contactInformation',
                             name: 'contactInformation',
                             className: 'textarea textarea--transparent',
+                            style: { width: "100%" },
+                            rows: '1',
                             placeholder: this.l("contactInformationPlaceholder"),
                             value: this.props.currentUser.contactInformation,
                             onChange: this.handleInputChange })
@@ -94059,22 +94148,19 @@ class SignInPage extends React.Component {
         return React.createElement(
             Ons.Page,
             null,
+            React.createElement(Ons.Row, { style: { height: "50px" } }),
             React.createElement(
                 Ons.Row,
-                { height: '100%' },
+                null,
                 React.createElement(
                     Ons.Col,
-                    { verticalAlign: 'center' },
+                    { style: { textAlign: "center" } },
                     React.createElement(
                         'h1',
-                        { style: { textAlign: "center" } },
+                        null,
                         this.l("appName")
                     ),
-                    React.createElement(
-                        'p',
-                        { style: { textAlign: "center" } },
-                        this.renderLoginButton()
-                    )
+                    this.renderLoginButton()
                 )
             )
         );
@@ -94083,9 +94169,28 @@ class SignInPage extends React.Component {
     renderLoginButton() {
         if (this.props.authenticated) {
             return React.createElement(
-                'span',
+                'div',
                 null,
-                this.l("loading")
+                React.createElement(
+                    'p',
+                    null,
+                    React.createElement(
+                        'svg',
+                        { className: 'progress-circular progress-circular--indeterminate' },
+                        React.createElement('circle', { className: 'progress-circular__background' }),
+                        React.createElement('circle', { className: 'progress-circular__primary progress-circular--indeterminate__primary' }),
+                        React.createElement('circle', { className: 'progress-circular__secondary progress-circular--indeterminate__secondary' })
+                    )
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    React.createElement(
+                        'span',
+                        null,
+                        this.l("loading")
+                    )
+                )
             );
         } else {
             return React.createElement(

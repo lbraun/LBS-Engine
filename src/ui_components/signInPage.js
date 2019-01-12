@@ -20,14 +20,13 @@ class SignInPage extends React.Component {
     render() {
         return (
             <Ons.Page>
-                <Ons.Row height="100%">
-                    <Ons.Col verticalAlign="center">
-                        <h1 style={{textAlign: "center"}}>
+                <Ons.Row style={{height: "50px"}} />
+                <Ons.Row>
+                    <Ons.Col style={{textAlign: "center"}}>
+                        <h1>
                             {this.l("appName")}
                         </h1>
-                        <p style={{textAlign: "center"}}>
-                            {this.renderLoginButton()}
-                        </p>
+                        {this.renderLoginButton()}
                     </Ons.Col>
                 </Ons.Row>
             </Ons.Page>
@@ -36,7 +35,18 @@ class SignInPage extends React.Component {
 
     renderLoginButton() {
         if (this.props.authenticated) {
-            return (<span>{this.l("loading")}</span>)
+            return (
+                <div>
+                    <p>
+                        <svg className="progress-circular progress-circular--indeterminate">
+                            <circle className="progress-circular__background"/>
+                            <circle className="progress-circular__primary progress-circular--indeterminate__primary"/>
+                            <circle className="progress-circular__secondary progress-circular--indeterminate__secondary"/>
+                        </svg>
+                    </p>
+                    <p><span>{this.l("loading")}</span></p>
+                </div>
+            )
         } else {
             return (<Ons.Button onClick={this.props.login}>{this.l("logIn")}</Ons.Button>)
         }
