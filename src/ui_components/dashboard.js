@@ -2,6 +2,8 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const localeMenu = require('./localeMenu.js');
+
 class Dashboard extends React.Component {
 
     constructor(props) {
@@ -61,6 +63,14 @@ class Dashboard extends React.Component {
                                     this.l("becomeAvailable")}
                             </Ons.Button>
                         </p>
+                    </Ons.Col>
+                </Ons.Row>
+
+                <Ons.Row style={{marginTop: "50px"}}>
+                    <Ons.Col>
+                        <localeMenu.LocaleMenu
+                            locale={this.props.locale}
+                            handleLocaleChange={this.props.handleLocaleChange} />
                     </Ons.Col>
                 </Ons.Row>
             </Ons.Page>
