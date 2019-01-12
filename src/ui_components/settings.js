@@ -3,6 +3,8 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const localeMenu = require('./localeMenu.js');
+
 /**
  * Settings for the app. Modifies the state of the settings
  */
@@ -70,6 +72,16 @@ class Settings extends React.Component {
         return (
             <Ons.Page>
                 <Ons.List>
+                    <Ons.ListItem id='language-li' key='language'>
+                        <div className='left'>
+                            <p>{this.l("language")}</p>
+                        </div>
+                        <div className='right'>
+                            <localeMenu.LocaleMenu
+                                locale={this.props.locale}
+                                handleLocaleChange={this.props.handleLocaleChange} />
+                        </div>
+                    </Ons.ListItem>
                     <Ons.ListItem id='use-location-li' key='useLocation'>
                         <div className='left'>
                             <p>{this.l("useLocation")}</p>

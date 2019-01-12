@@ -49,6 +49,7 @@ class App extends React.Component {
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.handleLocaleChange = this.handleLocaleChange.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
@@ -294,6 +295,7 @@ class App extends React.Component {
                                 currentUser.available = config.app.available;
                                 currentUser.shareLocation = config.app.shareLocation;
                                 currentUser.useLocation = config.app.useLocation;
+                                currentUser.locale = this.state.locale;
                                 currentUser.newlyCreated = false;
 
                                 pushUserUpdate(currentUser);
@@ -501,6 +503,8 @@ class App extends React.Component {
             {
                 content: <settings.Settings
                     l={this.l}
+                    locale={this.state.locale}
+                    handleLocaleChange={this.handleLocaleChange}
                     onLoggingChange={this.handleLoggingChange}
                     onDataChange={this.handleExternalDataChange}
                     onLayerControlChange={this.handleLayerControlChange}
@@ -644,6 +648,16 @@ class App extends React.Component {
         this.resumeApp();
     };
 
+    handleLocaleChange(e) {
+        var newLocale = e.target.value;
+
+        this.setState({locale: newLocale});
+
+        if (this.state.currentUser) {
+            this.pushUserUpdates({locale: newLocale});
+        }
+    };
+
     resumeApp() {
         var accessToken = localStorage.getItem('access_token');
 
@@ -716,6 +730,8 @@ class App extends React.Component {
         } else {
             return (<signInPage.SignInPage
                 l={this.l}
+                locale={this.state.locale}
+                handleLocaleChange={this.handleLocaleChange}
                 login={this.login}
                 authenticated={this.state.authenticated} />);
         }
