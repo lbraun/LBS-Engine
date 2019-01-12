@@ -2,6 +2,8 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const localeMenu = require('./localeMenu.js');
+
 class SignInPage extends React.Component {
     constructor(props) {
         super(props);
@@ -36,7 +38,9 @@ class SignInPage extends React.Component {
 
                 <Ons.Row style={{marginTop: "50px"}}>
                     <Ons.Col>
-                        {this.renderLocaleMenu()}
+                        <localeMenu.LocaleMenu
+                            locale={this.props.locale}
+                            handleLocaleChange={this.props.handleLocaleChange} />
                     </Ons.Col>
                 </Ons.Row>
             </Ons.Page>
@@ -60,16 +64,6 @@ class SignInPage extends React.Component {
         } else {
             return (<Ons.Button onClick={this.props.login}>{this.l("logIn")}</Ons.Button>)
         }
-    }
-
-    renderLocaleMenu() {
-        return (
-            <Ons.Select value={this.props.locale} onChange={this.props.handleLocaleChange}>
-                <option value="de">Deutsch</option>
-                <option value="en">English</option>
-                <option value="ar">عربى</option>
-            </Ons.Select>
-        )
     }
 }
 
