@@ -653,8 +653,8 @@ class App extends React.Component {
 
         this.setState({locale: newLocale});
 
-        if (this.currentUser) {
-            pushUserUpdates({locale: newLocale});
+        if (this.state.currentUser) {
+            this.pushUserUpdates({locale: newLocale});
         }
     };
 
