@@ -35,8 +35,8 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.l = this.l.bind(this);
-        this.show = this.show.bind(this);
-        this.hide = this.hide.bind(this);
+        this.showSidebar = this.showSidebar.bind(this);
+        this.hideSidebar = this.hideSidebar.bind(this);
         this.renderToolbar = this.renderToolbar.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
@@ -57,7 +57,8 @@ class App extends React.Component {
         this.renderTabs = this.renderTabs.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
         this.state = {
-            isOpen: false,
+            sidebarIsOpen: false,
+            sidebarIsSwipeable: true,
             logging: config.app.logging,
             externalData: config.app.externalData,
             layerControl: config.app.layerControl,
@@ -218,10 +219,8 @@ class App extends React.Component {
      * @param {int} selectedUserId identifier of the user that was selected
      */
     handleListItemClick(selectedUserId) {
-        this.setState({
-            selectedUserId: selectedUserId,
-            currentTab: "map"
-        });
+        this.setState({selectedUserId: selectedUserId});
+        this.handleTabChange("map");
     }
 
     /**
@@ -230,7 +229,9 @@ class App extends React.Component {
      */
     handleTabChange(tab) {
         this.setState({
-            currentTab: tab
+            currentTab: tab,
+            sidebarIsSwipeable: tab != "map",
+            sidebarIsOpen: false,
         });
     }
 
@@ -389,7 +390,7 @@ class App extends React.Component {
         return (
             <Ons.Toolbar>
                 <div className='left'>
-                    <Ons.ToolbarButton onClick={this.show}>
+                    <Ons.ToolbarButton onClick={this.showSidebar}>
                         <Ons.Icon icon='ion-navicon, material:md-menu'></Ons.Icon>
                     </Ons.ToolbarButton>
                 </div>
@@ -398,20 +399,21 @@ class App extends React.Component {
         )
     }
 
-    // Hide sidebar
-    hide() {
-        this.setState({isOpen: false});
+    hideSidebar() {
+        this.setState({sidebarIsOpen: false});
     }
 
-    // Show sidebar
-    show() {
-        this.setState({isOpen: true});
+    showSidebar() {
+        this.setState({sidebarIsOpen: true});
+    }
+
+    toggleSidebarSwiping(isSwipeable) {
+        this.setState({sidebarIsSwipeable: isSwipeable});
     }
 
     // Handle a click on a sidebar item --> change state
     handleSidebarClick(tab, e) {
-        this.setState({currentTab: tab});
-        this.hide();
+        this.handleTabChange(tab);
     }
 
     /**
@@ -453,9 +455,8 @@ class App extends React.Component {
                     key='dashboard' />,
                 tab: <Ons.Tab
                     label={this.l('tabs.dashboard')}
-                    icon='md-info'
-                    key='dashboard'
-                    style={{display: 'none'}} />
+                    icon='md-compass'
+                    key='dashboard' />
             },
             // Map element
             {
@@ -566,7 +567,7 @@ class App extends React.Component {
             {key: "offers",    icon: "md-edit"},
             {key: "settings",  icon: "md-settings"},
             {key: "help",      icon: "md-help"},
-            {key: "dashboard", icon: "md-info"},
+            {key: "dashboard", icon: "md-compass"},
 
         ];
 
@@ -700,11 +701,11 @@ class App extends React.Component {
                         side='left'
                         width={'75%'}
                         style={{boxShadow: '0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)'}}
-                        swipeable={true}
+                        swipeable={this.state.sidebarIsSwipeable}
                         collapse={true}
-                        isOpen={this.state.isOpen}
-                        onClose={this.hide}
-                        onOpen={this.show}>
+                        isOpen={this.state.sidebarIsOpen}
+                        onClose={this.hideSidebar}
+                        onOpen={this.showSidebar}>
                         <Ons.Page>
                             {this.renderSidebarList()}
                         </Ons.Page>
@@ -720,7 +721,7 @@ class App extends React.Component {
                                     if(event.index != this.tabs.indexOf(this.state.currentTab)) {
                                         // Handle error in onsen ui, triggering the change event of the tabbar with the change event of the carousel
                                         if(event.target !== event.currentTarget) return;
-                                        this.setState({currentTab: this.tabs[event.index]});
+                                        this.handleTabChange(this.tabs[event.index]);
                                     }
                                 }}
                             renderTabs={this.renderTabs} />
