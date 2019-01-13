@@ -82,6 +82,20 @@ class Settings extends React.Component {
                                 handleLocaleChange={this.props.handleLocaleChange} />
                         </div>
                     </Ons.ListItem>
+                    <Ons.ListItem id='name-li' key='name'>
+                        <div className='left'>
+                            <p>{this.l("name")}</p>
+                        </div>
+                        <div className='right'>
+                            <input type="text"
+                                name="name"
+                                className="text-input"
+                                placeholder={this.l("name")}
+                                value={this.props.currentUser.name}
+                                onChange={this.handleInputChange}>
+                            </input>
+                        </div>
+                    </Ons.ListItem>
                     <Ons.ListItem id='use-location-li' key='useLocation'>
                         <div className='left'>
                             <p>{this.l("useLocation")}</p>

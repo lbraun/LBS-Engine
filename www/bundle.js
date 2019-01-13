@@ -92328,6 +92328,7 @@ module.exports={
         "settings.loggedInAs": "Angemeldet als",
         "settings.logIn": "Anmelden",
         "settings.logOut": "Abmelden",
+        "settings.name": "Name",
         "settings.notCurrentlyLoggedIn": "Derzeit nicht angemeldet",
         "settings.shareLocation": "Meinen Standort teilen",
         "settings.shareLocationText": "Dadurch können Sie Ihren Standort auf 'öffentlich' oder 'privat' umstellen. Im privaten Modus wird nur Ihre ungefähre Position (innerhalb von 50 Metern) auf der Karte angezeigt.",
@@ -92381,6 +92382,7 @@ module.exports={
         "settings.loggedInAs": "Logged in as",
         "settings.logIn": "Log in",
         "settings.logOut": "Log out",
+        "settings.name": "Name",
         "settings.notCurrentlyLoggedIn": "Not currently logged in",
         "settings.shareLocation": "Share my location",
         "settings.shareLocationText": "This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.",
@@ -92433,6 +92435,7 @@ module.exports={
         "settings.loggedInAs": "متصل ك",
         "settings.logIn": "تسجيل الدخول",
         "settings.logOut": "تسجيل الخروج",
+        "settings.name": "TODO",
         "settings.notCurrentlyLoggedIn": "حالياً متصل",
         "settings.shareLocation": "مشاركة موقعي",
         "settings.shareLocationText": "يتيح لك هذا تبديل موقعك إلى عام أو خاص. سيتم عرض موقعك التقريبي (على بُعد 50 مترًا فقط) على الخريطة إذا تم تعيينه على خاص.",
@@ -94167,6 +94170,29 @@ class Settings extends React.Component {
                         React.createElement(localeMenu.LocaleMenu, {
                             locale: this.props.locale,
                             handleLocaleChange: this.props.handleLocaleChange })
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    { id: 'name-li', key: 'name' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            this.l("name")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement('input', { type: 'text',
+                            name: 'name',
+                            className: 'text-input',
+                            placeholder: this.l("name"),
+                            value: this.props.currentUser.name,
+                            onChange: this.handleInputChange })
                     )
                 ),
                 React.createElement(
