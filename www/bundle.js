@@ -94189,7 +94189,7 @@ class Settings extends React.Component {
                         { className: 'right' },
                         React.createElement('input', { type: 'text',
                             name: 'name',
-                            className: 'text-input',
+                            className: 'text-input text-input--material',
                             placeholder: this.l("name"),
                             value: this.props.currentUser.name,
                             onChange: this.handleInputChange })
