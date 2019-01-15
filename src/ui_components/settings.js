@@ -136,6 +136,14 @@ class Settings extends React.Component {
                             {authenticationButton}
                         </div>
                     </Ons.ListItem>
+                    <Ons.ListItem key='consent'>
+                        <div className='left'>
+                            <p>{this.l("youHaveConsented")}</p>
+                        </div>
+                        <div className='right'>
+                            <Ons.Button onClick={this.props.revokeConsent}>{this.l("quitTheStudy")}</Ons.Button>
+                        </div>
+                    </Ons.ListItem>
                 </Ons.List>
             </Ons.Page>
         )

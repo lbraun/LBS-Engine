@@ -92341,9 +92341,11 @@ module.exports={
         "settings.logOut": "Abmelden",
         "settings.name": "Name",
         "settings.notCurrentlyLoggedIn": "Derzeit nicht angemeldet",
+        "settings.quitTheStudy": "Abbrechen",
         "settings.shareLocation": "Meinen Standort teilen",
         "settings.shareLocationText": "Dadurch können Sie Ihren Standort auf 'öffentlich' oder 'privat' umstellen. Im privaten Modus wird nur Ihre ungefähre Position (innerhalb von 50 Metern) auf der Karte angezeigt.",
         "settings.useLocation": "Meinen Standort verwenden",
+        "settings.youHaveConsented": "Sie haben zugestimmt, an der Studie teilzunehmen.",
         "settings.useLocationText": "Dadurch kann die App Ihre aktuelle Position von Ihrem Telefon abrufen. Aktivieren Sie diese Option, um Ihren Standort auf der Karte anzuzeigen.",
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
@@ -92405,9 +92407,11 @@ module.exports={
         "settings.logOut": "Log out",
         "settings.name": "Name",
         "settings.notCurrentlyLoggedIn": "Not currently logged in",
+        "settings.quitTheStudy": "Quit",
         "settings.shareLocation": "Share my location",
         "settings.shareLocationText": "This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.",
         "settings.useLocation": "Use my location",
+        "settings.youHaveConsented": "You have consented to take part in the study.",
         "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
         "signInPage.loading": "Loading...",
         "signInPage.logIn": "Log in",
@@ -92469,9 +92473,11 @@ module.exports={
         "settings.logOut": "تسجيل الخروج",
         "settings.name": "TODO",
         "settings.notCurrentlyLoggedIn": "حالياً متصل",
+        "settings.quitTheStudy": "TODO",
         "settings.shareLocation": "مشاركة موقعي",
         "settings.shareLocationText": "يتيح لك هذا تبديل موقعك إلى عام أو خاص. سيتم عرض موقعك التقريبي (على بُعد 50 مترًا فقط) على الخريطة إذا تم تعيينه على خاص.",
         "settings.useLocation": "استخدم موقعي",
+        "settings.youHaveConsented": "TODO",
         "settings.useLocationText": "هذا يسمح للتطبيق بالحصول على موقعك الفعلي من هاتفك. يمكنك تشغيل هذا لترى موقعك على الخريطة. موقعك خاص ولن يتم تخزينه أبدًا بواسطة التطبيق.",
         "signInPage.loading": "جاري التحميل ...",
         "signInPage.logIn": "تسجيل الدخول",
@@ -92564,6 +92570,9 @@ class App extends React.Component {
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
+        this.revokeConsent = this.revokeConsent.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
@@ -92596,8 +92605,6 @@ class App extends React.Component {
             domain: 'geofreebie.eu.auth0.com',
             clientID: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv'
         });
-        this.login = this.login.bind(this);
-        this.logout = this.logout.bind(this);
 
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
@@ -93015,6 +93022,7 @@ class App extends React.Component {
                 pushUserUpdate: this.pushUserUpdate,
                 currentUser: this.state.currentUser,
                 authenticated: this.state.authenticated,
+                revokeConsent: this.revokeConsent,
                 logout: this.logout,
                 login: this.login,
                 logging: this.state.logging,
@@ -93153,6 +93161,10 @@ class App extends React.Component {
     logout(e) {
         localStorage.removeItem('access_token');
         this.resumeApp();
+    }
+
+    revokeConsent(e) {
+        this.pushUserUpdates({ hasConsented: false });
     }
 
     handleLocaleChange(e) {
@@ -93642,10 +93654,9 @@ class List extends React.Component {
 
     renderUserPicture(user) {
         if (user.picture) {
-            return React.createElement('img', { src: user.picture,
-                alt: 'Profile picture',
-                height: '42',
-                width: '42' });
+            return React.createElement('img', { className: 'list-item__thumbnail',
+                src: user.picture,
+                alt: 'Profile picture' });
         } else {
             return React.createElement(Ons.Icon, { icon: 'md-face' });
         }
@@ -94536,6 +94547,28 @@ class Settings extends React.Component {
                         'div',
                         { className: 'right' },
                         authenticationButton
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    { key: 'consent' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            this.l("youHaveConsented")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.props.revokeConsent },
+                            this.l("quitTheStudy")
+                        )
                     )
                 )
             )

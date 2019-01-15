@@ -51,10 +51,9 @@ class List extends React.Component {
     renderUserPicture(user) {
         if (user.picture) {
             return (
-                <img src={user.picture}
-                    alt="Profile picture"
-                    height="42"
-                    width="42" />
+                <img className="list-item__thumbnail"
+                    src={user.picture}
+                    alt="Profile picture" />
             );
         } else {
             return (<Ons.Icon icon="md-face"/>);

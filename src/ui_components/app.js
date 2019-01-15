@@ -54,6 +54,9 @@ class App extends React.Component {
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
+        this.revokeConsent = this.revokeConsent.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
@@ -86,8 +89,6 @@ class App extends React.Component {
             domain: 'geofreebie.eu.auth0.com',
             clientID: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv'
         });
-        this.login = this.login.bind(this);
-        this.logout = this.logout.bind(this);
 
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
@@ -522,6 +523,7 @@ class App extends React.Component {
                     pushUserUpdate={this.pushUserUpdate}
                     currentUser={this.state.currentUser}
                     authenticated={this.state.authenticated}
+                    revokeConsent={this.revokeConsent}
                     logout={this.logout}
                     login={this.login}
                     logging={this.state.logging}
@@ -655,6 +657,10 @@ class App extends React.Component {
     logout(e) {
         localStorage.removeItem('access_token');
         this.resumeApp();
+    };
+
+    revokeConsent(e) {
+        this.pushUserUpdates({hasConsented: false});
     };
 
     handleLocaleChange(e) {
