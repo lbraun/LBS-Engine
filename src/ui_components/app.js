@@ -142,9 +142,16 @@ class App extends React.Component {
     l(string, locale = this.state.locale) {
         var localization = localizations[locale][string];
 
-        if (!localization) {
+        if (!localization || localization == "TODO") {
             console.log(`Error: localization "${string}" not found for locale "${locale}"`)
-            return "";
+
+            if (locale != "en") {
+                // Fall back to English if the localization isn't found for the given locale
+                return this.l(string, "en");
+            } else {
+                // Fall back to the string itself if all else fails
+                return string;
+            }
         }
 
         return localization;
