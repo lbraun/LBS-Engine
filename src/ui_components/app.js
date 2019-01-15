@@ -291,14 +291,6 @@ class App extends React.Component {
                             var currentUser = result[i];
                             result.splice(i, 1);
 
-                            this.setState({
-                                currentUser: currentUser,
-                                locale: currentUser.locale || this.state.locale,
-                                currentUserIsLoaded: true,
-                                users: result || [],
-                                usersAreLoaded: true,
-                            });
-
                             // Set defaults from config file if user just signed up
                             if (currentUser.newlyCreated) {
                                 currentUser.available = config.app.available;
@@ -307,8 +299,16 @@ class App extends React.Component {
                                 currentUser.locale = this.state.locale;
                                 currentUser.newlyCreated = false;
 
-                                pushUserUpdate(currentUser);
+                                this.pushUserUpdate(currentUser);
                             }
+
+                            this.setState({
+                                currentUser: currentUser,
+                                locale: currentUser.locale || this.state.locale,
+                                currentUserIsLoaded: true,
+                                users: result || [],
+                                usersAreLoaded: true,
+                            });
 
                             break;
                         }
