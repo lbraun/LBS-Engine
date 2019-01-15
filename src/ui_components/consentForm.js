@@ -69,17 +69,24 @@ class ConsentForm extends React.Component {
                                 handleLocaleChange={this.props.handleLocaleChange} />
                         </div>
                     </Ons.ListItem>
+
                     <Ons.ListItem>
-                        {this.l("description")}
+                        <div>
+                            {this.l("description")}
+                        </div>
                     </Ons.ListItem>
                     <Ons.ListItem>
-                        {this.l("moreInfo")} <a href='https://github.com/lbraun/geofreebie'>{this.l("projectsWebsite")}</a>.
+                        <div>
+                            {this.l("moreInfo")} <a href='https://github.com/lbraun/geofreebie'>{this.l("projectsWebsite")}</a>.
+                        </div>
                     </Ons.ListItem>
                     <Ons.ListItem>
-                        {this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.
+                        <div>
+                            {this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.
+                        </div>
                     </Ons.ListItem>
                     <Ons.ListItem>
-                        <div className='left'>
+                        <div>
                             <i>{this.l("instructions")}</i>
                         </div>
                     </Ons.ListItem>

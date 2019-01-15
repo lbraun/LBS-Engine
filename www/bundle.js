@@ -92294,15 +92294,16 @@ module.exports={
         "alert.isLessThan": "ist weniger als",
         "alert.metersAwayWith": "m entfernt mit dem folgenden Angebot:",
         "app.name": "Geofreebie",
-        "consentForm.continue": "TODO",
-        "consentForm.dataRecordingConsent": "TODO",
-        "consentForm.description": "TODO",
-        "consentForm.ifYouHaveAnyQuestions": "TODO",
-        "consentForm.instructions": "TODO",
-        "consentForm.moreInfo": "TODO",
-        "consentForm.rightToQuitConsent": "TODO",
-        "consentForm.title": "TODO",
-        "consentForm.volunteeredConsent": "TODO",
+        "consentForm.continue": "Fortfahren",
+        "consentForm.dataRecordingConsent": "Ich bestätige mein Einverständnis zu der Aufnahme von Standortdaten während der Studie.",
+        "consentForm.description": "Vielen Dank für Ihre Teilnahme an dieser Studie über wie ein ortsbasierter Dienst die soziale Isolation von Flüchtlingen in Münster reduzieren kann.",
+        "consentForm.ifYouHaveAnyQuestions": "Bei Fragen wenden Sie sich bitte an den Forscher, bevor Sie fortfahren:",
+        "consentForm.instructions": "Aktivieren Sie die Kontrollkästchen, wenn Sie mit den folgenden Aussagen einverstanden sind:",
+        "consentForm.moreInfo": "Weitere Informationen zur Studie finden Sie auf der",
+        "consentForm.projectsWebsite": "Website des Projekts",
+        "consentForm.rightToQuitConsent": "Ich bestätige und habe verstanden, dass ich die Studie zu jedem Zeitpunkt ohne Konsequenzen abbrechen kann.",
+        "consentForm.title": "Einverständniserklärung",
+        "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
         "dashboard.andYouAreAvailable": "und Sie sind jetzt verfügbar",
         "dashboard.becomeAvailable": "Verfügbar werden",
         "dashboard.butYouAreNotAvailable": "aber Sie sind derzeit nicht verfügbar",
@@ -92314,7 +92315,7 @@ module.exports={
         "list.loading": "Wird geladen...",
         "list.locationIsUnavailable": "Standort ist nicht verfügbar",
         "list.noUsers": "Derzeit sind keine anderen Benutzer im System. Bitte versuchen Sie es später nochmal.",
-        "map.andCanBeContactedAt": "und kann unter folgendem kontakt erreicht werden:",
+        "map.andCanBeContactedAt": "und kann unter folgendem Kontakt erreicht werden:",
         "map.attribution": "Kartendaten &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a>-Beiträger",
         "map.isOffering": "bietet",
         "map.showOtherUsers": "Andere Benutzer anzeigen",
@@ -92326,7 +92327,7 @@ module.exports={
         "offerForm.geofenceWarning": "Sie können nur verfügbar werden, wenn Sie in Münster Sind",
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte geben Sie eine kurze Beschreibung des Angebots.",
-        "offerForm.iCanBeContactedAt": "Man kann mich unter folgendem kontakt erriechen:",
+        "offerForm.iCanBeContactedAt": "Man kann mich unter folgendem Kontakt erreichen:",
         "offerForm.iCanBeContactedAtHelpText": "Bitte geben Sie eine Telefonnummer, E-Mail-Adresse oder andere Kontaktmöglichkeiten an.",
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
         "offerForm.offerDescriptionPlaceholder": "Angebotsbeschreibung",
@@ -92427,6 +92428,7 @@ module.exports={
         "consentForm.ifYouHaveAnyQuestions": "TODO",
         "consentForm.instructions": "TODO",
         "consentForm.moreInfo": "TODO",
+        "consentForm.projectsWebsite": "TODO",
         "consentForm.rightToQuitConsent": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
@@ -93350,38 +93352,50 @@ class ConsentForm extends React.Component {
                 React.createElement(
                     Ons.ListItem,
                     null,
-                    this.l("description")
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    null,
-                    this.l("moreInfo"),
-                    ' ',
                     React.createElement(
-                        'a',
-                        { href: 'https://github.com/lbraun/geofreebie' },
-                        this.l("projectsWebsite")
-                    ),
-                    '.'
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    null,
-                    this.l("ifYouHaveAnyQuestions"),
-                    ' ',
-                    React.createElement(
-                        'a',
-                        { href: 'mailto:lucas.braun@uni-muenster.de' },
-                        'lucas.braun@uni-muenster.de'
-                    ),
-                    '.'
+                        'div',
+                        null,
+                        this.l("description")
+                    )
                 ),
                 React.createElement(
                     Ons.ListItem,
                     null,
                     React.createElement(
                         'div',
-                        { className: 'left' },
+                        null,
+                        this.l("moreInfo"),
+                        ' ',
+                        React.createElement(
+                            'a',
+                            { href: 'https://github.com/lbraun/geofreebie' },
+                            this.l("projectsWebsite")
+                        ),
+                        '.'
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        null,
+                        this.l("ifYouHaveAnyQuestions"),
+                        ' ',
+                        React.createElement(
+                            'a',
+                            { href: 'mailto:lucas.braun@uni-muenster.de' },
+                            'lucas.braun@uni-muenster.de'
+                        ),
+                        '.'
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        null,
                         React.createElement(
                             'i',
                             null,
