@@ -25,7 +25,7 @@ class SignInPage extends React.Component {
                 <Ons.Row style={{marginTop: "50px"}}>
                     <Ons.Col>
                         <h1>
-                            {this.l("appName")}
+                            {this.props.l("app.name")}
                         </h1>
                     </Ons.Col>
                 </Ons.Row>
