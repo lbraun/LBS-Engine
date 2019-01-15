@@ -70,8 +70,17 @@ class ConsentForm extends React.Component {
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem>
+                        {this.l("description")}
+                    </Ons.ListItem>
+                    <Ons.ListItem>
+                        {this.l("moreInfo")} <a href='https://github.com/lbraun/geofreebie'>{this.l("projectsWebsite")}</a>.
+                    </Ons.ListItem>
+                    <Ons.ListItem>
+                        {this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.
+                    </Ons.ListItem>
+                    <Ons.ListItem>
                         <div className='left'>
-                            {this.l("instructions")}
+                            <i>{this.l("instructions")}</i>
                         </div>
                     </Ons.ListItem>
 

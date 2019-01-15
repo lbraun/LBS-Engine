@@ -92296,7 +92296,10 @@ module.exports={
         "app.name": "Geofreebie",
         "consentForm.continue": "TODO",
         "consentForm.dataRecordingConsent": "TODO",
+        "consentForm.description": "TODO",
+        "consentForm.ifYouHaveAnyQuestions": "TODO",
         "consentForm.instructions": "TODO",
+        "consentForm.moreInfo": "TODO",
         "consentForm.rightToQuitConsent": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
@@ -92356,7 +92359,11 @@ module.exports={
         "app.name": "Geofreebie",
         "consentForm.continue": "Continue",
         "consentForm.dataRecordingConsent": "I agree to have my location data recorded during the study.",
-        "consentForm.instructions": "Please check the boxes to indicate your agreement with the following statements:",
+        "consentForm.description": "Thank you for participating in this study about supporting forced migrant resettlement with a location based freecycling service.",
+        "consentForm.ifYouHaveAnyQuestions": "If you have any questions, please contact the researcher before continuing:",
+        "consentForm.instructions": "Check the boxes if you agree with the following statements:",
+        "consentForm.moreInfo": "For more information about the study, see the",
+        "consentForm.projectsWebsite": "project's website",
         "consentForm.rightToQuitConsent": "I confirm I understand my right to quit the study at any time.",
         "consentForm.title": "Informed Consent Form",
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
@@ -92416,7 +92423,10 @@ module.exports={
         "app.name": "جيوفريبي",
         "consentForm.continue": "TODO",
         "consentForm.dataRecordingConsent": "TODO",
+        "consentForm.description": "TODO",
+        "consentForm.ifYouHaveAnyQuestions": "TODO",
         "consentForm.instructions": "TODO",
+        "consentForm.moreInfo": "TODO",
         "consentForm.rightToQuitConsent": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
@@ -93340,10 +93350,43 @@ class ConsentForm extends React.Component {
                 React.createElement(
                     Ons.ListItem,
                     null,
+                    this.l("description")
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    this.l("moreInfo"),
+                    ' ',
+                    React.createElement(
+                        'a',
+                        { href: 'https://github.com/lbraun/geofreebie' },
+                        this.l("projectsWebsite")
+                    ),
+                    '.'
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    this.l("ifYouHaveAnyQuestions"),
+                    ' ',
+                    React.createElement(
+                        'a',
+                        { href: 'mailto:lucas.braun@uni-muenster.de' },
+                        'lucas.braun@uni-muenster.de'
+                    ),
+                    '.'
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
-                        this.l("instructions")
+                        React.createElement(
+                            'i',
+                            null,
+                            this.l("instructions")
+                        )
                     )
                 ),
                 React.createElement(
