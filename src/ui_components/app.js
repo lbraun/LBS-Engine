@@ -14,6 +14,7 @@ const localizations = require('../data_components/localizations.json');
 
 // UI
 const signInPage = require('./signInPage.js');
+const consentForm = require('./consentForm.js');
 const dashboard = require('./dashboard.js');
 const map = require('./map.js');
 const list =  require('./list.js');
@@ -694,7 +695,16 @@ class App extends React.Component {
 
     // Render sidebars and toolbar
     render() {
+        // Redirect to sign in page if user has not yet been loaded and authenticated
         if (this.state.authenticated && this.state.currentUser) {
+            // Redirect to consent form if user has not yet consented
+            if (!this.state.currentUser.hasConsented) {
+                return (<consentForm.ConsentForm
+                    l={this.l}
+                    locale={this.state.locale}
+                    pushUserUpdates={this.pushUserUpdates}
+                    handleLocaleChange={this.handleLocaleChange} />);
+            }
             return (
                 <Ons.Splitter>
                     <Ons.SplitterSide
