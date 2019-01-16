@@ -134,6 +134,9 @@ class App extends React.Component {
         }, {
             timeout: 30000 // Throw an error if no update is received every 30 seconds
         });
+
+        // TODO: implement this for real!
+        this.state.offline = true;
     }
 
     /**
@@ -757,6 +760,7 @@ class App extends React.Component {
                 locale={this.state.locale}
                 handleLocaleChange={this.handleLocaleChange}
                 login={this.login}
+                online={this.state.online}
                 authenticated={this.state.authenticated} />);
         }
     }

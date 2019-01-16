@@ -92349,6 +92349,7 @@ module.exports={
         "settings.useLocationText": "Dadurch kann die App Ihre aktuelle Position von Ihrem Telefon abrufen. Aktivieren Sie diese Option, um Ihren Standort auf der Karte anzuzeigen.",
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Hilfe",
         "tabs.list": "Liste",
@@ -92415,6 +92416,7 @@ module.exports={
         "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
         "signInPage.loading": "Loading...",
         "signInPage.logIn": "Log in",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "You must be online in order to log in.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92481,6 +92483,7 @@ module.exports={
         "settings.useLocationText": "هذا يسمح للتطبيق بالحصول على موقعك الفعلي من هاتفك. يمكنك تشغيل هذا لترى موقعك على الخريطة. موقعك خاص ولن يتم تخزينه أبدًا بواسطة التطبيق.",
         "signInPage.loading": "جاري التحميل ...",
         "signInPage.logIn": "تسجيل الدخول",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
         "tabs.dashboard": "لوحة التحكم الرئيسية",
         "tabs.help": "مساعدة",
         "tabs.list": "قائمة",
@@ -92646,6 +92649,9 @@ class App extends React.Component {
         }, {
             timeout: 30000 // Throw an error if no update is received every 30 seconds
         });
+
+        // TODO: implement this for real!
+        this.state.offline = true;
     }
 
     /**
@@ -93265,6 +93271,7 @@ class App extends React.Component {
                 locale: this.state.locale,
                 handleLocaleChange: this.handleLocaleChange,
                 login: this.login,
+                online: this.state.online,
                 authenticated: this.state.authenticated });
         }
     }
@@ -94607,48 +94614,9 @@ class SignInPage extends React.Component {
 
     // Render the sign in page
     render() {
-        return React.createElement(
-            Ons.Page,
-            { style: { textAlign: "center" } },
-            React.createElement(
-                Ons.Row,
-                { style: { marginTop: "50px" } },
-                React.createElement(
-                    Ons.Col,
-                    null,
-                    React.createElement(
-                        'h1',
-                        null,
-                        this.props.l("app.name")
-                    )
-                )
-            ),
-            React.createElement(
-                Ons.Row,
-                null,
-                React.createElement(
-                    Ons.Col,
-                    null,
-                    this.renderLoginButton()
-                )
-            ),
-            React.createElement(
-                Ons.Row,
-                { style: { marginTop: "50px" } },
-                React.createElement(
-                    Ons.Col,
-                    null,
-                    React.createElement(localeMenu.LocaleMenu, {
-                        locale: this.props.locale,
-                        handleLocaleChange: this.props.handleLocaleChange })
-                )
-            )
-        );
-    }
-
-    renderLoginButton() {
+        // If already authenticated, just wait for user data to load
         if (this.props.authenticated) {
-            return React.createElement(
+            React.createElement(
                 'div',
                 null,
                 React.createElement(
@@ -94674,9 +94642,66 @@ class SignInPage extends React.Component {
             );
         } else {
             return React.createElement(
+                Ons.Page,
+                { style: { textAlign: "center" } },
+                React.createElement(
+                    Ons.Row,
+                    { style: { marginTop: "50px" } },
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            'h1',
+                            null,
+                            this.props.l("app.name")
+                        )
+                    )
+                ),
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        this.renderLoginButton()
+                    )
+                ),
+                React.createElement(
+                    Ons.Row,
+                    { style: { marginTop: "50px" } },
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(localeMenu.LocaleMenu, {
+                            locale: this.props.locale,
+                            handleLocaleChange: this.props.handleLocaleChange })
+                    )
+                )
+            );
+        }
+    }
+
+    renderLoginButton() {
+        if (this.props.online) {
+            return React.createElement(
                 Ons.Button,
                 { onClick: this.props.login },
                 this.l("logIn")
+            );
+        } else {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Ons.Button,
+                    { onClick: this.props.login, disabled: "true" },
+                    this.l("logIn")
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    this.l("youMustBeOnlineInOrderToLogin")
+                )
             );
         }
     }
