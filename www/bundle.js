@@ -92343,6 +92343,7 @@ module.exports={
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
         "offerForm.offerDescriptionPlaceholder": "Angebotsbeschreibung",
         "offerForm.offerTitlePlaceholder": "Angebotstitel",
+        "offerForm.saved": "Angebot gespeichert.",
         "offerForm.syncing": "Wird synchronisiert...",
         "offlineLayer.removeTiles": "Möchten Sie wirklich alle gespeicherten Kartendaten entfernen?",
         "offlineLayer.save": "Speichern",
@@ -92421,6 +92422,7 @@ module.exports={
         "offerForm.notAvailable": "Not available now",
         "offerForm.offerDescriptionPlaceholder": "Offer description",
         "offerForm.offerTitlePlaceholder": "Offer title",
+        "offerForm.saved": "Offer saved.",
         "offerForm.syncing": "Syncing...",
         "offlineLayer.removeTiles": "Are you sure you want to remove all saved map data?",
         "offlineLayer.save": "Save",
@@ -92499,6 +92501,7 @@ module.exports={
         "offerForm.notAvailable": "غير متاح اﻵن",
         "offerForm.offerDescriptionPlaceholder": "وصف العرض",
         "offerForm.offerTitlePlaceholder": "TODO",
+        "offerForm.saved": "TODO",
         "offerForm.syncing": "تتم المزامنة...",
         "offlineLayer.removeTiles": "هل أنت متأكد أنك تريد حذف جميع الاجزاء المحفوظة",
         "offlineLayer.save": "حفظ",
@@ -94616,7 +94619,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        this.props.currentUserIsLoaded ? "✔︎" : this.l("syncing")
+                        this.props.currentUserIsLoaded ? "✔︎ " + this.l("saved") : this.l("syncing")
                     )
                 )
             )

@@ -181,7 +181,7 @@ class offerForm extends React.Component {
 
                     <Ons.ListItem>
                         <div className="list-item__subtitle">
-                            {this.props.currentUserIsLoaded ? "✔︎" : this.l("syncing")}
+                            {this.props.currentUserIsLoaded ? "✔︎ " + this.l("saved") : this.l("syncing")}
                         </div>
                     </Ons.ListItem>
                 </Ons.List>
