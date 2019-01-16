@@ -92651,7 +92651,24 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.offline = true;
+        this.state.online = false;
+
+        if (!this.state.online) {
+            this.state.authenticated = true;
+            this.state.currentUser = {
+                "nickname": "lucas.braun",
+                "name": "Developer User",
+                "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
+                "updated_at": "2019-01-09T08:54:31.035Z",
+                "auth0Id": "auth0|5c35b6c6a19540326d51c3a9",
+                "createdAt": {
+                    "$date": "2019-01-09T08:57:59.078Z"
+                },
+                "updatedAt": {
+                    "$date": "2019-01-09T08:57:59.078Z"
+                }
+            };
+        }
     }
 
     /**
