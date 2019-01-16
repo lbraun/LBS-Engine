@@ -7,6 +7,7 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
+        this.toggleAvailability = this.toggleAvailability.bind(this);
     }
 
     /**
@@ -25,15 +26,56 @@ class Dashboard extends React.Component {
         this.props.handleTabChange("offers");
     }
 
-    statusInfo() {
-        if (this.props.currentUser.available) {
-            return this.l("youAreOffering")
-                + " " + this.props.currentUser.offerDescription
-                + " " + this.l("andYouAreAvailable");
+    /**
+     * Toggle user's availability status
+     * @param {Event} e the react event object
+     */
+    toggleAvailability(e) {
+        this.props.pushUserUpdates({available: !this.props.currentUser.available});
+    }
+
+    // Render information about the user's offer
+    renderOffer() {
+        if (this.props.currentUser.offerTitle) {
+            if (this.props.currentUser.available) {
+                var availabilityInfo = this.l("availableNow");
+            } else {
+                var availabilityInfo = this.l("notCurrentlyAvailable");
+            }
+
+            return (
+                <div>
+                    <b>{this.props.currentUser.offerTitle}</b>
+                    <p>{this.props.currentUser.offerDescription}</p>
+                    <p><i>{availabilityInfo}</i></p>
+
+                    <Ons.Row>
+                        <Ons.Col>
+                            <Ons.Button onClick={this.goToOffersTab}>
+                                {this.l("editOffer")}
+                            </Ons.Button>
+                        </Ons.Col>
+                        <Ons.Col>
+                            <Ons.Button onClick={this.toggleAvailability}>
+                                {this.props.currentUser.available ?
+                                    this.l("becomeUnavailable") :
+                                    this.l("becomeAvailable")}
+                            </Ons.Button>
+                        </Ons.Col>
+                    </Ons.Row>
+                </div>
+            );
         } else {
-            return this.l("youAreOffering")
-                + " " + this.props.currentUser.offerDescription
-                + " " + this.l("butYouAreNotAvailable");
+            return (
+                <div>
+                    <p>{this.l("youAreNotOffering")}</p>
+                    <p>
+                        <Ons.Button onClick={this.goToOffersTab}>
+                            {this.l("createAnOffer")}
+                        </Ons.Button>
+                    </p>
+                </div>
+            );
         }
     }
 
@@ -44,26 +86,20 @@ class Dashboard extends React.Component {
 
         return (
             <Ons.Page>
-                <Ons.Row style={{textAlign: "center"}}>
+                <Ons.Row>
                     <Ons.Col style={{margin: "15px"}}>
-                        <h1>
+                        <h2>
                             {this.l("welcome")} {this.props.currentUser.name}
-                        </h1>
+                        </h2>
 
                         <img src={picture}
                             alt="Profile picture"
                             height="42"
                             width="42" />
 
-                        <p>{this.statusInfo()}</p>
+                        <h2>{this.l("yourOffer")}</h2>
+                        {this.renderOffer()}
 
-                        <p>
-                            <Ons.Button onClick={this.goToOffersTab}>
-                                {this.props.currentUser.available ?
-                                    this.l("editOffer") :
-                                    this.l("becomeAvailable")}
-                            </Ons.Button>
-                        </p>
                     </Ons.Col>
                 </Ons.Row>
             </Ons.Page>

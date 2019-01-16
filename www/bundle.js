@@ -92304,12 +92304,15 @@ module.exports={
         "consentForm.rightToQuitConsent": "Ich bestätige und habe verstanden, dass ich die Studie zu jedem Zeitpunkt ohne Konsequenzen abbrechen kann.",
         "consentForm.title": "Einverständniserklärung",
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
-        "dashboard.andYouAreAvailable": "und Sie sind jetzt verfügbar",
         "dashboard.becomeAvailable": "Verfügbar werden",
-        "dashboard.butYouAreNotAvailable": "aber Sie sind derzeit nicht verfügbar",
+        "dashboard.becomeUnavailable": "Unverfügbar werden",
         "dashboard.editOffer": "Angebot bearbeiten",
+        "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
+        "dashboard.availableNow": "Jetzt verfügbar",
+        "dashboard.youAreNotOffering": "TODO",
+        "dashboard.createAnOffer": "TODO",
         "dashboard.welcome": "Willkommen",
-        "dashboard.youAreOffering": "Sie bieten",
+        "dashboard.yourOffer": "Ihr Angebot",
         "list.error": "Fehler",
         "list.fetchFailure": "Es konnten keine andere Leute gefunden werden. Vielleicht haben Sie keine Internetverbindung?",
         "list.loading": "Wird geladen...",
@@ -92371,12 +92374,15 @@ module.exports={
         "consentForm.rightToQuitConsent": "I confirm I understand my right to quit the study at any time.",
         "consentForm.title": "Informed Consent Form",
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
-        "dashboard.andYouAreAvailable": "and you are available now.",
         "dashboard.becomeAvailable": "Become available",
-        "dashboard.butYouAreNotAvailable": "but you are not available right now.",
+        "dashboard.becomeUnavailable": "Become unavailable",
         "dashboard.editOffer": "Edit offer",
+        "dashboard.notCurrentlyAvailable": "Not currently available",
+        "dashboard.availableNow": "Available now",
+        "dashboard.youAreNotOffering": "You are not offering anything right now.",
+        "dashboard.createAnOffer": "Create an offer",
         "dashboard.welcome": "Welcome",
-        "dashboard.youAreOffering": "You are offering",
+        "dashboard.yourOffer": "Your Offer",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
@@ -92438,12 +92444,15 @@ module.exports={
         "consentForm.rightToQuitConsent": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
-        "dashboard.andYouAreAvailable": "و أنت متاح اﻵن.",
         "dashboard.becomeAvailable": "للمتاح",
-        "dashboard.butYouAreNotAvailable": "و لكن أنت غير متاح اﻵن",
+        "dashboard.becomeUnavailable": "TODO",
         "dashboard.editOffer": "تعديل العرض",
+        "dashboard.notCurrentlyAvailable": "TODO",
+        "dashboard.availableNow": "TODO",
+        "dashboard.youAreNotOffering": "TODO",
+        "dashboard.createAnOffer": "TODO",
         "dashboard.welcome": "أهلاً و سهلاً",
-        "dashboard.youAreOffering": "أنت تعرض",
+        "dashboard.yourOffer": "TODO",
         "list.error": "خطأ",
         "list.fetchFailure": "حدث خطأ بينما يتم البحث عن أشخاص هنا. يبدو أنك غير متصل باﻹنترنت?",
         "list.loading": "جاري التحميل ...",
@@ -92982,6 +92991,7 @@ class App extends React.Component {
                 l: this.l,
                 login: this.login,
                 handleTabChange: this.handleTabChange,
+                pushUserUpdates: this.pushUserUpdates,
                 currentUser: this.state.currentUser,
                 online: this.state.online,
                 defaultPicture: defaultPicture,
@@ -93527,6 +93537,7 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
+        this.toggleAvailability = this.toggleAvailability.bind(this);
     }
 
     /**
@@ -93545,11 +93556,87 @@ class Dashboard extends React.Component {
         this.props.handleTabChange("offers");
     }
 
-    statusInfo() {
-        if (this.props.currentUser.available) {
-            return this.l("youAreOffering") + " " + this.props.currentUser.offerDescription + " " + this.l("andYouAreAvailable");
+    /**
+     * Toggle user's availability status
+     * @param {Event} e the react event object
+     */
+    toggleAvailability(e) {
+        this.props.pushUserUpdates({ available: !this.props.currentUser.available });
+    }
+
+    // Render information about the user's offer
+    renderOffer() {
+        if (this.props.currentUser.offerTitle) {
+            if (this.props.currentUser.available) {
+                var availabilityInfo = this.l("availableNow");
+            } else {
+                var availabilityInfo = this.l("notCurrentlyAvailable");
+            }
+
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'b',
+                    null,
+                    this.props.currentUser.offerTitle
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    this.props.currentUser.offerDescription
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    React.createElement(
+                        'i',
+                        null,
+                        availabilityInfo
+                    )
+                ),
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.goToOffersTab },
+                            this.l("editOffer")
+                        )
+                    ),
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.toggleAvailability },
+                            this.props.currentUser.available ? this.l("becomeUnavailable") : this.l("becomeAvailable")
+                        )
+                    )
+                )
+            );
         } else {
-            return this.l("youAreOffering") + " " + this.props.currentUser.offerDescription + " " + this.l("butYouAreNotAvailable");
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'p',
+                    null,
+                    this.l("youAreNotOffering")
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    React.createElement(
+                        Ons.Button,
+                        { onClick: this.goToOffersTab },
+                        this.l("createAnOffer")
+                    )
+                )
+            );
         }
     }
 
@@ -93563,12 +93650,12 @@ class Dashboard extends React.Component {
             null,
             React.createElement(
                 Ons.Row,
-                { style: { textAlign: "center" } },
+                null,
                 React.createElement(
                     Ons.Col,
                     { style: { margin: "15px" } },
                     React.createElement(
-                        'h1',
+                        'h2',
                         null,
                         this.l("welcome"),
                         ' ',
@@ -93579,19 +93666,11 @@ class Dashboard extends React.Component {
                         height: '42',
                         width: '42' }),
                     React.createElement(
-                        'p',
+                        'h2',
                         null,
-                        this.statusInfo()
+                        this.l("yourOffer")
                     ),
-                    React.createElement(
-                        'p',
-                        null,
-                        React.createElement(
-                            Ons.Button,
-                            { onClick: this.goToOffersTab },
-                            this.props.currentUser.available ? this.l("editOffer") : this.l("becomeAvailable")
-                        )
-                    )
+                    this.renderOffer()
                 )
             )
         );

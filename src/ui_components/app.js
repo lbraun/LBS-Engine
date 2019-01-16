@@ -480,6 +480,7 @@ class App extends React.Component {
                     l={this.l}
                     login={this.login}
                     handleTabChange={this.handleTabChange}
+                    pushUserUpdates={this.pushUserUpdates}
                     currentUser={this.state.currentUser}
                     online={this.state.online}
                     defaultPicture={defaultPicture}
