@@ -92532,6 +92532,7 @@ const Auth0Cordova = require('@auth0/cordova');
 // Data
 const config = require('../data_components/config.json');
 const localizations = require('../data_components/localizations.json');
+const defaultPicture = '../../res/icons/android/drawable-xxxhdpi-icon.png';
 
 // UI
 const signInPage = require('./signInPage.js');
@@ -92981,8 +92982,9 @@ class App extends React.Component {
                 l: this.l,
                 login: this.login,
                 handleTabChange: this.handleTabChange,
-                authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser,
+                online: this.state.online,
+                defaultPicture: defaultPicture,
                 key: 'dashboard' }),
             tab: React.createElement(Ons.Tab, {
                 label: this.l('tabs.dashboard'),
@@ -93553,6 +93555,9 @@ class Dashboard extends React.Component {
 
     // Render the dashboard
     render() {
+        var picture = this.props.online && this.props.currentUser.picture;
+        picture = picture || this.props.defaultPicture;
+
         return React.createElement(
             Ons.Page,
             null,
@@ -93569,7 +93574,7 @@ class Dashboard extends React.Component {
                         ' ',
                         this.props.currentUser.name
                     ),
-                    React.createElement('img', { src: this.props.currentUser.picture,
+                    React.createElement('img', { src: picture,
                         alt: 'Profile picture',
                         height: '42',
                         width: '42' }),

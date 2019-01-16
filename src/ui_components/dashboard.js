@@ -39,6 +39,9 @@ class Dashboard extends React.Component {
 
     // Render the dashboard
     render() {
+        var picture = this.props.online && this.props.currentUser.picture;
+        picture = picture || this.props.defaultPicture;
+
         return (
             <Ons.Page>
                 <Ons.Row style={{textAlign: "center"}}>
@@ -47,7 +50,7 @@ class Dashboard extends React.Component {
                             {this.l("welcome")} {this.props.currentUser.name}
                         </h1>
 
-                        <img src={this.props.currentUser.picture}
+                        <img src={picture}
                             alt="Profile picture"
                             height="42"
                             width="42" />
