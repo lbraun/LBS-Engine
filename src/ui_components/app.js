@@ -14,6 +14,7 @@ const localizations = require('../data_components/localizations.json');
 
 // UI
 const signInPage = require('./signInPage.js');
+const consentForm = require('./consentForm.js');
 const dashboard = require('./dashboard.js');
 const map = require('./map.js');
 const list =  require('./list.js');
@@ -53,6 +54,9 @@ class App extends React.Component {
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
+        this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
+        this.revokeConsent = this.revokeConsent.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
@@ -85,8 +89,6 @@ class App extends React.Component {
             domain: 'geofreebie.eu.auth0.com',
             clientID: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv'
         });
-        this.login = this.login.bind(this);
-        this.logout = this.logout.bind(this);
 
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
@@ -141,9 +143,16 @@ class App extends React.Component {
     l(string, locale = this.state.locale) {
         var localization = localizations[locale][string];
 
-        if (!localization) {
+        if (!localization || localization == "TODO") {
             console.log(`Error: localization "${string}" not found for locale "${locale}"`)
-            return "";
+
+            if (locale != "en") {
+                // Fall back to English if the localization isn't found for the given locale
+                return this.l(string, "en");
+            } else {
+                // Fall back to the string itself if all else fails
+                return string;
+            }
         }
 
         return localization;
@@ -283,14 +292,6 @@ class App extends React.Component {
                             var currentUser = result[i];
                             result.splice(i, 1);
 
-                            this.setState({
-                                currentUser: currentUser,
-                                locale: currentUser.locale || this.state.locale,
-                                currentUserIsLoaded: true,
-                                users: result || [],
-                                usersAreLoaded: true,
-                            });
-
                             // Set defaults from config file if user just signed up
                             if (currentUser.newlyCreated) {
                                 currentUser.available = config.app.available;
@@ -299,8 +300,16 @@ class App extends React.Component {
                                 currentUser.locale = this.state.locale;
                                 currentUser.newlyCreated = false;
 
-                                pushUserUpdate(currentUser);
+                                this.pushUserUpdate(currentUser);
                             }
+
+                            this.setState({
+                                currentUser: currentUser,
+                                locale: currentUser.locale || this.state.locale,
+                                currentUserIsLoaded: true,
+                                users: result || [],
+                                usersAreLoaded: true,
+                            });
 
                             break;
                         }
@@ -514,6 +523,7 @@ class App extends React.Component {
                     pushUserUpdate={this.pushUserUpdate}
                     currentUser={this.state.currentUser}
                     authenticated={this.state.authenticated}
+                    revokeConsent={this.revokeConsent}
                     logout={this.logout}
                     login={this.login}
                     logging={this.state.logging}
@@ -649,6 +659,10 @@ class App extends React.Component {
         this.resumeApp();
     };
 
+    revokeConsent(e) {
+        this.pushUserUpdates({hasConsented: false});
+    };
+
     handleLocaleChange(e) {
         var newLocale = e.target.value;
 
@@ -694,7 +708,16 @@ class App extends React.Component {
 
     // Render sidebars and toolbar
     render() {
+        // Redirect to sign in page if user has not yet been loaded and authenticated
         if (this.state.authenticated && this.state.currentUser) {
+            // Redirect to consent form if user has not yet consented
+            if (!this.state.currentUser.hasConsented) {
+                return (<consentForm.ConsentForm
+                    l={this.l}
+                    locale={this.state.locale}
+                    pushUserUpdates={this.pushUserUpdates}
+                    handleLocaleChange={this.handleLocaleChange} />);
+            }
             return (
                 <Ons.Splitter>
                     <Ons.SplitterSide
