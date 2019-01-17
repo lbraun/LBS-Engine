@@ -72,19 +72,24 @@ class ConsentForm extends React.Component {
                     </Ons.ListItem>
 
                     <Ons.ListItem>
-                        <div>
-                            {this.l("description")}
-                        </div>
-                    </Ons.ListItem>
-                    <Ons.ListItem>
-                        <div>
+                        <p>{this.l("description")}</p>
+
+                        <p>
+                            <b>{this.l("rightToQuitInfoTitle")}:</b><br />
+                            {this.l("rightToQuitInfo")}
+                        </p>
+
+                        <p>
+                            <b>{this.l("dataRecordingInfoTitle")}:</b><br />
+                            {this.l("dataRecordingInfo")}
+                        </p>
+
+                        <p>
+                            <b>{this.l("moreInfoTitle")}:</b><br />
                             {this.l("moreInfo")} <a href='https://github.com/lbraun/geofreebie'>{this.l("projectsWebsite")}</a>.
-                        </div>
-                    </Ons.ListItem>
-                    <Ons.ListItem>
-                        <div>
-                            {this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.
-                        </div>
+                        </p>
+
+                        <p>{this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.</p>
                     </Ons.ListItem>
                     <Ons.ListItem>
                         <div>
