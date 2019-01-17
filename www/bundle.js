@@ -92306,6 +92306,9 @@ module.exports={
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
         "dashboard.becomeAvailable": "Verfügbar werden",
         "dashboard.becomeUnavailable": "Unverfügbar werden",
+        "dashboard.nearbyOffers": "Angebote in Ihre Nähre",
+        "dashboard.weNeedYourLocationToShowThis": "TODO",
+        "dashboard.useMyLocation": "TODO",
         "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
         "dashboard.availableNow": "Jetzt verfügbar",
         "dashboard.youAreNotOffering": "TODO",
@@ -92375,6 +92378,9 @@ module.exports={
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
         "dashboard.becomeAvailable": "Become available",
         "dashboard.becomeUnavailable": "Become unavailable",
+        "dashboard.nearbyOffers": "Nearby Offers",
+        "dashboard.weNeedYourLocationToShowThis": "We need to use your location in order to show which offers are nearby.",
+        "dashboard.useMyLocation": "Use my location",
         "dashboard.notCurrentlyAvailable": "Not currently available",
         "dashboard.availableNow": "Available now",
         "dashboard.youAreNotOffering": "You are not offering anything right now.",
@@ -92444,6 +92450,9 @@ module.exports={
         "consentForm.volunteeredConsent": "TODO",
         "dashboard.becomeAvailable": "للمتاح",
         "dashboard.becomeUnavailable": "TODO",
+        "dashboard.nearbyOffers": "TODO",
+        "dashboard.weNeedYourLocationToShowThis": "TODO",
+        "dashboard.useMyLocation": "TODO",
         "dashboard.notCurrentlyAvailable": "TODO",
         "dashboard.availableNow": "TODO",
         "dashboard.youAreNotOffering": "TODO",
@@ -92538,7 +92547,7 @@ const Auth0Cordova = require('@auth0/cordova');
 // Data
 const config = require('../data_components/config.json');
 const localizations = require('../data_components/localizations.json');
-const defaultPicture = '../../res/icons/android/drawable-xxxhdpi-icon.png';
+const defaultPicture = 'img/logo.png';
 
 // UI
 const signInPage = require('./signInPage.js');
@@ -92660,7 +92669,10 @@ class App extends React.Component {
         // TODO: implement this for real!
         this.state.online = true;
 
-        if (!this.state.online) {
+        // Disable sign-in for faster development
+        this.state.developerMode = false;
+
+        if (this.state.developerMode) {
             this.state.authenticated = true;
             this.state.currentUser = {
                 "nickname": "lucas.braun",
@@ -92993,7 +93005,12 @@ class App extends React.Component {
                 handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
                 currentUser: this.state.currentUser,
-                online: this.state.online,
+                online: this.state.online
+                // For user list
+                , handleListItemClick: this.handleListItemClick,
+                usersAreLoaded: this.state.usersAreLoaded,
+                errorLoadingUsers: this.state.errorLoadingUsers,
+                users: this.state.users,
                 defaultPicture: defaultPicture,
                 key: 'dashboard' }),
             tab: React.createElement(Ons.Tab, {
@@ -93033,7 +93050,9 @@ class App extends React.Component {
                 currentUser: this.state.currentUser,
                 centerPosition: this.state.centerPosition,
                 selectedUserId: this.state.selectedUserId,
-                onListItemClick: this.handleListItemClick,
+                handleListItemClick: this.handleListItemClick,
+                online: this.state.online,
+                defaultPicture: defaultPicture,
                 usersAreLoaded: this.state.usersAreLoaded,
                 errorLoadingUsers: this.state.errorLoadingUsers,
                 users: this.state.users,
@@ -93546,12 +93565,15 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const list = require('./list.js');
+
 class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
         this.toggleAvailability = this.toggleAvailability.bind(this);
+        this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
     }
 
     /**
@@ -93576,6 +93598,14 @@ class Dashboard extends React.Component {
      */
     toggleAvailability(e) {
         this.props.pushUserUpdates({ available: !this.props.currentUser.available });
+    }
+
+    /**
+     * Turn on the user's useLocation setting
+     * @param {Event} e the react event object
+     */
+    turnOnUseLocation(e) {
+        this.props.pushUserUpdates({ useLocation: true });
     }
 
     // Render information about the user's offer
@@ -93665,6 +93695,66 @@ class Dashboard extends React.Component {
         }
     }
 
+    // Render information about nearby offers
+    renderNearbyOffersCard() {
+        if (this.props.currentUser.useLocation) {
+            return React.createElement(
+                Ons.Card,
+                null,
+                React.createElement(
+                    Ons.List,
+                    null,
+                    React.createElement(
+                        Ons.ListItem,
+                        null,
+                        this.l("nearbyOffers")
+                    ),
+                    React.createElement(list.UserListItems, {
+                        l: this.props.l,
+                        online: this.props.online,
+                        currentUser: this.props.currentUser,
+                        defaultPicture: this.props.defaultPicture,
+                        handleListItemClick: this.props.handleListItemClick,
+                        usersAreLoaded: this.props.usersAreLoaded,
+                        errorLoadingUsers: this.props.errorLoadingUsers,
+                        users: this.props.users })
+                )
+            );
+        } else {
+            return React.createElement(
+                Ons.Card,
+                null,
+                React.createElement(
+                    Ons.List,
+                    null,
+                    React.createElement(
+                        Ons.ListItem,
+                        null,
+                        this.l("nearbyOffers")
+                    ),
+                    React.createElement(
+                        Ons.ListItem,
+                        null,
+                        React.createElement(
+                            'p',
+                            null,
+                            this.l("weNeedYourLocationToShowThis")
+                        ),
+                        React.createElement(
+                            'p',
+                            null,
+                            React.createElement(
+                                Ons.Button,
+                                { onClick: this.turnOnUseLocation },
+                                this.l("useMyLocation")
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }
+
     // Render the dashboard
     render() {
         return React.createElement(
@@ -93683,7 +93773,8 @@ class Dashboard extends React.Component {
                     )
                 )
             ),
-            this.renderOfferCard()
+            this.renderOfferCard(),
+            this.renderNearbyOffersCard()
         );
     }
 }
@@ -93692,7 +93783,7 @@ module.exports = {
     Dashboard: Dashboard
 };
 
-},{"react":265,"react-onsenui":262}],278:[function(require,module,exports){
+},{"./list.js":279,"react":265,"react-onsenui":262}],278:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -93732,6 +93823,48 @@ const Ons = require('react-onsenui');
 class List extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    /**
+     * Localize a string in the context of the list
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`list.${string}`);
+    }
+
+    render() {
+        return React.createElement(
+            Ons.Page,
+            null,
+            React.createElement(
+                Ons.Row,
+                { height: '100%' },
+                React.createElement(
+                    Ons.Col,
+                    { verticalAlign: 'center' },
+                    React.createElement(
+                        Ons.List,
+                        null,
+                        React.createElement(UserListItems, {
+                            l: this.props.l,
+                            online: this.props.online,
+                            currentUser: this.props.currentUser,
+                            defaultPicture: this.props.defaultPicture,
+                            handleListItemClick: this.props.handleListItemClick,
+                            usersAreLoaded: this.props.usersAreLoaded,
+                            errorLoadingUsers: this.props.errorLoadingUsers,
+                            users: this.props.users })
+                    )
+                )
+            )
+        );
+    }
+}
+
+class UserListItems extends React.Component {
+    constructor(props) {
+        super(props);
         this.handleListItemClick = this.handleListItemClick.bind(this);
     }
 
@@ -93743,13 +93876,16 @@ class List extends React.Component {
         return this.props.l(`list.${string}`);
     }
 
-    /**
-     * Handle clicks on users in the list
-     * @param {userId} id of the user
-     * @param {e} click event
-     */
-    handleListItemClick(userId, e) {
-        this.props.onListItemClick(userId);
+    renderUserPicture(user) {
+        if (user.picture && this.props.online) {
+            var picture = user.picture;
+        } else {
+            var picture = this.props.defaultPicture;
+        }
+
+        return React.createElement('img', { className: 'list-item__thumbnail',
+            src: picture,
+            alt: 'Profile picture' });
     }
 
     /**
@@ -93771,18 +93907,17 @@ class List extends React.Component {
         }
     }
 
-    renderUserPicture(user) {
-        if (user.picture) {
-            return React.createElement('img', { className: 'list-item__thumbnail',
-                src: user.picture,
-                alt: 'Profile picture' });
-        } else {
-            return React.createElement(Ons.Icon, { icon: 'md-face' });
-        }
+    /**
+     * Handle clicks on users in the list
+     * @param {userId} id of the user
+     * @param {e} click event
+     */
+    handleListItemClick(userId, e) {
+        this.props.handleListItemClick(userId);
     }
 
-    // Render the list
-    renderUserList() {
+    // Render the list items
+    render() {
         var listItems = [];
 
         if (this.props.errorLoadingUsers) {
@@ -93836,14 +93971,7 @@ class List extends React.Component {
                         React.createElement(
                             'div',
                             { className: 'list-item__title' },
-                            user.name
-                        ),
-                        React.createElement(
-                            'div',
-                            null,
-                            user.offerDescription,
-                            ' - ',
-                            user.contactInformation
+                            user.offerTitle
                         ),
                         React.createElement(
                             'div',
@@ -93855,31 +93983,12 @@ class List extends React.Component {
             }
         }
 
-        return React.createElement(
-            Ons.List,
-            null,
-            listItems
-        );
-    }
-
-    render() {
-        return React.createElement(
-            Ons.Page,
-            null,
-            React.createElement(
-                Ons.Row,
-                { height: '100%' },
-                React.createElement(
-                    Ons.Col,
-                    { verticalAlign: 'center' },
-                    this.renderUserList()
-                )
-            )
-        );
+        return listItems;
     }
 }
 
 module.exports = {
+    UserListItems: UserListItems,
     List: List
 };
 
@@ -94731,6 +94840,19 @@ class SignInPage extends React.Component {
             return React.createElement(
                 Ons.Page,
                 { style: { textAlign: "center" } },
+                React.createElement(
+                    Ons.Row,
+                    { style: { marginTop: "50px" } },
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            'h1',
+                            null,
+                            this.props.l("app.name")
+                        )
+                    )
+                ),
                 React.createElement(
                     'p',
                     null,

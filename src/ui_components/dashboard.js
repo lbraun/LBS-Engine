@@ -2,12 +2,15 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const list = require('./list.js');
+
 class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
         this.toggleAvailability = this.toggleAvailability.bind(this);
+        this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
     }
 
     /**
@@ -32,6 +35,14 @@ class Dashboard extends React.Component {
      */
     toggleAvailability(e) {
         this.props.pushUserUpdates({available: !this.props.currentUser.available});
+    }
+
+    /**
+     * Turn on the user's useLocation setting
+     * @param {Event} e the react event object
+     */
+    turnOnUseLocation(e) {
+        this.props.pushUserUpdates({useLocation: true});
     }
 
     // Render information about the user's offer
@@ -85,6 +96,48 @@ class Dashboard extends React.Component {
         }
     }
 
+    // Render information about nearby offers
+    renderNearbyOffersCard() {
+        if (this.props.currentUser.useLocation) {
+            return (
+                <Ons.Card>
+                    <Ons.List>
+                        <Ons.ListItem>
+                            {this.l("nearbyOffers")}
+                        </Ons.ListItem>
+                        <list.UserListItems
+                            l={this.props.l}
+                            online={this.props.online}
+                            currentUser={this.props.currentUser}
+                            defaultPicture={this.props.defaultPicture}
+                            handleListItemClick={this.props.handleListItemClick}
+                            usersAreLoaded={this.props.usersAreLoaded}
+                            errorLoadingUsers={this.props.errorLoadingUsers}
+                            users={this.props.users} />
+                    </Ons.List>
+                </Ons.Card>
+            );
+        } else {
+            return (
+                <Ons.Card>
+                    <Ons.List>
+                        <Ons.ListItem>
+                            {this.l("nearbyOffers")}
+                        </Ons.ListItem>
+                        <Ons.ListItem>
+                            <p>{this.l("weNeedYourLocationToShowThis")}</p>
+                            <p>
+                                <Ons.Button onClick={this.turnOnUseLocation}>
+                                    {this.l("useMyLocation")}
+                                </Ons.Button>
+                            </p>
+                        </Ons.ListItem>
+                    </Ons.List>
+                </Ons.Card>
+            );
+        }
+    }
+
     // Render the dashboard
     render() {
         return (
@@ -96,6 +149,8 @@ class Dashboard extends React.Component {
                 </Ons.Row>
 
                 {this.renderOfferCard()}
+
+                {this.renderNearbyOffersCard()}
             </Ons.Page>
         )
     }

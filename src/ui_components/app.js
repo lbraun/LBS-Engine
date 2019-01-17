@@ -11,14 +11,14 @@ const Auth0Cordova =  require('@auth0/cordova');
 // Data
 const config = require('../data_components/config.json');
 const localizations = require('../data_components/localizations.json');
-const defaultPicture = '../../res/icons/android/drawable-xxxhdpi-icon.png';
+const defaultPicture = 'img/logo.png';
 
 // UI
 const signInPage = require('./signInPage.js');
 const consentForm = require('./consentForm.js');
 const dashboard = require('./dashboard.js');
 const map = require('./map.js');
-const list =  require('./list.js');
+const list = require('./list.js');
 const settings = require('./settings.js');
 const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js')
@@ -139,7 +139,10 @@ class App extends React.Component {
         // TODO: implement this for real!
         this.state.online = true;
 
-        if (!this.state.online) {
+        // Disable sign-in for faster development
+        this.state.developerMode = false;
+
+        if (this.state.developerMode) {
             this.state.authenticated = true;
             this.state.currentUser = {
                 "nickname": "lucas.braun",
@@ -486,6 +489,11 @@ class App extends React.Component {
                     pushUserUpdates={this.pushUserUpdates}
                     currentUser={this.state.currentUser}
                     online={this.state.online}
+                    // For user list
+                    handleListItemClick={this.handleListItemClick}
+                    usersAreLoaded={this.state.usersAreLoaded}
+                    errorLoadingUsers={this.state.errorLoadingUsers}
+                    users={this.state.users}
                     defaultPicture={defaultPicture}
                     key='dashboard' />,
                 tab: <Ons.Tab
@@ -525,7 +533,9 @@ class App extends React.Component {
                     currentUser={this.state.currentUser}
                     centerPosition={this.state.centerPosition}
                     selectedUserId={this.state.selectedUserId}
-                    onListItemClick={this.handleListItemClick}
+                    handleListItemClick={this.handleListItemClick}
+                    online={this.state.online}
+                    defaultPicture={defaultPicture}
                     usersAreLoaded={this.state.usersAreLoaded}
                     errorLoadingUsers={this.state.errorLoadingUsers}
                     users={this.state.users}

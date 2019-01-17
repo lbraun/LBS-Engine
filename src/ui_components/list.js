@@ -9,6 +9,42 @@ const Ons = require('react-onsenui');
 class List extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    /**
+     * Localize a string in the context of the list
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`list.${string}`);
+    }
+
+    render() {
+        return (
+            <Ons.Page>
+                <Ons.Row height="100%">
+                    <Ons.Col verticalAlign="center">
+                        <Ons.List>
+                            <UserListItems
+                                l={this.props.l}
+                                online={this.props.online}
+                                currentUser={this.props.currentUser}
+                                defaultPicture={this.props.defaultPicture}
+                                handleListItemClick={this.props.handleListItemClick}
+                                usersAreLoaded={this.props.usersAreLoaded}
+                                errorLoadingUsers={this.props.errorLoadingUsers}
+                                users={this.props.users} />
+                        </Ons.List>
+                    </Ons.Col>
+                </Ons.Row>
+            </Ons.Page>
+        )
+    }
+}
+
+class UserListItems extends React.Component {
+    constructor(props) {
+        super(props);
         this.handleListItemClick = this.handleListItemClick.bind(this);
     }
 
@@ -20,13 +56,18 @@ class List extends React.Component {
         return this.props.l(`list.${string}`);
     }
 
-    /**
-     * Handle clicks on users in the list
-     * @param {userId} id of the user
-     * @param {e} click event
-     */
-    handleListItemClick(userId, e) {
-        this.props.onListItemClick(userId);
+    renderUserPicture(user) {
+        if (user.picture && this.props.online) {
+            var picture = user.picture;
+        } else {
+            var picture = this.props.defaultPicture;
+        }
+
+        return (
+            <img className="list-item__thumbnail"
+                src={picture}
+                alt="Profile picture" />
+        );
     }
 
     /**
@@ -48,20 +89,17 @@ class List extends React.Component {
         }
     }
 
-    renderUserPicture(user) {
-        if (user.picture) {
-            return (
-                <img className="list-item__thumbnail"
-                    src={user.picture}
-                    alt="Profile picture" />
-            );
-        } else {
-            return (<Ons.Icon icon="md-face"/>);
-        }
+    /**
+     * Handle clicks on users in the list
+     * @param {userId} id of the user
+     * @param {e} click event
+     */
+    handleListItemClick(userId, e) {
+        this.props.handleListItemClick(userId);
     }
 
-    // Render the list
-    renderUserList() {
+    // Render the list items
+    render() {
         var listItems = [];
 
         if (this.props.errorLoadingUsers) {
@@ -106,10 +144,7 @@ class List extends React.Component {
                             </div>
                             <div className="center">
                                 <div className="list-item__title">
-                                    {user.name}
-                                </div>
-                                <div>
-                                    {user.offerDescription} - {user.contactInformation}
+                                    {user.offerTitle}
                                 </div>
                                 <div className="list-item__subtitle">
                                     {this.availablityText(user)}
@@ -120,26 +155,11 @@ class List extends React.Component {
             }
         }
 
-        return (
-            <Ons.List>
-                {listItems}
-            </Ons.List>
-        )
-    }
-
-    render() {
-        return (
-            <Ons.Page>
-                <Ons.Row height="100%">
-                    <Ons.Col verticalAlign="center">
-                        {this.renderUserList()}
-                    </Ons.Col>
-                </Ons.Row>
-            </Ons.Page>
-        )
+        return (listItems);
     }
 }
 
 module.exports = {
+    UserListItems: UserListItems,
     List: List
 }
