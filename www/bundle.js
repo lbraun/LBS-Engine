@@ -92900,8 +92900,12 @@ class App extends React.Component {
     withinGeofence(coordinates) {
         var lat = coordinates[0];
         var lon = coordinates[1];
+
+        // Southwest corner of Münster
         var lat1 = 51.85868336894736;
         var lon1 = 7.483062744140626;
+
+        // Northeast corner of Münster
         var lat2 = 52.05586831074774;
         var lon2 = 7.768707275390625;
 
@@ -93094,7 +93098,7 @@ class App extends React.Component {
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
-                pushUserUpdate: this.pushUserUpdate,
+                pushUserUpdates: this.pushUserUpdates,
                 currentUser: this.state.currentUser,
                 authenticated: this.state.authenticated,
                 revokeConsent: this.revokeConsent,
@@ -94422,8 +94426,7 @@ class offerForm extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var attributes = {};
-        attributes[name] = value;
+        var attributes = { [name]: value };
         this.props.pushUserUpdates(attributes);
     }
 
@@ -94687,14 +94690,19 @@ class Settings extends React.Component {
      * Handle the change of a user setting
      * @param {Event} e the react event object
      */
-    handleInputChange(event) {
-        const target = event.target;
+    handleInputChange(e) {
+        const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var updatedUser = this.props.currentUser;
-        updatedUser[name] = value;
-        this.props.pushUserUpdate(updatedUser);
+        var attributes = { [name]: value };
+
+        // If user turns of useLocation, turn of shareLocation as well
+        if (name == "useLocation" && !value) {
+            attributes.shareLocation = false;
+        }
+
+        this.props.pushUserUpdates(attributes);
     }
 
     render() {

@@ -34,8 +34,7 @@ class offerForm extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var attributes = {};
-        attributes[name] = value;
+        var attributes = {[name]: value};
         this.props.pushUserUpdates(attributes);
     }
 

@@ -50,14 +50,19 @@ class Settings extends React.Component {
      * Handle the change of a user setting
      * @param {Event} e the react event object
      */
-    handleInputChange(event) {
-        const target = event.target;
+    handleInputChange(e) {
+        const target = e.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var updatedUser = this.props.currentUser;
-        updatedUser[name] = value;
-        this.props.pushUserUpdate(updatedUser);
+        var attributes = {[name]: value};
+
+        // If user turns of useLocation, turn of shareLocation as well
+        if (name == "useLocation" && !value) {
+            attributes.shareLocation = false;
+        }
+
+        this.props.pushUserUpdates(attributes);
     }
 
     render() {
@@ -96,6 +101,7 @@ class Settings extends React.Component {
                             </input>
                         </div>
                     </Ons.ListItem>
+
                     <Ons.ListItem id='use-location-li' key='useLocation'>
                         <div className='left'>
                             <p>{this.l("useLocation")}</p>
@@ -112,6 +118,7 @@ class Settings extends React.Component {
                             {this.l("useLocationText")}
                         </div>
                     </Ons.ListItem>
+
                     <Ons.ListItem id='share-location-li' key='shareLocation'>
                         <div className='left'>
                             <p>{this.l("shareLocation")}</p>
@@ -128,6 +135,7 @@ class Settings extends React.Component {
                             {this.l("shareLocationText")}
                         </div>
                     </Ons.ListItem>
+
                     <Ons.ListItem key='authentication'>
                         <div className='left'>
                             <p>{authenticationText}</p>

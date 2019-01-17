@@ -360,8 +360,12 @@ class App extends React.Component {
     withinGeofence(coordinates) {
         var lat = coordinates[0];
         var lon = coordinates[1];
+
+        // Southwest corner of Münster
         var lat1 = 51.85868336894736;
         var lon1 = 7.483062744140626;
+
+        // Northeast corner of Münster
         var lat2 = 52.05586831074774;
         var lon2 = 7.768707275390625;
 
@@ -556,7 +560,7 @@ class App extends React.Component {
                     onLayerControlChange={this.handleLayerControlChange}
                     onDragMapChange={this.handleDragMapChange}
                     onZoomMapChange={this.handleZoomMapChange}
-                    pushUserUpdate={this.pushUserUpdate}
+                    pushUserUpdates={this.pushUserUpdates}
                     currentUser={this.state.currentUser}
                     authenticated={this.state.authenticated}
                     revokeConsent={this.revokeConsent}
