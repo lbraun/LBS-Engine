@@ -87,22 +87,10 @@ class Dashboard extends React.Component {
 
     // Render the dashboard
     render() {
-        var picture = this.props.online && this.props.currentUser.picture;
-        picture = picture || this.props.defaultPicture;
-
         return (
             <Ons.Page>
                 <Ons.Row>
                     <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
-                        <h2>
-                            {this.l("welcome")} {this.props.currentUser.name}
-                        </h2>
-
-                        <img src={picture}
-                            alt="Profile picture"
-                            height="42"
-                            width="42" />
-
                         <div>{this.l("yourOffer")}</div>
                     </Ons.Col>
                 </Ons.Row>

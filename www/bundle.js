@@ -92306,7 +92306,6 @@ module.exports={
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
         "dashboard.becomeAvailable": "Verfügbar werden",
         "dashboard.becomeUnavailable": "Unverfügbar werden",
-        // "dashboard.editOffer": "Angebot bearbeiten",
         "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
         "dashboard.availableNow": "Jetzt verfügbar",
         "dashboard.youAreNotOffering": "TODO",
@@ -92376,7 +92375,6 @@ module.exports={
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
         "dashboard.becomeAvailable": "Become available",
         "dashboard.becomeUnavailable": "Become unavailable",
-        // "dashboard.editOffer": "Edit offer",
         "dashboard.notCurrentlyAvailable": "Not currently available",
         "dashboard.availableNow": "Available now",
         "dashboard.youAreNotOffering": "You are not offering anything right now.",
@@ -92446,7 +92444,6 @@ module.exports={
         "consentForm.volunteeredConsent": "TODO",
         "dashboard.becomeAvailable": "للمتاح",
         "dashboard.becomeUnavailable": "TODO",
-        // "dashboard.editOffer": "تعديل العرض",
         "dashboard.notCurrentlyAvailable": "TODO",
         "dashboard.availableNow": "TODO",
         "dashboard.youAreNotOffering": "TODO",
@@ -93111,6 +93108,9 @@ class App extends React.Component {
     renderSidebarList() {
         var sidebarItems = [{ key: "offers", icon: "md-edit" }, { key: "settings", icon: "md-settings" }, { key: "help", icon: "md-help" }, { key: "dashboard", icon: "md-compass" }];
 
+        var picture = this.state.online && this.state.currentUser.picture;
+        picture = picture || defaultPicture;
+
         var listItems = [React.createElement(
             Ons.ListItem,
             {
@@ -93118,17 +93118,28 @@ class App extends React.Component {
                 tappable: false },
             React.createElement(
                 'div',
-                { className: 'list-item__title' },
-                React.createElement(
-                    'strong',
-                    null,
-                    this.state.currentUser.name
-                )
+                { className: 'left' },
+                React.createElement('img', { className: 'list-item__thumbnail',
+                    src: picture,
+                    alt: 'Profile picture' })
             ),
             React.createElement(
                 'div',
-                { className: 'list-item__subtitle' },
-                this.state.currentUser.contactInformation
+                { className: 'center' },
+                React.createElement(
+                    'div',
+                    { className: 'list-item__title' },
+                    React.createElement(
+                        'strong',
+                        null,
+                        this.state.currentUser.name
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'list-item__subtitle' },
+                    this.state.currentUser.contactInformation
+                )
             )
         )];
 
@@ -93656,9 +93667,6 @@ class Dashboard extends React.Component {
 
     // Render the dashboard
     render() {
-        var picture = this.props.online && this.props.currentUser.picture;
-        picture = picture || this.props.defaultPicture;
-
         return React.createElement(
             Ons.Page,
             null,
@@ -93668,17 +93676,6 @@ class Dashboard extends React.Component {
                 React.createElement(
                     Ons.Col,
                     { style: { margin: "15px 20px 5px 15px" } },
-                    React.createElement(
-                        'h2',
-                        null,
-                        this.l("welcome"),
-                        ' ',
-                        this.props.currentUser.name
-                    ),
-                    React.createElement('img', { src: picture,
-                        alt: 'Profile picture',
-                        height: '42',
-                        width: '42' }),
                     React.createElement(
                         'div',
                         null,

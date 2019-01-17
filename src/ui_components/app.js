@@ -607,15 +607,26 @@ class App extends React.Component {
 
         ];
 
+        var picture = this.state.online && this.state.currentUser.picture;
+        picture = picture || defaultPicture;
+
         var listItems = [
             <Ons.ListItem
                 key='user'
                 tappable={false}>
-                    <div className='list-item__title'>
-                        <strong>{this.state.currentUser.name}</strong>
+                    <div className='left'>
+                        <img className="list-item__thumbnail"
+                            src={picture}
+                            alt="Profile picture" />
                     </div>
-                    <div className='list-item__subtitle'>
-                        {this.state.currentUser.contactInformation}
+
+                    <div className="center">
+                        <div className='list-item__title'>
+                            <strong>{this.state.currentUser.name}</strong>
+                        </div>
+                        <div className='list-item__subtitle'>
+                            {this.state.currentUser.contactInformation}
+                        </div>
                     </div>
             </Ons.ListItem>
         ];
