@@ -93704,11 +93704,6 @@ class Dashboard extends React.Component {
                 React.createElement(
                     Ons.List,
                     null,
-                    React.createElement(
-                        Ons.ListItem,
-                        null,
-                        this.l("nearbyOffers")
-                    ),
                     React.createElement(list.UserListItems, {
                         l: this.props.l,
                         online: this.props.online,
@@ -93727,11 +93722,6 @@ class Dashboard extends React.Component {
                 React.createElement(
                     Ons.List,
                     null,
-                    React.createElement(
-                        Ons.ListItem,
-                        null,
-                        this.l("nearbyOffers")
-                    ),
                     React.createElement(
                         Ons.ListItem,
                         null,
@@ -93774,6 +93764,19 @@ class Dashboard extends React.Component {
                 )
             ),
             this.renderOfferCard(),
+            React.createElement(
+                Ons.Row,
+                null,
+                React.createElement(
+                    Ons.Col,
+                    { style: { margin: "15px 20px 5px 15px" } },
+                    React.createElement(
+                        'div',
+                        null,
+                        this.l("nearbyOffers")
+                    )
+                )
+            ),
             this.renderNearbyOffersCard()
         );
     }

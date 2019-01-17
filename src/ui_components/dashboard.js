@@ -102,9 +102,6 @@ class Dashboard extends React.Component {
             return (
                 <Ons.Card>
                     <Ons.List>
-                        <Ons.ListItem>
-                            {this.l("nearbyOffers")}
-                        </Ons.ListItem>
                         <list.UserListItems
                             l={this.props.l}
                             online={this.props.online}
@@ -121,9 +118,6 @@ class Dashboard extends React.Component {
             return (
                 <Ons.Card>
                     <Ons.List>
-                        <Ons.ListItem>
-                            {this.l("nearbyOffers")}
-                        </Ons.ListItem>
                         <Ons.ListItem>
                             <p>{this.l("weNeedYourLocationToShowThis")}</p>
                             <p>
@@ -149,6 +143,12 @@ class Dashboard extends React.Component {
                 </Ons.Row>
 
                 {this.renderOfferCard()}
+
+                <Ons.Row>
+                    <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
+                        <div>{this.l("nearbyOffers")}</div>
+                    </Ons.Col>
+                </Ons.Row>
 
                 {this.renderNearbyOffersCard()}
             </Ons.Page>
