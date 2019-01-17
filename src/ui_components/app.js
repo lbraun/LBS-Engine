@@ -11,13 +11,14 @@ const Auth0Cordova =  require('@auth0/cordova');
 // Data
 const config = require('../data_components/config.json');
 const localizations = require('../data_components/localizations.json');
+const defaultPicture = 'img/logo.png';
 
 // UI
 const signInPage = require('./signInPage.js');
 const consentForm = require('./consentForm.js');
 const dashboard = require('./dashboard.js');
 const map = require('./map.js');
-const list =  require('./list.js');
+const list = require('./list.js');
 const settings = require('./settings.js');
 const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js')
@@ -134,6 +135,32 @@ class App extends React.Component {
         }, {
             timeout: 30000 // Throw an error if no update is received every 30 seconds
         });
+
+        // TODO: implement this for real!
+        this.state.online = true;
+
+        // Disable sign-in for faster development
+        this.state.developerMode = false;
+
+        if (this.state.developerMode) {
+            this.state.authenticated = true;
+            this.state.currentUser = {
+                "nickname": "lucas.braun",
+                "name": "Developer User",
+                "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
+                "updated_at": "2019-01-09T08:54:31.035Z",
+                "auth0Id": "auth0|5c35b6c6a19540326d51c3a9",
+                "offerTitle": "Something!",
+                "offerDescription": "It's really special.",
+                "hasConsented": true,
+                "createdAt": {
+                    "$date": "2019-01-09T08:57:59.078Z"
+                },
+                "updatedAt": {
+                    "$date": "2019-01-09T08:57:59.078Z"
+                }
+            };
+        }
     }
 
     /**
@@ -459,8 +486,15 @@ class App extends React.Component {
                     l={this.l}
                     login={this.login}
                     handleTabChange={this.handleTabChange}
-                    authenticated={this.state.authenticated}
+                    pushUserUpdates={this.pushUserUpdates}
                     currentUser={this.state.currentUser}
+                    online={this.state.online}
+                    // For user list
+                    handleListItemClick={this.handleListItemClick}
+                    usersAreLoaded={this.state.usersAreLoaded}
+                    errorLoadingUsers={this.state.errorLoadingUsers}
+                    users={this.state.users}
+                    defaultPicture={defaultPicture}
                     key='dashboard' />,
                 tab: <Ons.Tab
                     label={this.l('tabs.dashboard')}
@@ -499,7 +533,9 @@ class App extends React.Component {
                     currentUser={this.state.currentUser}
                     centerPosition={this.state.centerPosition}
                     selectedUserId={this.state.selectedUserId}
-                    onListItemClick={this.handleListItemClick}
+                    handleListItemClick={this.handleListItemClick}
+                    online={this.state.online}
+                    defaultPicture={defaultPicture}
                     usersAreLoaded={this.state.usersAreLoaded}
                     errorLoadingUsers={this.state.errorLoadingUsers}
                     users={this.state.users}
@@ -581,15 +617,26 @@ class App extends React.Component {
 
         ];
 
+        var picture = this.state.online && this.state.currentUser.picture;
+        picture = picture || defaultPicture;
+
         var listItems = [
             <Ons.ListItem
                 key='user'
                 tappable={false}>
-                    <div className='list-item__title'>
-                        <strong>{this.state.currentUser.name}</strong>
+                    <div className='left'>
+                        <img className="list-item__thumbnail"
+                            src={picture}
+                            alt="Profile picture" />
                     </div>
-                    <div className='list-item__subtitle'>
-                        {this.state.currentUser.contactInformation}
+
+                    <div className="center">
+                        <div className='list-item__title'>
+                            <strong>{this.state.currentUser.name}</strong>
+                        </div>
+                        <div className='list-item__subtitle'>
+                            {this.state.currentUser.contactInformation}
+                        </div>
                     </div>
             </Ons.ListItem>
         ];
@@ -603,7 +650,7 @@ class App extends React.Component {
                     tappable={true}
                     onClick={this.handleSidebarClick.bind(this, sidebarItem.key)}>
                         <div className='left'>
-                            <Ons.Icon icon={sidebarItem.icon}/>
+                            <Ons.Icon icon={sidebarItem.icon} />
                         </div>
                         <div className='center'>
                             {this.l(`tabs.${sidebarItem.key}`)}
@@ -757,6 +804,7 @@ class App extends React.Component {
                 locale={this.state.locale}
                 handleLocaleChange={this.handleLocaleChange}
                 login={this.login}
+                online={this.state.online}
                 authenticated={this.state.authenticated} />);
         }
     }

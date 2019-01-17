@@ -92310,12 +92310,17 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "Teilnehmerrechte",
         "consentForm.title": "Einverständniserklärung",
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
-        "dashboard.andYouAreAvailable": "und Sie sind jetzt verfügbar",
         "dashboard.becomeAvailable": "Verfügbar werden",
-        "dashboard.butYouAreNotAvailable": "aber Sie sind derzeit nicht verfügbar",
-        "dashboard.editOffer": "Angebot bearbeiten",
+        "dashboard.becomeUnavailable": "Unverfügbar werden",
+        "dashboard.nearbyOffers": "Angebote in Ihre Nähre",
+        "dashboard.weNeedYourLocationToShowThis": "TODO",
+        "dashboard.useMyLocation": "TODO",
+        "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
+        "dashboard.availableNow": "Jetzt verfügbar",
+        "dashboard.youAreNotOffering": "TODO",
+        "dashboard.createAnOffer": "TODO",
         "dashboard.welcome": "Willkommen",
-        "dashboard.youAreOffering": "Sie bieten",
+        "dashboard.yourOffer": "Ihr Angebot",
         "list.error": "Fehler",
         "list.fetchFailure": "Es konnten keine andere Leute gefunden werden. Vielleicht haben Sie keine Internetverbindung?",
         "list.loading": "Wird geladen...",
@@ -92355,6 +92360,7 @@ module.exports={
         "settings.useLocationText": "Dadurch kann die App Ihre aktuelle Position von Ihrem Telefon abrufen. Aktivieren Sie diese Option, um Ihren Standort auf der Karte anzuzeigen.",
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Hilfe",
         "tabs.list": "Liste",
@@ -92382,12 +92388,17 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "Right to quit",
         "consentForm.title": "Informed Consent Form",
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
-        "dashboard.andYouAreAvailable": "and you are available now.",
         "dashboard.becomeAvailable": "Become available",
-        "dashboard.butYouAreNotAvailable": "but you are not available right now.",
-        "dashboard.editOffer": "Edit offer",
+        "dashboard.becomeUnavailable": "Become unavailable",
+        "dashboard.nearbyOffers": "Nearby Offers",
+        "dashboard.weNeedYourLocationToShowThis": "We need to use your location in order to show which offers are nearby.",
+        "dashboard.useMyLocation": "Use my location",
+        "dashboard.notCurrentlyAvailable": "Not currently available",
+        "dashboard.availableNow": "Available now",
+        "dashboard.youAreNotOffering": "You are not offering anything right now.",
+        "dashboard.createAnOffer": "Create an offer",
         "dashboard.welcome": "Welcome",
-        "dashboard.youAreOffering": "You are offering",
+        "dashboard.yourOffer": "Your Offer",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
@@ -92427,6 +92438,7 @@ module.exports={
         "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
         "signInPage.loading": "Loading...",
         "signInPage.logIn": "Log in",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "You must be online in order to log in.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92454,12 +92466,17 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
-        "dashboard.andYouAreAvailable": "و أنت متاح اﻵن.",
         "dashboard.becomeAvailable": "للمتاح",
-        "dashboard.butYouAreNotAvailable": "و لكن أنت غير متاح اﻵن",
-        "dashboard.editOffer": "تعديل العرض",
+        "dashboard.becomeUnavailable": "TODO",
+        "dashboard.nearbyOffers": "TODO",
+        "dashboard.weNeedYourLocationToShowThis": "TODO",
+        "dashboard.useMyLocation": "TODO",
+        "dashboard.notCurrentlyAvailable": "TODO",
+        "dashboard.availableNow": "TODO",
+        "dashboard.youAreNotOffering": "TODO",
+        "dashboard.createAnOffer": "TODO",
         "dashboard.welcome": "أهلاً و سهلاً",
-        "dashboard.youAreOffering": "أنت تعرض",
+        "dashboard.yourOffer": "TODO",
         "list.error": "خطأ",
         "list.fetchFailure": "حدث خطأ بينما يتم البحث عن أشخاص هنا. يبدو أنك غير متصل باﻹنترنت?",
         "list.loading": "جاري التحميل ...",
@@ -92499,6 +92516,7 @@ module.exports={
         "settings.useLocationText": "هذا يسمح للتطبيق بالحصول على موقعك الفعلي من هاتفك. يمكنك تشغيل هذا لترى موقعك على الخريطة. موقعك خاص ولن يتم تخزينه أبدًا بواسطة التطبيق.",
         "signInPage.loading": "جاري التحميل ...",
         "signInPage.logIn": "تسجيل الدخول",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
         "tabs.dashboard": "لوحة التحكم الرئيسية",
         "tabs.help": "مساعدة",
         "tabs.list": "قائمة",
@@ -92547,6 +92565,7 @@ const Auth0Cordova = require('@auth0/cordova');
 // Data
 const config = require('../data_components/config.json');
 const localizations = require('../data_components/localizations.json');
+const defaultPicture = 'img/logo.png';
 
 // UI
 const signInPage = require('./signInPage.js');
@@ -92664,6 +92683,32 @@ class App extends React.Component {
         }, {
             timeout: 30000 // Throw an error if no update is received every 30 seconds
         });
+
+        // TODO: implement this for real!
+        this.state.online = true;
+
+        // Disable sign-in for faster development
+        this.state.developerMode = false;
+
+        if (this.state.developerMode) {
+            this.state.authenticated = true;
+            this.state.currentUser = {
+                "nickname": "lucas.braun",
+                "name": "Developer User",
+                "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
+                "updated_at": "2019-01-09T08:54:31.035Z",
+                "auth0Id": "auth0|5c35b6c6a19540326d51c3a9",
+                "offerTitle": "Something!",
+                "offerDescription": "It's really special.",
+                "hasConsented": true,
+                "createdAt": {
+                    "$date": "2019-01-09T08:57:59.078Z"
+                },
+                "updatedAt": {
+                    "$date": "2019-01-09T08:57:59.078Z"
+                }
+            };
+        }
     }
 
     /**
@@ -92976,8 +93021,15 @@ class App extends React.Component {
                 l: this.l,
                 login: this.login,
                 handleTabChange: this.handleTabChange,
-                authenticated: this.state.authenticated,
+                pushUserUpdates: this.pushUserUpdates,
                 currentUser: this.state.currentUser,
+                online: this.state.online
+                // For user list
+                , handleListItemClick: this.handleListItemClick,
+                usersAreLoaded: this.state.usersAreLoaded,
+                errorLoadingUsers: this.state.errorLoadingUsers,
+                users: this.state.users,
+                defaultPicture: defaultPicture,
                 key: 'dashboard' }),
             tab: React.createElement(Ons.Tab, {
                 label: this.l('tabs.dashboard'),
@@ -93016,7 +93068,9 @@ class App extends React.Component {
                 currentUser: this.state.currentUser,
                 centerPosition: this.state.centerPosition,
                 selectedUserId: this.state.selectedUserId,
-                onListItemClick: this.handleListItemClick,
+                handleListItemClick: this.handleListItemClick,
+                online: this.state.online,
+                defaultPicture: defaultPicture,
                 usersAreLoaded: this.state.usersAreLoaded,
                 errorLoadingUsers: this.state.errorLoadingUsers,
                 users: this.state.users,
@@ -93091,6 +93145,9 @@ class App extends React.Component {
     renderSidebarList() {
         var sidebarItems = [{ key: "offers", icon: "md-edit" }, { key: "settings", icon: "md-settings" }, { key: "help", icon: "md-help" }, { key: "dashboard", icon: "md-compass" }];
 
+        var picture = this.state.online && this.state.currentUser.picture;
+        picture = picture || defaultPicture;
+
         var listItems = [React.createElement(
             Ons.ListItem,
             {
@@ -93098,17 +93155,28 @@ class App extends React.Component {
                 tappable: false },
             React.createElement(
                 'div',
-                { className: 'list-item__title' },
-                React.createElement(
-                    'strong',
-                    null,
-                    this.state.currentUser.name
-                )
+                { className: 'left' },
+                React.createElement('img', { className: 'list-item__thumbnail',
+                    src: picture,
+                    alt: 'Profile picture' })
             ),
             React.createElement(
                 'div',
-                { className: 'list-item__subtitle' },
-                this.state.currentUser.contactInformation
+                { className: 'center' },
+                React.createElement(
+                    'div',
+                    { className: 'list-item__title' },
+                    React.createElement(
+                        'strong',
+                        null,
+                        this.state.currentUser.name
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'list-item__subtitle' },
+                    this.state.currentUser.contactInformation
+                )
             )
         )];
 
@@ -93283,6 +93351,7 @@ class App extends React.Component {
                 locale: this.state.locale,
                 handleLocaleChange: this.handleLocaleChange,
                 login: this.login,
+                online: this.state.online,
                 authenticated: this.state.authenticated });
         }
     }
@@ -93554,11 +93623,15 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const list = require('./list.js');
+
 class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
+        this.toggleAvailability = this.toggleAvailability.bind(this);
+        this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
     }
 
     /**
@@ -93577,11 +93650,156 @@ class Dashboard extends React.Component {
         this.props.handleTabChange("offers");
     }
 
-    statusInfo() {
-        if (this.props.currentUser.available) {
-            return this.l("youAreOffering") + " " + this.props.currentUser.offerDescription + " " + this.l("andYouAreAvailable");
+    /**
+     * Toggle user's availability status
+     * @param {Event} e the react event object
+     */
+    toggleAvailability(e) {
+        this.props.pushUserUpdates({ available: !this.props.currentUser.available });
+    }
+
+    /**
+     * Turn on the user's useLocation setting
+     * @param {Event} e the react event object
+     */
+    turnOnUseLocation(e) {
+        this.props.pushUserUpdates({ useLocation: true });
+    }
+
+    // Render information about the user's offer
+    renderOfferCard() {
+        if (this.props.currentUser.offerTitle) {
+            if (this.props.currentUser.available) {
+                var availabilityInfo = this.l("availableNow");
+            } else {
+                var availabilityInfo = this.l("notCurrentlyAvailable");
+            }
+
+            return React.createElement(
+                Ons.Card,
+                null,
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            'h3',
+                            null,
+                            this.props.currentUser.offerTitle
+                        )
+                    ),
+                    React.createElement(
+                        Ons.Col,
+                        { style: { textAlign: "right" } },
+                        React.createElement(
+                            'a',
+                            { href: '#',
+                                style: { color: "black" },
+
+                                onClick: this.goToOffersTab },
+                            React.createElement(
+                                'h3',
+                                null,
+                                React.createElement(Ons.Icon, { icon: "md-edit" })
+                            )
+                        )
+                    )
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    this.props.currentUser.offerDescription
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    React.createElement(
+                        'i',
+                        null,
+                        availabilityInfo
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        Ons.Button,
+                        { onClick: this.toggleAvailability },
+                        this.props.currentUser.available ? this.l("becomeUnavailable") : this.l("becomeAvailable")
+                    )
+                )
+            );
         } else {
-            return this.l("youAreOffering") + " " + this.props.currentUser.offerDescription + " " + this.l("butYouAreNotAvailable");
+            return React.createElement(
+                Ons.Card,
+                null,
+                React.createElement(
+                    'p',
+                    null,
+                    this.l("youAreNotOffering")
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    React.createElement(
+                        Ons.Button,
+                        { onClick: this.goToOffersTab },
+                        this.l("createAnOffer")
+                    )
+                )
+            );
+        }
+    }
+
+    // Render information about nearby offers
+    renderNearbyOffersCard() {
+        if (this.props.currentUser.useLocation) {
+            return React.createElement(
+                Ons.Card,
+                null,
+                React.createElement(
+                    Ons.List,
+                    null,
+                    React.createElement(list.UserListItems, {
+                        l: this.props.l,
+                        online: this.props.online,
+                        currentUser: this.props.currentUser,
+                        defaultPicture: this.props.defaultPicture,
+                        handleListItemClick: this.props.handleListItemClick,
+                        usersAreLoaded: this.props.usersAreLoaded,
+                        errorLoadingUsers: this.props.errorLoadingUsers,
+                        users: this.props.users })
+                )
+            );
+        } else {
+            return React.createElement(
+                Ons.Card,
+                null,
+                React.createElement(
+                    Ons.List,
+                    null,
+                    React.createElement(
+                        Ons.ListItem,
+                        null,
+                        React.createElement(
+                            'p',
+                            null,
+                            this.l("weNeedYourLocationToShowThis")
+                        ),
+                        React.createElement(
+                            'p',
+                            null,
+                            React.createElement(
+                                Ons.Button,
+                                { onClick: this.turnOnUseLocation },
+                                this.l("useMyLocation")
+                            )
+                        )
+                    )
+                )
+            );
         }
     }
 
@@ -93592,37 +93810,32 @@ class Dashboard extends React.Component {
             null,
             React.createElement(
                 Ons.Row,
-                { style: { textAlign: "center" } },
+                null,
                 React.createElement(
                     Ons.Col,
-                    { style: { margin: "15px" } },
+                    { style: { margin: "15px 20px 5px 15px" } },
                     React.createElement(
-                        'h1',
+                        'div',
                         null,
-                        this.l("welcome"),
-                        ' ',
-                        this.props.currentUser.name
-                    ),
-                    React.createElement('img', { src: this.props.currentUser.picture,
-                        alt: 'Profile picture',
-                        height: '42',
-                        width: '42' }),
-                    React.createElement(
-                        'p',
-                        null,
-                        this.statusInfo()
-                    ),
-                    React.createElement(
-                        'p',
-                        null,
-                        React.createElement(
-                            Ons.Button,
-                            { onClick: this.goToOffersTab },
-                            this.props.currentUser.available ? this.l("editOffer") : this.l("becomeAvailable")
-                        )
+                        this.l("yourOffer")
                     )
                 )
-            )
+            ),
+            this.renderOfferCard(),
+            React.createElement(
+                Ons.Row,
+                null,
+                React.createElement(
+                    Ons.Col,
+                    { style: { margin: "15px 20px 5px 15px" } },
+                    React.createElement(
+                        'div',
+                        null,
+                        this.l("nearbyOffers")
+                    )
+                )
+            ),
+            this.renderNearbyOffersCard()
         );
     }
 }
@@ -93631,7 +93844,7 @@ module.exports = {
     Dashboard: Dashboard
 };
 
-},{"react":265,"react-onsenui":262}],278:[function(require,module,exports){
+},{"./list.js":279,"react":265,"react-onsenui":262}],278:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -93671,6 +93884,48 @@ const Ons = require('react-onsenui');
 class List extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    /**
+     * Localize a string in the context of the list
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`list.${string}`);
+    }
+
+    render() {
+        return React.createElement(
+            Ons.Page,
+            null,
+            React.createElement(
+                Ons.Row,
+                { height: '100%' },
+                React.createElement(
+                    Ons.Col,
+                    { verticalAlign: 'center' },
+                    React.createElement(
+                        Ons.List,
+                        null,
+                        React.createElement(UserListItems, {
+                            l: this.props.l,
+                            online: this.props.online,
+                            currentUser: this.props.currentUser,
+                            defaultPicture: this.props.defaultPicture,
+                            handleListItemClick: this.props.handleListItemClick,
+                            usersAreLoaded: this.props.usersAreLoaded,
+                            errorLoadingUsers: this.props.errorLoadingUsers,
+                            users: this.props.users })
+                    )
+                )
+            )
+        );
+    }
+}
+
+class UserListItems extends React.Component {
+    constructor(props) {
+        super(props);
         this.handleListItemClick = this.handleListItemClick.bind(this);
     }
 
@@ -93682,13 +93937,16 @@ class List extends React.Component {
         return this.props.l(`list.${string}`);
     }
 
-    /**
-     * Handle clicks on users in the list
-     * @param {userId} id of the user
-     * @param {e} click event
-     */
-    handleListItemClick(userId, e) {
-        this.props.onListItemClick(userId);
+    renderUserPicture(user) {
+        if (user.picture && this.props.online) {
+            var picture = user.picture;
+        } else {
+            var picture = this.props.defaultPicture;
+        }
+
+        return React.createElement('img', { className: 'list-item__thumbnail',
+            src: picture,
+            alt: 'Profile picture' });
     }
 
     /**
@@ -93710,18 +93968,17 @@ class List extends React.Component {
         }
     }
 
-    renderUserPicture(user) {
-        if (user.picture) {
-            return React.createElement('img', { className: 'list-item__thumbnail',
-                src: user.picture,
-                alt: 'Profile picture' });
-        } else {
-            return React.createElement(Ons.Icon, { icon: 'md-face' });
-        }
+    /**
+     * Handle clicks on users in the list
+     * @param {userId} id of the user
+     * @param {e} click event
+     */
+    handleListItemClick(userId, e) {
+        this.props.handleListItemClick(userId);
     }
 
-    // Render the list
-    renderUserList() {
+    // Render the list items
+    render() {
         var listItems = [];
 
         if (this.props.errorLoadingUsers) {
@@ -93775,14 +94032,7 @@ class List extends React.Component {
                         React.createElement(
                             'div',
                             { className: 'list-item__title' },
-                            user.name
-                        ),
-                        React.createElement(
-                            'div',
-                            null,
-                            user.offerDescription,
-                            ' - ',
-                            user.contactInformation
+                            user.offerTitle
                         ),
                         React.createElement(
                             'div',
@@ -93794,31 +94044,12 @@ class List extends React.Component {
             }
         }
 
-        return React.createElement(
-            Ons.List,
-            null,
-            listItems
-        );
-    }
-
-    render() {
-        return React.createElement(
-            Ons.Page,
-            null,
-            React.createElement(
-                Ons.Row,
-                { height: '100%' },
-                React.createElement(
-                    Ons.Col,
-                    { verticalAlign: 'center' },
-                    this.renderUserList()
-                )
-            )
-        );
+        return listItems;
     }
 }
 
 module.exports = {
+    UserListItems: UserListItems,
     List: List
 };
 
@@ -94665,50 +94896,24 @@ class SignInPage extends React.Component {
 
     // Render the sign in page
     render() {
-        return React.createElement(
-            Ons.Page,
-            { style: { textAlign: "center" } },
-            React.createElement(
-                Ons.Row,
-                { style: { marginTop: "50px" } },
-                React.createElement(
-                    Ons.Col,
-                    null,
-                    React.createElement(
-                        'h1',
-                        null,
-                        this.props.l("app.name")
-                    )
-                )
-            ),
-            React.createElement(
-                Ons.Row,
-                null,
-                React.createElement(
-                    Ons.Col,
-                    null,
-                    this.renderLoginButton()
-                )
-            ),
-            React.createElement(
-                Ons.Row,
-                { style: { marginTop: "50px" } },
-                React.createElement(
-                    Ons.Col,
-                    null,
-                    React.createElement(localeMenu.LocaleMenu, {
-                        locale: this.props.locale,
-                        handleLocaleChange: this.props.handleLocaleChange })
-                )
-            )
-        );
-    }
-
-    renderLoginButton() {
+        // If already authenticated, just wait for user data to load
         if (this.props.authenticated) {
             return React.createElement(
-                'div',
-                null,
+                Ons.Page,
+                { style: { textAlign: "center" } },
+                React.createElement(
+                    Ons.Row,
+                    { style: { marginTop: "50px" } },
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            'h1',
+                            null,
+                            this.props.l("app.name")
+                        )
+                    )
+                ),
                 React.createElement(
                     'p',
                     null,
@@ -94732,9 +94937,66 @@ class SignInPage extends React.Component {
             );
         } else {
             return React.createElement(
+                Ons.Page,
+                { style: { textAlign: "center" } },
+                React.createElement(
+                    Ons.Row,
+                    { style: { marginTop: "50px" } },
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            'h1',
+                            null,
+                            this.props.l("app.name")
+                        )
+                    )
+                ),
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        this.renderLoginButton()
+                    )
+                ),
+                React.createElement(
+                    Ons.Row,
+                    { style: { marginTop: "50px" } },
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(localeMenu.LocaleMenu, {
+                            locale: this.props.locale,
+                            handleLocaleChange: this.props.handleLocaleChange })
+                    )
+                )
+            );
+        }
+    }
+
+    renderLoginButton() {
+        if (this.props.online) {
+            return React.createElement(
                 Ons.Button,
                 { onClick: this.props.login },
                 this.l("logIn")
+            );
+        } else {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Ons.Button,
+                    { onClick: this.props.login, disabled: "true" },
+                    this.l("logIn")
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    this.l("youMustBeOnlineInOrderToLogin")
+                )
             );
         }
     }
