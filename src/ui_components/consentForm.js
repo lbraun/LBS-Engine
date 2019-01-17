@@ -38,6 +38,7 @@ class ConsentForm extends React.Component {
             allBoxesChecked: this.state.volunteered
                 && this.state.rightToQuit
                 && this.state.dataRecording
+                && this.state.goodBehavior
         });
     }
 
@@ -71,19 +72,24 @@ class ConsentForm extends React.Component {
                     </Ons.ListItem>
 
                     <Ons.ListItem>
-                        <div>
-                            {this.l("description")}
-                        </div>
-                    </Ons.ListItem>
-                    <Ons.ListItem>
-                        <div>
+                        <p>{this.l("description")}</p>
+
+                        <p>
+                            <b>{this.l("rightToQuitInfoTitle")}:</b><br />
+                            {this.l("rightToQuitInfo")}
+                        </p>
+
+                        <p>
+                            <b>{this.l("dataRecordingInfoTitle")}:</b><br />
+                            {this.l("dataRecordingInfo")}
+                        </p>
+
+                        <p>
+                            <b>{this.l("moreInfoTitle")}:</b><br />
                             {this.l("moreInfo")} <a href='https://github.com/lbraun/geofreebie'>{this.l("projectsWebsite")}</a>.
-                        </div>
-                    </Ons.ListItem>
-                    <Ons.ListItem>
-                        <div>
-                            {this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.
-                        </div>
+                        </p>
+
+                        <p>{this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.</p>
                     </Ons.ListItem>
                     <Ons.ListItem>
                         <div>
@@ -124,6 +130,18 @@ class ConsentForm extends React.Component {
                         </label>
                         <label className='center' htmlFor="data-recording-check">
                             {this.l("dataRecordingConsent")}
+                        </label>
+                    </Ons.ListItem>
+
+                    <Ons.ListItem tappable={true}>
+                        <label className='left'>
+                            <Ons.Checkbox inputId="good-behavior-check"
+                                name="goodBehavior"
+                                value={this.state.goodBehavior}
+                                onChange={this.handleInputChange} />
+                        </label>
+                        <label className='center' htmlFor="good-behavior-check">
+                            {this.l("goodBehaviorConsent")}
                         </label>
                     </Ons.ListItem>
 

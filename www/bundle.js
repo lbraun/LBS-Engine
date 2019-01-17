@@ -92296,12 +92296,18 @@ module.exports={
         "app.name": "Geofreebie",
         "consentForm.continue": "Fortfahren",
         "consentForm.dataRecordingConsent": "Ich bestätige mein Einverständnis zu der Aufnahme von Standortdaten während der Studie.",
+        "consentForm.dataRecordingInfo": "Die Daten, die in dieser Studie erhoben werden, werden in anonymisierter Form erhoben und nur in Aggregation mit weiteren anonymen Daten verarbeitet. In dieser Form werden die Daten ggf. in akademischen Journalen, Präsentationen oder anderen Medien veröffenlicht, jedoch ist niemals eine Identifizierung der einzelnen Teilnehmer möglich. Eine Woche nach Abschluss der Studie ist es daher quasi nicht mehr möglich die Daten aus deiner Teilnahme zu aus den aggregierten Datensätzen aller Teilnehmer zu identifizieren.",
+        "consentForm.dataRecordingInfoTitle": "Datenschutz",
         "consentForm.description": "Vielen Dank für Ihre Teilnahme an dieser Studie über wie ein ortsbasierter Dienst die soziale Isolation von Flüchtlingen in Münster reduzieren kann.",
+        "consentForm.goodBehaviorConsent": "TODO",
         "consentForm.ifYouHaveAnyQuestions": "Bei Fragen wenden Sie sich bitte an den Forscher, bevor Sie fortfahren:",
         "consentForm.instructions": "Aktivieren Sie die Kontrollkästchen, wenn Sie mit den folgenden Aussagen einverstanden sind:",
         "consentForm.moreInfo": "Weitere Informationen zur Studie finden Sie auf der",
+        "consentForm.moreInfoTitle": "Weitere Informationen",
         "consentForm.projectsWebsite": "Website des Projekts",
         "consentForm.rightToQuitConsent": "Ich bestätige und habe verstanden, dass ich die Studie zu jedem Zeitpunkt ohne Konsequenzen abbrechen kann.",
+        "consentForm.rightToQuitInfo": "Sie können zu jeder Zeit ohne Angabe von Gründen die Studie abbrechen und Ihre Antworten zurückziehen. Dies hat keine weiteren Konsequenzen für Sie.",
+        "consentForm.rightToQuitInfoTitle": "Teilnehmerrechte",
         "consentForm.title": "Einverständniserklärung",
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
         "dashboard.becomeAvailable": "Verfügbar werden",
@@ -92368,12 +92374,18 @@ module.exports={
         "app.name": "Geofreebie",
         "consentForm.continue": "Continue",
         "consentForm.dataRecordingConsent": "I agree to have my location data recorded during the study.",
+        "consentForm.dataRecordingInfo": "Original data obtained from this study will be anonymised and only processed in aggregate. In such form, it might be published in academic journals, presentations or other media, but never in a way that would allow individual identification. One week after the completion of the study it might no longer be possible to retract your data from such aggregated analyses.",
+        "consentForm.dataRecordingInfoTitle": "Privacy",
         "consentForm.description": "Thank you for participating in this study about supporting forced migrant resettlement with a location based freecycling service.",
+        "consentForm.goodBehaviorConsent": "I agree to treat other users of the app with respect and kindness.",
         "consentForm.ifYouHaveAnyQuestions": "If you have any questions, please contact the researcher before continuing:",
         "consentForm.instructions": "Check the boxes if you agree with the following statements:",
         "consentForm.moreInfo": "For more information about the study, see the",
+        "consentForm.moreInfoTitle": "More info",
         "consentForm.projectsWebsite": "project's website",
         "consentForm.rightToQuitConsent": "I confirm I understand my right to quit the study at any time.",
+        "consentForm.rightToQuitInfo": "You are free to stop, quit the study and retract your data at any time during the study with no further consequences.",
+        "consentForm.rightToQuitInfoTitle": "Right to quit",
         "consentForm.title": "Informed Consent Form",
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
         "dashboard.becomeAvailable": "Become available",
@@ -92440,12 +92452,18 @@ module.exports={
         "app.name": "جيوفريبي",
         "consentForm.continue": "TODO",
         "consentForm.dataRecordingConsent": "TODO",
+        "consentForm.dataRecordingInfo": "TODO",
+        "consentForm.dataRecordingInfoTitle": "TODO",
         "consentForm.description": "TODO",
+        "consentForm.goodBehaviorConsent": "TODO",
         "consentForm.ifYouHaveAnyQuestions": "TODO",
         "consentForm.instructions": "TODO",
         "consentForm.moreInfo": "TODO",
+        "consentForm.moreInfoTitle": "TODO",
         "consentForm.projectsWebsite": "TODO",
         "consentForm.rightToQuitConsent": "TODO",
+        "consentForm.rightToQuitInfo": "TODO",
+        "consentForm.rightToQuitInfoTitle": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
         "dashboard.becomeAvailable": "للمتاح",
@@ -93381,7 +93399,7 @@ class ConsentForm extends React.Component {
         });
 
         this.setState({
-            allBoxesChecked: this.state.volunteered && this.state.rightToQuit && this.state.dataRecording
+            allBoxesChecked: this.state.volunteered && this.state.rightToQuit && this.state.dataRecording && this.state.goodBehavior
         });
     }
 
@@ -93434,17 +93452,44 @@ class ConsentForm extends React.Component {
                     Ons.ListItem,
                     null,
                     React.createElement(
-                        'div',
+                        'p',
                         null,
                         this.l("description")
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    null,
+                    ),
                     React.createElement(
-                        'div',
+                        'p',
                         null,
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("rightToQuitInfoTitle"),
+                            ':'
+                        ),
+                        React.createElement('br', null),
+                        this.l("rightToQuitInfo")
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("dataRecordingInfoTitle"),
+                            ':'
+                        ),
+                        React.createElement('br', null),
+                        this.l("dataRecordingInfo")
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("moreInfoTitle"),
+                            ':'
+                        ),
+                        React.createElement('br', null),
                         this.l("moreInfo"),
                         ' ',
                         React.createElement(
@@ -93453,13 +93498,9 @@ class ConsentForm extends React.Component {
                             this.l("projectsWebsite")
                         ),
                         '.'
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    null,
+                    ),
                     React.createElement(
-                        'div',
+                        'p',
                         null,
                         this.l("ifYouHaveAnyQuestions"),
                         ' ',
@@ -93533,6 +93574,23 @@ class ConsentForm extends React.Component {
                         'label',
                         { className: 'center', htmlFor: 'data-recording-check' },
                         this.l("dataRecordingConsent")
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    { tappable: true },
+                    React.createElement(
+                        'label',
+                        { className: 'left' },
+                        React.createElement(Ons.Checkbox, { inputId: 'good-behavior-check',
+                            name: 'goodBehavior',
+                            value: this.state.goodBehavior,
+                            onChange: this.handleInputChange })
+                    ),
+                    React.createElement(
+                        'label',
+                        { className: 'center', htmlFor: 'good-behavior-check' },
+                        this.l("goodBehaviorConsent")
                     )
                 ),
                 React.createElement(
