@@ -22,16 +22,26 @@ class SignInPage extends React.Component {
     render() {
         // If already authenticated, just wait for user data to load
         if (this.props.authenticated) {
-            <div>
-                <p>
-                    <svg className="progress-circular progress-circular--indeterminate">
-                        <circle className="progress-circular__background"/>
-                        <circle className="progress-circular__primary progress-circular--indeterminate__primary"/>
-                        <circle className="progress-circular__secondary progress-circular--indeterminate__secondary"/>
-                    </svg>
-                </p>
-                <p><span>{this.l("loading")}</span></p>
-            </div>
+            return (
+                <Ons.Page style={{textAlign: "center"}}>
+                    <Ons.Row style={{marginTop: "50px"}}>
+                        <Ons.Col>
+                            <h1>
+                                {this.props.l("app.name")}
+                            </h1>
+                        </Ons.Col>
+                    </Ons.Row>
+
+                    <p>
+                        <svg className="progress-circular progress-circular--indeterminate">
+                            <circle className="progress-circular__background"/>
+                            <circle className="progress-circular__primary progress-circular--indeterminate__primary"/>
+                            <circle className="progress-circular__secondary progress-circular--indeterminate__secondary"/>
+                        </svg>
+                    </p>
+                    <p><span>{this.l("loading")}</span></p>
+                </Ons.Page>
+            );
         } else {
             return (
                 <Ons.Page style={{textAlign: "center"}}>

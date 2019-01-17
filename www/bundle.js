@@ -92658,7 +92658,7 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = false;
+        this.state.online = true;
 
         if (!this.state.online) {
             this.state.authenticated = true;
@@ -94728,9 +94728,9 @@ class SignInPage extends React.Component {
     render() {
         // If already authenticated, just wait for user data to load
         if (this.props.authenticated) {
-            React.createElement(
-                'div',
-                null,
+            return React.createElement(
+                Ons.Page,
+                { style: { textAlign: "center" } },
                 React.createElement(
                     'p',
                     null,

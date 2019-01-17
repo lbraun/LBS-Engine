@@ -137,7 +137,7 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = false;
+        this.state.online = true;
 
         if (!this.state.online) {
             this.state.authenticated = true;
