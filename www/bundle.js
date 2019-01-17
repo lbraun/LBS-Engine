@@ -92362,6 +92362,7 @@ module.exports={
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
         "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
+        "signInPage.waitForApproval": "TODO",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Hilfe",
         "tabs.list": "Liste",
@@ -92441,6 +92442,7 @@ module.exports={
         "signInPage.loading": "Loading...",
         "signInPage.logIn": "Log in",
         "signInPage.youMustBeOnlineInOrderToLogIn": "You must be online in order to log in.",
+        "signInPage.waitForApproval": "Thank you for registering. Please wait for a moderator to approve your account. You can contact Lucas at lucas.braun@uni-muenster.de with any questions.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92520,6 +92522,7 @@ module.exports={
         "signInPage.loading": "جاري التحميل ...",
         "signInPage.logIn": "تسجيل الدخول",
         "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
+        "signInPage.waitForApproval": "TODO",
         "tabs.dashboard": "لوحة التحكم الرئيسية",
         "tabs.help": "مساعدة",
         "tabs.list": "قائمة",
@@ -93305,8 +93308,8 @@ class App extends React.Component {
 
     // Render sidebars and toolbar
     render() {
-        // Redirect to sign in page if user has not yet been loaded and authenticated
-        if (this.state.authenticated && this.state.currentUser) {
+        // Redirect to sign in page if user has not yet been authenticated, loaded, and approved
+        if (this.state.authenticated && this.state.currentUser && this.state.currentUser.approved) {
             // Redirect to consent form if user has not yet consented
             if (!this.state.currentUser.hasConsented) {
                 return React.createElement(consentForm.ConsentForm, {
@@ -93359,7 +93362,8 @@ class App extends React.Component {
                 handleLocaleChange: this.handleLocaleChange,
                 login: this.login,
                 online: this.state.online,
-                authenticated: this.state.authenticated });
+                authenticated: this.state.authenticated,
+                currentUser: this.state.currentUser });
         }
     }
 }
@@ -94914,6 +94918,7 @@ const localeMenu = require('./localeMenu.js');
 class SignInPage extends React.Component {
     constructor(props) {
         super(props);
+        this.renderMainContent = this.renderMainContent.bind(this);
         this.renderLoginButton = this.renderLoginButton.bind(this);
     }
 
@@ -94927,24 +94932,60 @@ class SignInPage extends React.Component {
 
     // Render the sign in page
     render() {
-        // If already authenticated, just wait for user data to load
-        if (this.props.authenticated) {
+        return React.createElement(
+            Ons.Page,
+            { style: { textAlign: "center" } },
+            React.createElement(
+                Ons.Row,
+                { style: { marginTop: "50px" } },
+                React.createElement(
+                    Ons.Col,
+                    null,
+                    React.createElement(
+                        'h1',
+                        null,
+                        this.props.l("app.name")
+                    )
+                )
+            ),
+            this.renderMainContent()
+        );
+    }
+
+    renderMainContent() {
+        // If not authenticated, render login button and locale menu
+        if (!this.props.authenticated) {
             return React.createElement(
-                Ons.Page,
-                { style: { textAlign: "center" } },
+                'div',
+                null,
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        this.renderLoginButton()
+                    )
+                ),
                 React.createElement(
                     Ons.Row,
                     { style: { marginTop: "50px" } },
                     React.createElement(
                         Ons.Col,
                         null,
-                        React.createElement(
-                            'h1',
-                            null,
-                            this.props.l("app.name")
-                        )
+                        React.createElement(localeMenu.LocaleMenu, {
+                            locale: this.props.locale,
+                            handleLocaleChange: this.props.handleLocaleChange })
                     )
-                ),
+                )
+            );
+        }
+
+        // If no current user, render spinner and loading message
+        if (!this.props.currentUser) {
+            return React.createElement(
+                'div',
+                null,
                 React.createElement(
                     'p',
                     null,
@@ -94966,43 +95007,14 @@ class SignInPage extends React.Component {
                     )
                 )
             );
-        } else {
+        }
+
+        // If not yet approved, just tell user to wait
+        if (!this.props.currentUser.approved) {
             return React.createElement(
-                Ons.Page,
-                { style: { textAlign: "center" } },
-                React.createElement(
-                    Ons.Row,
-                    { style: { marginTop: "50px" } },
-                    React.createElement(
-                        Ons.Col,
-                        null,
-                        React.createElement(
-                            'h1',
-                            null,
-                            this.props.l("app.name")
-                        )
-                    )
-                ),
-                React.createElement(
-                    Ons.Row,
-                    null,
-                    React.createElement(
-                        Ons.Col,
-                        null,
-                        this.renderLoginButton()
-                    )
-                ),
-                React.createElement(
-                    Ons.Row,
-                    { style: { marginTop: "50px" } },
-                    React.createElement(
-                        Ons.Col,
-                        null,
-                        React.createElement(localeMenu.LocaleMenu, {
-                            locale: this.props.locale,
-                            handleLocaleChange: this.props.handleLocaleChange })
-                    )
-                )
+                'p',
+                null,
+                this.l("waitForApproval")
             );
         }
     }

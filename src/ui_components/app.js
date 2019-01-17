@@ -759,8 +759,8 @@ class App extends React.Component {
 
     // Render sidebars and toolbar
     render() {
-        // Redirect to sign in page if user has not yet been loaded and authenticated
-        if (this.state.authenticated && this.state.currentUser) {
+        // Redirect to sign in page if user has not yet been authenticated, loaded, and approved
+        if (this.state.authenticated && this.state.currentUser && this.state.currentUser.approved) {
             // Redirect to consent form if user has not yet consented
             if (!this.state.currentUser.hasConsented) {
                 return (<consentForm.ConsentForm
@@ -809,7 +809,8 @@ class App extends React.Component {
                 handleLocaleChange={this.handleLocaleChange}
                 login={this.login}
                 online={this.state.online}
-                authenticated={this.state.authenticated} />);
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser} />);
         }
     }
 }
