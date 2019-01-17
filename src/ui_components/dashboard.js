@@ -35,7 +35,7 @@ class Dashboard extends React.Component {
     }
 
     // Render information about the user's offer
-    renderOffer() {
+    renderOfferCard() {
         if (this.props.currentUser.offerTitle) {
             if (this.props.currentUser.available) {
                 var availabilityInfo = this.l("availableNow");
@@ -44,37 +44,43 @@ class Dashboard extends React.Component {
             }
 
             return (
-                <div>
-                    <b>{this.props.currentUser.offerTitle}</b>
+                <Ons.Card>
+                    <Ons.Row>
+                        <Ons.Col>
+                            <h3>{this.props.currentUser.offerTitle}</h3>
+                        </Ons.Col>
+                        <Ons.Col style={{textAlign: "right"}}>
+                            <a href="#"
+                                style={{color: "black"}}
+
+                                onClick={this.goToOffersTab}>
+                                    <h3><Ons.Icon icon={"md-edit"} /></h3>
+                            </a>
+                        </Ons.Col>
+                    </Ons.Row>
+
                     <p>{this.props.currentUser.offerDescription}</p>
                     <p><i>{availabilityInfo}</i></p>
 
-                    <Ons.Row>
-                        <Ons.Col>
-                            <Ons.Button onClick={this.goToOffersTab}>
-                                {this.l("editOffer")}
-                            </Ons.Button>
-                        </Ons.Col>
-                        <Ons.Col>
-                            <Ons.Button onClick={this.toggleAvailability}>
-                                {this.props.currentUser.available ?
-                                    this.l("becomeUnavailable") :
-                                    this.l("becomeAvailable")}
-                            </Ons.Button>
-                        </Ons.Col>
-                    </Ons.Row>
-                </div>
+                    <div>
+                        <Ons.Button onClick={this.toggleAvailability}>
+                            {this.props.currentUser.available ?
+                                this.l("becomeUnavailable") :
+                                this.l("becomeAvailable")}
+                        </Ons.Button>
+                    </div>
+                </Ons.Card>
             );
         } else {
             return (
-                <div>
+                <Ons.Card>
                     <p>{this.l("youAreNotOffering")}</p>
                     <p>
                         <Ons.Button onClick={this.goToOffersTab}>
                             {this.l("createAnOffer")}
                         </Ons.Button>
                     </p>
-                </div>
+                </Ons.Card>
             );
         }
     }
@@ -87,7 +93,7 @@ class Dashboard extends React.Component {
         return (
             <Ons.Page>
                 <Ons.Row>
-                    <Ons.Col style={{margin: "15px"}}>
+                    <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
                         <h2>
                             {this.l("welcome")} {this.props.currentUser.name}
                         </h2>
@@ -97,11 +103,11 @@ class Dashboard extends React.Component {
                             height="42"
                             width="42" />
 
-                        <h2>{this.l("yourOffer")}</h2>
-                        {this.renderOffer()}
-
+                        <div>{this.l("yourOffer")}</div>
                     </Ons.Col>
                 </Ons.Row>
+
+                {this.renderOfferCard()}
             </Ons.Page>
         )
     }

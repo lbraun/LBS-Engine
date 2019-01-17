@@ -92306,7 +92306,7 @@ module.exports={
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
         "dashboard.becomeAvailable": "Verfügbar werden",
         "dashboard.becomeUnavailable": "Unverfügbar werden",
-        "dashboard.editOffer": "Angebot bearbeiten",
+        // "dashboard.editOffer": "Angebot bearbeiten",
         "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
         "dashboard.availableNow": "Jetzt verfügbar",
         "dashboard.youAreNotOffering": "TODO",
@@ -92376,7 +92376,7 @@ module.exports={
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
         "dashboard.becomeAvailable": "Become available",
         "dashboard.becomeUnavailable": "Become unavailable",
-        "dashboard.editOffer": "Edit offer",
+        // "dashboard.editOffer": "Edit offer",
         "dashboard.notCurrentlyAvailable": "Not currently available",
         "dashboard.availableNow": "Available now",
         "dashboard.youAreNotOffering": "You are not offering anything right now.",
@@ -92446,7 +92446,7 @@ module.exports={
         "consentForm.volunteeredConsent": "TODO",
         "dashboard.becomeAvailable": "للمتاح",
         "dashboard.becomeUnavailable": "TODO",
-        "dashboard.editOffer": "تعديل العرض",
+        // "dashboard.editOffer": "تعديل العرض",
         "dashboard.notCurrentlyAvailable": "TODO",
         "dashboard.availableNow": "TODO",
         "dashboard.youAreNotOffering": "TODO",
@@ -92671,6 +92671,9 @@ class App extends React.Component {
                 "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
                 "updated_at": "2019-01-09T08:54:31.035Z",
                 "auth0Id": "auth0|5c35b6c6a19540326d51c3a9",
+                "offerTitle": "Something!",
+                "offerDescription": "It's really special.",
+                "hasConsented": true,
                 "createdAt": {
                     "$date": "2019-01-09T08:57:59.078Z"
                 },
@@ -93565,7 +93568,7 @@ class Dashboard extends React.Component {
     }
 
     // Render information about the user's offer
-    renderOffer() {
+    renderOfferCard() {
         if (this.props.currentUser.offerTitle) {
             if (this.props.currentUser.available) {
                 var availabilityInfo = this.l("availableNow");
@@ -93574,12 +93577,36 @@ class Dashboard extends React.Component {
             }
 
             return React.createElement(
-                'div',
+                Ons.Card,
                 null,
                 React.createElement(
-                    'b',
+                    Ons.Row,
                     null,
-                    this.props.currentUser.offerTitle
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            'h3',
+                            null,
+                            this.props.currentUser.offerTitle
+                        )
+                    ),
+                    React.createElement(
+                        Ons.Col,
+                        { style: { textAlign: "right" } },
+                        React.createElement(
+                            'a',
+                            { href: '#',
+                                style: { color: "black" },
+
+                                onClick: this.goToOffersTab },
+                            React.createElement(
+                                'h3',
+                                null,
+                                React.createElement(Ons.Icon, { icon: "md-edit" })
+                            )
+                        )
+                    )
                 ),
                 React.createElement(
                     'p',
@@ -93596,31 +93623,18 @@ class Dashboard extends React.Component {
                     )
                 ),
                 React.createElement(
-                    Ons.Row,
+                    'div',
                     null,
                     React.createElement(
-                        Ons.Col,
-                        null,
-                        React.createElement(
-                            Ons.Button,
-                            { onClick: this.goToOffersTab },
-                            this.l("editOffer")
-                        )
-                    ),
-                    React.createElement(
-                        Ons.Col,
-                        null,
-                        React.createElement(
-                            Ons.Button,
-                            { onClick: this.toggleAvailability },
-                            this.props.currentUser.available ? this.l("becomeUnavailable") : this.l("becomeAvailable")
-                        )
+                        Ons.Button,
+                        { onClick: this.toggleAvailability },
+                        this.props.currentUser.available ? this.l("becomeUnavailable") : this.l("becomeAvailable")
                     )
                 )
             );
         } else {
             return React.createElement(
-                'div',
+                Ons.Card,
                 null,
                 React.createElement(
                     'p',
@@ -93653,7 +93667,7 @@ class Dashboard extends React.Component {
                 null,
                 React.createElement(
                     Ons.Col,
-                    { style: { margin: "15px" } },
+                    { style: { margin: "15px 20px 5px 15px" } },
                     React.createElement(
                         'h2',
                         null,
@@ -93666,13 +93680,13 @@ class Dashboard extends React.Component {
                         height: '42',
                         width: '42' }),
                     React.createElement(
-                        'h2',
+                        'div',
                         null,
                         this.l("yourOffer")
-                    ),
-                    this.renderOffer()
+                    )
                 )
-            )
+            ),
+            this.renderOfferCard()
         );
     }
 }
