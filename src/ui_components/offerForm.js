@@ -34,8 +34,7 @@ class offerForm extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var attributes = {};
-        attributes[name] = value;
+        var attributes = {[name]: value};
         this.props.pushUserUpdates(attributes);
     }
 
@@ -93,6 +92,22 @@ class offerForm extends React.Component {
                     style={{margin: "30px"}}>
                         {this.l("addAPicture")}
                 </Ons.Button>
+            );
+        }
+    }
+
+    renderOfferStatus() {
+        if (this.props.currentUserIsLoaded) {
+            return (
+                <span style={{color: "green"}}>
+                    <Ons.Icon icon={"md-check"} /> {this.l("saved")}
+                </span>
+            );
+        } else {
+            return (
+                <span>
+                    <Ons.Icon icon={"md-spinner"} /> {this.l("syncing")}
+                </span>
             );
         }
     }
@@ -181,7 +196,7 @@ class offerForm extends React.Component {
 
                     <Ons.ListItem>
                         <div className="list-item__subtitle">
-                            {this.props.currentUserIsLoaded ? "✔︎" : this.l("syncing")}
+                            {this.renderOfferStatus()}
                         </div>
                     </Ons.ListItem>
                 </Ons.List>
