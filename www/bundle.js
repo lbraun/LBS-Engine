@@ -92343,7 +92343,7 @@ module.exports={
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
         "offerForm.offerDescriptionPlaceholder": "Angebotsbeschreibung",
         "offerForm.offerTitlePlaceholder": "Angebotstitel",
-        "offerForm.saved": "Angebot gespeichert.",
+        "offerForm.saved": "Angebot gespeichert",
         "offerForm.syncing": "Wird synchronisiert...",
         "offlineLayer.removeTiles": "Möchten Sie wirklich alle gespeicherten Kartendaten entfernen?",
         "offlineLayer.save": "Speichern",
@@ -92422,7 +92422,7 @@ module.exports={
         "offerForm.notAvailable": "Not available now",
         "offerForm.offerDescriptionPlaceholder": "Offer description",
         "offerForm.offerTitlePlaceholder": "Offer title",
-        "offerForm.saved": "Offer saved.",
+        "offerForm.saved": "Offer saved",
         "offerForm.syncing": "Syncing...",
         "offlineLayer.removeTiles": "Are you sure you want to remove all saved map data?",
         "offlineLayer.save": "Save",
@@ -94491,6 +94491,26 @@ class offerForm extends React.Component {
         }
     }
 
+    renderOfferStatus() {
+        if (this.props.currentUserIsLoaded) {
+            return React.createElement(
+                'span',
+                { style: { color: "green" } },
+                React.createElement(Ons.Icon, { icon: "md-check" }),
+                ' ',
+                this.l("saved")
+            );
+        } else {
+            return React.createElement(
+                'span',
+                null,
+                React.createElement(Ons.Icon, { icon: "md-spinner" }),
+                ' ',
+                this.l("syncing")
+            );
+        }
+    }
+
     render() {
         return React.createElement(
             Ons.Page,
@@ -94622,7 +94642,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
-                        this.props.currentUserIsLoaded ? "✔︎ " + this.l("saved") : this.l("syncing")
+                        this.renderOfferStatus()
                     )
                 )
             )

@@ -96,6 +96,22 @@ class offerForm extends React.Component {
         }
     }
 
+    renderOfferStatus() {
+        if (this.props.currentUserIsLoaded) {
+            return (
+                <span style={{color: "green"}}>
+                    <Ons.Icon icon={"md-check"} /> {this.l("saved")}
+                </span>
+            );
+        } else {
+            return (
+                <span>
+                    <Ons.Icon icon={"md-spinner"} /> {this.l("syncing")}
+                </span>
+            );
+        }
+    }
+
     render() {
         return (
             <Ons.Page>
@@ -180,7 +196,7 @@ class offerForm extends React.Component {
 
                     <Ons.ListItem>
                         <div className="list-item__subtitle">
-                            {this.props.currentUserIsLoaded ? "✔︎ " + this.l("saved") : this.l("syncing")}
+                            {this.renderOfferStatus()}
                         </div>
                     </Ons.ListItem>
                 </Ons.List>
