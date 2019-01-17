@@ -38,6 +38,7 @@ class ConsentForm extends React.Component {
             allBoxesChecked: this.state.volunteered
                 && this.state.rightToQuit
                 && this.state.dataRecording
+                && this.state.goodBehavior
         });
     }
 
@@ -124,6 +125,18 @@ class ConsentForm extends React.Component {
                         </label>
                         <label className='center' htmlFor="data-recording-check">
                             {this.l("dataRecordingConsent")}
+                        </label>
+                    </Ons.ListItem>
+
+                    <Ons.ListItem tappable={true}>
+                        <label className='left'>
+                            <Ons.Checkbox inputId="good-behavior-check"
+                                name="goodBehavior"
+                                value={this.state.goodBehavior}
+                                onChange={this.handleInputChange} />
+                        </label>
+                        <label className='center' htmlFor="good-behavior-check">
+                            {this.l("goodBehaviorConsent")}
                         </label>
                     </Ons.ListItem>
 

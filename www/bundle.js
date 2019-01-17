@@ -92297,6 +92297,7 @@ module.exports={
         "consentForm.continue": "Fortfahren",
         "consentForm.dataRecordingConsent": "Ich bestätige mein Einverständnis zu der Aufnahme von Standortdaten während der Studie.",
         "consentForm.description": "Vielen Dank für Ihre Teilnahme an dieser Studie über wie ein ortsbasierter Dienst die soziale Isolation von Flüchtlingen in Münster reduzieren kann.",
+        "consentForm.goodBehaviorConsent": "TODO",
         "consentForm.ifYouHaveAnyQuestions": "Bei Fragen wenden Sie sich bitte an den Forscher, bevor Sie fortfahren:",
         "consentForm.instructions": "Aktivieren Sie die Kontrollkästchen, wenn Sie mit den folgenden Aussagen einverstanden sind:",
         "consentForm.moreInfo": "Weitere Informationen zur Studie finden Sie auf der",
@@ -92363,6 +92364,7 @@ module.exports={
         "consentForm.continue": "Continue",
         "consentForm.dataRecordingConsent": "I agree to have my location data recorded during the study.",
         "consentForm.description": "Thank you for participating in this study about supporting forced migrant resettlement with a location based freecycling service.",
+        "consentForm.goodBehaviorConsent": "I agree to treat other users of the app with respect and kindness.",
         "consentForm.ifYouHaveAnyQuestions": "If you have any questions, please contact the researcher before continuing:",
         "consentForm.instructions": "Check the boxes if you agree with the following statements:",
         "consentForm.moreInfo": "For more information about the study, see the",
@@ -92429,6 +92431,7 @@ module.exports={
         "consentForm.continue": "TODO",
         "consentForm.dataRecordingConsent": "TODO",
         "consentForm.description": "TODO",
+        "consentForm.goodBehaviorConsent": "TODO",
         "consentForm.ifYouHaveAnyQuestions": "TODO",
         "consentForm.instructions": "TODO",
         "consentForm.moreInfo": "TODO",
@@ -93312,7 +93315,7 @@ class ConsentForm extends React.Component {
         });
 
         this.setState({
-            allBoxesChecked: this.state.volunteered && this.state.rightToQuit && this.state.dataRecording
+            allBoxesChecked: this.state.volunteered && this.state.rightToQuit && this.state.dataRecording && this.state.goodBehavior
         });
     }
 
@@ -93464,6 +93467,23 @@ class ConsentForm extends React.Component {
                         'label',
                         { className: 'center', htmlFor: 'data-recording-check' },
                         this.l("dataRecordingConsent")
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    { tappable: true },
+                    React.createElement(
+                        'label',
+                        { className: 'left' },
+                        React.createElement(Ons.Checkbox, { inputId: 'good-behavior-check',
+                            name: 'goodBehavior',
+                            value: this.state.goodBehavior,
+                            onChange: this.handleInputChange })
+                    ),
+                    React.createElement(
+                        'label',
+                        { className: 'center', htmlFor: 'good-behavior-check' },
+                        this.l("goodBehaviorConsent")
                     )
                 ),
                 React.createElement(
