@@ -92929,8 +92929,8 @@ class App extends React.Component {
      * @param {Object} attributes object, representing attributes to be updated
      */
     pushUserUpdates(attributes) {
-        // TODO! Make this only push changed attributes, not all attributes
-        var updatedUser = JSON.parse(JSON.stringify(this.state.currentUser));
+        var currentUser = this.state.currentUser || {};
+        var updatedUser = JSON.parse(JSON.stringify(currentUser));
         Object.assign(updatedUser, attributes);
 
         this.setState({
