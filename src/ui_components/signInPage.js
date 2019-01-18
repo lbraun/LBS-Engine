@@ -25,9 +25,7 @@ class SignInPage extends React.Component {
             <Ons.Page style={{textAlign: "center"}}>
                 <Ons.Row style={{marginTop: "50px"}}>
                     <Ons.Col>
-                        <h1>
-                            {this.props.l("app.name")}
-                        </h1>
+                        <h1>{this.props.l("app.name")}</h1>
                     </Ons.Col>
                 </Ons.Row>
 
@@ -78,7 +76,30 @@ class SignInPage extends React.Component {
         // If not yet approved, just tell user to wait
         if (!this.props.currentUser.approved) {
             return (
-                <p>{this.l("waitForApproval")}</p>
+                <div>
+                    <Ons.Row>
+                        <Ons.Col>
+                            <h3>{this.l("hi")} {this.props.currentUser.name}!</h3>
+
+                            <p>{this.l("waitForApproval")}</p>
+                            <p>{this.l("whileYouAreWaiting")} <a href='https://github.com/lbraun/geofreebie'>{this.props.l("app.projectsWebsite")}</a>.</p>
+                        </Ons.Col>
+                    </Ons.Row>
+
+                    <Ons.Row style={{marginTop: "50px"}}>
+                        <Ons.Col>
+                            {this.renderRefreshButton()}
+                        </Ons.Col>
+                    </Ons.Row>
+
+                    <Ons.Row style={{marginTop: "50px"}}>
+                        <Ons.Col>
+                            <localeMenu.LocaleMenu
+                                locale={this.props.locale}
+                                handleLocaleChange={this.props.handleLocaleChange} />
+                        </Ons.Col>
+                    </Ons.Row>
+                </div>
             );
         }
     }
@@ -95,6 +116,25 @@ class SignInPage extends React.Component {
                 <div>
                     <Ons.Button onClick={this.props.login} disabled={"true"}>
                         {this.l("logIn")}
+                    </Ons.Button>
+                    <p>{this.l("youMustBeOnlineInOrderToLogin")}</p>
+                </div>
+            )
+        }
+    }
+
+    renderRefreshButton() {
+        if (this.props.online) {
+            return (
+                <Ons.Button onClick={this.props.refresh}>
+                    {this.l("reload")}
+                </Ons.Button>
+            )
+        } else {
+            return (
+                <div>
+                    <Ons.Button onClick={this.props.refresh} disabled={"true"}>
+                        {this.l("reload")}
                     </Ons.Button>
                     <p>{this.l("youMustBeOnlineInOrderToLogin")}</p>
                 </div>

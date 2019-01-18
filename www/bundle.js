@@ -92294,6 +92294,7 @@ module.exports={
         "alert.isLessThan": "ist weniger als",
         "alert.metersAwayWith": "m entfernt mit dem folgenden Angebot:",
         "app.name": "Geofreebie",
+        "app.projectsWebsite": "Website des Projekts",
         "consentForm.continue": "Fortfahren",
         "consentForm.dataRecordingConsent": "Ich bestätige mein Einverständnis zu der Aufnahme von Standortdaten während der Studie.",
         "consentForm.dataRecordingInfo": "Die Daten, die in dieser Studie erhoben werden, werden in anonymisierter Form erhoben und nur in Aggregation mit weiteren anonymen Daten verarbeitet. In dieser Form werden die Daten ggf. in akademischen Journalen, Präsentationen oder anderen Medien veröffenlicht, jedoch ist niemals eine Identifizierung der einzelnen Teilnehmer möglich. Eine Woche nach Abschluss der Studie ist es daher quasi nicht mehr möglich die Daten aus deiner Teilnahme zu aus den aggregierten Datensätzen aller Teilnehmer zu identifizieren.",
@@ -92304,22 +92305,21 @@ module.exports={
         "consentForm.instructions": "Aktivieren Sie die Kontrollkästchen, wenn Sie mit den folgenden Aussagen einverstanden sind:",
         "consentForm.moreInfo": "Weitere Informationen zur Studie finden Sie auf der",
         "consentForm.moreInfoTitle": "Weitere Informationen",
-        "consentForm.projectsWebsite": "Website des Projekts",
         "consentForm.rightToQuitConsent": "Ich bestätige und habe verstanden, dass ich die Studie zu jedem Zeitpunkt ohne Konsequenzen abbrechen kann.",
         "consentForm.rightToQuitInfo": "Sie können zu jeder Zeit ohne Angabe von Gründen die Studie abbrechen und Ihre Antworten zurückziehen. Dies hat keine weiteren Konsequenzen für Sie.",
         "consentForm.rightToQuitInfoTitle": "Teilnehmerrechte",
         "consentForm.title": "Einverständniserklärung",
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
+        "dashboard.availableNow": "Jetzt verfügbar",
         "dashboard.becomeAvailable": "Verfügbar werden",
         "dashboard.becomeUnavailable": "Unverfügbar werden",
-        "dashboard.nearbyOffers": "Angebote in Ihre Nähre",
-        "dashboard.weNeedYourLocationToShowThis": "TODO",
-        "dashboard.useMyLocation": "TODO",
-        "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
-        "dashboard.availableNow": "Jetzt verfügbar",
-        "dashboard.youAreNotOffering": "TODO",
         "dashboard.createAnOffer": "TODO",
+        "dashboard.nearbyOffers": "Angebote in Ihre Nähre",
+        "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
+        "dashboard.useMyLocation": "TODO",
         "dashboard.welcome": "Willkommen",
+        "dashboard.weNeedYourLocationToShowThis": "TODO",
+        "dashboard.youAreNotOffering": "TODO",
         "dashboard.yourOffer": "Ihr Angebot",
         "list.error": "Fehler",
         "list.fetchFailure": "Es konnten keine andere Leute gefunden werden. Vielleicht haben Sie keine Internetverbindung?",
@@ -92357,12 +92357,14 @@ module.exports={
         "settings.shareLocation": "Meinen Standort teilen",
         "settings.shareLocationText": "Dadurch können Sie Ihren Standort auf 'öffentlich' oder 'privat' umstellen. Im privaten Modus wird nur Ihre ungefähre Position (innerhalb von 50 Metern) auf der Karte angezeigt.",
         "settings.useLocation": "Meinen Standort verwenden",
-        "settings.youHaveConsented": "Sie haben zugestimmt, an der Studie teilzunehmen.",
         "settings.useLocationText": "Dadurch kann die App Ihre aktuelle Position von Ihrem Telefon abrufen. Aktivieren Sie diese Option, um Ihren Standort auf der Karte anzuzeigen.",
+        "settings.youHaveConsented": "Sie haben zugestimmt, an der Studie teilzunehmen.",
+        "signInPage.hi": "Hej",
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
-        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
         "signInPage.waitForApproval": "TODO",
+        "signInPage.whileYouAreWaiting": "TODO",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Hilfe",
         "tabs.list": "Liste",
@@ -92374,6 +92376,7 @@ module.exports={
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
         "app.name": "Geofreebie",
+        "app.projectsWebsite": "project's website",
         "consentForm.continue": "Continue",
         "consentForm.dataRecordingConsent": "I agree to have my location data recorded during the study.",
         "consentForm.dataRecordingInfo": "Original data obtained from this study will be anonymised and only processed in aggregate. In such form, it might be published in academic journals, presentations or other media, but never in a way that would allow individual identification. One week after the completion of the study it might no longer be possible to retract your data from such aggregated analyses.",
@@ -92384,22 +92387,21 @@ module.exports={
         "consentForm.instructions": "Check the boxes if you agree with the following statements:",
         "consentForm.moreInfo": "For more information about the study, see the",
         "consentForm.moreInfoTitle": "More info",
-        "consentForm.projectsWebsite": "project's website",
         "consentForm.rightToQuitConsent": "I confirm I understand my right to quit the study at any time.",
         "consentForm.rightToQuitInfo": "You are free to stop, quit the study and retract your data at any time during the study with no further consequences.",
         "consentForm.rightToQuitInfoTitle": "Right to quit",
         "consentForm.title": "Informed Consent Form",
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
+        "dashboard.availableNow": "Available now",
         "dashboard.becomeAvailable": "Become available",
         "dashboard.becomeUnavailable": "Become unavailable",
-        "dashboard.nearbyOffers": "Nearby Offers",
-        "dashboard.weNeedYourLocationToShowThis": "We need to use your location in order to show which offers are nearby.",
-        "dashboard.useMyLocation": "Use my location",
-        "dashboard.notCurrentlyAvailable": "Not currently available",
-        "dashboard.availableNow": "Available now",
-        "dashboard.youAreNotOffering": "You are not offering anything right now.",
         "dashboard.createAnOffer": "Create an offer",
+        "dashboard.nearbyOffers": "Nearby Offers",
+        "dashboard.notCurrentlyAvailable": "Not currently available",
+        "dashboard.useMyLocation": "Use my location",
         "dashboard.welcome": "Welcome",
+        "dashboard.weNeedYourLocationToShowThis": "We need to use your location in order to show which offers are nearby.",
+        "dashboard.youAreNotOffering": "You are not offering anything right now.",
         "dashboard.yourOffer": "Your Offer",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
@@ -92437,12 +92439,14 @@ module.exports={
         "settings.shareLocation": "Share my location",
         "settings.shareLocationText": "This allows you to switch your location to public or private. Only your approximate location (within 50 meters) will show on the map if set to private.",
         "settings.useLocation": "Use my location",
-        "settings.youHaveConsented": "You have consented to take part in the study.",
         "settings.useLocationText": "This allows the app to get your actual position from your phone. Turn this on to see your location on the map. Your location is private and will never be stored by the app.",
+        "settings.youHaveConsented": "You have consented to take part in the study.",
+        "signInPage.hi": "Hi",
         "signInPage.loading": "Loading...",
         "signInPage.logIn": "Log in",
+        "signInPage.waitForApproval": "Thank you for registering. A moderator must approve your account before you can join. Try logging in again soon.",
+        "signInPage.whileYouAreWaiting": "While you are waiting, you can contact Lucas with any questions or read more about the app on the",
         "signInPage.youMustBeOnlineInOrderToLogIn": "You must be online in order to log in.",
-        "signInPage.waitForApproval": "Thank you for registering. Please wait for a moderator to approve your account. You can contact Lucas at lucas.braun@uni-muenster.de with any questions.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92454,6 +92458,7 @@ module.exports={
         "alert.isLessThan": "أصغر من",
         "alert.metersAwayWith": "متر (أمتار) من العرض التالي:",
         "app.name": "جيوفريبي",
+        "app.projectsWebsite": "TODO",
         "consentForm.continue": "TODO",
         "consentForm.dataRecordingConsent": "TODO",
         "consentForm.dataRecordingInfo": "TODO",
@@ -92464,22 +92469,21 @@ module.exports={
         "consentForm.instructions": "TODO",
         "consentForm.moreInfo": "TODO",
         "consentForm.moreInfoTitle": "TODO",
-        "consentForm.projectsWebsite": "TODO",
         "consentForm.rightToQuitConsent": "TODO",
         "consentForm.rightToQuitInfo": "TODO",
         "consentForm.rightToQuitInfoTitle": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
+        "dashboard.availableNow": "TODO",
         "dashboard.becomeAvailable": "للمتاح",
         "dashboard.becomeUnavailable": "TODO",
-        "dashboard.nearbyOffers": "TODO",
-        "dashboard.weNeedYourLocationToShowThis": "TODO",
-        "dashboard.useMyLocation": "TODO",
-        "dashboard.notCurrentlyAvailable": "TODO",
-        "dashboard.availableNow": "TODO",
-        "dashboard.youAreNotOffering": "TODO",
         "dashboard.createAnOffer": "TODO",
+        "dashboard.nearbyOffers": "TODO",
+        "dashboard.notCurrentlyAvailable": "TODO",
+        "dashboard.useMyLocation": "TODO",
         "dashboard.welcome": "أهلاً و سهلاً",
+        "dashboard.weNeedYourLocationToShowThis": "TODO",
+        "dashboard.youAreNotOffering": "TODO",
         "dashboard.yourOffer": "TODO",
         "list.error": "خطأ",
         "list.fetchFailure": "حدث خطأ بينما يتم البحث عن أشخاص هنا. يبدو أنك غير متصل باﻹنترنت?",
@@ -92517,12 +92521,14 @@ module.exports={
         "settings.shareLocation": "مشاركة موقعي",
         "settings.shareLocationText": "يتيح لك هذا تبديل موقعك إلى عام أو خاص. سيتم عرض موقعك التقريبي (على بُعد 50 مترًا فقط) على الخريطة إذا تم تعيينه على خاص.",
         "settings.useLocation": "استخدم موقعي",
-        "settings.youHaveConsented": "TODO",
         "settings.useLocationText": "هذا يسمح للتطبيق بالحصول على موقعك الفعلي من هاتفك. يمكنك تشغيل هذا لترى موقعك على الخريطة. موقعك خاص ولن يتم تخزينه أبدًا بواسطة التطبيق.",
+        "settings.youHaveConsented": "TODO",
+        "signInPage.hi": "TODO",
         "signInPage.loading": "جاري التحميل ...",
         "signInPage.logIn": "تسجيل الدخول",
-        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
         "signInPage.waitForApproval": "TODO",
+        "signInPage.whileYouAreWaiting": "TODO",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
         "tabs.dashboard": "لوحة التحكم الرئيسية",
         "tabs.help": "مساعدة",
         "tabs.list": "قائمة",
@@ -92603,7 +92609,7 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
+        this.refreshUsers = this.refreshUsers.bind(this);
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
@@ -92615,6 +92621,7 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.revokeConsent = this.revokeConsent.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
@@ -92843,7 +92850,7 @@ class App extends React.Component {
                 currentUserId: result._id
             });
 
-            this.fetchAndLoadAllUsers();
+            this.refreshUsers();
         }, error => {
             console.log("There was an error creating or loading the user!");
             console.log(error);
@@ -92856,7 +92863,7 @@ class App extends React.Component {
     /**
      * Fetches all user data from the database server, including current user's data
      */
-    fetchAndLoadAllUsers() {
+    refreshUsers() {
         fetch("https://geofreebie-backend.herokuapp.com/api/users").then(res => res.json()).then(result => {
             // Store current user and remove it from the list
             for (var i = result.length - 1; i >= 0; --i) {
@@ -93259,6 +93266,10 @@ class App extends React.Component {
         this.resumeApp();
     }
 
+    refresh(e) {
+        this.refreshUsers();
+    }
+
     revokeConsent(e) {
         this.pushUserUpdates({ hasConsented: false });
     }
@@ -93361,6 +93372,7 @@ class App extends React.Component {
                 locale: this.state.locale,
                 handleLocaleChange: this.handleLocaleChange,
                 login: this.login,
+                refresh: this.refresh,
                 online: this.state.online,
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser });
@@ -93506,7 +93518,7 @@ class ConsentForm extends React.Component {
                         React.createElement(
                             'a',
                             { href: 'https://github.com/lbraun/geofreebie' },
-                            this.l("projectsWebsite")
+                            this.props.l("app.projectsWebsite")
                         ),
                         '.'
                     ),
@@ -95012,9 +95024,61 @@ class SignInPage extends React.Component {
         // If not yet approved, just tell user to wait
         if (!this.props.currentUser.approved) {
             return React.createElement(
-                'p',
+                'div',
                 null,
-                this.l("waitForApproval")
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            'h3',
+                            null,
+                            this.l("hi"),
+                            ' ',
+                            this.props.currentUser.name,
+                            '!'
+                        ),
+                        React.createElement(
+                            'p',
+                            null,
+                            this.l("waitForApproval")
+                        ),
+                        React.createElement(
+                            'p',
+                            null,
+                            this.l("whileYouAreWaiting"),
+                            ' ',
+                            React.createElement(
+                                'a',
+                                { href: 'https://github.com/lbraun/geofreebie' },
+                                this.props.l("app.projectsWebsite")
+                            ),
+                            '.'
+                        )
+                    )
+                ),
+                React.createElement(
+                    Ons.Row,
+                    { style: { marginTop: "50px" } },
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        this.renderRefreshButton()
+                    )
+                ),
+                React.createElement(
+                    Ons.Row,
+                    { style: { marginTop: "50px" } },
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(localeMenu.LocaleMenu, {
+                            locale: this.props.locale,
+                            handleLocaleChange: this.props.handleLocaleChange })
+                    )
+                )
             );
         }
     }
@@ -95034,6 +95098,31 @@ class SignInPage extends React.Component {
                     Ons.Button,
                     { onClick: this.props.login, disabled: "true" },
                     this.l("logIn")
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    this.l("youMustBeOnlineInOrderToLogin")
+                )
+            );
+        }
+    }
+
+    renderRefreshButton() {
+        if (this.props.online) {
+            return React.createElement(
+                Ons.Button,
+                { onClick: this.props.refresh },
+                this.l("reload")
+            );
+        } else {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Ons.Button,
+                    { onClick: this.props.refresh, disabled: "true" },
+                    this.l("reload")
                 ),
                 React.createElement(
                     'p',

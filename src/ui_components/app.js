@@ -45,7 +45,7 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
+        this.refreshUsers = this.refreshUsers.bind(this);
         this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
@@ -57,6 +57,7 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.revokeConsent = this.revokeConsent.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
@@ -109,6 +110,7 @@ class App extends React.Component {
 
                 app.setState({users: users})
                 app.pushUserUpdates({coords: coords});
+                // TODO! Make this only push changed attributes, not all attributes
 
                 var closestUser = app.state.users[0];
                 if (closestUser) {
@@ -129,6 +131,7 @@ class App extends React.Component {
             } else {
                 // Otherwise set user position to null
                 app.pushUserUpdates({coords: null});
+                // TODO! Make this only push changed attributes, not all attributes
             }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
@@ -293,7 +296,7 @@ class App extends React.Component {
                         currentUserId: result._id
                     });
 
-                    this.fetchAndLoadAllUsers();
+                    this.refreshUsers();
                 },
                 (error) => {
                     console.log("There was an error creating or loading the user!");
@@ -308,7 +311,7 @@ class App extends React.Component {
     /**
      * Fetches all user data from the database server, including current user's data
      */
-    fetchAndLoadAllUsers() {
+    refreshUsers() {
         fetch("https://geofreebie-backend.herokuapp.com/api/users")
             .then(res => res.json())
             .then(
@@ -377,6 +380,7 @@ class App extends React.Component {
      * @param {Object} attributes object, representing attributes to be updated
      */
     pushUserUpdates(attributes) {
+        // TODO! Make this only push changed attributes, not all attributes
         var currentUserCopy = JSON.parse(JSON.stringify(this.state.currentUser));
         Object.assign(currentUserCopy, attributes);
         this.pushUserUpdate(currentUserCopy);
@@ -710,6 +714,10 @@ class App extends React.Component {
         this.resumeApp();
     };
 
+    refresh(e) {
+        this.refreshUsers();
+    };
+
     revokeConsent(e) {
         this.pushUserUpdates({hasConsented: false});
     };
@@ -740,6 +748,9 @@ class App extends React.Component {
                 if (err) {
                     console.log('Error: ' + err.message);
                 } else {
+                    // Parse and remove app metadata and stats from Auth0
+                    var approved = userInfo["https://myapp.example.com/approved"]
+                    userInfo.loginsCount = userInfo["https://myapp.example.com/loginsCount"]
                     app.fetchOrCreateAuth0User(userInfo);
                 }
             });
@@ -808,6 +819,7 @@ class App extends React.Component {
                 locale={this.state.locale}
                 handleLocaleChange={this.handleLocaleChange}
                 login={this.login}
+                refresh={this.refresh}
                 online={this.state.online}
                 authenticated={this.state.authenticated}
                 currentUser={this.state.currentUser} />);
