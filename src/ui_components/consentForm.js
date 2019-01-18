@@ -86,7 +86,7 @@ class ConsentForm extends React.Component {
 
                         <p>
                             <b>{this.l("moreInfoTitle")}:</b><br />
-                            {this.l("moreInfo")} <a href='https://github.com/lbraun/geofreebie'>{this.l("projectsWebsite")}</a>.
+                            {this.l("moreInfo")} <a href='https://github.com/lbraun/geofreebie'>{this.props.l("app.projectsWebsite")}</a>.
                         </p>
 
                         <p>{this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.</p>

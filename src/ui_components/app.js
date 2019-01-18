@@ -45,8 +45,7 @@ class App extends React.Component {
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.fetchAndLoadAllUsers = this.fetchAndLoadAllUsers.bind(this);
-        this.pushUserUpdate = this.pushUserUpdate.bind(this);
+        this.refreshUsers = this.refreshUsers.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
@@ -293,7 +292,7 @@ class App extends React.Component {
                         currentUserId: result._id
                     });
 
-                    this.fetchAndLoadAllUsers();
+                    this.refreshUsers();
                 },
                 (error) => {
                     console.log("There was an error creating or loading the user!");
@@ -308,7 +307,7 @@ class App extends React.Component {
     /**
      * Fetches all user data from the database server, including current user's data
      */
-    fetchAndLoadAllUsers() {
+    refreshUsers() {
         fetch("https://geofreebie-backend.herokuapp.com/api/users")
             .then(res => res.json())
             .then(
@@ -321,13 +320,13 @@ class App extends React.Component {
 
                             // Set defaults from config file if user just signed up
                             if (currentUser.newlyCreated) {
-                                currentUser.available = config.app.available;
-                                currentUser.shareLocation = config.app.shareLocation;
-                                currentUser.useLocation = config.app.useLocation;
-                                currentUser.locale = this.state.locale;
-                                currentUser.newlyCreated = false;
-
-                                this.pushUserUpdate(currentUser);
+                                this.pushUserUpdates({
+                                    available: config.app.available,
+                                    shareLocation: config.app.shareLocation,
+                                    useLocation: config.app.useLocation,
+                                    locale: this.state.locale,
+                                    newlyCreated: false,
+                                });
                             }
 
                             this.setState({
@@ -377,32 +376,20 @@ class App extends React.Component {
      * @param {Object} attributes object, representing attributes to be updated
      */
     pushUserUpdates(attributes) {
-        var currentUserCopy = JSON.parse(JSON.stringify(this.state.currentUser));
-        Object.assign(currentUserCopy, attributes);
-        this.pushUserUpdate(currentUserCopy);
-    }
+        var currentUser = this.state.currentUser || {};
+        var updatedUser = JSON.parse(JSON.stringify(currentUser));
+        Object.assign(updatedUser, attributes);
 
-    /**
-     * Push the provided user to the database server
-     * @param {User} updatedUser object, representing the user in its most up-to-date form
-     */
-    pushUserUpdate(updatedUser) {
         this.setState({
             currentUser: updatedUser,
             currentUserIsLoaded: false,
         });
 
-        // Don't sync user coordinates if user is not available
-        // but still keep them locally
-        if (!updatedUser.available) {
-            updatedUser.coords = null;
-        }
-
         // Make the call to the update API
         var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
         fetch(url, {
             method: "PUT",
-            body: JSON.stringify(updatedUser),
+            body: JSON.stringify(attributes),
             headers: {'Content-Type': 'application/json'},
         })
             .then(res => res.json())
@@ -419,9 +406,8 @@ class App extends React.Component {
                         errorSyncingUser: error
                     });
                 }
-            )
+            );
     }
-
 
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
@@ -679,8 +665,9 @@ class App extends React.Component {
      */
     login(e) {
         var app = this;
-        var target = e.target;
-        target.disabled = true;
+
+        var target = e && e.target;
+        if (target) {target.disabled = true;}
 
         var client = new Auth0Cordova({
             domain: 'geofreebie.eu.auth0.com',
@@ -696,16 +683,19 @@ class App extends React.Component {
         client.authorize(options, function(err, authResult) {
             if (err) {
                 console.log(err);
-                return (target.disabled = false);
+                if (target) {target.disabled = false;}
+                return (null);
             }
 
             localStorage.setItem('access_token', authResult.accessToken);
-            target.disabled = false;
+            if (target) {target.disabled = false;}
+
             app.resumeApp();
         });
     };
 
     logout(e) {
+        window.open("https://geofreebie.eu.auth0.com/v2/logout?returnTo=com.lbraun.geofreebie%3A%2F%2Fgeofreebie.eu.auth0.com%2Fcordova%2Fcom.lbraun.geofreebie%2Fcallback");
         localStorage.removeItem('access_token');
         this.resumeApp();
     };
@@ -740,6 +730,16 @@ class App extends React.Component {
                 if (err) {
                     console.log('Error: ' + err.message);
                 } else {
+                    // Clean up user data from Auth0
+                    userInfo.approved = userInfo["https://myapp.example.com/approved"];
+                    userInfo.loginsCount = userInfo["https://myapp.example.com/loginsCount"];
+                    userInfo.auth0Id = userInfo.sub;
+
+                    delete userInfo["https://myapp.example.com/approved"];
+                    delete userInfo["https://myapp.example.com/loginsCount"];
+                    delete userInfo.sub;
+
+                    // Fetch other user data from backend server
                     app.fetchOrCreateAuth0User(userInfo);
                 }
             });
@@ -759,8 +759,8 @@ class App extends React.Component {
 
     // Render sidebars and toolbar
     render() {
-        // Redirect to sign in page if user has not yet been loaded and authenticated
-        if (this.state.authenticated && this.state.currentUser) {
+        // Redirect to sign in page if user has not yet been authenticated, loaded, and approved
+        if (this.state.authenticated && this.state.currentUser && this.state.currentUser.approved) {
             // Redirect to consent form if user has not yet consented
             if (!this.state.currentUser.hasConsented) {
                 return (<consentForm.ConsentForm
@@ -808,8 +808,10 @@ class App extends React.Component {
                 locale={this.state.locale}
                 handleLocaleChange={this.handleLocaleChange}
                 login={this.login}
+                logout={this.logout}
                 online={this.state.online}
-                authenticated={this.state.authenticated} />);
+                authenticated={this.state.authenticated}
+                currentUser={this.state.currentUser} />);
         }
     }
 }
