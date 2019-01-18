@@ -92359,7 +92359,7 @@ module.exports={
         "settings.useLocation": "Meinen Standort verwenden",
         "settings.useLocationText": "Dadurch kann die App Ihre aktuelle Position von Ihrem Telefon abrufen. Aktivieren Sie diese Option, um Ihren Standort auf der Karte anzuzeigen.",
         "settings.youHaveConsented": "Sie haben zugestimmt, an der Studie teilzunehmen.",
-        "signInPage.hi": "Hej",
+        "signInPage.hi": "Hi",
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
         "signInPage.refresh": "Neuladen",
@@ -92446,8 +92446,8 @@ module.exports={
         "signInPage.loading": "Loading...",
         "signInPage.logIn": "Log in",
         "signInPage.refresh": "Refresh",
-        "signInPage.waitForApproval": "Thank you for registering. A moderator must approve your account before you can join. Try logging in again soon.",
-        "signInPage.whileYouAreWaiting": "While you are waiting, you can contact Lucas with any questions or read more about the app on the",
+        "signInPage.waitForApproval": "Please wait for a moderator to approve your account.",
+        "signInPage.whileYouAreWaiting": "You will receive an email when you can log in.",
         "signInPage.youMustBeOnlineInOrderToLogIn": "You must be online in order to log in.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
@@ -92623,7 +92623,6 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
-        this.refresh = this.refresh.bind(this);
         this.revokeConsent = this.revokeConsent.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
@@ -93261,12 +93260,9 @@ class App extends React.Component {
     }
 
     logout(e) {
+        window.open("https://geofreebie.eu.auth0.com/v2/logout?returnTo=com.lbraun.geofreebie%3A%2F%2Fgeofreebie.eu.auth0.com%2Fcordova%2Fcom.lbraun.geofreebie%2Fcallback");
         localStorage.removeItem('access_token');
         this.resumeApp();
-    }
-
-    refresh(e) {
-        this.refreshUsers();
     }
 
     revokeConsent(e) {
@@ -93381,7 +93377,7 @@ class App extends React.Component {
                 locale: this.state.locale,
                 handleLocaleChange: this.handleLocaleChange,
                 login: this.login,
-                refresh: this.refresh,
+                logout: this.logout,
                 online: this.state.online,
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser });
@@ -95060,14 +95056,7 @@ class SignInPage extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            this.l("whileYouAreWaiting"),
-                            ' ',
-                            React.createElement(
-                                'a',
-                                { href: 'https://github.com/lbraun/geofreebie' },
-                                this.props.l("app.projectsWebsite")
-                            ),
-                            '.'
+                            this.l("whileYouAreWaiting")
                         )
                     )
                 ),
@@ -95077,7 +95066,7 @@ class SignInPage extends React.Component {
                     React.createElement(
                         Ons.Col,
                         null,
-                        this.renderRefreshButton()
+                        this.renderLogoutButton()
                     )
                 ),
                 React.createElement(
@@ -95120,12 +95109,12 @@ class SignInPage extends React.Component {
         }
     }
 
-    renderRefreshButton() {
+    renderLogoutButton() {
         if (this.props.online) {
             return React.createElement(
                 Ons.Button,
-                { onClick: this.props.refresh },
-                this.l("refresh")
+                { onClick: this.props.logout },
+                this.props.l("settings.logOut")
             );
         } else {
             return React.createElement(
@@ -95133,8 +95122,8 @@ class SignInPage extends React.Component {
                 null,
                 React.createElement(
                     Ons.Button,
-                    { onClick: this.props.refresh, disabled: "true" },
-                    this.l("refresh")
+                    { onClick: this.props.logout, disabled: "true" },
+                    this.props.l("settings.logOut")
                 ),
                 React.createElement(
                     'p',

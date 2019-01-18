@@ -56,7 +56,6 @@ class App extends React.Component {
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
-        this.refresh = this.refresh.bind(this);
         this.revokeConsent = this.revokeConsent.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
@@ -696,12 +695,9 @@ class App extends React.Component {
     };
 
     logout(e) {
+        window.open("https://geofreebie.eu.auth0.com/v2/logout?returnTo=com.lbraun.geofreebie%3A%2F%2Fgeofreebie.eu.auth0.com%2Fcordova%2Fcom.lbraun.geofreebie%2Fcallback");
         localStorage.removeItem('access_token');
         this.resumeApp();
-    };
-
-    refresh(e) {
-        this.refreshUsers();
     };
 
     revokeConsent(e) {
@@ -812,7 +808,7 @@ class App extends React.Component {
                 locale={this.state.locale}
                 handleLocaleChange={this.handleLocaleChange}
                 login={this.login}
-                refresh={this.refresh}
+                logout={this.logout}
                 online={this.state.online}
                 authenticated={this.state.authenticated}
                 currentUser={this.state.currentUser} />);

@@ -85,13 +85,13 @@ class SignInPage extends React.Component {
                             <h3>{this.l("hi")} {this.props.currentUser.name}!</h3>
 
                             <p>{this.l("waitForApproval")}</p>
-                            <p>{this.l("whileYouAreWaiting")} <a href='https://github.com/lbraun/geofreebie'>{this.props.l("app.projectsWebsite")}</a>.</p>
+                            <p>{this.l("whileYouAreWaiting")}</p>
                         </Ons.Col>
                     </Ons.Row>
 
                     <Ons.Row style={{marginTop: "50px"}}>
                         <Ons.Col>
-                            {this.renderRefreshButton()}
+                            {this.renderLogoutButton()}
                         </Ons.Col>
                     </Ons.Row>
 
@@ -126,18 +126,18 @@ class SignInPage extends React.Component {
         }
     }
 
-    renderRefreshButton() {
+    renderLogoutButton() {
         if (this.props.online) {
             return (
-                <Ons.Button onClick={this.props.refresh}>
-                    {this.l("refresh")}
+                <Ons.Button onClick={this.props.logout}>
+                    {this.props.l("settings.logOut")}
                 </Ons.Button>
             )
         } else {
             return (
                 <div>
-                    <Ons.Button onClick={this.props.refresh} disabled={"true"}>
-                        {this.l("refresh")}
+                    <Ons.Button onClick={this.props.logout} disabled={"true"}>
+                        {this.props.l("settings.logOut")}
                     </Ons.Button>
                     <p>{this.l("youMustBeOnlineInOrderToLogin")}</p>
                 </div>
