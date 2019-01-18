@@ -93225,8 +93225,11 @@ class App extends React.Component {
      */
     login(e) {
         var app = this;
-        var target = e.target;
-        target.disabled = true;
+
+        var target = e && e.target;
+        if (target) {
+            target.disabled = true;
+        }
 
         var client = new Auth0Cordova({
             domain: 'geofreebie.eu.auth0.com',
@@ -93242,11 +93245,17 @@ class App extends React.Component {
         client.authorize(options, function (err, authResult) {
             if (err) {
                 console.log(err);
-                return target.disabled = false;
+                if (target) {
+                    target.disabled = false;
+                }
+                return null;
             }
 
             localStorage.setItem('access_token', authResult.accessToken);
-            target.disabled = false;
+            if (target) {
+                target.disabled = false;
+            }
+
             app.resumeApp();
         });
     }
@@ -94932,6 +94941,9 @@ class SignInPage extends React.Component {
         super(props);
         this.renderMainContent = this.renderMainContent.bind(this);
         this.renderLoginButton = this.renderLoginButton.bind(this);
+
+        // Try logging in automatically
+        this.props.login();
     }
 
     /**

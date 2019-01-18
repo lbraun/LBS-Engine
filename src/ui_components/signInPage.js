@@ -9,6 +9,9 @@ class SignInPage extends React.Component {
         super(props);
         this.renderMainContent = this.renderMainContent.bind(this);
         this.renderLoginButton = this.renderLoginButton.bind(this);
+
+        // Try logging in automatically
+        this.props.login();
     }
 
     /**
