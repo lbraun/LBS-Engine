@@ -92613,7 +92613,6 @@ class App extends React.Component {
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.refreshUsers = this.refreshUsers.bind(this);
-        this.pushUserUpdate = this.pushUserUpdate.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
@@ -92876,13 +92875,13 @@ class App extends React.Component {
 
                     // Set defaults from config file if user just signed up
                     if (currentUser.newlyCreated) {
-                        currentUser.available = config.app.available;
-                        currentUser.shareLocation = config.app.shareLocation;
-                        currentUser.useLocation = config.app.useLocation;
-                        currentUser.locale = this.state.locale;
-                        currentUser.newlyCreated = false;
-
-                        this.pushUserUpdate(currentUser);
+                        this.pushUserUpdates({
+                            available: config.app.available,
+                            shareLocation: config.app.shareLocation,
+                            useLocation: config.app.useLocation,
+                            locale: this.state.locale,
+                            newlyCreated: false
+                        });
                     }
 
                     this.setState({
@@ -92944,41 +92943,6 @@ class App extends React.Component {
         fetch(url, {
             method: "PUT",
             body: JSON.stringify(attributes),
-            headers: { 'Content-Type': 'application/json' }
-        }).then(res => res.json()).then(result => {
-            this.setState({
-                currentUserIsLoaded: true
-            });
-        }, error => {
-            console.log("There was an error updating the user!");
-            console.log(error);
-            this.setState({
-                errorSyncingUser: error
-            });
-        });
-    }
-
-    /**
-     * Push the provided user to the database server
-     * @param {User} updatedUser object, representing the user in its most up-to-date form
-     */
-    pushUserUpdate(updatedUser) {
-        this.setState({
-            currentUser: updatedUser,
-            currentUserIsLoaded: false
-        });
-
-        // Don't sync user coordinates if user is not available
-        // but still keep them locally
-        if (!updatedUser.available) {
-            updatedUser.coords = null;
-        }
-
-        // Make the call to the update API
-        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
-        fetch(url, {
-            method: "PUT",
-            body: JSON.stringify(updatedUser),
             headers: { 'Content-Type': 'application/json' }
         }).then(res => res.json()).then(result => {
             this.setState({
