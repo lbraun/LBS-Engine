@@ -110,7 +110,6 @@ class App extends React.Component {
 
                 app.setState({users: users})
                 app.pushUserUpdates({coords: coords});
-                // TODO! Make this only push changed attributes, not all attributes
 
                 var closestUser = app.state.users[0];
                 if (closestUser) {
@@ -131,7 +130,6 @@ class App extends React.Component {
             } else {
                 // Otherwise set user position to null
                 app.pushUserUpdates({coords: null});
-                // TODO! Make this only push changed attributes, not all attributes
             }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
@@ -381,9 +379,36 @@ class App extends React.Component {
      */
     pushUserUpdates(attributes) {
         // TODO! Make this only push changed attributes, not all attributes
-        var currentUserCopy = JSON.parse(JSON.stringify(this.state.currentUser));
-        Object.assign(currentUserCopy, attributes);
-        this.pushUserUpdate(currentUserCopy);
+        var updatedUser = JSON.parse(JSON.stringify(this.state.currentUser));
+        Object.assign(updatedUser, attributes);
+
+        this.setState({
+            currentUser: updatedUser,
+            currentUserIsLoaded: false,
+        });
+
+        // Make the call to the update API
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(attributes),
+            headers: {'Content-Type': 'application/json'},
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        currentUserIsLoaded: true,
+                    });
+                },
+                (error) => {
+                    console.log("There was an error updating the user!");
+                    console.log(error);
+                    this.setState({
+                        errorSyncingUser: error
+                    });
+                }
+            );
     }
 
     /**
@@ -423,7 +448,7 @@ class App extends React.Component {
                         errorSyncingUser: error
                     });
                 }
-            )
+            );
     }
 
 
@@ -748,9 +773,16 @@ class App extends React.Component {
                 if (err) {
                     console.log('Error: ' + err.message);
                 } else {
-                    // Parse and remove app metadata and stats from Auth0
-                    var approved = userInfo["https://myapp.example.com/approved"]
-                    userInfo.loginsCount = userInfo["https://myapp.example.com/loginsCount"]
+                    // Clean up user data from Auth0
+                    userInfo.approved = userInfo["https://myapp.example.com/approved"];
+                    userInfo.loginsCount = userInfo["https://myapp.example.com/loginsCount"];
+                    userInfo.auth0Id = userInfo.sub;
+
+                    delete userInfo["https://myapp.example.com/approved"];
+                    delete userInfo["https://myapp.example.com/loginsCount"];
+                    delete userInfo.sub;
+
+                    // Fetch other user data from backend server
                     app.fetchOrCreateAuth0User(userInfo);
                 }
             });

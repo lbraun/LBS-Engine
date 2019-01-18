@@ -92362,6 +92362,7 @@ module.exports={
         "signInPage.hi": "Hej",
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
+        "signInPage.refresh": "Neuladen",
         "signInPage.waitForApproval": "TODO",
         "signInPage.whileYouAreWaiting": "TODO",
         "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
@@ -92444,6 +92445,7 @@ module.exports={
         "signInPage.hi": "Hi",
         "signInPage.loading": "Loading...",
         "signInPage.logIn": "Log in",
+        "signInPage.refresh": "Refresh",
         "signInPage.waitForApproval": "Thank you for registering. A moderator must approve your account before you can join. Try logging in again soon.",
         "signInPage.whileYouAreWaiting": "While you are waiting, you can contact Lucas with any questions or read more about the app on the",
         "signInPage.youMustBeOnlineInOrderToLogIn": "You must be online in order to log in.",
@@ -92526,6 +92528,7 @@ module.exports={
         "signInPage.hi": "TODO",
         "signInPage.loading": "جاري التحميل ...",
         "signInPage.logIn": "تسجيل الدخول",
+        "signInPage.refresh": "TODO",
         "signInPage.waitForApproval": "TODO",
         "signInPage.whileYouAreWaiting": "TODO",
         "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
@@ -92927,9 +92930,32 @@ class App extends React.Component {
      * @param {Object} attributes object, representing attributes to be updated
      */
     pushUserUpdates(attributes) {
-        var currentUserCopy = JSON.parse(JSON.stringify(this.state.currentUser));
-        Object.assign(currentUserCopy, attributes);
-        this.pushUserUpdate(currentUserCopy);
+        // TODO! Make this only push changed attributes, not all attributes
+        var updatedUser = JSON.parse(JSON.stringify(this.state.currentUser));
+        Object.assign(updatedUser, attributes);
+
+        this.setState({
+            currentUser: updatedUser,
+            currentUserIsLoaded: false
+        });
+
+        // Make the call to the update API
+        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(attributes),
+            headers: { 'Content-Type': 'application/json' }
+        }).then(res => res.json()).then(result => {
+            this.setState({
+                currentUserIsLoaded: true
+            });
+        }, error => {
+            console.log("There was an error updating the user!");
+            console.log(error);
+            this.setState({
+                errorSyncingUser: error
+            });
+        });
     }
 
     /**
@@ -93300,6 +93326,16 @@ class App extends React.Component {
                 if (err) {
                     console.log('Error: ' + err.message);
                 } else {
+                    // Clean up user data from Auth0
+                    userInfo.approved = userInfo["https://myapp.example.com/approved"];
+                    userInfo.loginsCount = userInfo["https://myapp.example.com/loginsCount"];
+                    userInfo.auth0Id = userInfo.sub;
+
+                    delete userInfo["https://myapp.example.com/approved"];
+                    delete userInfo["https://myapp.example.com/loginsCount"];
+                    delete userInfo.sub;
+
+                    // Fetch other user data from backend server
                     app.fetchOrCreateAuth0User(userInfo);
                 }
             });
@@ -95113,7 +95149,7 @@ class SignInPage extends React.Component {
             return React.createElement(
                 Ons.Button,
                 { onClick: this.props.refresh },
-                this.l("reload")
+                this.l("refresh")
             );
         } else {
             return React.createElement(
@@ -95122,7 +95158,7 @@ class SignInPage extends React.Component {
                 React.createElement(
                     Ons.Button,
                     { onClick: this.props.refresh, disabled: "true" },
-                    this.l("reload")
+                    this.l("refresh")
                 ),
                 React.createElement(
                     'p',

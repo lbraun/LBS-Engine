@@ -127,14 +127,14 @@ class SignInPage extends React.Component {
         if (this.props.online) {
             return (
                 <Ons.Button onClick={this.props.refresh}>
-                    {this.l("reload")}
+                    {this.l("refresh")}
                 </Ons.Button>
             )
         } else {
             return (
                 <div>
                     <Ons.Button onClick={this.props.refresh} disabled={"true"}>
-                        {this.l("reload")}
+                        {this.l("refresh")}
                     </Ons.Button>
                     <p>{this.l("youMustBeOnlineInOrderToLogin")}</p>
                 </div>
