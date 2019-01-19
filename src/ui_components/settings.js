@@ -66,14 +66,6 @@ class Settings extends React.Component {
     }
 
     render() {
-        if (this.props.authenticated) {
-            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
-            var authenticationButton = <Ons.Button onClick={this.props.logout}>{this.l("logOut")}</Ons.Button>;
-        } else {
-            var authenticationText = this.l("notCurrentlyLoggedIn");
-            var authenticationButton = <Ons.Button onClick={this.props.login}>{this.l("logIn")}</Ons.Button>;
-        }
-
         return (
             <Ons.Page>
                 <Ons.List>
@@ -138,10 +130,10 @@ class Settings extends React.Component {
 
                     <Ons.ListItem key='authentication'>
                         <div className='left'>
-                            <p>{authenticationText}</p>
+                            <p>{`${this.l("loggedInAs")} ${this.props.currentUser.name}`}</p>
                         </div>
                         <div className='right'>
-                            {authenticationButton}
+                            <Ons.Button onClick={this.props.logout}>{this.l("logOut")}</Ons.Button>
                         </div>
                     </Ons.ListItem>
                     <Ons.ListItem key='consent'>

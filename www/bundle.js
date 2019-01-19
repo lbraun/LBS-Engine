@@ -93092,19 +93092,14 @@ class App extends React.Component {
                 l: this.l,
                 locale: this.state.locale,
                 handleLocaleChange: this.handleLocaleChange,
-                onLoggingChange: this.handleLoggingChange,
                 onDataChange: this.handleExternalDataChange,
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
                 pushUserUpdates: this.pushUserUpdates,
                 currentUser: this.state.currentUser,
-                authenticated: this.state.authenticated,
                 revokeConsent: this.revokeConsent,
                 logout: this.logout,
-                login: this.login,
-                logging: this.state.logging,
-                externalData: this.state.externalData,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
@@ -94785,22 +94780,6 @@ class Settings extends React.Component {
     }
 
     render() {
-        if (this.props.authenticated) {
-            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
-            var authenticationButton = React.createElement(
-                Ons.Button,
-                { onClick: this.props.logout },
-                this.l("logOut")
-            );
-        } else {
-            var authenticationText = this.l("notCurrentlyLoggedIn");
-            var authenticationButton = React.createElement(
-                Ons.Button,
-                { onClick: this.props.login },
-                this.l("logIn")
-            );
-        }
-
         return React.createElement(
             Ons.Page,
             null,
@@ -94919,13 +94898,17 @@ class Settings extends React.Component {
                         React.createElement(
                             'p',
                             null,
-                            authenticationText
+                            `${this.l("loggedInAs")} ${this.props.currentUser.name}`
                         )
                     ),
                     React.createElement(
                         'div',
                         { className: 'right' },
-                        authenticationButton
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.props.logout },
+                            this.l("logOut")
+                        )
                     )
                 ),
                 React.createElement(
