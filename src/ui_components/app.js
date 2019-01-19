@@ -326,6 +326,7 @@ class App extends React.Component {
                                     available: config.app.available,
                                     shareLocation: config.app.shareLocation,
                                     useLocation: config.app.useLocation,
+                                    contactInformation: {},
                                     locale: this.state.locale,
                                     newlyCreated: false,
                                 });

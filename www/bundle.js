@@ -92880,6 +92880,7 @@ class App extends React.Component {
                             available: config.app.available,
                             shareLocation: config.app.shareLocation,
                             useLocation: config.app.useLocation,
+                            contactInformation: {},
                             locale: this.state.locale,
                             newlyCreated: false
                         });
@@ -94656,8 +94657,8 @@ class offerForm extends React.Component {
                             Ons.Row,
                             null,
                             React.createElement(
-                                'div',
-                                { className: 'center' },
+                                Ons.Col,
+                                { width: '80%' },
                                 React.createElement(
                                     'b',
                                     null,
@@ -94665,8 +94666,8 @@ class offerForm extends React.Component {
                                 )
                             ),
                             React.createElement(
-                                'div',
-                                { className: 'right', style: { textAlign: "right" } },
+                                Ons.Col,
+                                { width: '20%' },
                                 React.createElement(
                                     'b',
                                     null,
@@ -94952,7 +94953,7 @@ class ContactSettings extends React.Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
 
-        this.state = {};
+        this.state = this.props.currentUser.contactInformation;
     }
 
     /**
@@ -94993,32 +94994,40 @@ class ContactSettings extends React.Component {
                     )
                 )
             ),
+            this.renderContactSetting("useEmail", "email"),
+            this.renderContactSetting("useFacebook", "facebook"),
+            this.renderContactSetting("usePhone", "phone"),
+            this.renderContactSetting("useWhatsapp", "whatsApp")
+        );
+    }
+
+    renderContactSetting(setting, contactType) {
+        return React.createElement(
+            'div',
+            null,
             React.createElement(
                 Ons.ListItem,
                 { tappable: true },
                 React.createElement(
                     'label',
-                    { className: 'left', htmlFor: 'useFacebook-check' },
-                    this.props.l("useFacebook")
+                    { className: 'left', htmlFor: `${setting}-check` },
+                    this.props.l(setting)
                 ),
                 React.createElement(
                     'label',
                     { className: 'right' },
                     React.createElement(Ons.Switch, {
-                        inputId: 'useFacebook-check',
-                        name: 'useFacebook',
-                        value: this.state.useFacebook,
+                        inputId: `${setting}-check`,
+                        name: setting,
+                        value: this.state[setting],
                         onChange: this.handleInputChange })
                 )
             ),
-            this.renderFacebookForm()
+            this.state[setting] ? this.renderForm(contactType) : null
         );
     }
 
-    renderFacebookForm() {
-        if (!this.state.useFacebook) {
-            return null;
-        }
+    renderForm(contactType) {
         return React.createElement(
             Ons.ListItem,
             null,
@@ -95028,17 +95037,17 @@ class ContactSettings extends React.Component {
                 React.createElement(
                     'p',
                     null,
-                    this.props.l("facebookUsername")
+                    this.props.l(contactType)
                 )
             ),
             React.createElement(
                 'div',
                 { className: 'right' },
                 React.createElement('input', { type: 'text',
-                    name: 'facebookUsername',
+                    name: contactType,
                     className: 'text-input text-input--material',
-                    placeholder: this.props.l("facebookUsername"),
-                    value: this.state.facebookUsername,
+                    placeholder: this.props.l(contactType),
+                    value: this.state[contactType],
                     onChange: this.handleInputChange })
             )
         );

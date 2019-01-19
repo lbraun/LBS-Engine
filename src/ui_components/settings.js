@@ -164,7 +164,7 @@ class ContactSettings extends React.Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
 
-        this.state = {};
+        this.state = this.props.currentUser.contactInformation;
     }
 
     /**
@@ -197,37 +197,47 @@ class ContactSettings extends React.Component {
                     </div>
                 </Ons.ListItem>
 
-                <Ons.ListItem tappable={true}>
-                    <label className='left' htmlFor="useFacebook-check">
-                        {this.props.l("useFacebook")}
-                    </label>
-                    <label className='right'>
-                        <Ons.Switch
-                            inputId="useFacebook-check"
-                            name="useFacebook"
-                            value={this.state.useFacebook}
-                            onChange={this.handleInputChange} />
-                    </label>
-                </Ons.ListItem>
-
-                {this.renderFacebookForm()}
+                {this.renderContactSetting("useEmail", "email")}
+                {this.renderContactSetting("useFacebook", "facebook")}
+                {this.renderContactSetting("usePhone", "phone")}
+                {this.renderContactSetting("useWhatsapp", "whatsApp")}
             </div>
         );
     }
 
-    renderFacebookForm() {
-        if (!this.state.useFacebook) { return null; }
+    renderContactSetting(setting, contactType) {
+        return (
+            <div>
+                <Ons.ListItem tappable={true}>
+                    <label className='left' htmlFor={`${setting}-check`}>
+                        {this.props.l(setting)}
+                    </label>
+                    <label className='right'>
+                        <Ons.Switch
+                            inputId={`${setting}-check`}
+                            name={setting}
+                            value={this.state[setting]}
+                            onChange={this.handleInputChange} />
+                    </label>
+                </Ons.ListItem>
+
+                {this.state[setting] ? this.renderForm(contactType) : null}
+            </div>
+        );
+    }
+
+    renderForm(contactType) {
         return (
             <Ons.ListItem>
                 <div className='left'>
-                    <p>{this.props.l("facebookUsername")}</p>
+                    <p>{this.props.l(contactType)}</p>
                 </div>
                 <div className='right'>
                     <input type="text"
-                        name="facebookUsername"
+                        name={contactType}
                         className="text-input text-input--material"
-                        placeholder={this.props.l("facebookUsername")}
-                        value={this.state.facebookUsername}
+                        placeholder={this.props.l(contactType)}
+                        value={this.state[contactType]}
                         onChange={this.handleInputChange}>
                     </input>
                 </div>
