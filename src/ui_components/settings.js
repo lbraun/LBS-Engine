@@ -98,7 +98,7 @@ class Settings extends React.Component {
 
                     <ContactSettings
                         currentUser={this.props.currentUser}
-                        handleInputChange={this.handleInputChange}
+                        pushUserUpdates={this.props.pushUserUpdates}
                         l={this.props.l} />
 
                     <Ons.ListItem>
@@ -164,7 +164,9 @@ class ContactSettings extends React.Component {
 
         this.handleInputChange = this.handleInputChange.bind(this);
 
-        this.state = this.props.currentUser.contactInformation;
+        this.state = {
+            contactInfo: this.props.currentUser.contactInformation
+        };
     }
 
     /**
@@ -184,16 +186,14 @@ class ContactSettings extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
+        var contactInfoCopy = JSON.parse(JSON.stringify(this.state.contactInfo));
+        contactInfoCopy[name] = value;
+
         this.setState({
-            [name]: value
+            contactInfo: contactInfoCopy,
         });
 
-        this.props.handleInputChange({
-            target: {
-                value: this.state,
-                name: "contactInformation",
-            }
-        })
+        this.props.pushUserUpdates({contactInformation: contactInfoCopy});
     }
 
     render() {
@@ -225,12 +225,12 @@ class ContactSettings extends React.Component {
                         <Ons.Switch
                             inputId={`${setting}-check`}
                             name={setting}
-                            checked={this.state[setting]}
+                            checked={this.state.contactInfo[setting]}
                             onChange={this.handleInputChange} />
                     </label>
                 </Ons.ListItem>
 
-                {this.state[setting] ? this.renderForm(contactType) : null}
+                {this.state.contactInfo[setting] ? this.renderForm(contactType) : null}
             </div>
         );
     }
@@ -243,7 +243,7 @@ class ContactSettings extends React.Component {
                         name={contactType}
                         className="text-input text-input--material"
                         placeholder={this.l(contactType)}
-                        value={this.state[contactType]}
+                        value={this.state.contactInfo[contactType]}
                         onChange={this.handleInputChange}>
                     </input>
                 </div>
