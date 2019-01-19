@@ -94997,7 +94997,7 @@ class ContactSettings extends React.Component {
             this.renderContactSetting("useEmail", "email"),
             this.renderContactSetting("useFacebook", "facebook"),
             this.renderContactSetting("usePhone", "phone"),
-            this.renderContactSetting("useWhatsapp", "whatsApp")
+            this.renderContactSetting("useWhatsapp", "whatsapp")
         );
     }
 
@@ -95011,6 +95011,7 @@ class ContactSettings extends React.Component {
                 React.createElement(
                     'label',
                     { className: 'left', htmlFor: `${setting}-check` },
+                    React.createElement(Ons.Icon, { icon: `md-${contactType}`, style: { marginRight: "15px" } }),
                     this.props.l(setting)
                 ),
                 React.createElement(
@@ -95019,7 +95020,7 @@ class ContactSettings extends React.Component {
                     React.createElement(Ons.Switch, {
                         inputId: `${setting}-check`,
                         name: setting,
-                        value: this.state[setting],
+                        checked: this.state[setting],
                         onChange: this.handleInputChange })
                 )
             ),
@@ -95031,15 +95032,6 @@ class ContactSettings extends React.Component {
         return React.createElement(
             Ons.ListItem,
             null,
-            React.createElement(
-                'div',
-                { className: 'left' },
-                React.createElement(
-                    'p',
-                    null,
-                    this.props.l(contactType)
-                )
-            ),
             React.createElement(
                 'div',
                 { className: 'right' },

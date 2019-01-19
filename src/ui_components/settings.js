@@ -200,7 +200,7 @@ class ContactSettings extends React.Component {
                 {this.renderContactSetting("useEmail", "email")}
                 {this.renderContactSetting("useFacebook", "facebook")}
                 {this.renderContactSetting("usePhone", "phone")}
-                {this.renderContactSetting("useWhatsapp", "whatsApp")}
+                {this.renderContactSetting("useWhatsapp", "whatsapp")}
             </div>
         );
     }
@@ -210,13 +210,14 @@ class ContactSettings extends React.Component {
             <div>
                 <Ons.ListItem tappable={true}>
                     <label className='left' htmlFor={`${setting}-check`}>
+                        <Ons.Icon icon={`md-${contactType}`} style={{marginRight: "15px"}} />
                         {this.props.l(setting)}
                     </label>
                     <label className='right'>
                         <Ons.Switch
                             inputId={`${setting}-check`}
                             name={setting}
-                            value={this.state[setting]}
+                            checked={this.state[setting]}
                             onChange={this.handleInputChange} />
                     </label>
                 </Ons.ListItem>
@@ -229,9 +230,6 @@ class ContactSettings extends React.Component {
     renderForm(contactType) {
         return (
             <Ons.ListItem>
-                <div className='left'>
-                    <p>{this.props.l(contactType)}</p>
-                </div>
                 <div className='right'>
                     <input type="text"
                         name={contactType}
