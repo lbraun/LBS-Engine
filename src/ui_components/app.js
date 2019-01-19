@@ -138,8 +138,8 @@ class App extends React.Component {
         // TODO: implement this for real!
         this.state.online = true;
 
-        // Disable sign-in for faster development
-        this.state.devMode = false;
+        // Use devMode to disable sign-in for faster development
+        // this.state.devMode = "map";
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;

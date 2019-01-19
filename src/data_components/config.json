@@ -1,11 +1,13 @@
 {
     "app": {
+        "adminEmail": "lucas.braun@uni-muenster.de",
         "available": false,
         "defaultLocale": "en",
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
+        "projectWebsite": "https://github.com/lbraun/geofreebie",
         "shareLocation": false,
         "useLocation": false
     },

@@ -3,6 +3,7 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const config = require('../data_components/config.json');
 const localeMenu = require('./localeMenu.js');
 
 class ConsentForm extends React.Component {
@@ -86,10 +87,10 @@ class ConsentForm extends React.Component {
 
                         <p>
                             <b>{this.l("moreInfoTitle")}:</b><br />
-                            {this.l("moreInfo")} <a href='https://github.com/lbraun/geofreebie'>{this.props.l("app.projectsWebsite")}</a>.
+                            {this.l("moreInfo")} <a href={config.app.projectWebsite}>{this.props.l("app.projectsWebsite")}</a>.
                         </p>
 
-                        <p>{this.l("ifYouHaveAnyQuestions")} <a href='mailto:lucas.braun@uni-muenster.de'>lucas.braun@uni-muenster.de</a>.</p>
+                        <p>{this.l("ifYouHaveAnyQuestions")} <a href={`mailto:${config.app.adminEmail}`}>{config.app.adminEmail}</a>.</p>
                     </Ons.ListItem>
                     <Ons.ListItem>
                         <div>

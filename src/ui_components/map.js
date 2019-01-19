@@ -138,6 +138,7 @@ class Map extends React.Component {
                         {this.l("andCanBeContactedAt")}
                         <span>{this.renderContactLinks(user)}</span>
                     </p>
+                    <p>{this.reportLink(user)}</p>
                 </div>
             </leaflet.Popup>
         );
@@ -185,6 +186,22 @@ class Map extends React.Component {
         } else {
             console.log("Error: invalid contact type: " + contactType);
         }
+    }
+
+    reportLink(user) {
+        var mailtoLink = "mailto:";
+        mailtoLink += config.app.adminEmail;
+        mailtoLink += "?subject=";
+        mailtoLink += this.props.l("app.reportEmailSubject");
+        mailtoLink += ": " + this.props.currentUser._id + " > " + user._id;
+        mailtoLink += "&body=";
+        mailtoLink += this.props.l("app.reportEmailBody");
+
+        return (
+            <a href={mailtoLink}>
+                {this.props.l("app.report")}
+            </a>
+        )
     }
 
     renderMapWithLayers() {
