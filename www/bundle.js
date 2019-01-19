@@ -92729,7 +92729,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Disable sign-in for faster development
-        this.state.devMode = "settings";
+        this.state.devMode = false;
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
@@ -94163,6 +94163,7 @@ module.exports = {
 'use strict';
 
 const React = require('react');
+const Ons = require('react-onsenui');
 const leaflet = require('react-leaflet');
 
 const config = require('../data_components/config.json');
@@ -94240,7 +94241,6 @@ class Map extends React.Component {
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
-                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + "TODO" || user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedMarker,
                         {
@@ -94249,15 +94249,7 @@ class Map extends React.Component {
                             isOpen: user._id == this.props.selectedUserId,
                             key: user._id,
                             icon: this.userMarker },
-                        React.createElement(
-                            leaflet.Popup,
-                            null,
-                            React.createElement(
-                                'span',
-                                null,
-                                popup
-                            )
-                        )
+                        this.renderPopup(user)
                     ));
                 } else {
                     userLayer.push(React.createElement(leaflet.Marker, {
@@ -94268,7 +94260,6 @@ class Map extends React.Component {
                 // If user chooses NOT to be public, insert a buffer instead of a marker into the map
                 // Only do this if the user is selected
                 if (user._id == this.props.selectedUserId) {
-                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedCircle,
                         {
@@ -94277,15 +94268,7 @@ class Map extends React.Component {
                             key: user._id,
                             center: this.props.currentUser.coords,
                             radius: this.props.calculateDistanceTo(user.coords) },
-                        React.createElement(
-                            leaflet.Popup,
-                            null,
-                            React.createElement(
-                                'span',
-                                null,
-                                popup
-                            )
-                        )
+                        this.renderPopup(user)
                     ));
                 }
             }
@@ -94303,6 +94286,86 @@ class Map extends React.Component {
             )
         ));
         return layers;
+    }
+
+    renderPopup(user) {
+        return React.createElement(
+            leaflet.Popup,
+            null,
+            React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'p',
+                    null,
+                    user.name,
+                    ' ',
+                    this.l("isOffering")
+                ),
+                React.createElement(
+                    'b',
+                    null,
+                    user.offerTitle
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    user.offerDescription
+                ),
+                React.createElement('img', { src: `data:image/jpeg;base64, ${user.offerPicture}`,
+                    id: 'offer-picture',
+                    style: { width: "100%" } }),
+                React.createElement(
+                    'p',
+                    null,
+                    this.l("andCanBeContactedAt"),
+                    React.createElement(
+                        'span',
+                        null,
+                        this.renderContactLinks(user)
+                    )
+                )
+            )
+        );
+    }
+
+    renderContactLinks(user) {
+        var links = [];
+        var contactInfo = user.contactInformation;
+
+        var contactTypes = [{ setting: "useEmail", contactType: "email" }, { setting: "useFacebook", contactType: "facebook" }, { setting: "usePhone", contactType: "phone" }, { setting: "useWhatsapp", contactType: "whatsapp" }];
+
+        for (var i = contactTypes.length - 1; i >= 0; i--) {
+            var setting = contactTypes[i].setting;
+            var contactType = contactTypes[i].contactType;
+
+            if (contactInfo[setting]) {
+                links.push(React.createElement(
+                    'a',
+                    { href: this.getContactLink(contactInfo, contactType),
+                        key: contactType },
+                    React.createElement(Ons.Icon, {
+                        style: { color: "black", margin: "15px" },
+                        icon: `md-${contactType}` })
+                ));
+            }
+        }
+
+        return links;
+    }
+
+    getContactLink(contactInfo, contactType) {
+        if (contactType == "facebook") {
+            return "https://m.me/" + contactInfo.facebook;
+        } else if (contactType == "whatsapp") {
+            return "https://wa.me/" + contactInfo.whatsapp;
+        } else if (contactType == "email") {
+            return "mailto:" + contactInfo.email;
+        } else if (contactType == "phone") {
+            return "tel:" + contactInfo.phone;
+        } else {
+            console.log("Error: invalid contact type: " + contactType);
+        }
     }
 
     renderMapWithLayers() {
@@ -94449,7 +94512,7 @@ module.exports = {
     Map: Map
 };
 
-},{"../business_components/offlineLayer.js":271,"../data_components/config.json":272,"react":265,"react-leaflet":250}],282:[function(require,module,exports){
+},{"../business_components/offlineLayer.js":271,"../data_components/config.json":272,"react":265,"react-leaflet":250,"react-onsenui":262}],282:[function(require,module,exports){
 'use strict';
 
 const React = require('react');

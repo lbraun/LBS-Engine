@@ -205,9 +205,9 @@ class ContactSettings extends React.Component {
                     </div>
                 </Ons.ListItem>
 
-                {this.renderContactSetting("useEmail", "email")}
+                {this.renderContactSetting("useEmail",    "email")}
                 {this.renderContactSetting("useFacebook", "facebook")}
-                {this.renderContactSetting("usePhone", "phone")}
+                {this.renderContactSetting("usePhone",    "phone")}
                 {this.renderContactSetting("useWhatsapp", "whatsapp")}
             </div>
         );
