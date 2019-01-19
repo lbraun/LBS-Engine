@@ -92271,12 +92271,14 @@ module.exports = {
 },{"leaflet-offline":29,"localforage":31,"prop-types":217,"react":265,"react-leaflet":250}],272:[function(require,module,exports){
 module.exports={
     "app": {
+        "adminEmail": "lucas.braun@uni-muenster.de",
         "available": false,
         "defaultLocale": "en",
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
+        "projectWebsite": "https://github.com/lbraun/geofreebie",
         "shareLocation": false,
         "useLocation": false
     },
@@ -92295,6 +92297,9 @@ module.exports={
         "alert.metersAwayWith": "m entfernt mit dem folgenden Angebot:",
         "app.name": "Geofreebie",
         "app.projectsWebsite": "Website des Projekts",
+        "app.report": "Missbrauch melden",
+        "app.reportEmailBody": "Bitte das Problem hier erklären:\n\n",
+        "app.reportEmailSubject": "Missbrauch Meldung",
         "consentForm.continue": "Fortfahren",
         "consentForm.dataRecordingConsent": "Ich bestätige mein Einverständnis zu der Aufnahme von Standortdaten während der Studie.",
         "consentForm.dataRecordingInfo": "Die Daten, die in dieser Studie erhoben werden, werden in anonymisierter Form erhoben und nur in Aggregation mit weiteren anonymen Daten verarbeitet. In dieser Form werden die Daten ggf. in akademischen Journalen, Präsentationen oder anderen Medien veröffenlicht, jedoch ist niemals eine Identifizierung der einzelnen Teilnehmer möglich. Eine Woche nach Abschluss der Studie ist es daher quasi nicht mehr möglich die Daten aus deiner Teilnahme zu aus den aggregierten Datensätzen aller Teilnehmer zu identifizieren.",
@@ -92387,6 +92392,9 @@ module.exports={
         "alert.metersAwayWith": "m away with the following offer:",
         "app.name": "Geofreebie",
         "app.projectsWebsite": "project's website",
+        "app.report": "Report this profile",
+        "app.reportEmailBody": "Please explain the problem here:\n\n",
+        "app.reportEmailSubject": "Profile report",
         "consentForm.continue": "Continue",
         "consentForm.dataRecordingConsent": "I agree to have my location data recorded during the study.",
         "consentForm.dataRecordingInfo": "Original data obtained from this study will be anonymised and only processed in aggregate. In such form, it might be published in academic journals, presentations or other media, but never in a way that would allow individual identification. One week after the completion of the study it might no longer be possible to retract your data from such aggregated analyses.",
@@ -92479,6 +92487,9 @@ module.exports={
         "alert.metersAwayWith": "متر (أمتار) من العرض التالي:",
         "app.name": "جيوفريبي",
         "app.projectsWebsite": "TODO",
+        "app.report": "TODO",
+        "app.reportEmailBody": "TODO",
+        "app.reportEmailSubject": "TODO",
         "consentForm.continue": "TODO",
         "consentForm.dataRecordingConsent": "TODO",
         "consentForm.dataRecordingInfo": "TODO",
@@ -92728,8 +92739,8 @@ class App extends React.Component {
         // TODO: implement this for real!
         this.state.online = true;
 
-        // Disable sign-in for faster development
-        this.state.devMode = false;
+        // Use devMode to disable sign-in for faster development
+        // this.state.devMode = "map";
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
@@ -93434,6 +93445,7 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const config = require('../data_components/config.json');
 const localeMenu = require('./localeMenu.js');
 
 class ConsentForm extends React.Component {
@@ -93561,7 +93573,7 @@ class ConsentForm extends React.Component {
                         ' ',
                         React.createElement(
                             'a',
-                            { href: 'https://github.com/lbraun/geofreebie' },
+                            { href: config.app.projectWebsite },
                             this.props.l("app.projectsWebsite")
                         ),
                         '.'
@@ -93573,8 +93585,8 @@ class ConsentForm extends React.Component {
                         ' ',
                         React.createElement(
                             'a',
-                            { href: 'mailto:lucas.braun@uni-muenster.de' },
-                            'lucas.braun@uni-muenster.de'
+                            { href: `mailto:${config.app.adminEmail}` },
+                            config.app.adminEmail
                         ),
                         '.'
                     )
@@ -93684,7 +93696,7 @@ module.exports = {
     ConsentForm: ConsentForm
 };
 
-},{"./localeMenu.js":280,"react":265,"react-onsenui":262}],277:[function(require,module,exports){
+},{"../data_components/config.json":272,"./localeMenu.js":280,"react":265,"react-onsenui":262}],277:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -94324,6 +94336,11 @@ class Map extends React.Component {
                         null,
                         this.renderContactLinks(user)
                     )
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    this.reportLink(user)
                 )
             )
         );
@@ -94366,6 +94383,22 @@ class Map extends React.Component {
         } else {
             console.log("Error: invalid contact type: " + contactType);
         }
+    }
+
+    reportLink(user) {
+        var mailtoLink = "mailto:";
+        mailtoLink += config.app.adminEmail;
+        mailtoLink += "?subject=";
+        mailtoLink += this.props.l("app.reportEmailSubject");
+        mailtoLink += ": " + this.props.currentUser._id + " > " + user._id;
+        mailtoLink += "&body=";
+        mailtoLink += this.props.l("app.reportEmailBody");
+
+        return React.createElement(
+            'a',
+            { href: mailtoLink },
+            this.props.l("app.report")
+        );
     }
 
     renderMapWithLayers() {
