@@ -92310,6 +92310,15 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "Teilnehmerrechte",
         "consentForm.title": "Einverständniserklärung",
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
+        "contact.email": "Email Adresse",
+        "contact.facebook": "Facebook Benutzername",
+        "contact.howDoYouWantToBeContacted": "Wie soll man Ihnen kontaktieren?",
+        "contact.phone": "Telefonnummer",
+        "contact.useEmail": "Email",
+        "contact.useFacebook": "Facebook",
+        "contact.usePhone": "Telefon oder SMS",
+        "contact.useWhatsapp": "Whatsapp",
+        "contact.whatsapp": "Whatsapp-Nummer",
         "dashboard.availableNow": "Jetzt verfügbar",
         "dashboard.becomeAvailable": "Verfügbar werden",
         "dashboard.becomeUnavailable": "Unverfügbar werden",
@@ -92393,6 +92402,15 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "Right to quit",
         "consentForm.title": "Informed Consent Form",
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
+        "contact.email": "Email address",
+        "contact.facebook": "Facebook username",
+        "contact.howDoYouWantToBeContacted": "How do you want to be contacted?",
+        "contact.phone": "Phone number",
+        "contact.useEmail": "Use email",
+        "contact.useFacebook": "Use Facebook",
+        "contact.usePhone": "Use phone or SMS",
+        "contact.useWhatsapp": "Use Whatsapp",
+        "contact.whatsapp": "Whatsapp number",
         "dashboard.availableNow": "Available now",
         "dashboard.becomeAvailable": "Become available",
         "dashboard.becomeUnavailable": "Become unavailable",
@@ -92476,6 +92494,15 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
+        "contact.email": "TODO",
+        "contact.facebook": "TODO",
+        "contact.howDoYouWantToBeContacted": "TODO",
+        "contact.phone": "TODO",
+        "contact.useEmail": "TODO",
+        "contact.useFacebook": "TODO",
+        "contact.usePhone": "TODO",
+        "contact.useWhatsapp": "TODO",
+        "contact.whatsapp": "TODO",
         "dashboard.availableNow": "TODO",
         "dashboard.becomeAvailable": "للمتاح",
         "dashboard.becomeUnavailable": "TODO",
@@ -94837,7 +94864,7 @@ class Settings extends React.Component {
                 React.createElement(ContactSettings, {
                     currentUser: this.props.currentUser,
                     handleInputChange: this.handleInputChange,
-                    l: this.l }),
+                    l: this.props.l }),
                 React.createElement(
                     Ons.ListItem,
                     null,
@@ -94957,6 +94984,14 @@ class ContactSettings extends React.Component {
     }
 
     /**
+     * Localize a string in the context of the contact settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`contact.${string}`);
+    }
+
+    /**
      * Handle the change of a contact setting
      * @param {Event} e the react event object
      */
@@ -94990,7 +95025,7 @@ class ContactSettings extends React.Component {
                     React.createElement(
                         'i',
                         null,
-                        this.props.l("howDoYouWantToBeContacted")
+                        this.l("howDoYouWantToBeContacted")
                     )
                 )
             ),
@@ -95012,7 +95047,7 @@ class ContactSettings extends React.Component {
                     'label',
                     { className: 'left', htmlFor: `${setting}-check` },
                     React.createElement(Ons.Icon, { icon: `md-${contactType}`, style: { marginRight: "15px" } }),
-                    this.props.l(setting)
+                    this.l(setting)
                 ),
                 React.createElement(
                     'label',
@@ -95038,7 +95073,7 @@ class ContactSettings extends React.Component {
                 React.createElement('input', { type: 'text',
                     name: contactType,
                     className: 'text-input text-input--material',
-                    placeholder: this.props.l(contactType),
+                    placeholder: this.l(contactType),
                     value: this.state[contactType],
                     onChange: this.handleInputChange })
             )

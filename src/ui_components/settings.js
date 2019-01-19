@@ -99,7 +99,7 @@ class Settings extends React.Component {
                     <ContactSettings
                         currentUser={this.props.currentUser}
                         handleInputChange={this.handleInputChange}
-                        l={this.l} />
+                        l={this.props.l} />
 
                     <Ons.ListItem>
                         <div className='left'>
@@ -168,6 +168,14 @@ class ContactSettings extends React.Component {
     }
 
     /**
+     * Localize a string in the context of the contact settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`contact.${string}`);
+    }
+
+    /**
      * Handle the change of a contact setting
      * @param {Event} e the react event object
      */
@@ -193,7 +201,7 @@ class ContactSettings extends React.Component {
             <div>
                 <Ons.ListItem>
                     <div>
-                        <i>{this.props.l("howDoYouWantToBeContacted")}</i>
+                        <i>{this.l("howDoYouWantToBeContacted")}</i>
                     </div>
                 </Ons.ListItem>
 
@@ -211,7 +219,7 @@ class ContactSettings extends React.Component {
                 <Ons.ListItem tappable={true}>
                     <label className='left' htmlFor={`${setting}-check`}>
                         <Ons.Icon icon={`md-${contactType}`} style={{marginRight: "15px"}} />
-                        {this.props.l(setting)}
+                        {this.l(setting)}
                     </label>
                     <label className='right'>
                         <Ons.Switch
@@ -234,7 +242,7 @@ class ContactSettings extends React.Component {
                     <input type="text"
                         name={contactType}
                         className="text-input text-input--material"
-                        placeholder={this.props.l(contactType)}
+                        placeholder={this.l(contactType)}
                         value={this.state[contactType]}
                         onChange={this.handleInputChange}>
                     </input>
