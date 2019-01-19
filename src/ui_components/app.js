@@ -139,9 +139,9 @@ class App extends React.Component {
         this.state.online = true;
 
         // Disable sign-in for faster development
-        this.state.developerMode = true;
+        this.state.devMode = "settings";
 
-        if (this.state.developerMode && !this.state.online) {
+        if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
             this.state.currentUser = {
                 "nickname": "lucas.braun",
@@ -170,7 +170,9 @@ class App extends React.Component {
         var localization = localizations[locale][string];
 
         if (!localization || localization == "TODO") {
-            console.log(`Error: localization "${string}" not found for locale "${locale}"`)
+            if (!this.state.devMode) {
+                console.log(`Error: localization "${string}" not found for locale "${locale}"`);
+            }
 
             if (locale != "en") {
                 // Fall back to English if the localization isn't found for the given locale
@@ -621,7 +623,7 @@ class App extends React.Component {
                             <strong>{this.state.currentUser.name}</strong>
                         </div>
                         <div className='list-item__subtitle'>
-                            {this.state.currentUser.contactInformation}
+                            {"TODO" || this.state.currentUser.contactInformation}
                         </div>
                     </div>
             </Ons.ListItem>
@@ -660,9 +662,10 @@ class App extends React.Component {
      * Start the auth0 login process (launches via an in-app browser)
      */
     login(e) {
-        if (this.state.developerMode) {
+        if (this.state.devMode) {
             this.setState({
                 authenticated: true,
+                currentTab: this.state.devMode,
             })
 
             this.fetchOrCreateAuth0User({

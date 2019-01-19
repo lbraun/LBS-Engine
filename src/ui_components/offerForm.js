@@ -189,7 +189,7 @@ class offerForm extends React.Component {
                                     <b>{this.l("iCanBeContactedAt")}</b>
                                 </Ons.Col>
 
-                                <Ons.Col width="20%" style={{textAlign: "right"}}>
+                                <Ons.Col width="20%">
                                     <b><a href="#"
                                         style={{color: "black"}}
 
@@ -203,7 +203,7 @@ class offerForm extends React.Component {
                             {this.l("iCanBeContactedAtHelpText")}
                         </div>
                         <div>
-                            {this.props.currentUser.contactInformation}
+                            {"TODO" || this.props.currentUser.contactInformation}
                         </div>
                     </Ons.ListItem>
 

@@ -82,7 +82,7 @@ class Map extends React.Component {
                         + " " + this.l("isOffering")
                         + " " + user.offerDescription
                         + " " + this.l("andCanBeContactedAt")
-                        + " " + user.contactInformation;
+                        + " " + "TODO" || user.contactInformation;
                     userLayer.push(
                         <ExtendedMarker
                             id={user._id}

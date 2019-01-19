@@ -92702,9 +92702,9 @@ class App extends React.Component {
         this.state.online = true;
 
         // Disable sign-in for faster development
-        this.state.developerMode = true;
+        this.state.devMode = "settings";
 
-        if (this.state.developerMode && !this.state.online) {
+        if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
             this.state.currentUser = {
                 "nickname": "lucas.braun",
@@ -92733,7 +92733,9 @@ class App extends React.Component {
         var localization = localizations[locale][string];
 
         if (!localization || localization == "TODO") {
-            console.log(`Error: localization "${string}" not found for locale "${locale}"`);
+            if (!this.state.devMode) {
+                console.log(`Error: localization "${string}" not found for locale "${locale}"`);
+            }
 
             if (locale != "en") {
                 // Fall back to English if the localization isn't found for the given locale
@@ -93177,7 +93179,7 @@ class App extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'list-item__subtitle' },
-                    this.state.currentUser.contactInformation
+                    "TODO" || this.state.currentUser.contactInformation
                 )
             )
         )];
@@ -93219,9 +93221,10 @@ class App extends React.Component {
      * Start the auth0 login process (launches via an in-app browser)
      */
     login(e) {
-        if (this.state.developerMode) {
+        if (this.state.devMode) {
             this.setState({
-                authenticated: true
+                authenticated: true,
+                currentTab: this.state.devMode
             });
 
             this.fetchOrCreateAuth0User({
@@ -93422,7 +93425,7 @@ class ConsentForm extends React.Component {
     }
 
     /**
-     * Handle the change of a user setting
+     * Handle the change of a consent item
      * @param {Event} e the react event object
      */
     handleInputChange(e) {
@@ -94209,7 +94212,7 @@ class Map extends React.Component {
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
-                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + user.contactInformation;
+                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + "TODO" || user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedMarker,
                         {
@@ -94653,8 +94656,8 @@ class offerForm extends React.Component {
                             Ons.Row,
                             null,
                             React.createElement(
-                                Ons.Col,
-                                { width: '80%' },
+                                'div',
+                                { className: 'center' },
                                 React.createElement(
                                     'b',
                                     null,
@@ -94662,8 +94665,8 @@ class offerForm extends React.Component {
                                 )
                             ),
                             React.createElement(
-                                Ons.Col,
-                                { width: '20%', style: { textAlign: "right" } },
+                                'div',
+                                { className: 'right', style: { textAlign: "right" } },
                                 React.createElement(
                                     'b',
                                     null,
@@ -94687,7 +94690,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         null,
-                        this.props.currentUser.contactInformation
+                        "TODO" || this.props.currentUser.contactInformation
                     )
                 ),
                 React.createElement(
@@ -94730,6 +94733,7 @@ class Settings extends React.Component {
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.l = this.l.bind(this);
     }
 
     /**
@@ -94829,29 +94833,10 @@ class Settings extends React.Component {
                             onChange: this.handleInputChange })
                     )
                 ),
-                React.createElement(
-                    Ons.ListItem,
-                    null,
-                    React.createElement(
-                        'div',
-                        { className: 'left' },
-                        React.createElement(
-                            'p',
-                            null,
-                            this.l("name")
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        React.createElement('input', { type: 'text',
-                            name: 'name',
-                            className: 'text-input text-input--material',
-                            placeholder: this.l("name"),
-                            value: this.props.currentUser.name,
-                            onChange: this.handleInputChange })
-                    )
-                ),
+                React.createElement(ContactSettings, {
+                    currentUser: this.props.currentUser,
+                    handleInputChange: this.handleInputChange,
+                    l: this.l }),
                 React.createElement(
                     Ons.ListItem,
                     null,
@@ -94961,11 +94946,107 @@ class Settings extends React.Component {
     }
 }
 
-const settingsComponent = React.createElement(Settings, null);
+class ContactSettings extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.state = {};
+    }
+
+    /**
+     * Handle the change of a contact setting
+     * @param {Event} e the react event object
+     */
+    handleInputChange(e) {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
+
+        this.setState({
+            [name]: value
+        });
+
+        this.props.handleInputChange({
+            target: {
+                value: this.state,
+                name: "contactInformation"
+            }
+        });
+    }
+
+    render() {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                Ons.ListItem,
+                null,
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'i',
+                        null,
+                        this.props.l("howDoYouWantToBeContacted")
+                    )
+                )
+            ),
+            React.createElement(
+                Ons.ListItem,
+                { tappable: true },
+                React.createElement(
+                    'label',
+                    { className: 'left', htmlFor: 'useFacebook-check' },
+                    this.props.l("useFacebook")
+                ),
+                React.createElement(
+                    'label',
+                    { className: 'right' },
+                    React.createElement(Ons.Switch, {
+                        inputId: 'useFacebook-check',
+                        name: 'useFacebook',
+                        value: this.state.useFacebook,
+                        onChange: this.handleInputChange })
+                )
+            ),
+            this.renderFacebookForm()
+        );
+    }
+
+    renderFacebookForm() {
+        if (!this.state.useFacebook) {
+            return null;
+        }
+        return React.createElement(
+            Ons.ListItem,
+            null,
+            React.createElement(
+                'div',
+                { className: 'left' },
+                React.createElement(
+                    'p',
+                    null,
+                    this.props.l("facebookUsername")
+                )
+            ),
+            React.createElement(
+                'div',
+                { className: 'right' },
+                React.createElement('input', { type: 'text',
+                    name: 'facebookUsername',
+                    className: 'text-input text-input--material',
+                    placeholder: this.props.l("facebookUsername"),
+                    value: this.state.facebookUsername,
+                    onChange: this.handleInputChange })
+            )
+        );
+    }
+}
 
 module.exports = {
-    Settings: Settings,
-    settingsComponent: settingsComponent
+    Settings: Settings
 };
 
 },{"./localeMenu.js":280,"react":265,"react-onsenui":262}],284:[function(require,module,exports){

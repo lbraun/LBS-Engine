@@ -16,6 +16,7 @@ class Settings extends React.Component {
         this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.l = this.l.bind(this);
     }
 
     /**
@@ -95,20 +96,10 @@ class Settings extends React.Component {
                         </div>
                     </Ons.ListItem>
 
-                    <Ons.ListItem>
-                        <div className='left'>
-                            <p>{this.l("name")}</p>
-                        </div>
-                        <div className='right'>
-                            <input type="text"
-                                name="name"
-                                className="text-input text-input--material"
-                                placeholder={this.l("name")}
-                                value={this.props.currentUser.name}
-                                onChange={this.handleInputChange}>
-                            </input>
-                        </div>
-                    </Ons.ListItem>
+                    <ContactSettings
+                        currentUser={this.props.currentUser}
+                        handleInputChange={this.handleInputChange}
+                        l={this.l} />
 
                     <Ons.ListItem>
                         <div className='left'>
@@ -167,9 +158,85 @@ class Settings extends React.Component {
     }
 }
 
-const settingsComponent = <Settings />
+class ContactSettings extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.state = {};
+    }
+
+    /**
+     * Handle the change of a contact setting
+     * @param {Event} e the react event object
+     */
+    handleInputChange(e) {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
+
+        this.setState({
+            [name]: value
+        });
+
+        this.props.handleInputChange({
+            target: {
+                value: this.state,
+                name: "contactInformation",
+            }
+        })
+    }
+
+    render() {
+        return (
+            <div>
+                <Ons.ListItem>
+                    <div>
+                        <i>{this.props.l("howDoYouWantToBeContacted")}</i>
+                    </div>
+                </Ons.ListItem>
+
+                <Ons.ListItem tappable={true}>
+                    <label className='left' htmlFor="useFacebook-check">
+                        {this.props.l("useFacebook")}
+                    </label>
+                    <label className='right'>
+                        <Ons.Switch
+                            inputId="useFacebook-check"
+                            name="useFacebook"
+                            value={this.state.useFacebook}
+                            onChange={this.handleInputChange} />
+                    </label>
+                </Ons.ListItem>
+
+                {this.renderFacebookForm()}
+            </div>
+        );
+    }
+
+    renderFacebookForm() {
+        if (!this.state.useFacebook) { return null; }
+        return (
+            <Ons.ListItem>
+                <div className='left'>
+                    <p>{this.props.l("facebookUsername")}</p>
+                </div>
+                <div className='right'>
+                    <input type="text"
+                        name="facebookUsername"
+                        className="text-input text-input--material"
+                        placeholder={this.props.l("facebookUsername")}
+                        value={this.state.facebookUsername}
+                        onChange={this.handleInputChange}>
+                    </input>
+                </div>
+            </Ons.ListItem>
+        );
+    }
+}
+
 
 module.exports = {
     Settings: Settings,
-    settingsComponent: settingsComponent
 }

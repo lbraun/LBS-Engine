@@ -22,7 +22,7 @@ class ConsentForm extends React.Component {
     }
 
     /**
-     * Handle the change of a user setting
+     * Handle the change of a consent item
      * @param {Event} e the react event object
      */
     handleInputChange(e) {
