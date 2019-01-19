@@ -139,9 +139,9 @@ class App extends React.Component {
         this.state.online = true;
 
         // Disable sign-in for faster development
-        this.state.developerMode = false;
+        this.state.developerMode = true;
 
-        if (this.state.developerMode) {
+        if (this.state.developerMode && !this.state.online) {
             this.state.authenticated = true;
             this.state.currentUser = {
                 "nickname": "lucas.braun",
@@ -568,6 +568,7 @@ class App extends React.Component {
             {
                 content: <offerForm.offerForm
                     l={this.l}
+                    handleTabChange={this.handleTabChange}
                     pushUserUpdates={this.pushUserUpdates}
                     currentUserIsLoaded={this.state.currentUserIsLoaded}
                     currentUser={this.state.currentUser}
@@ -664,6 +665,18 @@ class App extends React.Component {
      * Start the auth0 login process (launches via an in-app browser)
      */
     login(e) {
+        if (this.state.developerMode) {
+            this.setState({
+                authenticated: true,
+            })
+
+            this.fetchOrCreateAuth0User({
+                auth0Id: "facebook|10213377644143781",
+            });
+
+            return;
+        }
+
         var app = this;
 
         var target = e && e.target;

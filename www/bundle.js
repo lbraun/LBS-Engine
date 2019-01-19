@@ -92702,9 +92702,9 @@ class App extends React.Component {
         this.state.online = true;
 
         // Disable sign-in for faster development
-        this.state.developerMode = false;
+        this.state.developerMode = true;
 
-        if (this.state.developerMode) {
+        if (this.state.developerMode && !this.state.online) {
             this.state.authenticated = true;
             this.state.currentUser = {
                 "nickname": "lucas.braun",
@@ -93119,6 +93119,7 @@ class App extends React.Component {
         {
             content: React.createElement(offerForm.offerForm, {
                 l: this.l,
+                handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
                 currentUserIsLoaded: this.state.currentUserIsLoaded,
                 currentUser: this.state.currentUser,
@@ -93223,6 +93224,18 @@ class App extends React.Component {
      * Start the auth0 login process (launches via an in-app browser)
      */
     login(e) {
+        if (this.state.developerMode) {
+            this.setState({
+                authenticated: true
+            });
+
+            this.fetchOrCreateAuth0User({
+                auth0Id: "facebook|10213377644143781"
+            });
+
+            return;
+        }
+
         var app = this;
 
         var target = e && e.target;
@@ -94422,6 +94435,7 @@ const Ons = require('react-onsenui');
 class offerForm extends React.Component {
     constructor(props) {
         super(props);
+        this.goToSettingsTab = this.goToSettingsTab.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handlePhotoButtonClick = this.handlePhotoButtonClick.bind(this);
 
@@ -94436,6 +94450,14 @@ class offerForm extends React.Component {
      */
     l(string) {
         return this.props.l(`offerForm.${string}`);
+    }
+
+    /**
+     * Call app method that navigates to the settings tab
+     * @param {Event} e the react event object
+     */
+    goToSettingsTab(e) {
+        this.props.handleTabChange("settings");
     }
 
     /**
@@ -94633,9 +94655,33 @@ class offerForm extends React.Component {
                         'div',
                         { className: 'list-item__title' },
                         React.createElement(
-                            'b',
+                            Ons.Row,
                             null,
-                            this.l("iCanBeContactedAt")
+                            React.createElement(
+                                Ons.Col,
+                                { width: '80%' },
+                                React.createElement(
+                                    'b',
+                                    null,
+                                    this.l("iCanBeContactedAt")
+                                )
+                            ),
+                            React.createElement(
+                                Ons.Col,
+                                { width: '20%', style: { textAlign: "right" } },
+                                React.createElement(
+                                    'b',
+                                    null,
+                                    React.createElement(
+                                        'a',
+                                        { href: '#',
+                                            style: { color: "black" },
+
+                                            onClick: this.goToSettingsTab },
+                                        React.createElement(Ons.Icon, { icon: "md-settings" })
+                                    )
+                                )
+                            )
                         )
                     ),
                     React.createElement(
@@ -94646,15 +94692,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         null,
-                        React.createElement('textarea', {
-                            id: 'contactInformation',
-                            name: 'contactInformation',
-                            className: 'textarea textarea--transparent',
-                            style: { width: "100%" },
-                            rows: '1',
-                            placeholder: this.l("contactInformationPlaceholder"),
-                            value: this.props.currentUser.contactInformation,
-                            onChange: this.handleInputChange })
+                        this.props.currentUser.contactInformation
                     )
                 ),
                 React.createElement(
