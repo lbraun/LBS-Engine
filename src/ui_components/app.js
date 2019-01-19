@@ -139,9 +139,9 @@ class App extends React.Component {
         this.state.online = true;
 
         // Disable sign-in for faster development
-        this.state.developerMode = false;
+        this.state.devMode = false;
 
-        if (this.state.developerMode) {
+        if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
             this.state.currentUser = {
                 "nickname": "lucas.braun",
@@ -170,7 +170,9 @@ class App extends React.Component {
         var localization = localizations[locale][string];
 
         if (!localization || localization == "TODO") {
-            console.log(`Error: localization "${string}" not found for locale "${locale}"`)
+            if (!this.state.devMode) {
+                console.log(`Error: localization "${string}" not found for locale "${locale}"`);
+            }
 
             if (locale != "en") {
                 // Fall back to English if the localization isn't found for the given locale
@@ -324,6 +326,7 @@ class App extends React.Component {
                                     available: config.app.available,
                                     shareLocation: config.app.shareLocation,
                                     useLocation: config.app.useLocation,
+                                    contactInformation: {},
                                     locale: this.state.locale,
                                     newlyCreated: false,
                                 });
@@ -541,19 +544,14 @@ class App extends React.Component {
                     l={this.l}
                     locale={this.state.locale}
                     handleLocaleChange={this.handleLocaleChange}
-                    onLoggingChange={this.handleLoggingChange}
                     onDataChange={this.handleExternalDataChange}
                     onLayerControlChange={this.handleLayerControlChange}
                     onDragMapChange={this.handleDragMapChange}
                     onZoomMapChange={this.handleZoomMapChange}
                     pushUserUpdates={this.pushUserUpdates}
                     currentUser={this.state.currentUser}
-                    authenticated={this.state.authenticated}
                     revokeConsent={this.revokeConsent}
                     logout={this.logout}
-                    login={this.login}
-                    logging={this.state.logging}
-                    externalData={this.state.externalData}
                     layerControl={this.state.layerControl}
                     draggable={this.state.draggable}
                     zoomable={this.state.zoomable}
@@ -568,6 +566,7 @@ class App extends React.Component {
             {
                 content: <offerForm.offerForm
                     l={this.l}
+                    handleTabChange={this.handleTabChange}
                     pushUserUpdates={this.pushUserUpdates}
                     currentUserIsLoaded={this.state.currentUserIsLoaded}
                     currentUser={this.state.currentUser}
@@ -625,7 +624,7 @@ class App extends React.Component {
                             <strong>{this.state.currentUser.name}</strong>
                         </div>
                         <div className='list-item__subtitle'>
-                            {this.state.currentUser.contactInformation}
+                            {"TODO" || this.state.currentUser.contactInformation}
                         </div>
                     </div>
             </Ons.ListItem>
@@ -664,6 +663,19 @@ class App extends React.Component {
      * Start the auth0 login process (launches via an in-app browser)
      */
     login(e) {
+        if (this.state.devMode) {
+            this.setState({
+                authenticated: true,
+                currentTab: this.state.devMode,
+            })
+
+            this.fetchOrCreateAuth0User({
+                auth0Id: "facebook|10213377644143781",
+            });
+
+            return;
+        }
+
         var app = this;
 
         var target = e && e.target;

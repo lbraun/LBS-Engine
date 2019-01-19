@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react');
+const Ons = require('react-onsenui');
 const leaflet = require('react-leaflet');
 
 const config = require('../data_components/config.json');
@@ -78,11 +79,6 @@ class Map extends React.Component {
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
-                    var popup = user.name
-                        + " " + this.l("isOffering")
-                        + " " + user.offerDescription
-                        + " " + this.l("andCanBeContactedAt")
-                        + " " + user.contactInformation;
                     userLayer.push(
                         <ExtendedMarker
                             id={user._id}
@@ -90,11 +86,7 @@ class Map extends React.Component {
                             isOpen={user._id == this.props.selectedUserId}
                             key={user._id}
                             icon={this.userMarker}>
-                            <leaflet.Popup>
-                                <span>
-                                    {popup}
-                                </span>
-                            </leaflet.Popup>
+                                {this.renderPopup(user)}
                         </ExtendedMarker>
                     );
                 } else {
@@ -106,11 +98,6 @@ class Map extends React.Component {
                 // If user chooses NOT to be public, insert a buffer instead of a marker into the map
                 // Only do this if the user is selected
                 if (user._id == this.props.selectedUserId) {
-                    var popup = user.name
-                        + " " + this.l("isOffering")
-                        + " " + user.offerDescription
-                        + " " + this.l("andCanBeContactedAt")
-                        + " " + user.contactInformation;
                     userLayer.push(
                         <ExtendedCircle
                             id={user._id}
@@ -118,11 +105,7 @@ class Map extends React.Component {
                             key={user._id}
                             center={this.props.currentUser.coords}
                             radius={this.props.calculateDistanceTo(user.coords)}>
-                            <leaflet.Popup>
-                                <span>
-                                    {popup}
-                                </span>
-                            </leaflet.Popup>
+                                {this.renderPopup(user)}
                         </ExtendedCircle>
                     );
                 }
@@ -139,6 +122,69 @@ class Map extends React.Component {
             </leaflet.LayersControl.Overlay>
         );
         return layers;
+    }
+
+    renderPopup(user) {
+        return (
+            <leaflet.Popup>
+                <div>
+                    <p>{user.name} {this.l("isOffering")}</p>
+                    <b>{user.offerTitle}</b>
+                    <p>{user.offerDescription}</p>
+                    <img src={`data:image/jpeg;base64, ${user.offerPicture}`}
+                        id='offer-picture'
+                        style={{width: "100%"}} />
+                    <p>
+                        {this.l("andCanBeContactedAt")}
+                        <span>{this.renderContactLinks(user)}</span>
+                    </p>
+                </div>
+            </leaflet.Popup>
+        );
+    }
+
+    renderContactLinks(user) {
+        var links = [];
+        var contactInfo = user.contactInformation;
+
+        var contactTypes = [
+            {setting: "useEmail",    contactType: "email"},
+            {setting: "useFacebook", contactType: "facebook"},
+            {setting: "usePhone",    contactType: "phone"},
+            {setting: "useWhatsapp", contactType: "whatsapp"},
+        ];
+
+        for (var i = contactTypes.length - 1; i >= 0; i--) {
+            var setting = contactTypes[i].setting;
+            var contactType = contactTypes[i].contactType;
+
+            if (contactInfo[setting]) {
+                links.push(
+                    <a href={this.getContactLink(contactInfo, contactType)}
+                        key={contactType} >
+                            <Ons.Icon
+                                style={{color: "black", margin: "15px"}}
+                                icon={`md-${contactType}`} />
+                    </a>
+                )
+            }
+        }
+
+        return links;
+    }
+
+    getContactLink(contactInfo, contactType) {
+        if (contactType == "facebook") {
+            return "https://m.me/" + contactInfo.facebook;
+        } else if (contactType == "whatsapp") {
+            return "https://wa.me/" + contactInfo.whatsapp;
+        } else if (contactType == "email") {
+            return "mailto:" + contactInfo.email;
+        } else if (contactType == "phone") {
+            return "tel:" + contactInfo.phone;
+        } else {
+            console.log("Error: invalid contact type: " + contactType);
+        }
     }
 
     renderMapWithLayers() {

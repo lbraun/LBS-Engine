@@ -92310,6 +92310,15 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "Teilnehmerrechte",
         "consentForm.title": "Einverständniserklärung",
         "consentForm.volunteeredConsent": "Ich bestätige, dass ich freiwillig an der Studie teilnehme.",
+        "contact.email": "Email Adresse",
+        "contact.facebook": "Facebook Benutzername",
+        "contact.howDoYouWantToBeContacted": "Wie soll man Ihnen kontaktieren?",
+        "contact.phone": "Telefonnummer",
+        "contact.useEmail": "Email",
+        "contact.useFacebook": "Facebook",
+        "contact.usePhone": "Telefon oder SMS",
+        "contact.useWhatsapp": "Whatsapp",
+        "contact.whatsapp": "Whatsapp-Nummer",
         "dashboard.availableNow": "Jetzt verfügbar",
         "dashboard.becomeAvailable": "Verfügbar werden",
         "dashboard.becomeUnavailable": "Unverfügbar werden",
@@ -92393,6 +92402,15 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "Right to quit",
         "consentForm.title": "Informed Consent Form",
         "consentForm.volunteeredConsent": "I confirm I volunteered to participate in this study.",
+        "contact.email": "Email address",
+        "contact.facebook": "Facebook username",
+        "contact.howDoYouWantToBeContacted": "How do you want to be contacted?",
+        "contact.phone": "Phone number",
+        "contact.useEmail": "Use email",
+        "contact.useFacebook": "Use Facebook",
+        "contact.usePhone": "Use phone or SMS",
+        "contact.useWhatsapp": "Use Whatsapp",
+        "contact.whatsapp": "Whatsapp number",
         "dashboard.availableNow": "Available now",
         "dashboard.becomeAvailable": "Become available",
         "dashboard.becomeUnavailable": "Become unavailable",
@@ -92476,6 +92494,15 @@ module.exports={
         "consentForm.rightToQuitInfoTitle": "TODO",
         "consentForm.title": "TODO",
         "consentForm.volunteeredConsent": "TODO",
+        "contact.email": "TODO",
+        "contact.facebook": "TODO",
+        "contact.howDoYouWantToBeContacted": "TODO",
+        "contact.phone": "TODO",
+        "contact.useEmail": "TODO",
+        "contact.useFacebook": "TODO",
+        "contact.usePhone": "TODO",
+        "contact.useWhatsapp": "TODO",
+        "contact.whatsapp": "TODO",
         "dashboard.availableNow": "TODO",
         "dashboard.becomeAvailable": "للمتاح",
         "dashboard.becomeUnavailable": "TODO",
@@ -92702,9 +92729,9 @@ class App extends React.Component {
         this.state.online = true;
 
         // Disable sign-in for faster development
-        this.state.developerMode = false;
+        this.state.devMode = false;
 
-        if (this.state.developerMode) {
+        if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
             this.state.currentUser = {
                 "nickname": "lucas.braun",
@@ -92733,7 +92760,9 @@ class App extends React.Component {
         var localization = localizations[locale][string];
 
         if (!localization || localization == "TODO") {
-            console.log(`Error: localization "${string}" not found for locale "${locale}"`);
+            if (!this.state.devMode) {
+                console.log(`Error: localization "${string}" not found for locale "${locale}"`);
+            }
 
             if (locale != "en") {
                 // Fall back to English if the localization isn't found for the given locale
@@ -92878,6 +92907,7 @@ class App extends React.Component {
                             available: config.app.available,
                             shareLocation: config.app.shareLocation,
                             useLocation: config.app.useLocation,
+                            contactInformation: {},
                             locale: this.state.locale,
                             newlyCreated: false
                         });
@@ -93092,19 +93122,14 @@ class App extends React.Component {
                 l: this.l,
                 locale: this.state.locale,
                 handleLocaleChange: this.handleLocaleChange,
-                onLoggingChange: this.handleLoggingChange,
                 onDataChange: this.handleExternalDataChange,
                 onLayerControlChange: this.handleLayerControlChange,
                 onDragMapChange: this.handleDragMapChange,
                 onZoomMapChange: this.handleZoomMapChange,
                 pushUserUpdates: this.pushUserUpdates,
                 currentUser: this.state.currentUser,
-                authenticated: this.state.authenticated,
                 revokeConsent: this.revokeConsent,
                 logout: this.logout,
-                login: this.login,
-                logging: this.state.logging,
-                externalData: this.state.externalData,
                 layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
@@ -93119,6 +93144,7 @@ class App extends React.Component {
         {
             content: React.createElement(offerForm.offerForm, {
                 l: this.l,
+                handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
                 currentUserIsLoaded: this.state.currentUserIsLoaded,
                 currentUser: this.state.currentUser,
@@ -93181,7 +93207,7 @@ class App extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'list-item__subtitle' },
-                    this.state.currentUser.contactInformation
+                    "TODO" || this.state.currentUser.contactInformation
                 )
             )
         )];
@@ -93223,6 +93249,19 @@ class App extends React.Component {
      * Start the auth0 login process (launches via an in-app browser)
      */
     login(e) {
+        if (this.state.devMode) {
+            this.setState({
+                authenticated: true,
+                currentTab: this.state.devMode
+            });
+
+            this.fetchOrCreateAuth0User({
+                auth0Id: "facebook|10213377644143781"
+            });
+
+            return;
+        }
+
         var app = this;
 
         var target = e && e.target;
@@ -93414,7 +93453,7 @@ class ConsentForm extends React.Component {
     }
 
     /**
-     * Handle the change of a user setting
+     * Handle the change of a consent item
      * @param {Event} e the react event object
      */
     handleInputChange(e) {
@@ -93561,7 +93600,7 @@ class ConsentForm extends React.Component {
                         { className: 'left' },
                         React.createElement(Ons.Checkbox, { inputId: 'volunteered-check',
                             name: 'volunteered',
-                            value: this.state.volunteered,
+                            checked: this.state.volunteered,
                             onChange: this.handleInputChange })
                     ),
                     React.createElement(
@@ -93578,7 +93617,7 @@ class ConsentForm extends React.Component {
                         { className: 'left' },
                         React.createElement(Ons.Checkbox, { inputId: 'right-to-quit-check',
                             name: 'rightToQuit',
-                            value: this.state.rightToQuit,
+                            checked: this.state.rightToQuit,
                             onChange: this.handleInputChange })
                     ),
                     React.createElement(
@@ -93595,7 +93634,7 @@ class ConsentForm extends React.Component {
                         { className: 'left' },
                         React.createElement(Ons.Checkbox, { inputId: 'data-recording-check',
                             name: 'dataRecording',
-                            value: this.state.dataRecording,
+                            checked: this.state.dataRecording,
                             onChange: this.handleInputChange })
                     ),
                     React.createElement(
@@ -93612,7 +93651,7 @@ class ConsentForm extends React.Component {
                         { className: 'left' },
                         React.createElement(Ons.Checkbox, { inputId: 'good-behavior-check',
                             name: 'goodBehavior',
-                            value: this.state.goodBehavior,
+                            checked: this.state.goodBehavior,
                             onChange: this.handleInputChange })
                     ),
                     React.createElement(
@@ -94124,6 +94163,7 @@ module.exports = {
 'use strict';
 
 const React = require('react');
+const Ons = require('react-onsenui');
 const leaflet = require('react-leaflet');
 
 const config = require('../data_components/config.json');
@@ -94201,7 +94241,6 @@ class Map extends React.Component {
             if (user.shareLocation) {
                 // If there is content for a popup, insert a popup into the map
                 if (user.name != undefined) {
-                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedMarker,
                         {
@@ -94210,15 +94249,7 @@ class Map extends React.Component {
                             isOpen: user._id == this.props.selectedUserId,
                             key: user._id,
                             icon: this.userMarker },
-                        React.createElement(
-                            leaflet.Popup,
-                            null,
-                            React.createElement(
-                                'span',
-                                null,
-                                popup
-                            )
-                        )
+                        this.renderPopup(user)
                     ));
                 } else {
                     userLayer.push(React.createElement(leaflet.Marker, {
@@ -94229,7 +94260,6 @@ class Map extends React.Component {
                 // If user chooses NOT to be public, insert a buffer instead of a marker into the map
                 // Only do this if the user is selected
                 if (user._id == this.props.selectedUserId) {
-                    var popup = user.name + " " + this.l("isOffering") + " " + user.offerDescription + " " + this.l("andCanBeContactedAt") + " " + user.contactInformation;
                     userLayer.push(React.createElement(
                         ExtendedCircle,
                         {
@@ -94238,15 +94268,7 @@ class Map extends React.Component {
                             key: user._id,
                             center: this.props.currentUser.coords,
                             radius: this.props.calculateDistanceTo(user.coords) },
-                        React.createElement(
-                            leaflet.Popup,
-                            null,
-                            React.createElement(
-                                'span',
-                                null,
-                                popup
-                            )
-                        )
+                        this.renderPopup(user)
                     ));
                 }
             }
@@ -94264,6 +94286,86 @@ class Map extends React.Component {
             )
         ));
         return layers;
+    }
+
+    renderPopup(user) {
+        return React.createElement(
+            leaflet.Popup,
+            null,
+            React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'p',
+                    null,
+                    user.name,
+                    ' ',
+                    this.l("isOffering")
+                ),
+                React.createElement(
+                    'b',
+                    null,
+                    user.offerTitle
+                ),
+                React.createElement(
+                    'p',
+                    null,
+                    user.offerDescription
+                ),
+                React.createElement('img', { src: `data:image/jpeg;base64, ${user.offerPicture}`,
+                    id: 'offer-picture',
+                    style: { width: "100%" } }),
+                React.createElement(
+                    'p',
+                    null,
+                    this.l("andCanBeContactedAt"),
+                    React.createElement(
+                        'span',
+                        null,
+                        this.renderContactLinks(user)
+                    )
+                )
+            )
+        );
+    }
+
+    renderContactLinks(user) {
+        var links = [];
+        var contactInfo = user.contactInformation;
+
+        var contactTypes = [{ setting: "useEmail", contactType: "email" }, { setting: "useFacebook", contactType: "facebook" }, { setting: "usePhone", contactType: "phone" }, { setting: "useWhatsapp", contactType: "whatsapp" }];
+
+        for (var i = contactTypes.length - 1; i >= 0; i--) {
+            var setting = contactTypes[i].setting;
+            var contactType = contactTypes[i].contactType;
+
+            if (contactInfo[setting]) {
+                links.push(React.createElement(
+                    'a',
+                    { href: this.getContactLink(contactInfo, contactType),
+                        key: contactType },
+                    React.createElement(Ons.Icon, {
+                        style: { color: "black", margin: "15px" },
+                        icon: `md-${contactType}` })
+                ));
+            }
+        }
+
+        return links;
+    }
+
+    getContactLink(contactInfo, contactType) {
+        if (contactType == "facebook") {
+            return "https://m.me/" + contactInfo.facebook;
+        } else if (contactType == "whatsapp") {
+            return "https://wa.me/" + contactInfo.whatsapp;
+        } else if (contactType == "email") {
+            return "mailto:" + contactInfo.email;
+        } else if (contactType == "phone") {
+            return "tel:" + contactInfo.phone;
+        } else {
+            console.log("Error: invalid contact type: " + contactType);
+        }
     }
 
     renderMapWithLayers() {
@@ -94410,7 +94512,7 @@ module.exports = {
     Map: Map
 };
 
-},{"../business_components/offlineLayer.js":271,"../data_components/config.json":272,"react":265,"react-leaflet":250}],282:[function(require,module,exports){
+},{"../business_components/offlineLayer.js":271,"../data_components/config.json":272,"react":265,"react-leaflet":250,"react-onsenui":262}],282:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -94422,6 +94524,7 @@ const Ons = require('react-onsenui');
 class offerForm extends React.Component {
     constructor(props) {
         super(props);
+        this.goToSettingsTab = this.goToSettingsTab.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handlePhotoButtonClick = this.handlePhotoButtonClick.bind(this);
 
@@ -94436,6 +94539,14 @@ class offerForm extends React.Component {
      */
     l(string) {
         return this.props.l(`offerForm.${string}`);
+    }
+
+    /**
+     * Call app method that navigates to the settings tab
+     * @param {Event} e the react event object
+     */
+    goToSettingsTab(e) {
+        this.props.handleTabChange("settings");
     }
 
     /**
@@ -94633,9 +94744,33 @@ class offerForm extends React.Component {
                         'div',
                         { className: 'list-item__title' },
                         React.createElement(
-                            'b',
+                            Ons.Row,
                             null,
-                            this.l("iCanBeContactedAt")
+                            React.createElement(
+                                Ons.Col,
+                                { width: '80%' },
+                                React.createElement(
+                                    'b',
+                                    null,
+                                    this.l("iCanBeContactedAt")
+                                )
+                            ),
+                            React.createElement(
+                                Ons.Col,
+                                { width: '20%' },
+                                React.createElement(
+                                    'b',
+                                    null,
+                                    React.createElement(
+                                        'a',
+                                        { href: '#',
+                                            style: { color: "black" },
+
+                                            onClick: this.goToSettingsTab },
+                                        React.createElement(Ons.Icon, { icon: "md-settings" })
+                                    )
+                                )
+                            )
                         )
                     ),
                     React.createElement(
@@ -94646,15 +94781,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         'div',
                         null,
-                        React.createElement('textarea', {
-                            id: 'contactInformation',
-                            name: 'contactInformation',
-                            className: 'textarea textarea--transparent',
-                            style: { width: "100%" },
-                            rows: '1',
-                            placeholder: this.l("contactInformationPlaceholder"),
-                            value: this.props.currentUser.contactInformation,
-                            onChange: this.handleInputChange })
+                        "TODO" || this.props.currentUser.contactInformation
                     )
                 ),
                 React.createElement(
@@ -94693,10 +94820,11 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
-        this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
+        this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.l = this.l.bind(this);
     }
 
     /**
@@ -94747,22 +94875,6 @@ class Settings extends React.Component {
     }
 
     render() {
-        if (this.props.authenticated) {
-            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
-            var authenticationButton = React.createElement(
-                Ons.Button,
-                { onClick: this.props.logout },
-                this.l("logOut")
-            );
-        } else {
-            var authenticationText = this.l("notCurrentlyLoggedIn");
-            var authenticationButton = React.createElement(
-                Ons.Button,
-                { onClick: this.props.login },
-                this.l("logIn")
-            );
-        }
-
         return React.createElement(
             Ons.Page,
             null,
@@ -94771,7 +94883,7 @@ class Settings extends React.Component {
                 null,
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'language-li', key: 'language' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94791,7 +94903,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'name-li', key: 'name' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94812,9 +94924,13 @@ class Settings extends React.Component {
                             onChange: this.handleInputChange })
                     )
                 ),
+                React.createElement(ContactSettings, {
+                    currentUser: this.props.currentUser,
+                    pushUserUpdates: this.props.pushUserUpdates,
+                    l: this.props.l }),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'use-location-li', key: 'useLocation' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94835,7 +94951,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'use-location-text-li', key: 'useLocationText' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
@@ -94844,7 +94960,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'share-location-li', key: 'shareLocation' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94865,7 +94981,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'share-location-text-li', key: 'shareLocationText' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
@@ -94874,25 +94990,29 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'authentication' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
                         React.createElement(
                             'p',
                             null,
-                            authenticationText
+                            `${this.l("loggedInAs")} ${this.props.currentUser.name}`
                         )
                     ),
                     React.createElement(
                         'div',
                         { className: 'right' },
-                        authenticationButton
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.props.logout },
+                            this.l("logOut")
+                        )
                     )
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'consent' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94917,11 +95037,115 @@ class Settings extends React.Component {
     }
 }
 
-const settingsComponent = React.createElement(Settings, null);
+class ContactSettings extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.state = {
+            contactInfo: this.props.currentUser.contactInformation
+        };
+    }
+
+    /**
+     * Localize a string in the context of the contact settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`contact.${string}`);
+    }
+
+    /**
+     * Handle the change of a contact setting
+     * @param {Event} e the react event object
+     */
+    handleInputChange(e) {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
+
+        var contactInfoCopy = JSON.parse(JSON.stringify(this.state.contactInfo));
+        contactInfoCopy[name] = value;
+
+        this.setState({
+            contactInfo: contactInfoCopy
+        });
+
+        this.props.pushUserUpdates({ contactInformation: contactInfoCopy });
+    }
+
+    render() {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                Ons.ListItem,
+                null,
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'i',
+                        null,
+                        this.l("howDoYouWantToBeContacted")
+                    )
+                )
+            ),
+            this.renderContactSetting("useEmail", "email"),
+            this.renderContactSetting("useFacebook", "facebook"),
+            this.renderContactSetting("usePhone", "phone"),
+            this.renderContactSetting("useWhatsapp", "whatsapp")
+        );
+    }
+
+    renderContactSetting(setting, contactType) {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                Ons.ListItem,
+                { tappable: true },
+                React.createElement(
+                    'label',
+                    { className: 'left', htmlFor: `${setting}-check` },
+                    React.createElement(Ons.Icon, { icon: `md-${contactType}`, style: { marginRight: "15px" } }),
+                    this.l(setting)
+                ),
+                React.createElement(
+                    'label',
+                    { className: 'right' },
+                    React.createElement(Ons.Switch, {
+                        inputId: `${setting}-check`,
+                        name: setting,
+                        checked: this.state.contactInfo[setting],
+                        onChange: this.handleInputChange })
+                )
+            ),
+            this.state.contactInfo[setting] ? this.renderForm(contactType) : null
+        );
+    }
+
+    renderForm(contactType) {
+        return React.createElement(
+            Ons.ListItem,
+            null,
+            React.createElement(
+                'div',
+                { className: 'right' },
+                React.createElement('input', { type: 'text',
+                    name: contactType,
+                    className: 'text-input text-input--material',
+                    placeholder: this.l(contactType),
+                    value: this.state.contactInfo[contactType],
+                    onChange: this.handleInputChange })
+            )
+        );
+    }
+}
 
 module.exports = {
-    Settings: Settings,
-    settingsComponent: settingsComponent
+    Settings: Settings
 };
 
 },{"./localeMenu.js":280,"react":265,"react-onsenui":262}],284:[function(require,module,exports){

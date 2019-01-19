@@ -9,6 +9,7 @@ const Ons = require('react-onsenui');
 class offerForm extends React.Component {
     constructor(props) {
         super(props);
+        this.goToSettingsTab = this.goToSettingsTab.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handlePhotoButtonClick = this.handlePhotoButtonClick.bind(this);
 
@@ -23,6 +24,14 @@ class offerForm extends React.Component {
      */
     l(string) {
         return this.props.l(`offerForm.${string}`);
+    }
+
+    /**
+     * Call app method that navigates to the settings tab
+     * @param {Event} e the react event object
+     */
+    goToSettingsTab(e) {
+        this.props.handleTabChange("settings");
     }
 
     /**
@@ -175,22 +184,26 @@ class offerForm extends React.Component {
 
                     <Ons.ListItem id="contact-information-li">
                         <div className="list-item__title">
-                            <b>{this.l("iCanBeContactedAt")}</b>
+                            <Ons.Row>
+                                <Ons.Col width="80%">
+                                    <b>{this.l("iCanBeContactedAt")}</b>
+                                </Ons.Col>
+
+                                <Ons.Col width="20%">
+                                    <b><a href="#"
+                                        style={{color: "black"}}
+
+                                        onClick={this.goToSettingsTab}>
+                                            <Ons.Icon icon={"md-settings"} />
+                                    </a></b>
+                                </Ons.Col>
+                            </Ons.Row>
                         </div>
                         <div className="list-item__subtitle">
                             {this.l("iCanBeContactedAtHelpText")}
                         </div>
                         <div>
-                            <textarea
-                                id="contactInformation"
-                                name="contactInformation"
-                                className="textarea textarea--transparent"
-                                style={{width: "100%"}}
-                                rows="1"
-                                placeholder={this.l("contactInformationPlaceholder")}
-                                value={this.props.currentUser.contactInformation}
-                                onChange={this.handleInputChange}>
-                            </textarea>
+                            {"TODO" || this.props.currentUser.contactInformation}
                         </div>
                     </Ons.ListItem>
 

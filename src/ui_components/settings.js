@@ -12,10 +12,11 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
-        this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
+        this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.l = this.l.bind(this);
     }
 
     /**
@@ -66,18 +67,10 @@ class Settings extends React.Component {
     }
 
     render() {
-        if (this.props.authenticated) {
-            var authenticationText = `${this.l("loggedInAs")} ${this.props.currentUser.name}`;
-            var authenticationButton = <Ons.Button onClick={this.props.logout}>{this.l("logOut")}</Ons.Button>;
-        } else {
-            var authenticationText = this.l("notCurrentlyLoggedIn");
-            var authenticationButton = <Ons.Button onClick={this.props.login}>{this.l("logIn")}</Ons.Button>;
-        }
-
         return (
             <Ons.Page>
                 <Ons.List>
-                    <Ons.ListItem id='language-li' key='language'>
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("language")}</p>
                         </div>
@@ -87,7 +80,8 @@ class Settings extends React.Component {
                                 handleLocaleChange={this.props.handleLocaleChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem id='name-li' key='name'>
+
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("name")}</p>
                         </div>
@@ -102,7 +96,12 @@ class Settings extends React.Component {
                         </div>
                     </Ons.ListItem>
 
-                    <Ons.ListItem id='use-location-li' key='useLocation'>
+                    <ContactSettings
+                        currentUser={this.props.currentUser}
+                        pushUserUpdates={this.props.pushUserUpdates}
+                        l={this.props.l} />
+
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("useLocation")}</p>
                         </div>
@@ -113,13 +112,13 @@ class Settings extends React.Component {
                                 onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem id='use-location-text-li' key='useLocationText'>
+                    <Ons.ListItem>
                         <div className="list-item__subtitle">
                             {this.l("useLocationText")}
                         </div>
                     </Ons.ListItem>
 
-                    <Ons.ListItem id='share-location-li' key='shareLocation'>
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("shareLocation")}</p>
                         </div>
@@ -130,21 +129,22 @@ class Settings extends React.Component {
                                 onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem id='share-location-text-li' key='shareLocationText'>
+                    <Ons.ListItem>
                         <div className="list-item__subtitle">
                             {this.l("shareLocationText")}
                         </div>
                     </Ons.ListItem>
 
-                    <Ons.ListItem key='authentication'>
+                    <Ons.ListItem>
                         <div className='left'>
-                            <p>{authenticationText}</p>
+                            <p>{`${this.l("loggedInAs")} ${this.props.currentUser.name}`}</p>
                         </div>
                         <div className='right'>
-                            {authenticationButton}
+                            <Ons.Button onClick={this.props.logout}>{this.l("logOut")}</Ons.Button>
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='consent'>
+
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("youHaveConsented")}</p>
                         </div>
@@ -158,9 +158,101 @@ class Settings extends React.Component {
     }
 }
 
-const settingsComponent = <Settings />
+class ContactSettings extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.state = {
+            contactInfo: this.props.currentUser.contactInformation
+        };
+    }
+
+    /**
+     * Localize a string in the context of the contact settings
+     * @param {string} string to be localized
+     */
+    l(string) {
+        return this.props.l(`contact.${string}`);
+    }
+
+    /**
+     * Handle the change of a contact setting
+     * @param {Event} e the react event object
+     */
+    handleInputChange(e) {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
+
+        var contactInfoCopy = JSON.parse(JSON.stringify(this.state.contactInfo));
+        contactInfoCopy[name] = value;
+
+        this.setState({
+            contactInfo: contactInfoCopy,
+        });
+
+        this.props.pushUserUpdates({contactInformation: contactInfoCopy});
+    }
+
+    render() {
+        return (
+            <div>
+                <Ons.ListItem>
+                    <div>
+                        <i>{this.l("howDoYouWantToBeContacted")}</i>
+                    </div>
+                </Ons.ListItem>
+
+                {this.renderContactSetting("useEmail",    "email")}
+                {this.renderContactSetting("useFacebook", "facebook")}
+                {this.renderContactSetting("usePhone",    "phone")}
+                {this.renderContactSetting("useWhatsapp", "whatsapp")}
+            </div>
+        );
+    }
+
+    renderContactSetting(setting, contactType) {
+        return (
+            <div>
+                <Ons.ListItem tappable={true}>
+                    <label className='left' htmlFor={`${setting}-check`}>
+                        <Ons.Icon icon={`md-${contactType}`} style={{marginRight: "15px"}} />
+                        {this.l(setting)}
+                    </label>
+                    <label className='right'>
+                        <Ons.Switch
+                            inputId={`${setting}-check`}
+                            name={setting}
+                            checked={this.state.contactInfo[setting]}
+                            onChange={this.handleInputChange} />
+                    </label>
+                </Ons.ListItem>
+
+                {this.state.contactInfo[setting] ? this.renderForm(contactType) : null}
+            </div>
+        );
+    }
+
+    renderForm(contactType) {
+        return (
+            <Ons.ListItem>
+                <div className='right'>
+                    <input type="text"
+                        name={contactType}
+                        className="text-input text-input--material"
+                        placeholder={this.l(contactType)}
+                        value={this.state.contactInfo[contactType]}
+                        onChange={this.handleInputChange}>
+                    </input>
+                </div>
+            </Ons.ListItem>
+        );
+    }
+}
+
 
 module.exports = {
     Settings: Settings,
-    settingsComponent: settingsComponent
 }
