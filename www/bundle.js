@@ -94726,8 +94726,8 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
-        this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
+        this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
@@ -94788,7 +94788,7 @@ class Settings extends React.Component {
                 null,
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'language-li', key: 'language' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94808,7 +94808,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'name-li', key: 'name' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94831,7 +94831,30 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'use-location-li', key: 'useLocation' },
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            this.l("name")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement('input', { type: 'text',
+                            name: 'name',
+                            className: 'text-input text-input--material',
+                            placeholder: this.l("name"),
+                            value: this.props.currentUser.name,
+                            onChange: this.handleInputChange })
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94852,7 +94875,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'use-location-text-li', key: 'useLocationText' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
@@ -94861,7 +94884,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'share-location-li', key: 'shareLocation' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94882,7 +94905,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { id: 'share-location-text-li', key: 'shareLocationText' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'list-item__subtitle' },
@@ -94891,7 +94914,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'authentication' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },
@@ -94913,7 +94936,7 @@ class Settings extends React.Component {
                 ),
                 React.createElement(
                     Ons.ListItem,
-                    { key: 'consent' },
+                    null,
                     React.createElement(
                         'div',
                         { className: 'left' },

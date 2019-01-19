@@ -12,8 +12,8 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.handleChangeData = this.handleChangeData.bind(this);
-        this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeDragMap = this.handleChangeDragMap.bind(this);
+        this.handleChangeLayerControl = this.handleChangeLayerControl.bind(this);
         this.handleChangeZoomMap = this.handleChangeZoomMap.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
@@ -69,7 +69,7 @@ class Settings extends React.Component {
         return (
             <Ons.Page>
                 <Ons.List>
-                    <Ons.ListItem id='language-li' key='language'>
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("language")}</p>
                         </div>
@@ -79,7 +79,8 @@ class Settings extends React.Component {
                                 handleLocaleChange={this.props.handleLocaleChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem id='name-li' key='name'>
+
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("name")}</p>
                         </div>
@@ -94,7 +95,22 @@ class Settings extends React.Component {
                         </div>
                     </Ons.ListItem>
 
-                    <Ons.ListItem id='use-location-li' key='useLocation'>
+                    <Ons.ListItem>
+                        <div className='left'>
+                            <p>{this.l("name")}</p>
+                        </div>
+                        <div className='right'>
+                            <input type="text"
+                                name="name"
+                                className="text-input text-input--material"
+                                placeholder={this.l("name")}
+                                value={this.props.currentUser.name}
+                                onChange={this.handleInputChange}>
+                            </input>
+                        </div>
+                    </Ons.ListItem>
+
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("useLocation")}</p>
                         </div>
@@ -105,13 +121,13 @@ class Settings extends React.Component {
                                 onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem id='use-location-text-li' key='useLocationText'>
+                    <Ons.ListItem>
                         <div className="list-item__subtitle">
                             {this.l("useLocationText")}
                         </div>
                     </Ons.ListItem>
 
-                    <Ons.ListItem id='share-location-li' key='shareLocation'>
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("shareLocation")}</p>
                         </div>
@@ -122,13 +138,13 @@ class Settings extends React.Component {
                                 onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem id='share-location-text-li' key='shareLocationText'>
+                    <Ons.ListItem>
                         <div className="list-item__subtitle">
                             {this.l("shareLocationText")}
                         </div>
                     </Ons.ListItem>
 
-                    <Ons.ListItem key='authentication'>
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{`${this.l("loggedInAs")} ${this.props.currentUser.name}`}</p>
                         </div>
@@ -136,7 +152,8 @@ class Settings extends React.Component {
                             <Ons.Button onClick={this.props.logout}>{this.l("logOut")}</Ons.Button>
                         </div>
                     </Ons.ListItem>
-                    <Ons.ListItem key='consent'>
+
+                    <Ons.ListItem>
                         <div className='left'>
                             <p>{this.l("youHaveConsented")}</p>
                         </div>
