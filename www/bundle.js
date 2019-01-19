@@ -93600,7 +93600,7 @@ class ConsentForm extends React.Component {
                         { className: 'left' },
                         React.createElement(Ons.Checkbox, { inputId: 'volunteered-check',
                             name: 'volunteered',
-                            value: this.state.volunteered,
+                            checked: this.state.volunteered,
                             onChange: this.handleInputChange })
                     ),
                     React.createElement(
@@ -93617,7 +93617,7 @@ class ConsentForm extends React.Component {
                         { className: 'left' },
                         React.createElement(Ons.Checkbox, { inputId: 'right-to-quit-check',
                             name: 'rightToQuit',
-                            value: this.state.rightToQuit,
+                            checked: this.state.rightToQuit,
                             onChange: this.handleInputChange })
                     ),
                     React.createElement(
@@ -93634,7 +93634,7 @@ class ConsentForm extends React.Component {
                         { className: 'left' },
                         React.createElement(Ons.Checkbox, { inputId: 'data-recording-check',
                             name: 'dataRecording',
-                            value: this.state.dataRecording,
+                            checked: this.state.dataRecording,
                             onChange: this.handleInputChange })
                     ),
                     React.createElement(
@@ -93651,7 +93651,7 @@ class ConsentForm extends React.Component {
                         { className: 'left' },
                         React.createElement(Ons.Checkbox, { inputId: 'good-behavior-check',
                             name: 'goodBehavior',
-                            value: this.state.goodBehavior,
+                            checked: this.state.goodBehavior,
                             onChange: this.handleInputChange })
                     ),
                     React.createElement(
