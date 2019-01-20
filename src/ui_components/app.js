@@ -38,6 +38,7 @@ class App extends React.Component {
         super(props);
         this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
         this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
+        this.completeOffer = this.completeOffer.bind(this);
         this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
@@ -122,7 +123,7 @@ class App extends React.Component {
                             + " " + app.l("alert.isLessThan")
                             + " " + closestUser.distanceToUser
                             + " " + app.l("alert.metersAwayWith")
-                            + " " + closestUser.offerDescription);
+                            + " " + closestUser.offer.description);
                     }
                 }
             } else {
@@ -139,7 +140,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        this.state.devMode = "offers";
+        // this.state.devMode = "dashboard";
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
@@ -149,8 +150,10 @@ class App extends React.Component {
                 "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
                 "updated_at": "2019-01-09T08:54:31.035Z",
                 "auth0Id": "auth0|5c35b6c6a19540326d51c3a9",
-                "offerTitle": "Something!",
-                "offerDescription": "It's really special.",
+                "offer": {
+                    "title": "Something!",
+                    "description": "It's really special."
+                },
                 "hasConsented": true,
                 "createdAt": {
                     "$date": "2019-01-09T08:57:59.078Z"
@@ -375,6 +378,18 @@ class App extends React.Component {
     }
 
     /**
+     * Complete the current user's offer by initiating a questionnaire
+     */
+    completeOffer() {
+        var offersCompleted = this.state.currentUser.offersCompleted || 0;
+
+        this.pushUserUpdates({
+            offer: null,
+            offersCompleted: offersCompleted + 1,
+        })
+    }
+
+    /**
      * Push the provided updates to the user to the database server
      * @param {Object} attributes object, representing attributes to be updated
      */
@@ -480,6 +495,7 @@ class App extends React.Component {
                     login={this.login}
                     handleTabChange={this.handleTabChange}
                     pushUserUpdates={this.pushUserUpdates}
+                    completeOffer={this.completeOffer}
                     currentUser={this.state.currentUser}
                     online={this.state.online}
                     // For user list

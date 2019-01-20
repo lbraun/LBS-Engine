@@ -92327,7 +92327,8 @@ module.exports={
         "dashboard.availableNow": "Jetzt verfügbar",
         "dashboard.becomeAvailable": "Verfügbar werden",
         "dashboard.becomeUnavailable": "Unverfügbar werden",
-        "dashboard.createAnOffer": "TODO",
+        "dashboard.completeOffer": "Fertig Stellen",
+        "dashboard.createAnOffer": "Angebot Machen",
         "dashboard.nearbyOffers": "Angebote in Ihre Nähre",
         "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
         "dashboard.useMyLocation": "TODO",
@@ -92348,7 +92349,7 @@ module.exports={
         "offerForm.addPicture": "Ein Bild hinzufügen",
         "offerForm.available": "Jetzt verfügbar",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
-        "offerForm.geofenceWarning": "Sie können nur verfügbar werden, wenn Sie in Münster Sind",
+        "offerForm.geofenceWarning": "Sie können Ihren Angebot nur verfügbar machen, wenn Sie in Münster Sind",
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte geben Sie eine kurze Beschreibung des Angebots.",
         "offerForm.iCanBeContactedAt": "Man kann mich unter folgendem Kontakt erreichen:",
@@ -92422,6 +92423,7 @@ module.exports={
         "dashboard.availableNow": "Available now",
         "dashboard.becomeAvailable": "Become available",
         "dashboard.becomeUnavailable": "Become unavailable",
+        "dashboard.completeOffer": "Complete",
         "dashboard.createAnOffer": "Create an offer",
         "dashboard.nearbyOffers": "Nearby Offers",
         "dashboard.notCurrentlyAvailable": "Not currently available",
@@ -92443,7 +92445,7 @@ module.exports={
         "offerForm.addPicture": "Add a picture",
         "offerForm.available": "Available now",
         "offerForm.contactInformationPlaceholder": "Contact information",
-        "offerForm.geofenceWarning": "You can only be available when you are in Münster",
+        "offerForm.geofenceWarning": "You can only make your offer available when you are in Münster",
         "offerForm.iAmOffering": "I am offering...",
         "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
         "offerForm.iCanBeContactedAt": "I can be contacted at...",
@@ -92517,6 +92519,7 @@ module.exports={
         "dashboard.availableNow": "TODO",
         "dashboard.becomeAvailable": "للمتاح",
         "dashboard.becomeUnavailable": "TODO",
+        "dashboard.completeOffer": "TODO",
         "dashboard.createAnOffer": "TODO",
         "dashboard.nearbyOffers": "TODO",
         "dashboard.notCurrentlyAvailable": "TODO",
@@ -92641,29 +92644,30 @@ const logger = require('../business_components/logger.js');
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.l = this.l.bind(this);
-        this.showSidebar = this.showSidebar.bind(this);
-        this.hideSidebar = this.hideSidebar.bind(this);
-        this.renderToolbar = this.renderToolbar.bind(this);
-        this.handleLoggingChange = this.handleLoggingChange.bind(this);
+        this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
+        this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
+        this.completeOffer = this.completeOffer.bind(this);
+        this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
-        this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
-        this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.refreshUsers = this.refreshUsers.bind(this);
-        this.pushUserUpdates = this.pushUserUpdates.bind(this);
-        this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
-        this.handleTabChange = this.handleTabChange.bind(this);
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
-        this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
-        this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
-        this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
+        this.handleLoggingChange = this.handleLoggingChange.bind(this);
+        this.handleSidebarClick = this.handleSidebarClick.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
+        this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
+        this.hideSidebar = this.hideSidebar.bind(this);
+        this.l = this.l.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
-        this.revokeConsent = this.revokeConsent.bind(this);
+        this.pushUserUpdates = this.pushUserUpdates.bind(this);
+        this.refreshUsers = this.refreshUsers.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
+        this.renderToolbar = this.renderToolbar.bind(this);
+        this.revokeConsent = this.revokeConsent.bind(this);
+        this.showSidebar = this.showSidebar.bind(this);
+        this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
         this.state = {
             sidebarIsOpen: false,
@@ -92723,7 +92727,7 @@ class App extends React.Component {
                         var log = app.state.notificationLog.concat([closestUser._id]);
                         app.setState({ notificationLog: log });
 
-                        alert(closestUser.name + " " + app.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + app.l("alert.metersAwayWith") + " " + closestUser.offerDescription);
+                        alert(closestUser.name + " " + app.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + app.l("alert.metersAwayWith") + " " + closestUser.offer.description);
                     }
                 }
             } else {
@@ -92740,7 +92744,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        this.state.devMode = "offers";
+        // this.state.devMode = "dashboard";
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
@@ -92750,8 +92754,10 @@ class App extends React.Component {
                 "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
                 "updated_at": "2019-01-09T08:54:31.035Z",
                 "auth0Id": "auth0|5c35b6c6a19540326d51c3a9",
-                "offerTitle": "Something!",
-                "offerDescription": "It's really special.",
+                "offer": {
+                    "title": "Something!",
+                    "description": "It's really special."
+                },
                 "hasConsented": true,
                 "createdAt": {
                     "$date": "2019-01-09T08:57:59.078Z"
@@ -92965,6 +92971,18 @@ class App extends React.Component {
     }
 
     /**
+     * Complete the current user's offer by initiating a questionnaire
+     */
+    completeOffer() {
+        var offersCompleted = this.state.currentUser.offersCompleted || 0;
+
+        this.pushUserUpdates({
+            offer: null,
+            offersCompleted: offersCompleted + 1
+        });
+    }
+
+    /**
      * Push the provided updates to the user to the database server
      * @param {Object} attributes object, representing attributes to be updated
      */
@@ -93069,6 +93087,7 @@ class App extends React.Component {
                 login: this.login,
                 handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
+                completeOffer: this.completeOffer,
                 currentUser: this.state.currentUser,
                 online: this.state.online
                 // For user list
@@ -93709,7 +93728,8 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
-        this.toggleAvailability = this.toggleAvailability.bind(this);
+        this.handleOfferCompletion = this.handleOfferCompletion.bind(this);
+        this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
         this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
     }
 
@@ -93733,8 +93753,19 @@ class Dashboard extends React.Component {
      * Toggle user's availability status
      * @param {Event} e the react event object
      */
-    toggleAvailability(e) {
-        this.props.pushUserUpdates({ available: !this.props.currentUser.available });
+    updateOfferAvailability(e) {
+        var updatedOffer = JSON.parse(JSON.stringify(this.props.currentUser.offer));
+        updatedOffer.available = e.target.checked;
+
+        this.props.pushUserUpdates({ offer: updatedOffer });
+    }
+
+    /**
+     * Complete the user's offer
+     * @param {Event} e the react event object
+     */
+    handleOfferCompletion(e) {
+        this.props.completeOffer();
     }
 
     /**
@@ -93747,7 +93778,8 @@ class Dashboard extends React.Component {
 
     // Render information about the user's offer
     renderOfferCard() {
-        if (this.props.currentUser.offerTitle) {
+        var offer = this.props.currentUser.offer;
+        if (offer) {
             if (this.props.currentUser.available) {
                 var availabilityInfo = this.l("availableNow");
             } else {
@@ -93756,7 +93788,7 @@ class Dashboard extends React.Component {
 
             return React.createElement(
                 Ons.Card,
-                null,
+                { style: { padding: "24px" } },
                 React.createElement(
                     Ons.Row,
                     null,
@@ -93766,7 +93798,7 @@ class Dashboard extends React.Component {
                         React.createElement(
                             'h3',
                             null,
-                            this.props.currentUser.offerTitle
+                            offer.title
                         )
                     ),
                     React.createElement(
@@ -93787,17 +93819,39 @@ class Dashboard extends React.Component {
                     )
                 ),
                 React.createElement(
-                    'p',
-                    null,
-                    this.props.currentUser.offerDescription
-                ),
-                React.createElement(
-                    'p',
+                    Ons.Row,
                     null,
                     React.createElement(
-                        'i',
-                        null,
-                        availabilityInfo
+                        Ons.Col,
+                        { width: '45px' },
+                        React.createElement('img', { className: 'list-item__thumbnail',
+                            src: `data:image/jpeg;base64, ${offer.picture}` })
+                    ),
+                    React.createElement(
+                        Ons.Col,
+                        { style: { paddingLeft: "15px" } },
+                        offer.description
+                    )
+                ),
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        { style: { padding: "16px 0px" } },
+                        React.createElement(
+                            'i',
+                            null,
+                            this.props.l(offer.available ? "offerForm.available" : "offerForm.notAvailable")
+                        )
+                    ),
+                    React.createElement(
+                        Ons.Col,
+                        { style: { padding: "12px 0px", textAlign: "right" } },
+                        React.createElement(Ons.Switch, {
+                            name: 'available',
+                            checked: offer.available,
+                            onChange: this.updateOfferAvailability })
                     )
                 ),
                 React.createElement(
@@ -93805,15 +93859,19 @@ class Dashboard extends React.Component {
                     null,
                     React.createElement(
                         Ons.Button,
-                        { onClick: this.toggleAvailability },
-                        this.props.currentUser.available ? this.l("becomeUnavailable") : this.l("becomeAvailable")
+                        {
+                            modifier: 'large',
+                            onClick: this.handleOfferCompletion,
+                            style: { backgroundColor: "green" } },
+                        React.createElement(Ons.Icon, { icon: "md-check-circle", style: { marginRight: "20px" } }),
+                        this.l("completeOffer")
                     )
                 )
             );
         } else {
             return React.createElement(
                 Ons.Card,
-                null,
+                { style: { padding: "24px" } },
                 React.createElement(
                     'p',
                     null,
@@ -93848,6 +93906,7 @@ class Dashboard extends React.Component {
                         defaultPicture: this.props.defaultPicture,
                         handleListItemClick: this.props.handleListItemClick,
                         usersAreLoaded: this.props.usersAreLoaded,
+                        usersWithOffersOnly: true,
                         errorLoadingUsers: this.props.errorLoadingUsers,
                         users: this.props.users })
                 )
@@ -94093,6 +94152,10 @@ class UserListItems extends React.Component {
                 var user = users[i];
                 var clickable = user.available && user.coords && !!(user.shareLocation || this.props.currentUser.coords);
 
+                if (!user.offer && this.props.usersWithOffersOnly) {
+                    continue;
+                }
+
                 listItems.push(React.createElement(
                     Ons.ListItem,
                     {
@@ -94111,7 +94174,7 @@ class UserListItems extends React.Component {
                         React.createElement(
                             'div',
                             { className: 'list-item__title' },
-                            user.offerTitle
+                            user.offer && user.offer.title
                         ),
                         React.createElement(
                             'div',
@@ -94301,49 +94364,79 @@ class Map extends React.Component {
     }
 
     renderPopup(user) {
-        return React.createElement(
-            leaflet.Popup,
-            null,
-            React.createElement(
-                'div',
+        if (user.offer) {
+            return React.createElement(
+                leaflet.Popup,
                 null,
                 React.createElement(
-                    'p',
+                    'div',
                     null,
-                    user.name,
-                    ' ',
-                    this.l("isOffering")
-                ),
-                React.createElement(
-                    'b',
-                    null,
-                    user.offerTitle
-                ),
-                React.createElement(
-                    'p',
-                    null,
-                    user.offerDescription
-                ),
-                React.createElement('img', { src: `data:image/jpeg;base64, ${user.offerPicture}`,
-                    id: 'offer-picture',
-                    style: { width: "100%" } }),
-                React.createElement(
-                    'p',
-                    null,
-                    this.l("andCanBeContactedAt"),
                     React.createElement(
-                        'span',
+                        'p',
                         null,
-                        this.renderContactLinks(user)
+                        user.name,
+                        ' ',
+                        this.l("isOffering")
+                    ),
+                    React.createElement(
+                        'b',
+                        null,
+                        user.offer.title
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        user.offer.description
+                    ),
+                    React.createElement('img', { src: `data:image/jpeg;base64, ${user.offer.picture}`,
+                        id: 'offer-picture',
+                        style: { width: "100%" } }),
+                    React.createElement(
+                        'p',
+                        null,
+                        this.l("andCanBeContactedAt"),
+                        React.createElement(
+                            'span',
+                            null,
+                            this.renderContactLinks(user)
+                        )
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        this.reportLink(user)
                     )
-                ),
-                React.createElement(
-                    'p',
-                    null,
-                    this.reportLink(user)
                 )
-            )
-        );
+            );
+        } else {
+            return React.createElement(
+                leaflet.Popup,
+                null,
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'p',
+                        null,
+                        user.name
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement(
+                            'span',
+                            null,
+                            this.renderContactLinks(user)
+                        )
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        this.reportLink(user)
+                    )
+                )
+            );
+        }
     }
 
     renderContactLinks(user) {
@@ -94561,10 +94654,8 @@ class offerForm extends React.Component {
         this.handleDeletePictureClick = this.handleDeletePictureClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
-
-        this.state = {
-            imageData: this.props.currentUser.offerPicture
-        };
+        this.offer = this.offer.bind(this);
+        this.pushOfferUpdates = this.pushOfferUpdates.bind(this);
     }
 
     /**
@@ -94573,6 +94664,17 @@ class offerForm extends React.Component {
      */
     l(string) {
         return this.props.l(`offerForm.${string}`);
+    }
+
+    offer() {
+        var newOffer = {
+            title: "",
+            picture: null,
+            description: "",
+            available: false
+        };
+
+        return this.props.currentUser.offer || newOffer;
     }
 
     /**
@@ -94593,7 +94695,14 @@ class offerForm extends React.Component {
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
         var attributes = { [name]: value };
-        this.props.pushUserUpdates(attributes);
+        this.pushOfferUpdates(attributes);
+    }
+
+    pushOfferUpdates(attributes) {
+        var updatedOffer = JSON.parse(JSON.stringify(this.offer()));
+        Object.assign(updatedOffer, attributes);
+
+        this.props.pushUserUpdates({ offer: updatedOffer });
     }
 
     /**
@@ -94604,7 +94713,7 @@ class offerForm extends React.Component {
         var formInstance = this;
 
         navigator.camera.getPicture(function onSuccess(imageData) {
-            formInstance.props.pushUserUpdates({ offerPicture: imageData });
+            formInstance.pushOfferUpdates({ picture: imageData });
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
         }, {
@@ -94619,7 +94728,7 @@ class offerForm extends React.Component {
      * @param {Event} e the react event object
      */
     handleDeletePictureClick(e) {
-        this.props.pushUserUpdates({ offerPicture: null });
+        this.pushOfferUpdates({ picture: null });
     }
 
     renderGeofenceWarningListItem() {
@@ -94629,7 +94738,7 @@ class offerForm extends React.Component {
                 null,
                 React.createElement(
                     'div',
-                    { className: 'list-item__subtitle' },
+                    { className: 'list-item__subtitle', style: { color: "#d9534f" } },
                     this.l("geofenceWarning")
                 )
             );
@@ -94639,7 +94748,7 @@ class offerForm extends React.Component {
     }
 
     renderImageArea() {
-        if (this.props.currentUser.offerPicture) {
+        if (this.offer().picture) {
             return React.createElement(
                 'div',
                 null,
@@ -94672,7 +94781,7 @@ class offerForm extends React.Component {
                         )
                     )
                 ),
-                React.createElement('img', { src: `data:image/jpeg;base64, ${this.props.currentUser.offerPicture}`,
+                React.createElement('img', { src: `data:image/jpeg;base64, ${this.offer().picture}`,
                     id: 'offer-picture',
                     style: { width: "100%" } })
             );
@@ -94719,29 +94828,6 @@ class offerForm extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
-                this.renderGeofenceWarningListItem(),
-                React.createElement(
-                    Ons.ListItem,
-                    { id: 'availablility-switch-li' },
-                    React.createElement(
-                        'div',
-                        { className: 'left' },
-                        React.createElement(
-                            'p',
-                            null,
-                            this.props.currentUser.available ? this.l("available") : this.l("notAvailable")
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        React.createElement(Ons.Switch, {
-                            name: 'available',
-                            checked: this.props.currentUser.available,
-                            disabled: this.props.outOfGeofence ? "true" : false,
-                            onChange: this.handleInputChange })
-                    )
-                ),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'offer-title-li' },
@@ -94759,11 +94845,11 @@ class offerForm extends React.Component {
                         { className: 'list-item__subtitle' },
                         React.createElement('input', { type: 'text',
                             id: 'offerTitle',
-                            name: 'offerTitle',
+                            name: 'title',
                             className: 'text-input text-input--transparent',
                             style: { width: "100%" },
                             placeholder: this.l("offerTitlePlaceholder"),
-                            value: this.props.currentUser.offerTitle,
+                            value: this.offer().title,
                             onChange: this.handleInputChange })
                     )
                 )
@@ -94797,12 +94883,12 @@ class offerForm extends React.Component {
                         null,
                         React.createElement('textarea', {
                             id: 'offerDescription',
-                            name: 'offerDescription',
+                            name: 'description',
                             className: 'textarea textarea--transparent',
                             style: { width: "100%" },
                             rows: '3',
                             placeholder: this.l("offerDescriptionPlaceholder"),
-                            value: this.props.currentUser.offerDescription,
+                            value: this.offer().description,
                             onChange: this.handleInputChange })
                     )
                 ),
@@ -94853,6 +94939,29 @@ class offerForm extends React.Component {
                         "TODO" || this.props.currentUser.contactInformation
                     )
                 ),
+                this.renderGeofenceWarningListItem(),
+                React.createElement(
+                    Ons.ListItem,
+                    { id: 'availablility-switch-li' },
+                    React.createElement(
+                        'div',
+                        { className: 'left' },
+                        React.createElement(
+                            'p',
+                            null,
+                            this.offer().available ? this.l("available") : this.l("notAvailable")
+                        )
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(Ons.Switch, {
+                            name: 'available',
+                            checked: this.offer().available,
+                            disabled: this.props.outOfGeofence ? true : false,
+                            onChange: this.handleInputChange })
+                    )
+                ),
                 React.createElement(
                     Ons.ListItem,
                     null,
@@ -94867,11 +94976,8 @@ class offerForm extends React.Component {
     }
 }
 
-const offerFormComponent = React.createElement('offerForm', null);
-
 module.exports = {
-    offerForm: offerForm,
-    offerFormComponent: offerFormComponent
+    offerForm: offerForm
 };
 
 },{"react":265,"react-onsenui":262}],283:[function(require,module,exports){

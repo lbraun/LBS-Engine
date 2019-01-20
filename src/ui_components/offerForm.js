@@ -13,10 +13,8 @@ class offerForm extends React.Component {
         this.handleDeletePictureClick = this.handleDeletePictureClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
-
-        this.state = {
-            imageData: this.props.currentUser.offerPicture,
-        };
+        this.offer = this.offer.bind(this);
+        this.pushOfferUpdates = this.pushOfferUpdates.bind(this);
     }
 
     /**
@@ -25,6 +23,17 @@ class offerForm extends React.Component {
      */
     l(string) {
         return this.props.l(`offerForm.${string}`);
+    }
+
+    offer() {
+        var newOffer = {
+            title: "",
+            picture: null,
+            description: "",
+            available: false,
+        };
+
+        return this.props.currentUser.offer || newOffer;
     }
 
     /**
@@ -45,7 +54,14 @@ class offerForm extends React.Component {
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
         var attributes = {[name]: value};
-        this.props.pushUserUpdates(attributes);
+        this.pushOfferUpdates(attributes);
+    }
+
+    pushOfferUpdates(attributes) {
+        var updatedOffer = JSON.parse(JSON.stringify(this.offer()));
+        Object.assign(updatedOffer, attributes);
+
+        this.props.pushUserUpdates({offer: updatedOffer});
     }
 
     /**
@@ -56,7 +72,7 @@ class offerForm extends React.Component {
         var formInstance = this;
 
         navigator.camera.getPicture(function onSuccess(imageData) {
-            formInstance.props.pushUserUpdates({offerPicture: imageData});
+            formInstance.pushOfferUpdates({picture: imageData});
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
         }, {
@@ -71,14 +87,14 @@ class offerForm extends React.Component {
      * @param {Event} e the react event object
      */
     handleDeletePictureClick(e) {
-        this.props.pushUserUpdates({offerPicture: null});
+        this.pushOfferUpdates({picture: null});
     }
 
     renderGeofenceWarningListItem() {
         if (this.props.outOfGeofence) {
             return (
                 <Ons.ListItem>
-                    <div className="list-item__subtitle">
+                    <div className="list-item__subtitle" style={{color: "#d9534f"}}>
                         {this.l("geofenceWarning")}
                     </div>
                 </Ons.ListItem>
@@ -89,7 +105,7 @@ class offerForm extends React.Component {
     }
 
     renderImageArea() {
-        if (this.props.currentUser.offerPicture) {
+        if (this.offer().picture) {
             return (
                 <div>
                     <Ons.Row>
@@ -110,7 +126,7 @@ class offerForm extends React.Component {
                         </Ons.Col>
                     </Ons.Row>
 
-                    <img src={`data:image/jpeg;base64, ${this.props.currentUser.offerPicture}`}
+                    <img src={`data:image/jpeg;base64, ${this.offer().picture}`}
                         id='offer-picture'
                         style={{width: "100%"}} />
                 </div>
@@ -149,20 +165,6 @@ class offerForm extends React.Component {
         return (
             <Ons.Page>
                 <Ons.List>
-                    {this.renderGeofenceWarningListItem()}
-                    <Ons.ListItem id='availablility-switch-li'>
-                        <div className='left'>
-                            <p>{this.props.currentUser.available ? this.l("available") : this.l("notAvailable")}</p>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch
-                                name="available"
-                                checked={this.props.currentUser.available}
-                                disabled={this.props.outOfGeofence ? "true" : false}
-                                onChange={this.handleInputChange} />
-                        </div>
-                    </Ons.ListItem>
-
                     <Ons.ListItem id="offer-title-li">
                         <div className="list-item__title">
                             <b>{this.l("offerTitlePlaceholder")}</b>
@@ -170,11 +172,11 @@ class offerForm extends React.Component {
                         <div className="list-item__subtitle">
                             <input type="text"
                                 id="offerTitle"
-                                name="offerTitle"
+                                name="title"
                                 className="text-input text-input--transparent"
                                 style={{width: "100%"}}
                                 placeholder={this.l("offerTitlePlaceholder")}
-                                value={this.props.currentUser.offerTitle}
+                                value={this.offer().title}
                                 onChange={this.handleInputChange}>
                             </input>
                         </div>
@@ -195,12 +197,12 @@ class offerForm extends React.Component {
                         <div>
                             <textarea
                                 id="offerDescription"
-                                name="offerDescription"
+                                name="description"
                                 className="textarea textarea--transparent"
                                 style={{width: "100%"}}
                                 rows="3"
                                 placeholder={this.l("offerDescriptionPlaceholder")}
-                                value={this.props.currentUser.offerDescription}
+                                value={this.offer().description}
                                 onChange={this.handleInputChange}>
                             </textarea>
                         </div>
@@ -231,6 +233,20 @@ class offerForm extends React.Component {
                         </div>
                     </Ons.ListItem>
 
+                    {this.renderGeofenceWarningListItem()}
+                    <Ons.ListItem id='availablility-switch-li'>
+                        <div className='left'>
+                            <p>{this.offer().available ? this.l("available") : this.l("notAvailable")}</p>
+                        </div>
+                        <div className='right'>
+                            <Ons.Switch
+                                name="available"
+                                checked={this.offer().available}
+                                disabled={this.props.outOfGeofence ? true : false}
+                                onChange={this.handleInputChange} />
+                        </div>
+                    </Ons.ListItem>
+
                     <Ons.ListItem>
                         <div className="list-item__subtitle">
                             {this.renderOfferStatus()}
@@ -242,9 +258,6 @@ class offerForm extends React.Component {
     }
 }
 
-const offerFormComponent = <offerForm />
-
 module.exports = {
     offerForm: offerForm,
-    offerFormComponent: offerFormComponent
 }

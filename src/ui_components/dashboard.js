@@ -9,7 +9,8 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
-        this.toggleAvailability = this.toggleAvailability.bind(this);
+        this.handleOfferCompletion = this.handleOfferCompletion.bind(this);
+        this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
         this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
     }
 
@@ -33,8 +34,19 @@ class Dashboard extends React.Component {
      * Toggle user's availability status
      * @param {Event} e the react event object
      */
-    toggleAvailability(e) {
-        this.props.pushUserUpdates({available: !this.props.currentUser.available});
+    updateOfferAvailability(e) {
+        var updatedOffer = JSON.parse(JSON.stringify(this.props.currentUser.offer));
+        updatedOffer.available = e.target.checked;
+
+        this.props.pushUserUpdates({offer: updatedOffer});
+    }
+
+    /**
+     * Complete the user's offer
+     * @param {Event} e the react event object
+     */
+    handleOfferCompletion(e) {
+        this.props.completeOffer();
     }
 
     /**
@@ -47,7 +59,8 @@ class Dashboard extends React.Component {
 
     // Render information about the user's offer
     renderOfferCard() {
-        if (this.props.currentUser.offerTitle) {
+        var offer = this.props.currentUser.offer;
+        if (offer) {
             if (this.props.currentUser.available) {
                 var availabilityInfo = this.l("availableNow");
             } else {
@@ -55,10 +68,10 @@ class Dashboard extends React.Component {
             }
 
             return (
-                <Ons.Card>
+                <Ons.Card style={{padding: "24px"}}>
                     <Ons.Row>
                         <Ons.Col>
-                            <h3>{this.props.currentUser.offerTitle}</h3>
+                            <h3>{offer.title}</h3>
                         </Ons.Col>
                         <Ons.Col style={{textAlign: "right"}}>
                             <a href="#"
@@ -70,21 +83,43 @@ class Dashboard extends React.Component {
                         </Ons.Col>
                     </Ons.Row>
 
-                    <p>{this.props.currentUser.offerDescription}</p>
-                    <p><i>{availabilityInfo}</i></p>
+                    <Ons.Row>
+                        <Ons.Col width="45px">
+                            {/* TODO: handle blank image! */}
+                            <img className="list-item__thumbnail"
+                                src={`data:image/jpeg;base64, ${offer.picture}`} />
+                        </Ons.Col>
+                        <Ons.Col style={{paddingLeft: "15px"}}>
+                            {offer.description}
+                        </Ons.Col>
+                    </Ons.Row>
+
+                    <Ons.Row>
+                        <Ons.Col style={{padding: "16px 0px"}}>
+                            <i>{this.props.l(offer.available ? "offerForm.available" : "offerForm.notAvailable")}</i>
+                        </Ons.Col>
+                        <Ons.Col style={{padding: "12px 0px", textAlign: "right"}}>
+                            <Ons.Switch
+                                name="available"
+                                checked={offer.available}
+                                onChange={this.updateOfferAvailability} />
+                        </Ons.Col>
+                    </Ons.Row>
 
                     <div>
-                        <Ons.Button onClick={this.toggleAvailability}>
-                            {this.props.currentUser.available ?
-                                this.l("becomeUnavailable") :
-                                this.l("becomeAvailable")}
+                        <Ons.Button
+                            modifier="large"
+                            onClick={this.handleOfferCompletion}
+                            style={{backgroundColor: "green"}}>
+                                <Ons.Icon icon={"md-check-circle"} style={{marginRight: "20px"}} />
+                                {this.l("completeOffer")}
                         </Ons.Button>
                     </div>
                 </Ons.Card>
             );
         } else {
             return (
-                <Ons.Card>
+                <Ons.Card style={{padding: "24px"}}>
                     <p>{this.l("youAreNotOffering")}</p>
                     <p>
                         <Ons.Button onClick={this.goToOffersTab}>
@@ -109,6 +144,7 @@ class Dashboard extends React.Component {
                             defaultPicture={this.props.defaultPicture}
                             handleListItemClick={this.props.handleListItemClick}
                             usersAreLoaded={this.props.usersAreLoaded}
+                            usersWithOffersOnly={true}
                             errorLoadingUsers={this.props.errorLoadingUsers}
                             users={this.props.users} />
                     </Ons.List>

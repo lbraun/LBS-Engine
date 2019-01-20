@@ -125,23 +125,35 @@ class Map extends React.Component {
     }
 
     renderPopup(user) {
-        return (
-            <leaflet.Popup>
-                <div>
-                    <p>{user.name} {this.l("isOffering")}</p>
-                    <b>{user.offerTitle}</b>
-                    <p>{user.offerDescription}</p>
-                    <img src={`data:image/jpeg;base64, ${user.offerPicture}`}
-                        id='offer-picture'
-                        style={{width: "100%"}} />
-                    <p>
-                        {this.l("andCanBeContactedAt")}
-                        <span>{this.renderContactLinks(user)}</span>
-                    </p>
-                    <p>{this.reportLink(user)}</p>
-                </div>
-            </leaflet.Popup>
-        );
+        if (user.offer) {
+            return (
+                <leaflet.Popup>
+                    <div>
+                        <p>{user.name} {this.l("isOffering")}</p>
+                        <b>{user.offer.title}</b>
+                        <p>{user.offer.description}</p>
+                        <img src={`data:image/jpeg;base64, ${user.offer.picture}`}
+                            id='offer-picture'
+                            style={{width: "100%"}} />
+                        <p>
+                            {this.l("andCanBeContactedAt")}
+                            <span>{this.renderContactLinks(user)}</span>
+                        </p>
+                        <p>{this.reportLink(user)}</p>
+                    </div>
+                </leaflet.Popup>
+            );
+        } else {
+            return (
+                <leaflet.Popup>
+                    <div>
+                        <p>{user.name}</p>
+                        <p><span>{this.renderContactLinks(user)}</span></p>
+                        <p>{this.reportLink(user)}</p>
+                    </div>
+                </leaflet.Popup>
+            );
+        }
     }
 
     renderContactLinks(user) {
