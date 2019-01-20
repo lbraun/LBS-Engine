@@ -10,8 +10,9 @@ class offerForm extends React.Component {
     constructor(props) {
         super(props);
         this.goToSettingsTab = this.goToSettingsTab.bind(this);
+        this.handleDeletePictureClick = this.handleDeletePictureClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handlePhotoButtonClick = this.handlePhotoButtonClick.bind(this);
+        this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
 
         this.state = {
             imageData: this.props.currentUser.offerPicture,
@@ -48,10 +49,10 @@ class offerForm extends React.Component {
     }
 
     /**
-     * Handle a click on the photo button
+     * Handle a click on the add/edit picture button
      * @param {Event} e the react event object
      */
-    handlePhotoButtonClick(e) {
+    handleNewPictureClick(e) {
         var formInstance = this;
 
         navigator.camera.getPicture(function onSuccess(imageData) {
@@ -63,6 +64,14 @@ class offerForm extends React.Component {
             allowEdit: true,
             destinationType: Camera.DestinationType.DATA_URL
         });
+    }
+
+    /**
+     * Handle a click on the delete picture link
+     * @param {Event} e the react event object
+     */
+    handleDeletePictureClick(e) {
+        this.props.pushUserUpdates({offerPicture: null});
     }
 
     renderGeofenceWarningListItem() {
@@ -83,24 +92,39 @@ class offerForm extends React.Component {
         if (this.props.currentUser.offerPicture) {
             return (
                 <div>
+                    <Ons.Row>
+                        <Ons.Col width="50%" style={{padding: "20px"}}>
+                            <b>{this.l("offerPicture")}</b>
+                        </Ons.Col>
+
+                        <Ons.Col width="50%" style={{textAlign: "right", padding: "20px"}}>
+                            <Ons.Button onClick={this.handleNewPictureClick}>
+                                    <Ons.Icon icon={"md-edit"} />
+                            </Ons.Button>
+
+                            <Ons.Button
+                                onClick={this.handleDeletePictureClick}
+                                style={{marginLeft: "20px", backgroundColor: "#d9534f"}}>
+                                    <Ons.Icon icon={"md-delete"} />
+                            </Ons.Button>
+                        </Ons.Col>
+                    </Ons.Row>
+
                     <img src={`data:image/jpeg;base64, ${this.props.currentUser.offerPicture}`}
                         id='offer-picture'
                         style={{width: "100%"}} />
-
-                    <Ons.Button
-                        onClick={this.handlePhotoButtonClick}
-                        style={{margin: "20px"}}>
-                            {this.l("changePicture")}
-                    </Ons.Button>
                 </div>
             );
         } else {
             return (
-                <Ons.Button
-                    onClick={this.handlePhotoButtonClick}
-                    style={{margin: "30px"}}>
-                        {this.l("addAPicture")}
-                </Ons.Button>
+                <div style={{textAlign: "center"}}>
+                    <Ons.Button
+                        onClick={this.handleNewPictureClick}
+                        style={{margin: "30px"}}>
+                            <Ons.Icon icon={"md-camera-add"} style={{marginRight: "20px"}} />
+                            {this.l("addPicture")}
+                    </Ons.Button>
+                </div>
             );
         }
     }
@@ -189,9 +213,9 @@ class offerForm extends React.Component {
                                     <b>{this.l("iCanBeContactedAt")}</b>
                                 </Ons.Col>
 
-                                <Ons.Col width="20%">
+                                <Ons.Col width="20%" style={{textAlign: "right"}}>
                                     <b><a href="#"
-                                        style={{color: "black"}}
+                                        style={{color: "black", marginRight: "10px"}}
 
                                         onClick={this.goToSettingsTab}>
                                             <Ons.Icon icon={"md-settings"} />

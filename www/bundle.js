@@ -92345,9 +92345,8 @@ module.exports={
         "map.isOffering": "bietet",
         "map.showOtherUsers": "Andere Benutzer anzeigen",
         "map.youAreHere": "Ihr Standort",
-        "offerForm.addAPicture": "Ein Bild hinzufügen",
+        "offerForm.addPicture": "Ein Bild hinzufügen",
         "offerForm.available": "Jetzt verfügbar",
-        "offerForm.changePicture": "Bild ändern",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
         "offerForm.geofenceWarning": "Sie können nur verfügbar werden, wenn Sie in Münster Sind",
         "offerForm.iAmOffering": "Ich biete:",
@@ -92355,8 +92354,9 @@ module.exports={
         "offerForm.iCanBeContactedAt": "Man kann mich unter folgendem Kontakt erreichen:",
         "offerForm.iCanBeContactedAtHelpText": "Bitte geben Sie eine Telefonnummer, E-Mail-Adresse oder andere Kontaktmöglichkeiten an.",
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
-        "offerForm.offerDescriptionPlaceholder": "Angebotsbeschreibung",
-        "offerForm.offerTitlePlaceholder": "Angebotstitel",
+        "offerForm.offerDescriptionPlaceholder": "Beschreibung",
+        "offerForm.offerPicture": "Bild",
+        "offerForm.offerTitlePlaceholder": "Titel",
         "offerForm.saved": "Angebot gespeichert",
         "offerForm.syncing": "Wird synchronisiert...",
         "offlineLayer.removeTiles": "Möchten Sie wirklich alle gespeicherten Kartendaten entfernen?",
@@ -92440,9 +92440,8 @@ module.exports={
         "map.isOffering": "is offering",
         "map.showOtherUsers": "Show other users",
         "map.youAreHere": "You are here",
-        "offerForm.addAPicture": "Add a picture",
+        "offerForm.addPicture": "Add a picture",
         "offerForm.available": "Available now",
-        "offerForm.changePicture": "Change picture",
         "offerForm.contactInformationPlaceholder": "Contact information",
         "offerForm.geofenceWarning": "You can only be available when you are in Münster",
         "offerForm.iAmOffering": "I am offering...",
@@ -92450,8 +92449,9 @@ module.exports={
         "offerForm.iCanBeContactedAt": "I can be contacted at...",
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
         "offerForm.notAvailable": "Not available now",
-        "offerForm.offerDescriptionPlaceholder": "Offer description",
-        "offerForm.offerTitlePlaceholder": "Offer title",
+        "offerForm.offerDescriptionPlaceholder": "Description",
+        "offerForm.offerPicture": "Picture",
+        "offerForm.offerTitlePlaceholder": "Title",
         "offerForm.saved": "Offer saved",
         "offerForm.syncing": "Syncing...",
         "offlineLayer.removeTiles": "Are you sure you want to remove all saved map data?",
@@ -92535,9 +92535,8 @@ module.exports={
         "map.isOffering": "يعرض",
         "map.showOtherUsers": "اظهار مستخدمين آخرين",
         "map.youAreHere": "أنت هنا اﻵن",
-        "offerForm.addAPicture": "TODO",
+        "offerForm.addPicture": "TODO",
         "offerForm.available": "متاح اﻵن",
-        "offerForm.changePicture": "TODO",
         "offerForm.contactInformationPlaceholder": "معلومات اﻹتصال",
         "offerForm.geofenceWarning": "تستطيع أن تكون متاحاً فقط في مونستر",
         "offerForm.iAmOffering": "أنا أعرض ...",
@@ -92546,6 +92545,7 @@ module.exports={
         "offerForm.iCanBeContactedAtHelpText": "من فضلك ادخل رقم هاتف، عنوان بريد الكتروني أو آية تعليمات اخرى.",
         "offerForm.notAvailable": "غير متاح اﻵن",
         "offerForm.offerDescriptionPlaceholder": "وصف العرض",
+        "offerForm.offerPicture": "TODO",
         "offerForm.offerTitlePlaceholder": "TODO",
         "offerForm.saved": "TODO",
         "offerForm.syncing": "تتم المزامنة...",
@@ -92740,7 +92740,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        // this.state.devMode = "map";
+        this.state.devMode = "offers";
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
@@ -94558,8 +94558,9 @@ class offerForm extends React.Component {
     constructor(props) {
         super(props);
         this.goToSettingsTab = this.goToSettingsTab.bind(this);
+        this.handleDeletePictureClick = this.handleDeletePictureClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handlePhotoButtonClick = this.handlePhotoButtonClick.bind(this);
+        this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
 
         this.state = {
             imageData: this.props.currentUser.offerPicture
@@ -94596,10 +94597,10 @@ class offerForm extends React.Component {
     }
 
     /**
-     * Handle a click on the photo button
+     * Handle a click on the add/edit picture button
      * @param {Event} e the react event object
      */
-    handlePhotoButtonClick(e) {
+    handleNewPictureClick(e) {
         var formInstance = this;
 
         navigator.camera.getPicture(function onSuccess(imageData) {
@@ -94611,6 +94612,14 @@ class offerForm extends React.Component {
             allowEdit: true,
             destinationType: Camera.DestinationType.DATA_URL
         });
+    }
+
+    /**
+     * Handle a click on the delete picture link
+     * @param {Event} e the react event object
+     */
+    handleDeletePictureClick(e) {
+        this.props.pushUserUpdates({ offerPicture: null });
     }
 
     renderGeofenceWarningListItem() {
@@ -94634,24 +94643,51 @@ class offerForm extends React.Component {
             return React.createElement(
                 'div',
                 null,
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        { width: '50%', style: { padding: "20px" } },
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("offerPicture")
+                        )
+                    ),
+                    React.createElement(
+                        Ons.Col,
+                        { width: '50%', style: { textAlign: "right", padding: "20px" } },
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.handleNewPictureClick },
+                            React.createElement(Ons.Icon, { icon: "md-edit" })
+                        ),
+                        React.createElement(
+                            Ons.Button,
+                            {
+                                onClick: this.handleDeletePictureClick,
+                                style: { marginLeft: "20px", backgroundColor: "#d9534f" } },
+                            React.createElement(Ons.Icon, { icon: "md-delete" })
+                        )
+                    )
+                ),
                 React.createElement('img', { src: `data:image/jpeg;base64, ${this.props.currentUser.offerPicture}`,
                     id: 'offer-picture',
-                    style: { width: "100%" } }),
-                React.createElement(
-                    Ons.Button,
-                    {
-                        onClick: this.handlePhotoButtonClick,
-                        style: { margin: "20px" } },
-                    this.l("changePicture")
-                )
+                    style: { width: "100%" } })
             );
         } else {
             return React.createElement(
-                Ons.Button,
-                {
-                    onClick: this.handlePhotoButtonClick,
-                    style: { margin: "30px" } },
-                this.l("addAPicture")
+                'div',
+                { style: { textAlign: "center" } },
+                React.createElement(
+                    Ons.Button,
+                    {
+                        onClick: this.handleNewPictureClick,
+                        style: { margin: "30px" } },
+                    React.createElement(Ons.Icon, { icon: "md-camera-add", style: { marginRight: "20px" } }),
+                    this.l("addPicture")
+                )
             );
         }
     }
@@ -94790,14 +94826,14 @@ class offerForm extends React.Component {
                             ),
                             React.createElement(
                                 Ons.Col,
-                                { width: '20%' },
+                                { width: '20%', style: { textAlign: "right" } },
                                 React.createElement(
                                     'b',
                                     null,
                                     React.createElement(
                                         'a',
                                         { href: '#',
-                                            style: { color: "black" },
+                                            style: { color: "black", marginRight: "10px" },
 
                                             onClick: this.goToSettingsTab },
                                         React.createElement(Ons.Icon, { icon: "md-settings" })
