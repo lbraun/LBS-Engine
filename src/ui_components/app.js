@@ -36,29 +36,29 @@ const logger = require('../business_components/logger.js');
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.l = this.l.bind(this);
-        this.showSidebar = this.showSidebar.bind(this);
-        this.hideSidebar = this.hideSidebar.bind(this);
-        this.renderToolbar = this.renderToolbar.bind(this);
-        this.handleLoggingChange = this.handleLoggingChange.bind(this);
+        this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
+        this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
+        this.handleDragMapChange = this.handleDragMapChange.bind(this);
         this.handleExternalDataChange = this.handleExternalDataChange.bind(this);
         this.handleLayerControlChange = this.handleLayerControlChange.bind(this);
-        this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
-        this.handleDragMapChange = this.handleDragMapChange.bind(this);
-        this.refreshUsers = this.refreshUsers.bind(this);
-        this.pushUserUpdates = this.pushUserUpdates.bind(this);
-        this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
-        this.handleTabChange = this.handleTabChange.bind(this);
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
-        this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
-        this.calculateDistanceTo = this.calculateDistanceTo.bind(this);
-        this.calculateDistanceBetween = this.calculateDistanceBetween.bind(this);
+        this.handleLoggingChange = this.handleLoggingChange.bind(this);
+        this.handleSidebarClick = this.handleSidebarClick.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
+        this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
+        this.hideSidebar = this.hideSidebar.bind(this);
+        this.l = this.l.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
-        this.revokeConsent = this.revokeConsent.bind(this);
+        this.pushUserUpdates = this.pushUserUpdates.bind(this);
+        this.refreshUsers = this.refreshUsers.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
+        this.renderToolbar = this.renderToolbar.bind(this);
+        this.revokeConsent = this.revokeConsent.bind(this);
+        this.showSidebar = this.showSidebar.bind(this);
+        this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
         this.state = {
             sidebarIsOpen: false,
