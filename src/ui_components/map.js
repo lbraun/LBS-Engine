@@ -5,6 +5,7 @@ const Ons = require('react-onsenui');
 const leaflet = require('react-leaflet');
 
 const config = require('../data_components/config.json');
+const contactLinks = require('./contactLinks.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
@@ -137,7 +138,7 @@ class Map extends React.Component {
                             style={{width: "100%"}} />
                         <p>
                             {this.l("andCanBeContactedAt")}
-                            <span>{this.renderContactLinks(user)}</span>
+                            <contactLinks.ContactLinks user={user} />
                         </p>
                         <p>{this.reportLink(user)}</p>
                     </div>
@@ -148,55 +149,11 @@ class Map extends React.Component {
                 <leaflet.Popup>
                     <div>
                         <p>{user.name}</p>
-                        <p><span>{this.renderContactLinks(user)}</span></p>
+                        <p><contactLinks.ContactLinks user={user} /></p>
                         <p>{this.reportLink(user)}</p>
                     </div>
                 </leaflet.Popup>
             );
-        }
-    }
-
-    renderContactLinks(user) {
-        var links = [];
-        var contactInfo = user.contactInformation;
-
-        var contactTypes = [
-            {setting: "useEmail",    contactType: "email"},
-            {setting: "useFacebook", contactType: "facebook"},
-            {setting: "usePhone",    contactType: "phone"},
-            {setting: "useWhatsapp", contactType: "whatsapp"},
-        ];
-
-        for (var i = contactTypes.length - 1; i >= 0; i--) {
-            var setting = contactTypes[i].setting;
-            var contactType = contactTypes[i].contactType;
-
-            if (contactInfo[setting]) {
-                links.push(
-                    <a href={this.getContactLink(contactInfo, contactType)}
-                        key={contactType} >
-                            <Ons.Icon
-                                style={{color: "black", margin: "15px"}}
-                                icon={`md-${contactType}`} />
-                    </a>
-                )
-            }
-        }
-
-        return links;
-    }
-
-    getContactLink(contactInfo, contactType) {
-        if (contactType == "facebook") {
-            return "https://m.me/" + contactInfo.facebook;
-        } else if (contactType == "whatsapp") {
-            return "https://wa.me/" + contactInfo.whatsapp;
-        } else if (contactType == "email") {
-            return "mailto:" + contactInfo.email;
-        } else if (contactType == "phone") {
-            return "tel:" + contactInfo.phone;
-        } else {
-            console.log("Error: invalid contact type: " + contactType);
         }
     }
 

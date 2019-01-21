@@ -25,14 +25,16 @@ class SignInPage extends React.Component {
     // Render the sign in page
     render() {
         return (
-            <Ons.Page style={{textAlign: "center"}}>
-                <Ons.Row style={{marginTop: "50px"}}>
-                    <Ons.Col>
-                        <h1>{this.props.l("app.name")}</h1>
-                    </Ons.Col>
-                </Ons.Row>
+            <Ons.Page>
+                <div style={{textAlign: "center", margin: "50px 15px"}}>
+                    <Ons.Row>
+                        <Ons.Col>
+                            <h1>{this.props.l("app.name")}</h1>
+                        </Ons.Col>
+                    </Ons.Row>
 
-                {this.renderMainContent()}
+                    {this.renderMainContent()}
+                </div>
             </Ons.Page>
         );
     }

@@ -138,10 +138,10 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = true;
+        this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
-        // this.state.devMode = "dashboard";
+        this.state.devMode = "offers";
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
@@ -641,7 +641,7 @@ class App extends React.Component {
                             <strong>{this.state.currentUser.name}</strong>
                         </div>
                         <div className='list-item__subtitle'>
-                            {"TODO" || this.state.currentUser.contactInformation}
+                            <contactLinks.ContactLinks user={this.state.currentUser} />
                         </div>
                     </div>
             </Ons.ListItem>
