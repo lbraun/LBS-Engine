@@ -14,14 +14,15 @@ const localizations = require('../data_components/localizations.json');
 const defaultPicture = 'img/logo.png';
 
 // UI
-const signInPage = require('./signInPage.js');
 const consentForm = require('./consentForm.js');
+const contactLinks = require('./contactLinks.js');
 const dashboard = require('./dashboard.js');
-const map = require('./map.js');
-const list = require('./list.js');
-const settings = require('./settings.js');
-const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js')
+const list = require('./list.js');
+const map = require('./map.js');
+const offerForm = require('./offerForm.js');
+const settings = require('./settings.js');
+const signInPage = require('./signInPage.js');
 
 // Logic
 const locationManager = require('../business_components/locationManager.js');

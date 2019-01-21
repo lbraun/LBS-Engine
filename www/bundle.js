@@ -92627,14 +92627,15 @@ const localizations = require('../data_components/localizations.json');
 const defaultPicture = 'img/logo.png';
 
 // UI
-const signInPage = require('./signInPage.js');
 const consentForm = require('./consentForm.js');
+const contactLinks = require('./contactLinks.js');
 const dashboard = require('./dashboard.js');
-const map = require('./map.js');
-const list = require('./list.js');
-const settings = require('./settings.js');
-const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js');
+const list = require('./list.js');
+const map = require('./map.js');
+const offerForm = require('./offerForm.js');
+const settings = require('./settings.js');
+const signInPage = require('./signInPage.js');
 
 // Logic
 const locationManager = require('../business_components/locationManager.js');
@@ -93718,7 +93719,67 @@ module.exports = {
     ConsentForm: ConsentForm
 };
 
-},{"../data_components/config.json":272,"./localeMenu.js":280,"react":265,"react-onsenui":262}],277:[function(require,module,exports){
+},{"../data_components/config.json":272,"./localeMenu.js":281,"react":265,"react-onsenui":262}],277:[function(require,module,exports){
+'use strict';
+
+const React = require('react');
+const Ons = require('react-onsenui');
+
+class ContactLinks extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    // Render contact links as icons
+    render() {
+        var links = [];
+        var contactInfo = this.props.user && this.props.user.contactInformation;
+
+        if (!contactInfo) {
+            return null;
+        }
+
+        var contactTypes = [{ setting: "useEmail", contactType: "email" }, { setting: "useFacebook", contactType: "facebook" }, { setting: "usePhone", contactType: "phone" }, { setting: "useWhatsapp", contactType: "whatsapp" }];
+
+        for (var i = contactTypes.length - 1; i >= 0; i--) {
+            var setting = contactTypes[i].setting;
+            var contactType = contactTypes[i].contactType;
+
+            if (contactInfo[setting]) {
+                links.push(React.createElement(
+                    'a',
+                    { href: this.getContactLink(contactInfo, contactType),
+                        key: contactType },
+                    React.createElement(Ons.Icon, {
+                        style: { color: "black", margin: "15px" },
+                        icon: `md-${contactType}` })
+                ));
+            }
+        }
+
+        return links;
+    }
+
+    getContactLink(contactInfo, contactType) {
+        if (contactType == "facebook") {
+            return "https://m.me/" + contactInfo.facebook;
+        } else if (contactType == "whatsapp") {
+            return "https://wa.me/" + contactInfo.whatsapp;
+        } else if (contactType == "email") {
+            return "mailto:" + contactInfo.email;
+        } else if (contactType == "phone") {
+            return "tel:" + contactInfo.phone;
+        } else {
+            console.log("Error: invalid contact type: " + contactType);
+        }
+    }
+}
+
+module.exports = {
+    ContactLinks: ContactLinks
+};
+
+},{"react":265,"react-onsenui":262}],278:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
