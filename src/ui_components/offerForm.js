@@ -10,11 +10,17 @@ class offerForm extends React.Component {
     constructor(props) {
         super(props);
         this.goToSettingsTab = this.goToSettingsTab.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleDeleteOfferClick = this.handleDeleteOfferClick.bind(this);
         this.handleDeletePictureClick = this.handleDeletePictureClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
         this.offer = this.offer.bind(this);
         this.pushOfferUpdates = this.pushOfferUpdates.bind(this);
+
+        this.state = {
+            alertDialogIsOpen: false,
+        };
     }
 
     /**
@@ -88,6 +94,30 @@ class offerForm extends React.Component {
      */
     handleDeletePictureClick(e) {
         this.pushOfferUpdates({picture: null});
+    }
+
+    /**
+     * Handle a click on the delete offer button
+     * @param {Event} e the react event object
+     */
+    handleDeleteOfferClick(e) {
+        if (this.state.alertDialogIsOpen) {
+            this.props.pushUserUpdates({offer: null});
+        }
+
+        this.setState({
+            alertDialogIsOpen: !this.state.alertDialogIsOpen,
+        });
+    }
+
+    /**
+     * Handle a click on the cancel button
+     * @param {Event} e the react event object
+     */
+    handleCancel(e) {
+        this.setState({
+            alertDialogIsOpen: false,
+        });
     }
 
     renderGeofenceWarningListItem() {
@@ -247,7 +277,42 @@ class offerForm extends React.Component {
                             {this.renderOfferStatus()}
                         </div>
                     </Ons.ListItem>
+
+                    <Ons.ListItem>
+                        <div className='right'>
+                            <Ons.Button
+                                onClick={this.handleDeleteOfferClick}
+                                style={{backgroundColor: "#d9534f"}}>
+                                    <Ons.Icon icon={"md-delete"} style={{marginRight: "20px"}} />
+                                    {this.l("deleteOffer")}
+                            </Ons.Button>
+                        </div>
+                    </Ons.ListItem>
                 </Ons.List>
+
+                <Ons.AlertDialog
+                    isOpen={this.state.alertDialogIsOpen}
+                    onCancel={this.handleCancel}
+                    cancelable>
+                        <div className="alert-dialog-title">
+                            {this.props.l("app.areYouSure")}
+                        </div>
+
+                        <div className="alert-dialog-content">
+                            {this.props.l("app.thisCannotBeUndone")}
+                        </div>
+
+                        <div className="alert-dialog-footer">
+                            <Ons.Button onClick={this.handleCancel} className="alert-dialog-button">
+                                {this.props.l("app.cancel")}
+                            </Ons.Button>
+                        </div>
+                        <div className="alert-dialog-footer">
+                            <Ons.Button onClick={this.handleDeleteOfferClick} className="alert-dialog-button">
+                                {this.l("deleteOffer")}
+                            </Ons.Button>
+                        </div>
+                </Ons.AlertDialog>
             </Ons.Page>
         )
     }

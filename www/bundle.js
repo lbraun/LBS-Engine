@@ -92295,11 +92295,14 @@ module.exports={
     "de": {
         "alert.isLessThan": "ist weniger als",
         "alert.metersAwayWith": "m entfernt mit dem folgenden Angebot:",
+        "app.areYouSure": "Bist du sicher?",
+        "app.cancel": "Abbrechen",
         "app.name": "Geofreebie",
         "app.projectsWebsite": "Website des Projekts",
         "app.report": "Missbrauch melden",
         "app.reportEmailBody": "Bitte das Problem hier erklären:\n\n",
         "app.reportEmailSubject": "Missbrauch Meldung",
+        "app.thisCannotBeUndone": "Das kann nicht rückgängig gemacht werden.",
         "consentForm.continue": "Fortfahren",
         "consentForm.dataRecordingConsent": "Ich bestätige mein Einverständnis zu der Aufnahme von Standortdaten während der Studie.",
         "consentForm.dataRecordingInfo": "Die Daten, die in dieser Studie erhoben werden, werden in anonymisierter Form erhoben und nur in Aggregation mit weiteren anonymen Daten verarbeitet. In dieser Form werden die Daten ggf. in akademischen Journalen, Präsentationen oder anderen Medien veröffenlicht, jedoch ist niemals eine Identifizierung der einzelnen Teilnehmer möglich. Eine Woche nach Abschluss der Studie ist es daher quasi nicht mehr möglich die Daten aus deiner Teilnahme zu aus den aggregierten Datensätzen aller Teilnehmer zu identifizieren.",
@@ -92349,6 +92352,7 @@ module.exports={
         "offerForm.addPicture": "Ein Bild hinzufügen",
         "offerForm.available": "Jetzt verfügbar",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
+        "offerForm.deleteOffer": "Angebot Löschen",
         "offerForm.geofenceWarning": "Sie können Ihren Angebot nur verfügbar machen, wenn Sie in Münster Sind",
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte geben Sie eine kurze Beschreibung des Angebots.",
@@ -92391,11 +92395,14 @@ module.exports={
     "en": {
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
+        "app.areYouSure": "Are you sure?",
+        "app.cancel": "Cancel",
         "app.name": "Geofreebie",
         "app.projectsWebsite": "project's website",
         "app.report": "Report this profile",
         "app.reportEmailBody": "Please explain the problem here:\n\n",
         "app.reportEmailSubject": "Profile report",
+        "app.thisCannotBeUndone": "This cannot be undone.",
         "consentForm.continue": "Continue",
         "consentForm.dataRecordingConsent": "I agree to have my location data recorded during the study.",
         "consentForm.dataRecordingInfo": "Original data obtained from this study will be anonymised and only processed in aggregate. In such form, it might be published in academic journals, presentations or other media, but never in a way that would allow individual identification. One week after the completion of the study it might no longer be possible to retract your data from such aggregated analyses.",
@@ -92445,6 +92452,7 @@ module.exports={
         "offerForm.addPicture": "Add a picture",
         "offerForm.available": "Available now",
         "offerForm.contactInformationPlaceholder": "Contact information",
+        "offerForm.deleteOffer": "Delete Offer",
         "offerForm.geofenceWarning": "You can only make your offer available when you are in Münster",
         "offerForm.iAmOffering": "I am offering...",
         "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
@@ -92487,11 +92495,14 @@ module.exports={
     "ar": {
         "alert.isLessThan": "أصغر من",
         "alert.metersAwayWith": "متر (أمتار) من العرض التالي:",
+        "app.areYouSure": "TODO",
+        "app.cancel": "TODO",
         "app.name": "جيوفريبي",
         "app.projectsWebsite": "TODO",
         "app.report": "TODO",
         "app.reportEmailBody": "TODO",
         "app.reportEmailSubject": "TODO",
+        "app.thisCannotBeUndone": "TODO",
         "consentForm.continue": "TODO",
         "consentForm.dataRecordingConsent": "TODO",
         "consentForm.dataRecordingInfo": "TODO",
@@ -92541,6 +92552,7 @@ module.exports={
         "offerForm.addPicture": "TODO",
         "offerForm.available": "متاح اﻵن",
         "offerForm.contactInformationPlaceholder": "معلومات اﻹتصال",
+        "offerForm.deleteOffer": "TODO",
         "offerForm.geofenceWarning": "تستطيع أن تكون متاحاً فقط في مونستر",
         "offerForm.iAmOffering": "أنا أعرض ...",
         "offerForm.iAmOfferingHelpText": "من فضلك ادخل وصف جيد للعرض",
@@ -94651,11 +94663,17 @@ class offerForm extends React.Component {
     constructor(props) {
         super(props);
         this.goToSettingsTab = this.goToSettingsTab.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleDeleteOfferClick = this.handleDeleteOfferClick.bind(this);
         this.handleDeletePictureClick = this.handleDeletePictureClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
         this.offer = this.offer.bind(this);
         this.pushOfferUpdates = this.pushOfferUpdates.bind(this);
+
+        this.state = {
+            alertDialogIsOpen: false
+        };
     }
 
     /**
@@ -94729,6 +94747,30 @@ class offerForm extends React.Component {
      */
     handleDeletePictureClick(e) {
         this.pushOfferUpdates({ picture: null });
+    }
+
+    /**
+     * Handle a click on the delete offer button
+     * @param {Event} e the react event object
+     */
+    handleDeleteOfferClick(e) {
+        if (this.state.alertDialogIsOpen) {
+            this.props.pushUserUpdates({ offer: null });
+        }
+
+        this.setState({
+            alertDialogIsOpen: !this.state.alertDialogIsOpen
+        });
+    }
+
+    /**
+     * Handle a click on the cancel button
+     * @param {Event} e the react event object
+     */
+    handleCancel(e) {
+        this.setState({
+            alertDialogIsOpen: false
+        });
     }
 
     renderGeofenceWarningListItem() {
@@ -94956,6 +94998,57 @@ class offerForm extends React.Component {
                         'div',
                         { className: 'list-item__subtitle' },
                         this.renderOfferStatus()
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'right' },
+                        React.createElement(
+                            Ons.Button,
+                            {
+                                onClick: this.handleDeleteOfferClick,
+                                style: { backgroundColor: "#d9534f" } },
+                            React.createElement(Ons.Icon, { icon: "md-delete", style: { marginRight: "20px" } }),
+                            this.l("deleteOffer")
+                        )
+                    )
+                )
+            ),
+            React.createElement(
+                Ons.AlertDialog,
+                {
+                    isOpen: this.state.alertDialogIsOpen,
+                    onCancel: this.handleCancel,
+                    cancelable: true },
+                React.createElement(
+                    'div',
+                    { className: 'alert-dialog-title' },
+                    this.props.l("app.areYouSure")
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'alert-dialog-content' },
+                    this.props.l("app.thisCannotBeUndone")
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'alert-dialog-footer' },
+                    React.createElement(
+                        Ons.Button,
+                        { onClick: this.handleCancel, className: 'alert-dialog-button' },
+                        this.props.l("app.cancel")
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'alert-dialog-footer' },
+                    React.createElement(
+                        Ons.Button,
+                        { onClick: this.handleDeleteOfferClick, className: 'alert-dialog-button' },
+                        this.l("deleteOffer")
                     )
                 )
             )
