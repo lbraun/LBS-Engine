@@ -61,11 +61,9 @@ class Dashboard extends React.Component {
     renderOfferCard() {
         var offer = this.props.currentUser.offer;
         if (offer) {
-            if (this.props.currentUser.available) {
-                var availabilityInfo = this.l("availableNow");
-            } else {
-                var availabilityInfo = this.l("notCurrentlyAvailable");
-            }
+            var availabilityInfo = this.props.currentUser.available ?
+                this.l("availableNow") :
+                this.l("notCurrentlyAvailable");
 
             return (
                 <Ons.Card style={{padding: "24px"}}>
@@ -80,17 +78,6 @@ class Dashboard extends React.Component {
                                 onClick={this.goToOffersTab}>
                                     <h3><Ons.Icon icon={"md-edit"} /></h3>
                             </a>
-                        </Ons.Col>
-                    </Ons.Row>
-
-                    <Ons.Row>
-                        <Ons.Col width="45px">
-                            {/* TODO: handle blank image! */}
-                            <img className="list-item__thumbnail"
-                                src={`data:image/jpeg;base64, ${offer.picture}`} />
-                        </Ons.Col>
-                        <Ons.Col style={{paddingLeft: "15px"}}>
-                            {offer.description}
                         </Ons.Col>
                     </Ons.Row>
 

@@ -92272,21 +92272,26 @@ module.exports = {
 module.exports={
     "app": {
         "adminEmail": "lucas.braun@uni-muenster.de",
-        "available": false,
         "defaultLocale": "en",
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
         "projectWebsite": "https://github.com/lbraun/geofreebie",
-        "shareLocation": false,
-        "useLocation": false
     },
     "map": {
         "center": [51.962522, 7.625615],
         "draggable": true,
         "zoom": 12,
         "zoomable": true
+    },
+    "userDefaults": {
+        "available": false,
+        "contactInformation": {},
+        "hasConsented": false,
+        "offer": {},
+        "shareLocation": false,
+        "useLocation": false
     }
 }
 
@@ -92762,7 +92767,21 @@ class App extends React.Component {
                     "title": "Something!",
                     "description": "It's really special."
                 },
+                "contactInformation": {
+                    "email": "lucas.braun@wwu.de",
+                    "facebook": "labraun",
+                    "phone": "4915734693011",
+                    "useEmail": true,
+                    "useFacebook": true,
+                    "usePhone": true,
+                    "useWhatsapp": true,
+                    "whatsapp": "4915734693011"
+                },
+                "coordinates": [51.9, 7.6],
+                "approved": true,
                 "hasConsented": true,
+                "useLocation": config.userDefaults.useLocation,
+                "shareLocation": config.userDefaults.shareLocation,
                 "createdAt": {
                     "$date": "2019-01-09T08:57:59.078Z"
                 },
@@ -92925,10 +92944,10 @@ class App extends React.Component {
                     // Set defaults from config file if user just signed up
                     if (currentUser.newlyCreated) {
                         this.pushUserUpdates({
-                            available: config.app.available,
-                            shareLocation: config.app.shareLocation,
-                            useLocation: config.app.useLocation,
-                            contactInformation: {},
+                            available: config.userDefaults.available,
+                            shareLocation: config.userDefaults.shareLocation,
+                            useLocation: config.userDefaults.useLocation,
+                            contactInformation: config.userDefaults.contactInformation,
                             locale: this.state.locale,
                             newlyCreated: false
                         });
@@ -93241,7 +93260,9 @@ class App extends React.Component {
                 React.createElement(
                     'div',
                     { className: 'list-item__subtitle' },
-                    React.createElement(contactLinks.ContactLinks, { user: this.state.currentUser })
+                    React.createElement(contactLinks.ContactLinks, {
+                        small: true,
+                        user: this.state.currentUser })
                 )
             )
         )];
@@ -93384,13 +93405,13 @@ class App extends React.Component {
         } else {
             // User logged out, so clear out stored user data
             this.setState({
-                authenticated: false,
-                usersAreLoaded: false,
-                currentUserIsLoaded: false,
                 accessToken: null,
-                currentUserId: null,
+                authenticated: false,
                 currentUser: null,
-                users: null
+                currentUserId: null,
+                currentUserIsLoaded: false,
+                users: null,
+                usersAreLoaded: false
             });
         }
     }
@@ -93746,14 +93767,26 @@ class ContactLinks extends React.Component {
             var contactType = contactTypes[i].contactType;
 
             if (contactInfo[setting]) {
-                links.push(React.createElement(
-                    'a',
-                    { href: this.getContactLink(contactInfo, contactType),
-                        key: contactType },
-                    React.createElement(Ons.Icon, {
-                        style: { color: "black", margin: "15px" },
-                        icon: `md-${contactType}` })
-                ));
+                if (this.props.small) {
+                    links.push(React.createElement(Ons.Icon, {
+                        style: { marginRight: "15px" },
+                        icon: `md-${contactType}`,
+                        key: contactType }));
+                } else {
+                    links.push(React.createElement(
+                        'a',
+                        { href: this.getContactLink(contactInfo, contactType),
+                            className: 'button',
+                            style: {
+                                marginRight: "5px",
+                                height: "40px",
+                                width: "40px",
+                                textAlign: "center"
+                            },
+                            key: contactType },
+                        React.createElement(Ons.Icon, { icon: `md-${contactType}` })
+                    ));
+                }
             }
         }
 
@@ -93844,11 +93877,9 @@ class Dashboard extends React.Component {
     renderOfferCard() {
         var offer = this.props.currentUser.offer;
         if (offer) {
-            if (this.props.currentUser.available) {
-                var availabilityInfo = this.l("availableNow");
-            } else {
-                var availabilityInfo = this.l("notCurrentlyAvailable");
-            }
+            var availabilityInfo = this.props.currentUser.available ? this.l("availableNow") : this.l("notCurrentlyAvailable");
+            ;
+            var offerPicture = offer.picture ? `data:image/jpeg;base64, ${offer.picture}` : this.props.defaultPicture;
 
             return React.createElement(
                 Ons.Card,
@@ -93880,21 +93911,6 @@ class Dashboard extends React.Component {
                                 React.createElement(Ons.Icon, { icon: "md-edit" })
                             )
                         )
-                    )
-                ),
-                React.createElement(
-                    Ons.Row,
-                    null,
-                    React.createElement(
-                        Ons.Col,
-                        { width: '45px' },
-                        React.createElement('img', { className: 'list-item__thumbnail',
-                            src: `data:image/jpeg;base64, ${offer.picture}` })
-                    ),
-                    React.createElement(
-                        Ons.Col,
-                        { style: { paddingLeft: "15px" } },
-                        offer.description
                     )
                 ),
                 React.createElement(
@@ -94980,9 +94996,11 @@ class offerForm extends React.Component {
                         )
                     ),
                     React.createElement(
-                        'div',
+                        'p',
                         null,
-                        React.createElement(contactLinks.ContactLinks, { user: this.props.currentUser })
+                        React.createElement(contactLinks.ContactLinks, {
+                            small: true,
+                            user: this.props.currentUser })
                     )
                 )
             )

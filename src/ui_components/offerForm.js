@@ -246,9 +246,11 @@ class offerForm extends React.Component {
                                 </Ons.Col>
                             </Ons.Row>
                         </div>
-                        <div>
-                            <contactLinks.ContactLinks user={this.props.currentUser} />
-                        </div>
+                        <p>
+                            <contactLinks.ContactLinks
+                                small={true}
+                                user={this.props.currentUser} />
+                        </p>
                     </Ons.ListItem>
                 </Ons.List>
             </Ons.Page>

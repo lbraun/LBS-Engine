@@ -155,7 +155,21 @@ class App extends React.Component {
                     "title": "Something!",
                     "description": "It's really special."
                 },
+                "contactInformation": {
+                    "email": "lucas.braun@wwu.de",
+                    "facebook": "labraun",
+                    "phone": "4915734693011",
+                    "useEmail": true,
+                    "useFacebook": true,
+                    "usePhone": true,
+                    "useWhatsapp": true,
+                    "whatsapp": "4915734693011",
+                },
+                "coordinates": [51.9, 7.6],
+                "approved": true,
                 "hasConsented": true,
+                "useLocation": config.userDefaults.useLocation,
+                "shareLocation": config.userDefaults.shareLocation,
                 "createdAt": {
                     "$date": "2019-01-09T08:57:59.078Z"
                 },
@@ -327,10 +341,10 @@ class App extends React.Component {
                             // Set defaults from config file if user just signed up
                             if (currentUser.newlyCreated) {
                                 this.pushUserUpdates({
-                                    available: config.app.available,
-                                    shareLocation: config.app.shareLocation,
-                                    useLocation: config.app.useLocation,
-                                    contactInformation: {},
+                                    available: config.userDefaults.available,
+                                    shareLocation: config.userDefaults.shareLocation,
+                                    useLocation: config.userDefaults.useLocation,
+                                    contactInformation: config.userDefaults.contactInformation,
                                     locale: this.state.locale,
                                     newlyCreated: false,
                                 });
@@ -641,7 +655,9 @@ class App extends React.Component {
                             <strong>{this.state.currentUser.name}</strong>
                         </div>
                         <div className='list-item__subtitle'>
-                            <contactLinks.ContactLinks user={this.state.currentUser} />
+                            <contactLinks.ContactLinks
+                                small={true}
+                                user={this.state.currentUser} />
                         </div>
                     </div>
             </Ons.ListItem>
@@ -775,13 +791,13 @@ class App extends React.Component {
         } else {
             // User logged out, so clear out stored user data
             this.setState({
-                authenticated: false,
-                usersAreLoaded: false,
-                currentUserIsLoaded: false,
                 accessToken: null,
-                currentUserId: null,
+                authenticated: false,
                 currentUser: null,
+                currentUserId: null,
+                currentUserIsLoaded: false,
                 users: null,
+                usersAreLoaded: false,
             })
         }
     };

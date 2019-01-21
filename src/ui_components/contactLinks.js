@@ -28,14 +28,28 @@ class ContactLinks extends React.Component {
             var contactType = contactTypes[i].contactType;
 
             if (contactInfo[setting]) {
-                links.push(
-                    <a href={this.getContactLink(contactInfo, contactType)}
-                        key={contactType} >
-                            <Ons.Icon
-                                style={{color: "black", margin: "15px"}}
-                                icon={`md-${contactType}`} />
-                    </a>
-                )
+                if (this.props.small) {
+                    links.push(
+                        <Ons.Icon
+                            style={{marginRight: "15px"}}
+                            icon={`md-${contactType}`}
+                            key={contactType} />
+                    )
+                } else {
+                    links.push(
+                        <a href={this.getContactLink(contactInfo, contactType)}
+                            className="button"
+                            style={{
+                                marginRight: "5px",
+                                height: "40px",
+                                width: "40px",
+                                textAlign: "center",
+                            }}
+                            key={contactType} >
+                                <Ons.Icon icon={`md-${contactType}`} />
+                        </a>
+                    )
+                }
             }
         }
 
