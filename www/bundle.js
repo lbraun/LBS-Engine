@@ -92381,6 +92381,7 @@ module.exports={
         "signInPage.waitForApproval": "TODO",
         "signInPage.whileYouAreWaiting": "TODO",
         "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
+        "signInPage.youMustBeOnlineInOrderToLogOut": "TODO",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Hilfe",
         "tabs.list": "Liste",
@@ -92477,6 +92478,7 @@ module.exports={
         "signInPage.waitForApproval": "Please wait for a moderator to approve your account.",
         "signInPage.whileYouAreWaiting": "You will receive an email when you can log in.",
         "signInPage.youMustBeOnlineInOrderToLogIn": "You must be online in order to log in.",
+        "signInPage.youMustBeOnlineInOrderToLogOut": "You must be online in order to log out.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Help",
         "tabs.list": "List",
@@ -92573,6 +92575,7 @@ module.exports={
         "signInPage.waitForApproval": "TODO",
         "signInPage.whileYouAreWaiting": "TODO",
         "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
+        "signInPage.youMustBeOnlineInOrderToLogOut": "TODO",
         "tabs.dashboard": "لوحة التحكم الرئيسية",
         "tabs.help": "مساعدة",
         "tabs.list": "قائمة",
@@ -95502,7 +95505,11 @@ class SignInPage extends React.Component {
                 React.createElement(
                     'p',
                     null,
-                    this.l("youMustBeOnlineInOrderToLogin")
+                    React.createElement(
+                        'i',
+                        null,
+                        this.l("youMustBeOnlineInOrderToLogIn")
+                    )
                 )
             );
         }
@@ -95527,7 +95534,11 @@ class SignInPage extends React.Component {
                 React.createElement(
                     'p',
                     null,
-                    this.l("youMustBeOnlineInOrderToLogin")
+                    React.createElement(
+                        'i',
+                        null,
+                        this.l("youMustBeOnlineInOrderToLogOut")
+                    )
                 )
             );
         }

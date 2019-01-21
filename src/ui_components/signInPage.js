@@ -120,7 +120,7 @@ class SignInPage extends React.Component {
                     <Ons.Button onClick={this.props.login} disabled={"true"}>
                         {this.l("logIn")}
                     </Ons.Button>
-                    <p>{this.l("youMustBeOnlineInOrderToLogin")}</p>
+                    <p><i>{this.l("youMustBeOnlineInOrderToLogIn")}</i></p>
                 </div>
             )
         }
@@ -139,7 +139,7 @@ class SignInPage extends React.Component {
                     <Ons.Button onClick={this.props.logout} disabled={"true"}>
                         {this.props.l("settings.logOut")}
                     </Ons.Button>
-                    <p>{this.l("youMustBeOnlineInOrderToLogin")}</p>
+                    <p><i>{this.l("youMustBeOnlineInOrderToLogOut")}</i></p>
                 </div>
             )
         }
