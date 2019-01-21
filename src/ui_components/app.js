@@ -92,6 +92,9 @@ class App extends React.Component {
             clientID: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv'
         });
 
+        // Backend
+        this.apiUrl = config.app.apiUrl;
+
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
@@ -141,10 +144,10 @@ class App extends React.Component {
         this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
-        this.state.devMode = "offers";
+        this.devMode = "dashboard";
 
-        if (this.state.devMode && !this.state.online) {
-            this.state.authenticated = true;
+        if (this.devMode && !this.state.online) {
+            this.apiUrl = "http://localhost:8080/api/";
             this.state.currentUser = {
                 "nickname": "lucas.braun",
                 "name": "Developer User",
@@ -188,7 +191,7 @@ class App extends React.Component {
         var localization = localizations[locale][string];
 
         if (!localization || localization == "TODO") {
-            if (!this.state.devMode) {
+            if (!this.devMode) {
                 console.log(`Error: localization "${string}" not found for locale "${locale}"`);
             }
 
@@ -296,7 +299,7 @@ class App extends React.Component {
      */
     fetchOrCreateAuth0User(userInfo) {
         // Make the call to the "find or create" API endpoint
-        var url = "https://geofreebie-backend.herokuapp.com/api/users/";
+        var url = this.apiUrl + "users/";
         fetch(url, {
             method: "POST",
             body: JSON.stringify(userInfo),
@@ -328,7 +331,7 @@ class App extends React.Component {
      * Fetches all user data from the database server, including current user's data
      */
     refreshUsers() {
-        fetch("https://geofreebie-backend.herokuapp.com/api/users")
+        fetch(this.apiUrl + "users")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -419,7 +422,7 @@ class App extends React.Component {
         });
 
         // Make the call to the update API
-        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
+        var url = this.apiUrl + "users/" + this.state.currentUserId;
         fetch(url, {
             method: "PUT",
             body: JSON.stringify(attributes),
@@ -696,14 +699,14 @@ class App extends React.Component {
      * Start the auth0 login process (launches via an in-app browser)
      */
     login(e) {
-        if (this.state.devMode) {
+        if (this.devMode) {
             this.setState({
                 authenticated: true,
-                currentTab: this.state.devMode,
+                currentTab: this.devMode,
             })
 
             this.fetchOrCreateAuth0User({
-                auth0Id: "facebook|10213377644143781",
+                auth0Id: "auth0|5c35b6c6a19540326d51c3a9",
             });
 
             return;

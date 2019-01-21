@@ -1,6 +1,7 @@
 {
     "app": {
         "adminEmail": "lucas.braun@uni-muenster.de",
+        "apiUrl": "https://geofreebie-backend.herokuapp.com/api/",
         "defaultLocale": "en",
         "externalData": false,
         "layerControl": true,
