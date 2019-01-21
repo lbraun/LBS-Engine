@@ -108,27 +108,22 @@ class offerForm extends React.Component {
         if (this.offer().picture) {
             return (
                 <div>
-                    <Ons.Row>
-                        <Ons.Col width="50%" style={{padding: "20px"}}>
-                            <b>{this.l("offerPicture")}</b>
-                        </Ons.Col>
-
-                        <Ons.Col width="50%" style={{textAlign: "right", padding: "20px"}}>
-                            <Ons.Button onClick={this.handleNewPictureClick}>
-                                    <Ons.Icon icon={"md-edit"} />
-                            </Ons.Button>
-
-                            <Ons.Button
-                                onClick={this.handleDeletePictureClick}
-                                style={{marginLeft: "20px", backgroundColor: "#d9534f"}}>
-                                    <Ons.Icon icon={"md-delete"} />
-                            </Ons.Button>
-                        </Ons.Col>
-                    </Ons.Row>
-
                     <img src={`data:image/jpeg;base64, ${this.offer().picture}`}
                         id='offer-picture'
                         style={{width: "100%"}} />
+
+                    <div style={{
+                            position: "absolute",
+                            textAlign: "right",
+                            width: "100%",
+                            margin: "-60px -20px",
+                        }}>
+                            <Ons.Button
+                                onClick={this.handleDeletePictureClick}
+                                style={{backgroundColor: "#d9534f"}}>
+                                    <Ons.Icon icon={"md-delete"} />
+                            </Ons.Button>
+                    </div>
                 </div>
             );
         } else {
@@ -164,6 +159,12 @@ class offerForm extends React.Component {
     render() {
         return (
             <Ons.Page>
+                <Ons.Row id="offer-picture-row">
+                    <Ons.Col>
+                        {this.renderImageArea()}
+                    </Ons.Col>
+                </Ons.Row>
+
                 <Ons.List>
                     <Ons.ListItem id="offer-title-li">
                         <div className="list-item__title">
@@ -182,12 +183,6 @@ class offerForm extends React.Component {
                         </div>
                     </Ons.ListItem>
                 </Ons.List>
-
-                <Ons.Row id="offer-picture-row">
-                    <Ons.Col>
-                        {this.renderImageArea()}
-                    </Ons.Col>
-                </Ons.Row>
 
                 <Ons.List>
                     <Ons.ListItem id="offer-description-li">

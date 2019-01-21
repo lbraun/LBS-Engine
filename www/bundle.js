@@ -92744,7 +92744,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        // this.state.devMode = "dashboard";
+        this.state.devMode = "offers";
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
@@ -94752,38 +94752,25 @@ class offerForm extends React.Component {
             return React.createElement(
                 'div',
                 null,
-                React.createElement(
-                    Ons.Row,
-                    null,
-                    React.createElement(
-                        Ons.Col,
-                        { width: '50%', style: { padding: "20px" } },
-                        React.createElement(
-                            'b',
-                            null,
-                            this.l("offerPicture")
-                        )
-                    ),
-                    React.createElement(
-                        Ons.Col,
-                        { width: '50%', style: { textAlign: "right", padding: "20px" } },
-                        React.createElement(
-                            Ons.Button,
-                            { onClick: this.handleNewPictureClick },
-                            React.createElement(Ons.Icon, { icon: "md-edit" })
-                        ),
-                        React.createElement(
-                            Ons.Button,
-                            {
-                                onClick: this.handleDeletePictureClick,
-                                style: { marginLeft: "20px", backgroundColor: "#d9534f" } },
-                            React.createElement(Ons.Icon, { icon: "md-delete" })
-                        )
-                    )
-                ),
                 React.createElement('img', { src: `data:image/jpeg;base64, ${this.offer().picture}`,
                     id: 'offer-picture',
-                    style: { width: "100%" } })
+                    style: { width: "100%" } }),
+                React.createElement(
+                    'div',
+                    { style: {
+                            position: "absolute",
+                            textAlign: "right",
+                            width: "100%",
+                            margin: "-60px -20px"
+                        } },
+                    React.createElement(
+                        Ons.Button,
+                        {
+                            onClick: this.handleDeletePictureClick,
+                            style: { backgroundColor: "#d9534f" } },
+                        React.createElement(Ons.Icon, { icon: "md-delete" })
+                    )
+                )
             );
         } else {
             return React.createElement(
@@ -94826,6 +94813,15 @@ class offerForm extends React.Component {
             Ons.Page,
             null,
             React.createElement(
+                Ons.Row,
+                { id: 'offer-picture-row' },
+                React.createElement(
+                    Ons.Col,
+                    null,
+                    this.renderImageArea()
+                )
+            ),
+            React.createElement(
                 Ons.List,
                 null,
                 React.createElement(
@@ -94852,15 +94848,6 @@ class offerForm extends React.Component {
                             value: this.offer().title,
                             onChange: this.handleInputChange })
                     )
-                )
-            ),
-            React.createElement(
-                Ons.Row,
-                { id: 'offer-picture-row' },
-                React.createElement(
-                    Ons.Col,
-                    null,
-                    this.renderImageArea()
                 )
             ),
             React.createElement(
