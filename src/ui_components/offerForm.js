@@ -3,6 +3,8 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const confirmDialog = require('./confirmDialog.js');
+
 /**
  * Offer form where the user can list items they are giving away.
  */
@@ -302,14 +304,14 @@ class offerForm extends React.Component {
                     </Ons.ListItem>
                 </Ons.List>
 
-                <AlertDialog
+                <confirmDialog.ConfirmDialog
                     isOpen={this.state.offerDeletionAlertDialogIsOpen}
                     cancelAction={this.closeOfferDeletionDialog}
                     confirmAction={this.confirmOfferDeletion}
                     confirmActionName={this.l("deleteOffer")}
                     l={this.props.l} />
 
-                <AlertDialog
+                <confirmDialog.ConfirmDialog
                     isOpen={this.state.pictureDeletionAlertDialogIsOpen}
                     cancelAction={this.closePictureDeletionDialog}
                     confirmAction={this.confirmPictureDeletion}
@@ -317,43 +319,6 @@ class offerForm extends React.Component {
                     l={this.props.l} />
             </Ons.Page>
         )
-    }
-}
-
-/**
- * Alert dialog allowing the user to confirm they really want to take an action
- */
-class AlertDialog extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return(
-            <Ons.AlertDialog
-                isOpen={this.props.isOpen}
-                onCancel={this.props.cancelAction}
-                cancelable>
-                    <div className="alert-dialog-title">
-                        {this.props.l("app.areYouSure")}
-                    </div>
-
-                    <div className="alert-dialog-content">
-                        {this.props.l("app.thisCannotBeUndone")}
-                    </div>
-
-                    <div className="alert-dialog-footer">
-                        <Ons.Button onClick={this.props.cancelAction} className="alert-dialog-button">
-                            {this.props.l("app.cancel")}
-                        </Ons.Button>
-                    </div>
-                    <div className="alert-dialog-footer">
-                        <Ons.Button onClick={this.props.confirmAction} className="alert-dialog-button">
-                            {this.props.confirmActionName}
-                        </Ons.Button>
-                    </div>
-            </Ons.AlertDialog>
-        );
     }
 }
 
