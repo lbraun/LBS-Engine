@@ -44,6 +44,7 @@ class ContactLinks extends React.Component {
                                 height: "40px",
                                 width: "40px",
                                 textAlign: "center",
+                                color: "white",
                             }}
                             key={contactType} >
                                 <Ons.Icon icon={`md-${contactType}`} />

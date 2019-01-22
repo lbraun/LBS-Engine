@@ -138,6 +138,8 @@ class Map extends React.Component {
                             style={{width: "100%"}} />
                         <p>
                             {this.l("andCanBeContactedAt")}
+                        </p>
+                        <p>
                             <contactLinks.ContactLinks user={user} />
                         </p>
                         <p>{this.reportLink(user)}</p>

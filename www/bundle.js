@@ -92780,7 +92780,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        // this.devMode = "list";
+        this.devMode = "map";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -93873,7 +93873,8 @@ class ContactLinks extends React.Component {
                                 marginRight: "5px",
                                 height: "40px",
                                 width: "40px",
-                                textAlign: "center"
+                                textAlign: "center",
+                                color: "white"
                             },
                             key: contactType },
                         React.createElement(Ons.Icon, { icon: `md-${contactType}` })
@@ -94587,7 +94588,11 @@ class Map extends React.Component {
                     React.createElement(
                         'p',
                         null,
-                        this.l("andCanBeContactedAt"),
+                        this.l("andCanBeContactedAt")
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
                         React.createElement(contactLinks.ContactLinks, { user: user })
                     ),
                     React.createElement(
