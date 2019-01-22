@@ -3,15 +3,22 @@ const React = require('react');
 const Ons = require('react-onsenui');
 
 const list = require('./list.js');
+const confirmDialog = require('./confirmDialog.js');
 
 class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
-        this.handleOfferCompletion = this.handleOfferCompletion.bind(this);
+        this.closeOfferCompletionDialog = this.closeOfferCompletionDialog.bind(this);
+        this.openOfferCompletionDialog = this.openOfferCompletionDialog.bind(this);
+        this.confirmOfferCompletion = this.confirmOfferCompletion.bind(this);
         this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
         this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
+
+        this.state = {
+            offerCompletionAlertDialogIsOpen: false,
+        }
     }
 
     /**
@@ -41,11 +48,23 @@ class Dashboard extends React.Component {
         this.props.pushUserUpdates({offer: updatedOffer});
     }
 
+
+    //** Offer completion dialog methods **//
+
+    openOfferCompletionDialog() {
+        this.setState({offerCompletionAlertDialogIsOpen: true});
+    }
+
+    closeOfferCompletionDialog() {
+        this.setState({offerCompletionAlertDialogIsOpen: false});
+    }
+
     /**
-     * Complete the user's offer
+     * Handle a click on the confirm offer completion button
      * @param {Event} e the react event object
      */
-    handleOfferCompletion(e) {
+    confirmOfferCompletion(e) {
+        this.closeOfferCompletionDialog();
         this.props.completeOffer();
     }
 
@@ -96,7 +115,7 @@ class Dashboard extends React.Component {
                     <div>
                         <Ons.Button
                             modifier="large"
-                            onClick={this.handleOfferCompletion}
+                            onClick={this.openOfferCompletionDialog}
                             style={{backgroundColor: "green"}}>
                                 <Ons.Icon icon={"md-check-circle"} style={{marginRight: "20px"}} />
                                 {this.l("completeOffer")}
@@ -166,6 +185,13 @@ class Dashboard extends React.Component {
                 </Ons.Row>
 
                 {this.renderOfferCard()}
+
+                <confirmDialog.ConfirmDialog
+                    isOpen={this.state.offerCompletionAlertDialogIsOpen}
+                    cancelAction={this.closeOfferCompletionDialog}
+                    confirmAction={this.confirmOfferCompletion}
+                    confirmActionName={this.l("completeOffer")}
+                    l={this.props.l} />
 
                 <Ons.Row>
                     <Ons.Col style={{margin: "15px 20px 5px 15px"}}>

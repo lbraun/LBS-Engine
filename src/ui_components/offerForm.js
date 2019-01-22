@@ -4,6 +4,7 @@ const React = require('react');
 const Ons = require('react-onsenui');
 
 const contactLinks = require('./contactLinks.js');
+const confirmDialog = require('./confirmDialog.js');
 
 /**
  * Offer form where the user can list items they are giving away.
@@ -12,11 +13,21 @@ class offerForm extends React.Component {
     constructor(props) {
         super(props);
         this.goToSettingsTab = this.goToSettingsTab.bind(this);
-        this.handleDeletePictureClick = this.handleDeletePictureClick.bind(this);
+        this.openOfferDeletionDialog = this.openOfferDeletionDialog.bind(this);
+        this.closeOfferDeletionDialog = this.closeOfferDeletionDialog.bind(this);
+        this.confirmOfferDeletion = this.confirmOfferDeletion.bind(this);
+        this.openPictureDeletionDialog = this.openPictureDeletionDialog.bind(this);
+        this.closePictureDeletionDialog = this.closePictureDeletionDialog.bind(this);
+        this.confirmPictureDeletion = this.confirmPictureDeletion.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
         this.offer = this.offer.bind(this);
         this.pushOfferUpdates = this.pushOfferUpdates.bind(this);
+
+        this.state = {
+            offerDeletionAlertDialogIsOpen: false,
+            pictureDeletionAlertDialogIsOpen: false,
+        };
     }
 
     /**
@@ -84,12 +95,44 @@ class offerForm extends React.Component {
         });
     }
 
+
+    //** Picture deletion dialog methods **//
+
+    openPictureDeletionDialog() {
+        this.setState({pictureDeletionAlertDialogIsOpen: true});
+    }
+
+    closePictureDeletionDialog() {
+        this.setState({pictureDeletionAlertDialogIsOpen: false});
+    }
+
     /**
-     * Handle a click on the delete picture link
+     * Handle a click on the delete picture confirm button
      * @param {Event} e the react event object
      */
-    handleDeletePictureClick(e) {
+    confirmPictureDeletion(e) {
         this.pushOfferUpdates({picture: null});
+        this.closePictureDeletionDialog();
+    }
+
+
+    //** Offer deletion dialog methods **//
+
+    openOfferDeletionDialog() {
+        this.setState({offerDeletionAlertDialogIsOpen: true});
+    }
+
+    closeOfferDeletionDialog() {
+        this.setState({offerDeletionAlertDialogIsOpen: false});
+    }
+
+    /**
+     * Handle a click on the delete offer confirm button
+     * @param {Event} e the react event object
+     */
+    confirmOfferDeletion(e) {
+        this.props.pushUserUpdates({offer: null});
+        this.closeOfferDeletionDialog();
     }
 
     renderGeofenceWarningListItem() {
@@ -110,27 +153,22 @@ class offerForm extends React.Component {
         if (this.offer().picture) {
             return (
                 <div>
-                    <Ons.Row>
-                        <Ons.Col width="50%" style={{padding: "20px"}}>
-                            <b>{this.l("offerPicture")}</b>
-                        </Ons.Col>
-
-                        <Ons.Col width="50%" style={{textAlign: "right", padding: "20px"}}>
-                            <Ons.Button onClick={this.handleNewPictureClick}>
-                                    <Ons.Icon icon={"md-edit"} />
-                            </Ons.Button>
-
-                            <Ons.Button
-                                onClick={this.handleDeletePictureClick}
-                                style={{marginLeft: "20px", backgroundColor: "#d9534f"}}>
-                                    <Ons.Icon icon={"md-delete"} />
-                            </Ons.Button>
-                        </Ons.Col>
-                    </Ons.Row>
-
                     <img src={`data:image/jpeg;base64, ${this.offer().picture}`}
                         id='offer-picture'
                         style={{width: "100%"}} />
+
+                    <div style={{
+                            position: "absolute",
+                            textAlign: "right",
+                            width: "100%",
+                            margin: "-60px -20px",
+                        }}>
+                            <Ons.Button
+                                onClick={this.openPictureDeletionDialog}
+                                style={{backgroundColor: "#d9534f"}}>
+                                    <Ons.Icon icon={"md-delete"} />
+                            </Ons.Button>
+                    </div>
                 </div>
             );
         } else {
@@ -166,6 +204,12 @@ class offerForm extends React.Component {
     render() {
         return (
             <Ons.Page>
+                <Ons.Row id="offer-picture-row">
+                    <Ons.Col>
+                        {this.renderImageArea()}
+                    </Ons.Col>
+                </Ons.Row>
+
                 <Ons.List>
                     <Ons.ListItem id="offer-title-li">
                         <div className="list-item__title">
@@ -184,12 +228,6 @@ class offerForm extends React.Component {
                         </div>
                     </Ons.ListItem>
                 </Ons.List>
-
-                <Ons.Row id="offer-picture-row">
-                    <Ons.Col>
-                        {this.renderImageArea()}
-                    </Ons.Col>
-                </Ons.Row>
 
                 <Ons.List>
                     <Ons.ListItem id="offer-description-li">
@@ -252,7 +290,32 @@ class offerForm extends React.Component {
                                 user={this.props.currentUser} />
                         </p>
                     </Ons.ListItem>
+
+                    <Ons.ListItem>
+                        <div className='right'>
+                            <Ons.Button
+                                onClick={this.openOfferDeletionDialog}
+                                style={{backgroundColor: "#d9534f"}}>
+                                    <Ons.Icon icon={"md-delete"} style={{marginRight: "20px"}} />
+                                    {this.l("deleteOffer")}
+                            </Ons.Button>
+                        </div>
+                    </Ons.ListItem>
                 </Ons.List>
+
+                <confirmDialog.ConfirmDialog
+                    isOpen={this.state.offerDeletionAlertDialogIsOpen}
+                    cancelAction={this.closeOfferDeletionDialog}
+                    confirmAction={this.confirmOfferDeletion}
+                    confirmActionName={this.l("deleteOffer")}
+                    l={this.props.l} />
+
+                <confirmDialog.ConfirmDialog
+                    isOpen={this.state.pictureDeletionAlertDialogIsOpen}
+                    cancelAction={this.closePictureDeletionDialog}
+                    confirmAction={this.confirmPictureDeletion}
+                    confirmActionName={this.l("deleteOfferPicture")}
+                    l={this.props.l} />
             </Ons.Page>
         )
     }

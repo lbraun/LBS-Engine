@@ -144,7 +144,7 @@ class App extends React.Component {
         this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
-        this.devMode = "dashboard";
+        // this.state.devMode = "map";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
