@@ -92732,8 +92732,11 @@ class App extends React.Component {
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
+            // Don't try to watch position until user is loaded
+            if (!app.state.currentUser) return;
+
             // If the user has enabled location tracking, use it
-            if (app.state.currentUser && app.state.currentUser.useLocation) {
+            if (app.state.currentUser.useLocation) {
                 var coords = [position.coords.latitude, position.coords.longitude];
 
                 if (!app.withinGeofence(coords)) {
@@ -92768,7 +92771,9 @@ class App extends React.Component {
                 }
             } else {
                 // Otherwise set user position to null
-                app.pushUserUpdates({ coords: null });
+                if (app.state.currentUserId) {
+                    app.pushUserUpdates({ coords: [] });
+                }
             }
         }, function onError(error) {
             console.log('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
@@ -92777,45 +92782,13 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = true;
+        this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
         this.devMode = "settings";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
-            this.state.currentUser = {
-                "nickname": "lucas.braun",
-                "name": "Developer User",
-                "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
-                "updated_at": "2019-01-09T08:54:31.035Z",
-                "auth0Id": "auth0|5c35b6c6a19540326d51c3a9",
-                "offer": {
-                    "title": "Something!",
-                    "description": "It's really special."
-                },
-                "contactInformation": {
-                    "email": "lucas.braun@wwu.de",
-                    "facebook": "labraun",
-                    "phone": "4915734693011",
-                    "useEmail": true,
-                    "useFacebook": true,
-                    "usePhone": true,
-                    "useWhatsapp": true,
-                    "whatsapp": "4915734693011"
-                },
-                "coordinates": [51.9, 7.6],
-                "approved": true,
-                "hasConsented": true,
-                "useLocation": config.userDefaults.useLocation,
-                "shareLocation": config.userDefaults.shareLocation,
-                "createdAt": {
-                    "$date": "2019-01-09T08:57:59.078Z"
-                },
-                "updatedAt": {
-                    "$date": "2019-01-09T08:57:59.078Z"
-                }
-            };
         }
     }
 
@@ -92850,11 +92823,11 @@ class App extends React.Component {
      */
     updateDistancesToUsers(userPosition, users) {
         // If the user's position is available
-        if (userPosition) {
+        if (userPosition.length) {
             // Add a distanceToUser attribute to the array, used for list sorting
             for (let i in users) {
                 var user = users[i];
-                user.distanceToUser = user.coords ? this.calculateDistanceBetween(userPosition, user.coords) : null;
+                user.distanceToUser = user.coords.length ? this.calculateDistanceBetween(userPosition, user.coords) : null;
             }
 
             // Sort the list by distance, ascending
@@ -92961,12 +92934,12 @@ class App extends React.Component {
      * Fetches all user data from the database server, including current user's data
      */
     refreshUsers() {
-        fetch(this.apiUrl + "users").then(res => res.json()).then(result => {
+        fetch(this.apiUrl + "users").then(res => res.json()).then(users => {
             // Store current user and remove it from the list
-            for (var i = result.length - 1; i >= 0; --i) {
-                if (result[i]._id == this.state.currentUserId) {
-                    var currentUser = result[i];
-                    result.splice(i, 1);
+            for (var i = users.length - 1; i >= 0; --i) {
+                if (users[i]._id == this.state.currentUserId) {
+                    var currentUser = users[i];
+                    users.splice(i, 1);
 
                     // Set defaults from config file if user just signed up
                     if (currentUser.newlyCreated) {
@@ -92979,11 +92952,13 @@ class App extends React.Component {
                         });
                     }
 
+                    users = this.updateDistancesToUsers(currentUser.coords, users);
+
                     this.setState({
                         currentUser: currentUser,
                         locale: currentUser.locale || this.state.locale,
                         currentUserIsLoaded: true,
-                        users: result || [],
+                        users: users || [],
                         usersAreLoaded: true
                     });
 
@@ -93036,6 +93011,11 @@ class App extends React.Component {
      * @param {Object} attributes object, representing attributes to be updated
      */
     pushUserUpdates(attributes) {
+        if (!this.state.currentUserId) {
+            console.log("ERROR: Cannot push user updates without an id");
+            return this.state.currentUserId.something;
+        }
+
         var currentUser = this.state.currentUser || {};
         var updatedUser = JSON.parse(JSON.stringify(currentUser));
         Object.assign(updatedUser, attributes);
@@ -93345,9 +93325,17 @@ class App extends React.Component {
                 currentTab: this.devMode
             });
 
-            this.fetchOrCreateAuth0User({
-                auth0Id: "auth0|5c35b6c6a19540326d51c3a9"
-            });
+            var userInfo = {
+                "nickname": "dev.user",
+                "name": "Developer User",
+                "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
+                "updated_at": "2019-01-09T08:54:31.035Z",
+                auth0Id: "auth0|5c35b6c6a19540326d51c3a9",
+                approved: true,
+                loginsCount: 0
+            };
+
+            this.fetchOrCreateAuth0User(userInfo);
 
             return;
         }
@@ -93890,14 +93878,18 @@ class ContactLinks extends React.Component {
         if (contactType == "facebook") {
             return "https://m.me/" + contactInfo.facebook;
         } else if (contactType == "whatsapp") {
-            return "https://wa.me/" + contactInfo.whatsapp;
+            return "https://wa.me/" + this.stripNonNumeric(contactInfo.whatsapp);
         } else if (contactType == "email") {
             return "mailto:" + contactInfo.email;
         } else if (contactType == "phone") {
-            return "tel:" + contactInfo.phone;
+            return "tel:" + this.stripNonNumeric(contactInfo.phone);
         } else {
             console.log("Error: invalid contact type: " + contactType);
         }
+    }
+
+    stripNonNumeric(string) {
+        return string.replace(/\D/g, '');
     }
 }
 
@@ -94502,7 +94494,7 @@ class Map extends React.Component {
             var user = users[i];
 
             // Skip if the user hasn't shared their coordinates
-            if (!user.coords) {
+            if (!user.coords.length) {
                 continue;
             }
 
@@ -94647,7 +94639,7 @@ class Map extends React.Component {
 
     renderMapWithLayers() {
         // Check if the user's position is available
-        const marker = this.props.currentUser.coords ? React.createElement(
+        const marker = this.props.currentUser.coords.length ? React.createElement(
             ExtendedMarker,
             {
                 id: "user",
@@ -94717,7 +94709,7 @@ class Map extends React.Component {
             return this.renderMapWithLayers();
         } else {
             // Check if the location is enabled and available
-            const marker = this.props.currentUser.useLocation ? React.createElement(
+            const marker = this.props.currentUser.useLocation && this.props.currentUser.coords.length ? React.createElement(
                 leaflet.Marker,
                 { position: this.props.currentUser.coords, icon: this.positionMarker },
                 React.createElement(
