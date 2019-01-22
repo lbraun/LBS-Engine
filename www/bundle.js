@@ -92353,6 +92353,7 @@ module.exports={
         "offerForm.available": "Jetzt verfügbar",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
         "offerForm.deleteOffer": "Angebot Löschen",
+        "offerForm.deleteOfferPicture": "Angebotsbild Löschen",
         "offerForm.geofenceWarning": "Sie können Ihren Angebot nur verfügbar machen, wenn Sie in Münster Sind",
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte geben Sie eine kurze Beschreibung des Angebots.",
@@ -92453,6 +92454,7 @@ module.exports={
         "offerForm.available": "Available now",
         "offerForm.contactInformationPlaceholder": "Contact information",
         "offerForm.deleteOffer": "Delete Offer",
+        "offerForm.deleteOfferPicture": "Delete Offer Picture",
         "offerForm.geofenceWarning": "You can only make your offer available when you are in Münster",
         "offerForm.iAmOffering": "I am offering...",
         "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
@@ -92553,6 +92555,7 @@ module.exports={
         "offerForm.available": "متاح اﻵن",
         "offerForm.contactInformationPlaceholder": "معلومات اﻹتصال",
         "offerForm.deleteOffer": "TODO",
+        "offerForm.deleteOfferPicture": "TODO",
         "offerForm.geofenceWarning": "تستطيع أن تكون متاحاً فقط في مونستر",
         "offerForm.iAmOffering": "أنا أعرض ...",
         "offerForm.iAmOfferingHelpText": "من فضلك ادخل وصف جيد للعرض",
@@ -94663,16 +94666,20 @@ class offerForm extends React.Component {
     constructor(props) {
         super(props);
         this.goToSettingsTab = this.goToSettingsTab.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleDeleteOfferClick = this.handleDeleteOfferClick.bind(this);
-        this.handleDeletePictureClick = this.handleDeletePictureClick.bind(this);
+        this.openOfferDeletionDialog = this.openOfferDeletionDialog.bind(this);
+        this.closeOfferDeletionDialog = this.closeOfferDeletionDialog.bind(this);
+        this.confirmOfferDeletion = this.confirmOfferDeletion.bind(this);
+        this.openPictureDeletionDialog = this.openPictureDeletionDialog.bind(this);
+        this.closePictureDeletionDialog = this.closePictureDeletionDialog.bind(this);
+        this.confirmPictureDeletion = this.confirmPictureDeletion.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
         this.offer = this.offer.bind(this);
         this.pushOfferUpdates = this.pushOfferUpdates.bind(this);
 
         this.state = {
-            alertDialogIsOpen: false
+            offerDeletionAlertDialogIsOpen: false,
+            pictureDeletionAlertDialogIsOpen: false
         };
     }
 
@@ -94741,36 +94748,42 @@ class offerForm extends React.Component {
         });
     }
 
+    //** Picture deletion dialog methods **//
+
+    openPictureDeletionDialog() {
+        this.setState({ pictureDeletionAlertDialogIsOpen: true });
+    }
+
+    closePictureDeletionDialog() {
+        this.setState({ pictureDeletionAlertDialogIsOpen: false });
+    }
+
     /**
-     * Handle a click on the delete picture link
+     * Handle a click on the delete picture confirm button
      * @param {Event} e the react event object
      */
-    handleDeletePictureClick(e) {
+    confirmPictureDeletion(e) {
         this.pushOfferUpdates({ picture: null });
+        this.closePictureDeletionDialog();
+    }
+
+    //** Offer deletion dialog methods **//
+
+    openOfferDeletionDialog() {
+        this.setState({ offerDeletionAlertDialogIsOpen: true });
+    }
+
+    closeOfferDeletionDialog() {
+        this.setState({ offerDeletionAlertDialogIsOpen: false });
     }
 
     /**
-     * Handle a click on the delete offer button
+     * Handle a click on the delete offer confirm button
      * @param {Event} e the react event object
      */
-    handleDeleteOfferClick(e) {
-        if (this.state.alertDialogIsOpen) {
-            this.props.pushUserUpdates({ offer: null });
-        }
-
-        this.setState({
-            alertDialogIsOpen: !this.state.alertDialogIsOpen
-        });
-    }
-
-    /**
-     * Handle a click on the cancel button
-     * @param {Event} e the react event object
-     */
-    handleCancel(e) {
-        this.setState({
-            alertDialogIsOpen: false
-        });
+    confirmOfferDeletion(e) {
+        this.props.pushUserUpdates({ offer: null });
+        this.closeOfferDeletionDialog();
     }
 
     renderGeofenceWarningListItem() {
@@ -94808,7 +94821,7 @@ class offerForm extends React.Component {
                     React.createElement(
                         Ons.Button,
                         {
-                            onClick: this.handleDeletePictureClick,
+                            onClick: this.openPictureDeletionDialog,
                             style: { backgroundColor: "#d9534f" } },
                         React.createElement(Ons.Icon, { icon: "md-delete" })
                     )
@@ -95009,7 +95022,7 @@ class offerForm extends React.Component {
                         React.createElement(
                             Ons.Button,
                             {
-                                onClick: this.handleDeleteOfferClick,
+                                onClick: this.openOfferDeletionDialog,
                                 style: { backgroundColor: "#d9534f" } },
                             React.createElement(Ons.Icon, { icon: "md-delete", style: { marginRight: "20px" } }),
                             this.l("deleteOffer")
@@ -95017,39 +95030,63 @@ class offerForm extends React.Component {
                     )
                 )
             ),
+            React.createElement(AlertDialog, {
+                isOpen: this.state.offerDeletionAlertDialogIsOpen,
+                cancelAction: this.closeOfferDeletionDialog,
+                confirmAction: this.confirmOfferDeletion,
+                confirmActionName: this.l("deleteOffer"),
+                l: this.props.l }),
+            React.createElement(AlertDialog, {
+                isOpen: this.state.pictureDeletionAlertDialogIsOpen,
+                cancelAction: this.closePictureDeletionDialog,
+                confirmAction: this.confirmPictureDeletion,
+                confirmActionName: this.l("deleteOfferPicture"),
+                l: this.props.l })
+        );
+    }
+}
+
+/**
+ * Alert dialog allowing the user to confirm they really want to take an action
+ */
+class AlertDialog extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return React.createElement(
+            Ons.AlertDialog,
+            {
+                isOpen: this.props.isOpen,
+                onCancel: this.props.cancelAction,
+                cancelable: true },
             React.createElement(
-                Ons.AlertDialog,
-                {
-                    isOpen: this.state.alertDialogIsOpen,
-                    onCancel: this.handleCancel,
-                    cancelable: true },
+                'div',
+                { className: 'alert-dialog-title' },
+                this.props.l("app.areYouSure")
+            ),
+            React.createElement(
+                'div',
+                { className: 'alert-dialog-content' },
+                this.props.l("app.thisCannotBeUndone")
+            ),
+            React.createElement(
+                'div',
+                { className: 'alert-dialog-footer' },
                 React.createElement(
-                    'div',
-                    { className: 'alert-dialog-title' },
-                    this.props.l("app.areYouSure")
-                ),
+                    Ons.Button,
+                    { onClick: this.props.cancelAction, className: 'alert-dialog-button' },
+                    this.props.l("app.cancel")
+                )
+            ),
+            React.createElement(
+                'div',
+                { className: 'alert-dialog-footer' },
                 React.createElement(
-                    'div',
-                    { className: 'alert-dialog-content' },
-                    this.props.l("app.thisCannotBeUndone")
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'alert-dialog-footer' },
-                    React.createElement(
-                        Ons.Button,
-                        { onClick: this.handleCancel, className: 'alert-dialog-button' },
-                        this.props.l("app.cancel")
-                    )
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'alert-dialog-footer' },
-                    React.createElement(
-                        Ons.Button,
-                        { onClick: this.handleDeleteOfferClick, className: 'alert-dialog-button' },
-                        this.l("deleteOffer")
-                    )
+                    Ons.Button,
+                    { onClick: this.props.confirmAction, className: 'alert-dialog-button' },
+                    this.props.confirmActionName
                 )
             )
         );
