@@ -72,7 +72,7 @@ class Map extends React.Component {
             var user = users[i];
 
             // Skip if the user hasn't shared their coordinates
-            if (!user.coords) {
+            if (!user.coords.length) {
                 continue;
             }
 
@@ -177,7 +177,7 @@ class Map extends React.Component {
 
     renderMapWithLayers() {
         // Check if the user's position is available
-        const marker = this.props.currentUser.coords
+        const marker = this.props.currentUser.coords.length
             ? (
                 <ExtendedMarker
                     id={"user"}
@@ -243,7 +243,7 @@ class Map extends React.Component {
             return this.renderMapWithLayers()
         } else {
             // Check if the location is enabled and available
-            const marker = this.props.currentUser.useLocation
+            const marker = this.props.currentUser.useLocation && this.props.currentUser.coords.length
                 ? (
                     <leaflet.Marker position={this.props.currentUser.coords} icon={this.positionMarker}>
                         <leaflet.Popup>
