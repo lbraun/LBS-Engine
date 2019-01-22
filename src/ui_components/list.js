@@ -75,17 +75,17 @@ class UserListItems extends React.Component {
      * @param {User} the user to describe
      */
     availablityText(user) {
-        if (user.available) {
-            var text = this.props.l("offerForm.available");
+        var status = user.offer ?
+            (user.offer.available ? "available" : "notAvailable") :
+            "noOffer";
 
-            // Show distance to user if it has been calculated
-            if (user.distanceToUser) {
-                return text += ` - ${user.distanceToUser} m`;
-            } else {
-                return text += ` - ${this.l("locationIsUnavailable")}`;
-            }
+        var text = this.props.l("offerForm." + status)
+
+        // Show distance to user if it has been calculated
+        if (user.distanceToUser) {
+            return text += ` - ${user.distanceToUser} m`;
         } else {
-            return this.props.l("offerForm.notAvailable");
+            return text += ` - ${this.l("locationIsUnavailable")}`;
         }
     }
 
@@ -131,7 +131,7 @@ class UserListItems extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = user.available && user.coords && !!(user.shareLocation || this.props.currentUser.coords);
+                var clickable = user.coords && !!(user.shareLocation || this.props.currentUser.coords);
 
                 if (!user.offer && this.props.usersWithOffersOnly) { continue; }
 

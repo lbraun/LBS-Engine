@@ -80,7 +80,7 @@ class Dashboard extends React.Component {
     renderOfferCard() {
         var offer = this.props.currentUser.offer;
         if (offer) {
-            var availabilityInfo = this.props.currentUser.available ?
+            var availabilityInfo = offer.available ?
                 this.l("availableNow") :
                 this.l("notCurrentlyAvailable");
 

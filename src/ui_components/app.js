@@ -99,12 +99,17 @@ class App extends React.Component {
         var app = this;
         this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
             // If the user has enabled location tracking, use it
-            if (app.state.currentUser.useLocation) {
+            if (app.state.currentUser && app.state.currentUser.useLocation) {
                 var coords = [position.coords.latitude, position.coords.longitude];
 
                 if (!app.withinGeofence(coords)) {
                     app.setState({outOfGeofence: true});
-                    app.pushUserUpdates({available: false});
+
+                    var currentOffer = this.state.currentUser.offer;
+                    var updatedOffer = JSON.parse(JSON.stringify(currentOffer));
+                    updatedOffer.available = false;
+
+                    app.pushUserUpdates({offer: updatedOffer});
                 } else {
                     app.setState({outOfGeofence: false});
                 }
@@ -123,11 +128,12 @@ class App extends React.Component {
                         var log = app.state.notificationLog.concat([closestUser._id]);
                         app.setState({notificationLog: log});
 
+                        var offerTitle = closestUser.offer ? closestUser.offer.title : app.l("offerForm.noOffer");
                         alert(closestUser.name
                             + " " + app.l("alert.isLessThan")
                             + " " + closestUser.distanceToUser
                             + " " + app.l("alert.metersAwayWith")
-                            + " " + closestUser.offer.description);
+                            + " " + offerTitle);
                     }
                 }
             } else {
@@ -141,10 +147,10 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = false;
+        this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        // this.state.devMode = "map";
+        this.devMode = "list";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -344,7 +350,6 @@ class App extends React.Component {
                             // Set defaults from config file if user just signed up
                             if (currentUser.newlyCreated) {
                                 this.pushUserUpdates({
-                                    available: config.userDefaults.available,
                                     shareLocation: config.userDefaults.shareLocation,
                                     useLocation: config.userDefaults.useLocation,
                                     contactInformation: config.userDefaults.contactInformation,
@@ -457,6 +462,11 @@ class App extends React.Component {
                     </Ons.ToolbarButton>
                 </div>
                 <div className='center'>{tabName}</div>
+                <div className='right'>
+                    <Ons.ToolbarButton onClick={this.refreshUsers}>
+                        <Ons.Icon icon='md-refresh'></Ons.Icon>
+                    </Ons.ToolbarButton>
+                </div>
             </Ons.Toolbar>
         )
     }

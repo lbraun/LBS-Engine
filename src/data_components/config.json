@@ -16,7 +16,6 @@
         "zoomable": true
     },
     "userDefaults": {
-        "available": false,
         "contactInformation": {},
         "hasConsented": false,
         "offer": {},

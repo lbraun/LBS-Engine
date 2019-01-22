@@ -92287,7 +92287,6 @@ module.exports={
         "zoomable": true
     },
     "userDefaults": {
-        "available": false,
         "contactInformation": {},
         "hasConsented": false,
         "offer": {},
@@ -92366,6 +92365,7 @@ module.exports={
         "offerForm.iCanBeContactedAt": "Man kann mich unter folgendem Kontakt erreichen:",
         "offerForm.iCanBeContactedAtHelpText": "Bitte geben Sie eine Telefonnummer, E-Mail-Adresse oder andere Kontaktmöglichkeiten an.",
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
+        "offerForm.noOffer": "Kein Angebot",
         "offerForm.offerDescriptionPlaceholder": "Beschreibung",
         "offerForm.offerPicture": "Bild",
         "offerForm.offerTitlePlaceholder": "Titel",
@@ -92468,6 +92468,7 @@ module.exports={
         "offerForm.iCanBeContactedAt": "I can be contacted at...",
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
         "offerForm.notAvailable": "Not available now",
+        "offerForm.noOffer": "No offer",
         "offerForm.offerDescriptionPlaceholder": "Description",
         "offerForm.offerPicture": "Picture",
         "offerForm.offerTitlePlaceholder": "Title",
@@ -92570,6 +92571,7 @@ module.exports={
         "offerForm.iCanBeContactedAt": "يمكنك الإتصال بي على...",
         "offerForm.iCanBeContactedAtHelpText": "من فضلك ادخل رقم هاتف، عنوان بريد الكتروني أو آية تعليمات اخرى.",
         "offerForm.notAvailable": "غير متاح اﻵن",
+        "offerForm.noOffer": "TODO",
         "offerForm.offerDescriptionPlaceholder": "وصف العرض",
         "offerForm.offerPicture": "TODO",
         "offerForm.offerTitlePlaceholder": "TODO",
@@ -92731,12 +92733,17 @@ class App extends React.Component {
         var app = this;
         this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
             // If the user has enabled location tracking, use it
-            if (app.state.currentUser.useLocation) {
+            if (app.state.currentUser && app.state.currentUser.useLocation) {
                 var coords = [position.coords.latitude, position.coords.longitude];
 
                 if (!app.withinGeofence(coords)) {
                     app.setState({ outOfGeofence: true });
-                    app.pushUserUpdates({ available: false });
+
+                    var currentOffer = this.state.currentUser.offer;
+                    var updatedOffer = JSON.parse(JSON.stringify(currentOffer));
+                    updatedOffer.available = false;
+
+                    app.pushUserUpdates({ offer: updatedOffer });
                 } else {
                     app.setState({ outOfGeofence: false });
                 }
@@ -92755,7 +92762,8 @@ class App extends React.Component {
                         var log = app.state.notificationLog.concat([closestUser._id]);
                         app.setState({ notificationLog: log });
 
-                        alert(closestUser.name + " " + app.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + app.l("alert.metersAwayWith") + " " + closestUser.offer.description);
+                        var offerTitle = closestUser.offer ? closestUser.offer.title : app.l("offerForm.noOffer");
+                        alert(closestUser.name + " " + app.l("alert.isLessThan") + " " + closestUser.distanceToUser + " " + app.l("alert.metersAwayWith") + " " + offerTitle);
                     }
                 }
             } else {
@@ -92769,10 +92777,10 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = false;
+        this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        // this.state.devMode = "map";
+        this.devMode = "list";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -92963,7 +92971,6 @@ class App extends React.Component {
                     // Set defaults from config file if user just signed up
                     if (currentUser.newlyCreated) {
                         this.pushUserUpdates({
-                            available: config.userDefaults.available,
                             shareLocation: config.userDefaults.shareLocation,
                             useLocation: config.userDefaults.useLocation,
                             contactInformation: config.userDefaults.contactInformation,
@@ -93077,6 +93084,15 @@ class App extends React.Component {
                 'div',
                 { className: 'center' },
                 tabName
+            ),
+            React.createElement(
+                'div',
+                { className: 'right' },
+                React.createElement(
+                    Ons.ToolbarButton,
+                    { onClick: this.refreshUsers },
+                    React.createElement(Ons.Icon, { icon: 'md-refresh' })
+                )
             )
         );
     }
@@ -93971,7 +93987,7 @@ class Dashboard extends React.Component {
     renderOfferCard() {
         var offer = this.props.currentUser.offer;
         if (offer) {
-            var availabilityInfo = this.props.currentUser.available ? this.l("availableNow") : this.l("notCurrentlyAvailable");
+            var availabilityInfo = offer.available ? this.l("availableNow") : this.l("notCurrentlyAvailable");
 
             return React.createElement(
                 Ons.Card,
@@ -94270,17 +94286,15 @@ class UserListItems extends React.Component {
      * @param {User} the user to describe
      */
     availablityText(user) {
-        if (user.available) {
-            var text = this.props.l("offerForm.available");
+        var status = user.offer ? user.offer.available ? "available" : "notAvailable" : "noOffer";
 
-            // Show distance to user if it has been calculated
-            if (user.distanceToUser) {
-                return text += ` - ${user.distanceToUser} m`;
-            } else {
-                return text += ` - ${this.l("locationIsUnavailable")}`;
-            }
+        var text = this.props.l("offerForm." + status);
+
+        // Show distance to user if it has been calculated
+        if (user.distanceToUser) {
+            return text += ` - ${user.distanceToUser} m`;
         } else {
-            return this.props.l("offerForm.notAvailable");
+            return text += ` - ${this.l("locationIsUnavailable")}`;
         }
     }
 
@@ -94328,7 +94342,7 @@ class UserListItems extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = user.available && user.coords && !!(user.shareLocation || this.props.currentUser.coords);
+                var clickable = user.coords && !!(user.shareLocation || this.props.currentUser.coords);
 
                 if (!user.offer && this.props.usersWithOffersOnly) {
                     continue;
@@ -94486,8 +94500,8 @@ class Map extends React.Component {
         for (var i = 0; i < users.length; i++) {
             var user = users[i];
 
-            // Skip if the user is not available or hasn't shared their coordinates
-            if (!user.available || !user.coords) {
+            // Skip if the user hasn't shared their coordinates
+            if (!user.coords) {
                 continue;
             }
 
