@@ -205,15 +205,15 @@ class ContactSettings extends React.Component {
                     </div>
                 </Ons.ListItem>
 
-                {this.renderContactSetting("useEmail",    "email")}
-                {this.renderContactSetting("useFacebook", "facebook")}
-                {this.renderContactSetting("usePhone",    "phone")}
-                {this.renderContactSetting("useWhatsapp", "whatsapp")}
+                {this.renderContactSetting("useEmail",    "email",    "email")}
+                {this.renderContactSetting("useFacebook", "facebook", "url")}
+                {this.renderContactSetting("usePhone",    "phone",    "tel")}
+                {this.renderContactSetting("useWhatsapp", "whatsapp", "tel")}
             </div>
         );
     }
 
-    renderContactSetting(setting, contactType) {
+    renderContactSetting(setting, contactType, inputType) {
         return (
             <div>
                 <Ons.ListItem tappable={true}>
@@ -230,16 +230,16 @@ class ContactSettings extends React.Component {
                     </label>
                 </Ons.ListItem>
 
-                {this.state.contactInfo[setting] ? this.renderForm(contactType) : null}
+                {this.state.contactInfo[setting] ? this.renderForm(contactType, inputType) : null}
             </div>
         );
     }
 
-    renderForm(contactType) {
+    renderForm(contactType, inputType) {
         return (
             <Ons.ListItem>
                 <div className='right'>
-                    <input type="text"
+                    <input type={inputType}
                         name={contactType}
                         className="text-input text-input--material"
                         placeholder={this.l(contactType)}

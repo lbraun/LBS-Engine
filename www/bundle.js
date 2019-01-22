@@ -92780,7 +92780,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        this.devMode = "map";
+        this.devMode = "settings";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -95472,14 +95472,14 @@ class ContactSettings extends React.Component {
                     )
                 )
             ),
-            this.renderContactSetting("useEmail", "email"),
-            this.renderContactSetting("useFacebook", "facebook"),
-            this.renderContactSetting("usePhone", "phone"),
-            this.renderContactSetting("useWhatsapp", "whatsapp")
+            this.renderContactSetting("useEmail", "email", "email"),
+            this.renderContactSetting("useFacebook", "facebook", "url"),
+            this.renderContactSetting("usePhone", "phone", "tel"),
+            this.renderContactSetting("useWhatsapp", "whatsapp", "tel")
         );
     }
 
-    renderContactSetting(setting, contactType) {
+    renderContactSetting(setting, contactType, inputType) {
         return React.createElement(
             'div',
             null,
@@ -95502,18 +95502,18 @@ class ContactSettings extends React.Component {
                         onChange: this.handleInputChange })
                 )
             ),
-            this.state.contactInfo[setting] ? this.renderForm(contactType) : null
+            this.state.contactInfo[setting] ? this.renderForm(contactType, inputType) : null
         );
     }
 
-    renderForm(contactType) {
+    renderForm(contactType, inputType) {
         return React.createElement(
             Ons.ListItem,
             null,
             React.createElement(
                 'div',
                 { className: 'right' },
-                React.createElement('input', { type: 'text',
+                React.createElement('input', { type: inputType,
                     name: contactType,
                     className: 'text-input text-input--material',
                     placeholder: this.l(contactType),

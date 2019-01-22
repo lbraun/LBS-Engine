@@ -61,14 +61,18 @@ class ContactLinks extends React.Component {
         if (contactType == "facebook") {
             return "https://m.me/" + contactInfo.facebook;
         } else if (contactType == "whatsapp") {
-            return "https://wa.me/" + contactInfo.whatsapp;
+            return "https://wa.me/" + this.stripNonNumeric(contactInfo.whatsapp);
         } else if (contactType == "email") {
             return "mailto:" + contactInfo.email;
         } else if (contactType == "phone") {
-            return "tel:" + contactInfo.phone;
+            return "tel:" + this.stripNonNumeric(contactInfo.phone);
         } else {
             console.log("Error: invalid contact type: " + contactType);
         }
+    }
+
+    stripNonNumeric(string) {
+        return string.replace(/\D/g,'');
     }
 }
 
