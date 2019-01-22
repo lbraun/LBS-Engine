@@ -133,6 +133,8 @@ class UserListItems extends React.Component {
                 var user = users[i];
                 var clickable = user.available && user.coords && !!(user.shareLocation || this.props.currentUser.coords);
 
+                if (!user.offer && this.props.usersWithOffersOnly) { continue; }
+
                 listItems.push(
                     <Ons.ListItem
                         tappable={clickable}
@@ -144,7 +146,7 @@ class UserListItems extends React.Component {
                             </div>
                             <div className="center">
                                 <div className="list-item__title">
-                                    {user.offerTitle}
+                                    {user.offer && user.offer.title}
                                 </div>
                                 <div className="list-item__subtitle">
                                     {this.availablityText(user)}
