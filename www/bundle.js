@@ -92759,7 +92759,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        this.state.devMode = "offers";
+        this.state.devMode = "dashboard";
 
         if (this.state.devMode && !this.state.online) {
             this.state.authenticated = true;
@@ -93794,15 +93794,22 @@ const React = require('react');
 const Ons = require('react-onsenui');
 
 const list = require('./list.js');
+const confirmDialog = require('./confirmDialog.js');
 
 class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
-        this.handleOfferCompletion = this.handleOfferCompletion.bind(this);
+        this.closeOfferCompletionDialog = this.closeOfferCompletionDialog.bind(this);
+        this.openOfferCompletionDialog = this.openOfferCompletionDialog.bind(this);
+        this.confirmOfferCompletion = this.confirmOfferCompletion.bind(this);
         this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
         this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
+
+        this.state = {
+            offerCompletionAlertDialogIsOpen: false
+        };
     }
 
     /**
@@ -93832,11 +93839,22 @@ class Dashboard extends React.Component {
         this.props.pushUserUpdates({ offer: updatedOffer });
     }
 
+    //** Offer completion dialog methods **//
+
+    openOfferCompletionDialog() {
+        this.setState({ offerCompletionAlertDialogIsOpen: true });
+    }
+
+    closeOfferCompletionDialog() {
+        this.setState({ offerCompletionAlertDialogIsOpen: false });
+    }
+
     /**
-     * Complete the user's offer
+     * Handle a click on the confirm offer completion button
      * @param {Event} e the react event object
      */
-    handleOfferCompletion(e) {
+    confirmOfferCompletion(e) {
+        this.closeOfferCompletionDialog();
         this.props.completeOffer();
     }
 
@@ -93933,7 +93951,7 @@ class Dashboard extends React.Component {
                         Ons.Button,
                         {
                             modifier: 'large',
-                            onClick: this.handleOfferCompletion,
+                            onClick: this.openOfferCompletionDialog,
                             style: { backgroundColor: "green" } },
                         React.createElement(Ons.Icon, { icon: "md-check-circle", style: { marginRight: "20px" } }),
                         this.l("completeOffer")
@@ -94032,6 +94050,12 @@ class Dashboard extends React.Component {
                 )
             ),
             this.renderOfferCard(),
+            React.createElement(confirmDialog.ConfirmDialog, {
+                isOpen: this.state.offerCompletionAlertDialogIsOpen,
+                cancelAction: this.closeOfferCompletionDialog,
+                confirmAction: this.confirmOfferCompletion,
+                confirmActionName: this.l("completeOffer"),
+                l: this.props.l }),
             React.createElement(
                 Ons.Row,
                 null,
@@ -94054,7 +94078,7 @@ module.exports = {
     Dashboard: Dashboard
 };
 
-},{"./list.js":280,"react":265,"react-onsenui":262}],279:[function(require,module,exports){
+},{"./confirmDialog.js":276,"./list.js":280,"react":265,"react-onsenui":262}],279:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
