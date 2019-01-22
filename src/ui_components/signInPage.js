@@ -25,14 +25,16 @@ class SignInPage extends React.Component {
     // Render the sign in page
     render() {
         return (
-            <Ons.Page style={{textAlign: "center"}}>
-                <Ons.Row style={{marginTop: "50px"}}>
-                    <Ons.Col>
-                        <h1>{this.props.l("app.name")}</h1>
-                    </Ons.Col>
-                </Ons.Row>
+            <Ons.Page>
+                <div style={{textAlign: "center", margin: "50px 15px"}}>
+                    <Ons.Row>
+                        <Ons.Col>
+                            <h1>{this.props.l("app.name")}</h1>
+                        </Ons.Col>
+                    </Ons.Row>
 
-                {this.renderMainContent()}
+                    {this.renderMainContent()}
+                </div>
             </Ons.Page>
         );
     }
@@ -120,7 +122,7 @@ class SignInPage extends React.Component {
                     <Ons.Button onClick={this.props.login} disabled={"true"}>
                         {this.l("logIn")}
                     </Ons.Button>
-                    <p>{this.l("youMustBeOnlineInOrderToLogin")}</p>
+                    <p><i>{this.l("youMustBeOnlineInOrderToLogIn")}</i></p>
                 </div>
             )
         }
@@ -139,7 +141,7 @@ class SignInPage extends React.Component {
                     <Ons.Button onClick={this.props.logout} disabled={"true"}>
                         {this.props.l("settings.logOut")}
                     </Ons.Button>
-                    <p>{this.l("youMustBeOnlineInOrderToLogin")}</p>
+                    <p><i>{this.l("youMustBeOnlineInOrderToLogOut")}</i></p>
                 </div>
             )
         }

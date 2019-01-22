@@ -1,20 +1,26 @@
 {
     "app": {
         "adminEmail": "lucas.braun@uni-muenster.de",
-        "available": false,
+        "apiUrl": "https://geofreebie-backend.herokuapp.com/api/",
         "defaultLocale": "en",
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
         "projectWebsite": "https://github.com/lbraun/geofreebie",
-        "shareLocation": false,
-        "useLocation": false
     },
     "map": {
         "center": [51.962522, 7.625615],
         "draggable": true,
         "zoom": 12,
         "zoomable": true
+    },
+    "userDefaults": {
+        "available": false,
+        "contactInformation": {},
+        "hasConsented": false,
+        "offer": {},
+        "shareLocation": false,
+        "useLocation": false
     }
 }

@@ -14,14 +14,15 @@ const localizations = require('../data_components/localizations.json');
 const defaultPicture = 'img/logo.png';
 
 // UI
-const signInPage = require('./signInPage.js');
 const consentForm = require('./consentForm.js');
+const contactLinks = require('./contactLinks.js');
 const dashboard = require('./dashboard.js');
-const map = require('./map.js');
-const list = require('./list.js');
-const settings = require('./settings.js');
-const offerForm = require('./offerForm.js');
 const embededSite = require('./embededSite.js')
+const list = require('./list.js');
+const map = require('./map.js');
+const offerForm = require('./offerForm.js');
+const settings = require('./settings.js');
+const signInPage = require('./signInPage.js');
 
 // Logic
 const locationManager = require('../business_components/locationManager.js');
@@ -91,6 +92,9 @@ class App extends React.Component {
             clientID: 'ImD2ybMSYs45zFRZqiLH9aDamJm5cbXv'
         });
 
+        // Backend
+        this.apiUrl = config.app.apiUrl;
+
         // Update the user's position on the map whenever a new position is reported by the device
         var app = this;
         this.positionWatcher = navigator.geolocation.watchPosition(function onSuccess(position) {
@@ -137,13 +141,13 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = true;
+        this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
         // this.state.devMode = "map";
 
-        if (this.state.devMode && !this.state.online) {
-            this.state.authenticated = true;
+        if (this.devMode && !this.state.online) {
+            this.apiUrl = "http://localhost:8080/api/";
             this.state.currentUser = {
                 "nickname": "lucas.braun",
                 "name": "Developer User",
@@ -154,7 +158,21 @@ class App extends React.Component {
                     "title": "Something!",
                     "description": "It's really special."
                 },
+                "contactInformation": {
+                    "email": "lucas.braun@wwu.de",
+                    "facebook": "labraun",
+                    "phone": "4915734693011",
+                    "useEmail": true,
+                    "useFacebook": true,
+                    "usePhone": true,
+                    "useWhatsapp": true,
+                    "whatsapp": "4915734693011",
+                },
+                "coordinates": [51.9, 7.6],
+                "approved": true,
                 "hasConsented": true,
+                "useLocation": config.userDefaults.useLocation,
+                "shareLocation": config.userDefaults.shareLocation,
                 "createdAt": {
                     "$date": "2019-01-09T08:57:59.078Z"
                 },
@@ -173,7 +191,7 @@ class App extends React.Component {
         var localization = localizations[locale][string];
 
         if (!localization || localization == "TODO") {
-            if (!this.state.devMode) {
+            if (!this.devMode) {
                 console.log(`Error: localization "${string}" not found for locale "${locale}"`);
             }
 
@@ -281,7 +299,7 @@ class App extends React.Component {
      */
     fetchOrCreateAuth0User(userInfo) {
         // Make the call to the "find or create" API endpoint
-        var url = "https://geofreebie-backend.herokuapp.com/api/users/";
+        var url = this.apiUrl + "users/";
         fetch(url, {
             method: "POST",
             body: JSON.stringify(userInfo),
@@ -313,7 +331,7 @@ class App extends React.Component {
      * Fetches all user data from the database server, including current user's data
      */
     refreshUsers() {
-        fetch("https://geofreebie-backend.herokuapp.com/api/users")
+        fetch(this.apiUrl + "users")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -326,10 +344,10 @@ class App extends React.Component {
                             // Set defaults from config file if user just signed up
                             if (currentUser.newlyCreated) {
                                 this.pushUserUpdates({
-                                    available: config.app.available,
-                                    shareLocation: config.app.shareLocation,
-                                    useLocation: config.app.useLocation,
-                                    contactInformation: {},
+                                    available: config.userDefaults.available,
+                                    shareLocation: config.userDefaults.shareLocation,
+                                    useLocation: config.userDefaults.useLocation,
+                                    contactInformation: config.userDefaults.contactInformation,
                                     locale: this.state.locale,
                                     newlyCreated: false,
                                 });
@@ -404,7 +422,7 @@ class App extends React.Component {
         });
 
         // Make the call to the update API
-        var url = "https://geofreebie-backend.herokuapp.com/api/users/" + this.state.currentUserId;
+        var url = this.apiUrl + "users/" + this.state.currentUserId;
         fetch(url, {
             method: "PUT",
             body: JSON.stringify(attributes),
@@ -640,7 +658,9 @@ class App extends React.Component {
                             <strong>{this.state.currentUser.name}</strong>
                         </div>
                         <div className='list-item__subtitle'>
-                            {"TODO" || this.state.currentUser.contactInformation}
+                            <contactLinks.ContactLinks
+                                small={true}
+                                user={this.state.currentUser} />
                         </div>
                     </div>
             </Ons.ListItem>
@@ -679,14 +699,14 @@ class App extends React.Component {
      * Start the auth0 login process (launches via an in-app browser)
      */
     login(e) {
-        if (this.state.devMode) {
+        if (this.devMode) {
             this.setState({
                 authenticated: true,
-                currentTab: this.state.devMode,
+                currentTab: this.devMode,
             })
 
             this.fetchOrCreateAuth0User({
-                auth0Id: "facebook|10213377644143781",
+                auth0Id: "auth0|5c35b6c6a19540326d51c3a9",
             });
 
             return;
@@ -774,13 +794,13 @@ class App extends React.Component {
         } else {
             // User logged out, so clear out stored user data
             this.setState({
-                authenticated: false,
-                usersAreLoaded: false,
-                currentUserIsLoaded: false,
                 accessToken: null,
-                currentUserId: null,
+                authenticated: false,
                 currentUser: null,
+                currentUserId: null,
+                currentUserIsLoaded: false,
                 users: null,
+                usersAreLoaded: false,
             })
         }
     };

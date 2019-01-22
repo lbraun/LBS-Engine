@@ -3,6 +3,7 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const contactLinks = require('./contactLinks.js');
 const confirmDialog = require('./confirmDialog.js');
 
 /**
@@ -247,31 +248,6 @@ class offerForm extends React.Component {
                         </div>
                     </Ons.ListItem>
 
-                    <Ons.ListItem id="contact-information-li">
-                        <div className="list-item__title">
-                            <Ons.Row>
-                                <Ons.Col width="80%">
-                                    <b>{this.l("iCanBeContactedAt")}</b>
-                                </Ons.Col>
-
-                                <Ons.Col width="20%" style={{textAlign: "right"}}>
-                                    <b><a href="#"
-                                        style={{color: "black", marginRight: "10px"}}
-
-                                        onClick={this.goToSettingsTab}>
-                                            <Ons.Icon icon={"md-settings"} />
-                                    </a></b>
-                                </Ons.Col>
-                            </Ons.Row>
-                        </div>
-                        <div className="list-item__subtitle">
-                            {this.l("iCanBeContactedAtHelpText")}
-                        </div>
-                        <div>
-                            {"TODO" || this.props.currentUser.contactInformation}
-                        </div>
-                    </Ons.ListItem>
-
                     {this.renderGeofenceWarningListItem()}
                     <Ons.ListItem id='availablility-switch-li'>
                         <div className='left'>
@@ -281,7 +257,7 @@ class offerForm extends React.Component {
                             <Ons.Switch
                                 name="available"
                                 checked={this.offer().available}
-                                disabled={this.props.outOfGeofence ? true : false}
+                                disabled={this.props.outOfGeofence ? "true" : false}
                                 onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
@@ -290,6 +266,29 @@ class offerForm extends React.Component {
                         <div className="list-item__subtitle">
                             {this.renderOfferStatus()}
                         </div>
+                    </Ons.ListItem>
+
+                    <Ons.ListItem id="contact-information-li">
+                        <div className="list-item__title">
+                            <Ons.Row>
+                                <Ons.Col>
+                                    <b>{this.l("iCanBeContactedAt")}</b>
+                                </Ons.Col>
+
+                                <Ons.Col width="40px" style={{textAlign: "right"}}>
+                                    <b><a href="#"
+                                        style={{color: "black", marginRight: "10px"}}
+                                        onClick={this.goToSettingsTab}>
+                                            <Ons.Icon icon={"md-settings"} />
+                                    </a></b>
+                                </Ons.Col>
+                            </Ons.Row>
+                        </div>
+                        <p>
+                            <contactLinks.ContactLinks
+                                small={true}
+                                user={this.props.currentUser} />
+                        </p>
                     </Ons.ListItem>
 
                     <Ons.ListItem>
