@@ -9,12 +9,20 @@ class ReviewDialog extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleCancelClick = this.handleCancelClick.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmitClick = this.handleSubmitClick.bind(this);
+        this.handleCancelClick = this.handleCancelClick.bind(this);
 
-        this.state = {
-            _otherUserId: null,
-            responses: {},
+        this.state = this.defaultState();
+    }
+
+    defaultState() {
+        return {
+            _otherUserId: "",
+            question1: "",
+            question2: "",
+            question3: "",
+            question4: "",
         };
     }
 
@@ -24,6 +32,28 @@ class ReviewDialog extends React.Component {
      */
     l(string) {
         return this.props.l(`review.${string}`);
+    }
+
+    /**
+     * Handle the change of a form element
+     * @param {Event} e the react event object
+     */
+    handleInputChange(e) {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+
+        this.setState({
+            [name]: value
+        });
+
+        this.setState({
+            allFieldsFilled: this.state._otherUserId
+                && this.state.question1
+                && this.state.question2
+                && this.state.question3
+                && this.state.question4
+        });
     }
 
     /**
@@ -42,16 +72,22 @@ class ReviewDialog extends React.Component {
         var review = {
             _id: this.props.review._id,
             _userId: this.props.review._userId,
-            _otherUserId: this.state._otherUserId,
             offerTitle: this.props.review.offerTitle,
-            responses: this.state.responses,
+            _otherUserId: this.state._otherUserId,
+            question1: this.state.question1,
+            question2: this.state.question2,
+            question3: this.state.question3,
+            question4: this.state.question4,
             status: "submitted",
         };
 
         this.props.onSubmit(review);
+        this.setState(this.defaultState());
     }
 
     render() {
+        if (!this.props.review) return null;
+
         return(
             <Ons.Modal onCancel={this.props.onCancel}
                 isOpen={!!this.props.review}
@@ -60,16 +96,19 @@ class ReviewDialog extends React.Component {
                         <Ons.List>
                             {this.renderQuestions()}
 
-                            <Ons.ListItem key={"submit"}>
-                                <Ons.Button onClick={this.handleSubmitClick}>
-                                    {this.l("submit")}
-                                </Ons.Button>
-                            </Ons.ListItem>
-
-                            <Ons.ListItem key={"cancel"}>
-                                <Ons.Button onClick={this.handleCancelClick}>
-                                    {this.l("cancel")}
-                                </Ons.Button>
+                            <Ons.ListItem key={"buttons"}>
+                                <div className="left">
+                                    <Ons.Button
+                                        onClick={this.handleCancelClick}
+                                        style={{backgroundColor: "#d9534f"}}>
+                                            {this.l("cancel")}
+                                    </Ons.Button>
+                                </div>
+                                <div className="right">
+                                    <Ons.Button onClick={this.handleSubmitClick}>
+                                        {this.l("submit")}
+                                    </Ons.Button>
+                                </div>
                             </Ons.ListItem>
                         </Ons.List>
                     </Ons.Page>
@@ -78,49 +117,89 @@ class ReviewDialog extends React.Component {
     }
 
     renderQuestions() {
-        if (!this.props.review) return null;
-
-        var responses = this.props.review.responses;
         var questionListItems = [];
+        var questionName = "_otherUserId";
 
-        questionListItems.push(
-            <Ons.ListItem key={"otherUserId"}>
-                <div className="list-item__title">
-                    <b>To whom did you give your offer?</b>
-                </div>
-                <div className="list-item__subtitle">
-                    <input type="text"
-                        name="otherUserId"
-                        className="text-input text-input--transparent"
-                        style={{width: "100%"}}
-                        placeholder={"Other user id"}
-                        value={this.state._otherUserId}>
-                    </input>
-                </div>
-            </Ons.ListItem>
-        );
+        questionListItems.push(this.renderQuestion(questionName));
 
-        for (var questionName in responses) {
-            var response = responses[questionName];
-
-            questionListItems.push(
-                <Ons.ListItem key={questionName}>
-                    <div className="list-item__title">
-                        <b>{this.l(questionName)}</b>
-                    </div>
-                    <div className="list-item__subtitle">
-                        <input type="text"
-                            name={questionName}
-                            className="text-input text-input--transparent"
-                            style={{width: "100%"}}
-                            value={this.state.responses[questionName]}>
-                        </input>
-                    </div>
-                </Ons.ListItem>
-            );
+        for (var i = 1; i <= 4; i++) {
+            var questionName = `question${i}`;
+            questionListItems.push(this.renderQuestion(questionName));
         }
 
         return questionListItems;
+    }
+
+    renderQuestion(questionName) {
+        return (
+            <Ons.ListItem key={questionName}>
+                <div className="list-item__title">
+                    <b>{this.l(questionName)}</b>
+                </div>
+                <div className="list-item__subtitle">
+                    <Ons.Select modifier="material"
+                        name={questionName}
+                        value={this.state[questionName]}
+                        onChange={this.handleInputChange}>
+                            {this.renderAnswerOptions(questionName)}
+                    </Ons.Select>
+                </div>
+            </Ons.ListItem>
+        );
+    }
+
+    renderAnswerOptions(questionName) {
+        var answers = this.getAnswersFor(questionName);
+        var answerOptions = [];
+
+        for (var i = 0; i < answers.length; i++) {
+            answerOptions.push(
+                <option value={answers[i].value} key={i}>
+                    {answers[i].text || this.l(answers[i].value)}
+                </option>
+            );
+        }
+
+        return answerOptions;
+    }
+
+    getAnswersFor(questionName) {
+        var answerKey = {
+            _otherUserId: this.props.users.map(this.asSelectOption),
+            question1: [
+                {value: "email"},
+                {value: "facebook"},
+                {value: "phone"},
+                {value: "whatsapp"},
+            ],
+            question2: [
+                {value: "atMyHome"},
+                {value: "atTheirHome"},
+                {value: "atSomeoneElsesHome"},
+                {value: "atMyWork"},
+                {value: "atTheirWork"},
+                {value: "inAnotherPublicPlace"},
+                {value: "weDidntMeetInPerson"},
+            ],
+            question3: [
+                {value: "verySatisfied"},
+                {value: "satisfied"},
+                {value: "slightlyDissatisfied"},
+                {value: "veryDissatisfied"},
+            ],
+            question4: [
+                {value: "veryLikely"},
+                {value: "likely"},
+                {value: "unlikely"},
+                {value: "veryUnlikely"},
+            ],
+        };
+
+        return answerKey[questionName] || [];
+    }
+
+    asSelectOption(user) {
+        return {value: user._id, text: user.name}
     }
 }
 

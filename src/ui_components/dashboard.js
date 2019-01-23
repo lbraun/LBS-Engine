@@ -127,6 +127,7 @@ class Dashboard extends React.Component {
                     l={this.props.l} />
 
                 <reviewDialog.ReviewDialog
+                    users={this.props.users}
                     review={this.state.reviewToDisplay}
                     onCancel={this.closeReviewDialog}
                     onSubmit={this.submitReview}

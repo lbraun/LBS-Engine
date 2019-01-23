@@ -27,6 +27,7 @@ const signInPage = require('./signInPage.js');
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
+const l10n = require('../business_components/localization.js');
 
 
 
@@ -526,8 +527,9 @@ class App extends React.Component {
             .then(
                 (result) => {
                     this.setState({
-                        currentReviewIsLoaded: true,
-                    });
+                        reviewsAreLoaded: false,
+                    })
+                    this.refreshReviews();
                 },
                 (error) => {
                     console.log("There was an error updating the user!");
