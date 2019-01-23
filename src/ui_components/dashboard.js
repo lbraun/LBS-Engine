@@ -80,7 +80,7 @@ class Dashboard extends React.Component {
     render() {
         return (
             <Ons.Page>
-                {this.renderTodo()}
+                {this.renderPendingReviews()}
 
                 <Ons.Row>
                     <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
@@ -106,6 +106,54 @@ class Dashboard extends React.Component {
                 {this.renderNearbyOffersCard()}
             </Ons.Page>
         )
+    }
+
+    // Render information about the user's pending reviews
+    renderPendingReviews() {
+        var reviewItems = this.renderReviewItems()
+
+        if (reviewItems.length) {
+            return (
+                <div>
+                    <Ons.Row>
+                        <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
+                            <div>{this.l("pendingReviews")}</div>
+                        </Ons.Col>
+                    </Ons.Row>
+
+                    <Ons.Card style={{padding: "24px"}}>
+                        <Ons.List>
+                            {reviewItems}
+                        </Ons.List>
+                    </Ons.Card>
+                </div>
+            );
+        }
+    }
+
+    // Render review list items
+    renderReviewItems() {
+        var reviewItems = [];
+
+        var pendingReviews = this.props.pendingReviews;
+
+        for (var i = pendingReviews.length - 1; i >= 0; i--) {
+            var review = pendingReviews[i];
+            var createdAt = new Date(review.createdAt).toLocaleString();
+
+            reviewItems.push(
+                <Ons.ListItem
+                    tappable={true}
+                    onClick={null}
+                    key={review._id}>
+                        <div>
+                            {createdAt}
+                        </div>
+                </Ons.ListItem>
+            );
+        }
+
+        return (reviewItems);
     }
 
     // Render information about the user's offer

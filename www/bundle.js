@@ -92339,6 +92339,7 @@ module.exports={
         "dashboard.createAnOffer": "Angebot Machen",
         "dashboard.nearbyOffers": "Angebote in Ihre Nähre",
         "dashboard.notCurrentlyAvailable": "Derzeit nicht verfügbar",
+        "dashboard.pendingReviews": "Ausstehende Bewertungen",
         "dashboard.useMyLocation": "TODO",
         "dashboard.welcome": "Willkommen",
         "dashboard.weNeedYourLocationToShowThis": "TODO",
@@ -92442,6 +92443,7 @@ module.exports={
         "dashboard.createAnOffer": "Create an offer",
         "dashboard.nearbyOffers": "Nearby Offers",
         "dashboard.notCurrentlyAvailable": "Not currently available",
+        "dashboard.pendingReviews": "Pending Reviews",
         "dashboard.useMyLocation": "Use my location",
         "dashboard.welcome": "Welcome",
         "dashboard.weNeedYourLocationToShowThis": "We need to use your location in order to show which offers are nearby.",
@@ -92545,6 +92547,7 @@ module.exports={
         "dashboard.createAnOffer": "TODO",
         "dashboard.nearbyOffers": "TODO",
         "dashboard.notCurrentlyAvailable": "TODO",
+        "dashboard.pendingReviews": "TODO",
         "dashboard.useMyLocation": "TODO",
         "dashboard.welcome": "أهلاً و سهلاً",
         "dashboard.weNeedYourLocationToShowThis": "TODO",
@@ -92688,6 +92691,7 @@ class App extends React.Component {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.refreshUsers = this.refreshUsers.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
@@ -92709,8 +92713,10 @@ class App extends React.Component {
             errorLoadingUsers: null,
             errorSyncingUser: null,
             usersAreLoaded: false,
+            reviewsAreLoaded: false,
             currentUserIsLoaded: false,
             users: [],
+            pendingReviews: [],
             selectedUserId: null,
             notificationLog: [],
             currentTab: "dashboard",
@@ -92782,10 +92788,10 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = true;
+        this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
-        // this.devMode = "settings";
+        this.devMode = "dashboard";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -92906,7 +92912,7 @@ class App extends React.Component {
      * @param {Object} userInfo object, returned by auth0.loadUserInfo
      */
     fetchOrCreateAuth0User(userInfo) {
-        // Make the call to the "find or create" API endpoint
+        // Make the call to the "find or create user" API endpoint
         var url = this.apiUrl + "users/";
         fetch(url, {
             method: "POST",
@@ -92928,6 +92934,18 @@ class App extends React.Component {
                 errorSyncingUser: error
             });
         });
+    }
+
+    /**
+     * Refreshes all data that could have changed on the server
+     */
+    refresh() {
+        this.setState({
+            usersAreLoaded: false,
+            reviewsAreLoaded: false
+        });
+        this.refreshUsers();
+        this.refreshReviews();
     }
 
     /**
@@ -92976,6 +92994,26 @@ class App extends React.Component {
     }
 
     /**
+     * Fetches all review objects for the current user from the database server
+     */
+    refreshReviews() {
+        if (!this.state.currentUserId) return;
+
+        fetch(this.apiUrl + "pendingReviews/" + this.state.currentUserId).then(res => res.json()).then(pendingReviews => {
+            this.setState({
+                pendingReviews: pendingReviews,
+                reviewsAreLoaded: true
+            });
+        }, error => {
+            console.log("There was an error loading the pending reviews!");
+            console.log(error);
+            this.setState({
+                reviewsAreLoaded: true
+            });
+        });
+    }
+
+    /**
      * Determines if the given coordinates fall within the app's bounds
      * @param {Array} coordinates (latitude, longitude) to be tested
      */
@@ -92998,11 +93036,37 @@ class App extends React.Component {
      * Complete the current user's offer by initiating a questionnaire
      */
     completeOffer() {
+        this.intiateReview({
+            _giverId: this.state.currentUserId
+        });
+
         var offersCompleted = this.state.currentUser.offersCompleted || 0;
 
         this.pushUserUpdates({
             offer: null,
             offersCompleted: offersCompleted + 1
+        });
+    }
+
+    /**
+     * Initiate a review for a recently completed offer
+     */
+    intiateReview() {
+        // Make the call to the "create review" API endpoint
+        var url = this.apiUrl + "pendingReviews/" + this.state.currentUserId;
+
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({ _giverId: this.state.currentUserId }),
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
+            }
+        }).then(res => res.json()).then(result => {
+            this.refreshReviews();
+        }, error => {
+            console.log("There was an error creating the review!");
+            console.log(error);
         });
     }
 
@@ -93025,7 +93089,7 @@ class App extends React.Component {
             currentUserIsLoaded: false
         });
 
-        // Make the call to the update API
+        // Make the call to the "update user" API endpoint
         var url = this.apiUrl + "users/" + this.state.currentUserId;
         fetch(url, {
             method: "PUT",
@@ -93047,6 +93111,7 @@ class App extends React.Component {
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
         var tabName = this.l(`tabs.${this.state.currentTab}`);
+        var icon = this.state.usersAreLoaded && this.state.reviewsAreLoaded ? 'md-refresh' : 'md-spinner';
 
         return React.createElement(
             Ons.Toolbar,
@@ -93070,8 +93135,8 @@ class App extends React.Component {
                 { className: 'right' },
                 React.createElement(
                     Ons.ToolbarButton,
-                    { onClick: this.refreshUsers },
-                    React.createElement(Ons.Icon, { icon: 'md-refresh' })
+                    { onClick: this.refresh },
+                    React.createElement(Ons.Icon, { icon: icon })
                 )
             )
         );
@@ -93122,14 +93187,16 @@ class App extends React.Component {
         {
             content: React.createElement(dashboard.Dashboard, {
                 l: this.l,
-                login: this.login,
-                handleTabChange: this.handleTabChange,
+                currentUser: this.state.currentUser
+                // For reviews card
+                , pendingReviews: this.state.pendingReviews
+                // For my offer card
+                , handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
-                completeOffer: this.completeOffer,
-                currentUser: this.state.currentUser,
-                online: this.state.online
-                // For user list
-                , handleListItemClick: this.handleListItemClick,
+                completeOffer: this.completeOffer
+                // For nearby offers card
+                , online: this.state.online,
+                handleListItemClick: this.handleListItemClick,
                 usersAreLoaded: this.state.usersAreLoaded,
                 errorLoadingUsers: this.state.errorLoadingUsers,
                 users: this.state.users,
@@ -93434,7 +93501,9 @@ class App extends React.Component {
                 currentUserId: null,
                 currentUserIsLoaded: false,
                 users: null,
-                usersAreLoaded: false
+                usersAreLoaded: false,
+                pendingReviews: null,
+                reviewsAreLoaded: false
             });
         }
     }
@@ -93976,6 +94045,110 @@ class Dashboard extends React.Component {
         this.props.pushUserUpdates({ useLocation: true });
     }
 
+    // Render the dashboard
+    render() {
+        return React.createElement(
+            Ons.Page,
+            null,
+            this.renderPendingReviews(),
+            React.createElement(
+                Ons.Row,
+                null,
+                React.createElement(
+                    Ons.Col,
+                    { style: { margin: "15px 20px 5px 15px" } },
+                    React.createElement(
+                        'div',
+                        null,
+                        this.l("yourOffer")
+                    )
+                )
+            ),
+            this.renderOfferCard(),
+            React.createElement(confirmDialog.ConfirmDialog, {
+                isOpen: this.state.offerCompletionAlertDialogIsOpen,
+                cancelAction: this.closeOfferCompletionDialog,
+                confirmAction: this.confirmOfferCompletion,
+                confirmActionName: this.l("completeOffer"),
+                l: this.props.l }),
+            React.createElement(
+                Ons.Row,
+                null,
+                React.createElement(
+                    Ons.Col,
+                    { style: { margin: "15px 20px 5px 15px" } },
+                    React.createElement(
+                        'div',
+                        null,
+                        this.l("nearbyOffers")
+                    )
+                )
+            ),
+            this.renderNearbyOffersCard()
+        );
+    }
+
+    // Render information about the user's pending reviews
+    renderPendingReviews() {
+        var reviewItems = this.renderReviewItems();
+
+        if (reviewItems.length) {
+            return React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        { style: { margin: "15px 20px 5px 15px" } },
+                        React.createElement(
+                            'div',
+                            null,
+                            this.l("pendingReviews")
+                        )
+                    )
+                ),
+                React.createElement(
+                    Ons.Card,
+                    { style: { padding: "24px" } },
+                    React.createElement(
+                        Ons.List,
+                        null,
+                        reviewItems
+                    )
+                )
+            );
+        }
+    }
+
+    // Render review list items
+    renderReviewItems() {
+        var reviewItems = [];
+
+        var pendingReviews = this.props.pendingReviews;
+
+        for (var i = pendingReviews.length - 1; i >= 0; i--) {
+            var review = pendingReviews[i];
+            var createdAt = new Date(review.createdAt).toLocaleString();
+
+            reviewItems.push(React.createElement(
+                Ons.ListItem,
+                {
+                    tappable: true,
+                    onClick: null,
+                    key: review._id },
+                React.createElement(
+                    'div',
+                    null,
+                    createdAt
+                )
+            ));
+        }
+
+        return reviewItems;
+    }
+
     // Render information about the user's offer
     renderOfferCard() {
         var offer = this.props.currentUser.offer;
@@ -94120,48 +94293,6 @@ class Dashboard extends React.Component {
                 )
             );
         }
-    }
-
-    // Render the dashboard
-    render() {
-        return React.createElement(
-            Ons.Page,
-            null,
-            React.createElement(
-                Ons.Row,
-                null,
-                React.createElement(
-                    Ons.Col,
-                    { style: { margin: "15px 20px 5px 15px" } },
-                    React.createElement(
-                        'div',
-                        null,
-                        this.l("yourOffer")
-                    )
-                )
-            ),
-            this.renderOfferCard(),
-            React.createElement(confirmDialog.ConfirmDialog, {
-                isOpen: this.state.offerCompletionAlertDialogIsOpen,
-                cancelAction: this.closeOfferCompletionDialog,
-                confirmAction: this.confirmOfferCompletion,
-                confirmActionName: this.l("completeOffer"),
-                l: this.props.l }),
-            React.createElement(
-                Ons.Row,
-                null,
-                React.createElement(
-                    Ons.Col,
-                    { style: { margin: "15px 20px 5px 15px" } },
-                    React.createElement(
-                        'div',
-                        null,
-                        this.l("nearbyOffers")
-                    )
-                )
-            ),
-            this.renderNearbyOffersCard()
-        );
     }
 }
 
