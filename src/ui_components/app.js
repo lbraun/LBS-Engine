@@ -54,6 +54,7 @@ class App extends React.Component {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
+        this.pushReviewUpdates = this.pushReviewUpdates.bind(this);
         this.refresh = this.refresh.bind(this);
         this.refreshUsers = this.refreshUsers.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
@@ -297,7 +298,8 @@ class App extends React.Component {
                         currentUserId: result._id
                     });
 
-                    this.refreshUsers();
+                    // Refresh user's data now that we have the user's id
+                    this.refresh();
                 },
                 (error) => {
                     console.log("There was an error creating or loading the user!");
@@ -377,7 +379,7 @@ class App extends React.Component {
     refreshReviews() {
         if (!this.state.currentUserId) return;
 
-        fetch(this.apiUrl + "pendingReviews/" + this.state.currentUserId)
+        fetch(this.apiUrl + "pendingReviews?_userId=" + this.state.currentUserId)
             .then(res => res.json())
             .then(
                 (pendingReviews) => {
@@ -419,9 +421,7 @@ class App extends React.Component {
      * Complete the current user's offer by initiating a questionnaire
      */
     completeOffer() {
-        this.intiateReview({
-            _giverId: this.state.currentUserId,
-        });
+        this.intiateReview();
 
         var offersCompleted = this.state.currentUser.offersCompleted || 0;
 
@@ -436,11 +436,15 @@ class App extends React.Component {
      */
     intiateReview() {
         // Make the call to the "create review" API endpoint
-        var url = this.apiUrl + "pendingReviews/" + this.state.currentUserId;
+        var url = this.apiUrl + "pendingReviews";
 
         fetch(url, {
             method: "POST",
-            body: JSON.stringify({_giverId: this.state.currentUserId}),
+            body: JSON.stringify({
+                _userId: this.state.currentUserId,
+                userType: "giver",
+                offerTitle: this.state.currentUser.offer.title,
+            }),
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
@@ -496,6 +500,40 @@ class App extends React.Component {
                     console.log(error);
                     this.setState({
                         errorSyncingUser: error
+                    });
+                }
+            );
+    }
+
+    /**
+     * Push the provided updates to the review to the database server
+     * @param {Object} attributes object, representing attributes to be updated
+     */
+    pushReviewUpdates(attributes) {
+        if (!attributes._id) {
+            console.log("ERROR: Cannot push user updates without an id");
+            return;
+        }
+
+        // Make the call to the "update review" API endpoint
+        var url = this.apiUrl + "pendingReviews/" + attributes._id;
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(attributes),
+            headers: {'Content-Type': 'application/json'},
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        currentReviewIsLoaded: true,
+                    });
+                },
+                (error) => {
+                    console.log("There was an error updating the user!");
+                    console.log(error);
+                    this.setState({
+                        errorSyncingReview: error
                     });
                 }
             );
@@ -577,6 +615,8 @@ class App extends React.Component {
                     currentUser={this.state.currentUser}
                     // For reviews card
                     pendingReviews={this.state.pendingReviews}
+                    openReview={this.openReview}
+                    pushReviewUpdates={this.pushReviewUpdates}
                     // For my offer card
                     handleTabChange={this.handleTabChange}
                     pushUserUpdates={this.pushUserUpdates}

@@ -4,6 +4,7 @@ const Ons = require('react-onsenui');
 
 const list = require('./list.js');
 const confirmDialog = require('./confirmDialog.js');
+const reviewDialog = require('./reviewDialog.js');
 
 class Dashboard extends React.Component {
 
@@ -11,6 +12,8 @@ class Dashboard extends React.Component {
         super(props);
         this.goToOffersTab = this.goToOffersTab.bind(this);
         this.closeOfferCompletionDialog = this.closeOfferCompletionDialog.bind(this);
+        this.closeReviewDialog = this.closeReviewDialog.bind(this);
+        this.submitReview = this.submitReview.bind(this);
         this.openOfferCompletionDialog = this.openOfferCompletionDialog.bind(this);
         this.confirmOfferCompletion = this.confirmOfferCompletion.bind(this);
         this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
@@ -18,6 +21,7 @@ class Dashboard extends React.Component {
 
         this.state = {
             offerCompletionAlertDialogIsOpen: false,
+            reviewToDisplay: null,
         }
     }
 
@@ -27,6 +31,31 @@ class Dashboard extends React.Component {
      */
     l(string) {
         return this.props.l(`dashboard.${string}`);
+    }
+
+    /**
+     * Handle clicks on reviews in the pending reviews section
+     * @param {review} the review that was clicked on
+     * @param {e} click event
+     */
+    handleReviewClick(review, e) {
+        this.setState({
+            reviewToDisplay: review,
+        });
+    }
+
+    closeReviewDialog(e) {
+        this.setState({
+            reviewToDisplay: null,
+        });
+    }
+
+    submitReview(review) {
+        this.props.pushReviewUpdates(review);
+
+        this.setState({
+            reviewToDisplay: null,
+        });
     }
 
     /**
@@ -97,6 +126,12 @@ class Dashboard extends React.Component {
                     confirmActionName={this.l("completeOffer")}
                     l={this.props.l} />
 
+                <reviewDialog.ReviewDialog
+                    review={this.state.reviewToDisplay}
+                    onCancel={this.closeReviewDialog}
+                    onSubmit={this.submitReview}
+                    l={this.props.l} />
+
                 <Ons.Row>
                     <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
                         <div>{this.l("nearbyOffers")}</div>
@@ -139,15 +174,14 @@ class Dashboard extends React.Component {
 
         for (var i = pendingReviews.length - 1; i >= 0; i--) {
             var review = pendingReviews[i];
-            var createdAt = new Date(review.createdAt).toLocaleString();
 
             reviewItems.push(
                 <Ons.ListItem
                     tappable={true}
-                    onClick={null}
+                    onClick={this.handleReviewClick.bind(this, review)}
                     key={review._id}>
                         <div>
-                            {createdAt}
+                            {review.offerTitle}
                         </div>
                 </Ons.ListItem>
             );
