@@ -52,6 +52,7 @@ class Dashboard extends React.Component {
 
     submitReview(review) {
         this.props.pushReviewUpdates(review);
+        this.props.initiateReview(review);
 
         this.setState({
             reviewToDisplay: null,

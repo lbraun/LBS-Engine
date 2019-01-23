@@ -51,11 +51,12 @@ class App extends React.Component {
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.hideSidebar = this.hideSidebar.bind(this);
+        this.initiateReview = this.initiateReview.bind(this);
         this.l = this.l.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
-        this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.pushReviewUpdates = this.pushReviewUpdates.bind(this);
+        this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.refresh = this.refresh.bind(this);
         this.refreshUsers = this.refreshUsers.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
@@ -422,7 +423,7 @@ class App extends React.Component {
      * Complete the current user's offer by initiating a questionnaire
      */
     completeOffer() {
-        this.intiateReview();
+        this.initiateReview();
 
         var offersCompleted = this.state.currentUser.offersCompleted || 0;
 
@@ -435,17 +436,28 @@ class App extends React.Component {
     /**
      * Initiate a review for a recently completed offer
      */
-    intiateReview() {
+    initiateReview(giverReview = null) {
+        if (giverReview) {
+            var body = {
+                _userId: giverReview._otherUserId,
+                _otherUserId: this.state.currentUserId,
+                userType: "recipient",
+                offerTitle: giverReview.offerTitle,
+            };
+        } else  {
+            var body = {
+                _userId: this.state.currentUserId,
+                userType: "giver",
+                offerTitle: this.state.currentUser.offer.title,
+            };
+        }
+
         // Make the call to the "create review" API endpoint
         var url = this.apiUrl + "pendingReviews";
 
         fetch(url, {
             method: "POST",
-            body: JSON.stringify({
-                _userId: this.state.currentUserId,
-                userType: "giver",
-                offerTitle: this.state.currentUser.offer.title,
-            }),
+            body: JSON.stringify(body),
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
@@ -616,8 +628,9 @@ class App extends React.Component {
                     l={this.l}
                     currentUser={this.state.currentUser}
                     // For reviews card
-                    pendingReviews={this.state.pendingReviews}
+                    initiateReview={this.initiateReview}
                     openReview={this.openReview}
+                    pendingReviews={this.state.pendingReviews}
                     pushReviewUpdates={this.pushReviewUpdates}
                     // For my offer card
                     handleTabChange={this.handleTabChange}
