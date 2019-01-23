@@ -76,6 +76,38 @@ class Dashboard extends React.Component {
         this.props.pushUserUpdates({useLocation: true});
     }
 
+    // Render the dashboard
+    render() {
+        return (
+            <Ons.Page>
+                {this.renderTodo()}
+
+                <Ons.Row>
+                    <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
+                        <div>{this.l("yourOffer")}</div>
+                    </Ons.Col>
+                </Ons.Row>
+
+                {this.renderOfferCard()}
+
+                <confirmDialog.ConfirmDialog
+                    isOpen={this.state.offerCompletionAlertDialogIsOpen}
+                    cancelAction={this.closeOfferCompletionDialog}
+                    confirmAction={this.confirmOfferCompletion}
+                    confirmActionName={this.l("completeOffer")}
+                    l={this.props.l} />
+
+                <Ons.Row>
+                    <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
+                        <div>{this.l("nearbyOffers")}</div>
+                    </Ons.Col>
+                </Ons.Row>
+
+                {this.renderNearbyOffersCard()}
+            </Ons.Page>
+        )
+    }
+
     // Render information about the user's offer
     renderOfferCard() {
         var offer = this.props.currentUser.offer;
@@ -172,36 +204,6 @@ class Dashboard extends React.Component {
                 </Ons.Card>
             );
         }
-    }
-
-    // Render the dashboard
-    render() {
-        return (
-            <Ons.Page>
-                <Ons.Row>
-                    <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
-                        <div>{this.l("yourOffer")}</div>
-                    </Ons.Col>
-                </Ons.Row>
-
-                {this.renderOfferCard()}
-
-                <confirmDialog.ConfirmDialog
-                    isOpen={this.state.offerCompletionAlertDialogIsOpen}
-                    cancelAction={this.closeOfferCompletionDialog}
-                    confirmAction={this.confirmOfferCompletion}
-                    confirmActionName={this.l("completeOffer")}
-                    l={this.props.l} />
-
-                <Ons.Row>
-                    <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
-                        <div>{this.l("nearbyOffers")}</div>
-                    </Ons.Col>
-                </Ons.Row>
-
-                {this.renderNearbyOffersCard()}
-            </Ons.Page>
-        )
     }
 }
 
