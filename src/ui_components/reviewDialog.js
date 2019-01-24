@@ -277,7 +277,7 @@ class ReviewDialog extends React.Component {
             return (
                 <Ons.ListItem key={"validationMessage"} style={{color: "#d9534f"}}>
                     <i>
-                        {this.l("validationFailed")}
+                        {this.props.l("app.allFieldsMustBeCompleted")}
                     </i>
                 </Ons.ListItem>
             );

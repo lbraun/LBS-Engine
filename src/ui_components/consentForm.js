@@ -15,7 +15,7 @@ class ConsentForm extends React.Component {
     }
 
     /**
-     * Localize a string in the context of the sign-in page
+     * Localize a string in the context of the page
      * @param {string} string to be localized
      */
     l(string) {
