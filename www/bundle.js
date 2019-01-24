@@ -94546,11 +94546,11 @@ class DemographicSurvey extends React.Component {
         this.handleSubmitClick = this.handleSubmitClick.bind(this);
 
         this.state = {
-            _otherUserId: "",
             question1: "",
             question2: "",
             question3: "",
             question4: "",
+            question5: "",
             validationFailed: false
         };
     }
@@ -94589,9 +94589,7 @@ class DemographicSurvey extends React.Component {
         });
 
         if (!validationFailed) {
-            var demographicSurvey = {
-                questions: [{ id: "question1", response: this.state.question1 }, { id: "question2", response: this.state.question2 }, { id: "question3", response: this.state.question3 }, { id: "question4", response: this.state.question4 }, { id: "question5", response: this.state.question5 }]
-            };
+            var demographicSurvey = [{ questionId: "question1", response: this.state.question1 }, { questionId: "question2", response: this.state.question2 }, { questionId: "question3", response: this.state.question3 }, { questionId: "question4", response: this.state.question4 }, { questionId: "question5", response: this.state.question5 }];
 
             this.props.pushUserUpdates({
                 demographicSurvey: demographicSurvey,
@@ -94669,9 +94667,14 @@ class DemographicSurvey extends React.Component {
     renderQuestions() {
         var questionListItems = [];
 
-        for (var i = 1; i <= 4; i++) {
+        for (var i = 1; i <= 5; i++) {
             var questionName = `question${i}`;
-            questionListItems.push(this.renderRadioQuestion(questionName));
+
+            if (i == 3) {
+                questionListItems.push(this.renderOpenQuestion(questionName));
+            } else {
+                questionListItems.push(this.renderRadioQuestion(questionName));
+            }
         }
 
         return questionListItems;
@@ -94773,12 +94776,42 @@ class DemographicSurvey extends React.Component {
         return answerOptions;
     }
 
+    renderOpenQuestion(questionName) {
+        return React.createElement(
+            'div',
+            { key: questionName },
+            React.createElement(
+                Ons.ListItem,
+                { key: questionName + "Question" },
+                React.createElement(
+                    'div',
+                    { className: 'list-item__title', style: { marginTop: "50px" } },
+                    React.createElement(
+                        'b',
+                        null,
+                        this.l(questionName)
+                    )
+                )
+            ),
+            React.createElement(
+                Ons.ListItem,
+                { key: questionName + "Answer" },
+                React.createElement(Ons.Input, {
+                    modifier: 'material',
+                    name: questionName,
+                    onChange: this.handleInputChange,
+                    placeholder: '',
+                    value: this.state[questionName] })
+            )
+        );
+    }
+
     getAnswersFor(questionName) {
         var answerKey = {
             question1: [{ value: "under18" }, { value: "18To25" }, { value: "26To35" }, { value: "36To45" }, { value: "46To55" }, { value: "over55" }],
             question2: [{ value: "female" }, { value: "male" }, { value: "other" }],
-            question3: [{ value: "yes" }, { value: "no" }, { value: "notSure" }],
-            question4: [{ value: "yes" }, { value: "no" }, { value: "notSure" }]
+            question4: [{ value: "yes" }, { value: "no" }, { value: "notSure" }],
+            question5: [{ value: "yes" }, { value: "no" }, { value: "notSure" }]
         };
 
         return answerKey[questionName] || [];
