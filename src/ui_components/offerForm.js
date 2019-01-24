@@ -195,7 +195,7 @@ class offerForm extends React.Component {
         } else {
             return (
                 <span>
-                    <Ons.Icon icon={"md-spinner"} /> {this.l("syncing")}
+                    <Ons.Icon icon={"md-spinner"} spin={true} /> {this.l("syncing")}
                 </span>
             );
         }

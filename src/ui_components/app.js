@@ -51,6 +51,7 @@ class App extends React.Component {
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.hideSidebar = this.hideSidebar.bind(this);
+        this.initiateRecipientReview = this.initiateRecipientReview.bind(this);
         this.initiateReview = this.initiateReview.bind(this);
         this.l = this.l.bind(this);
         this.login = this.login.bind(this);
@@ -161,7 +162,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        this.devMode = false;
+        // this.devMode = "dashboard";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -423,41 +424,42 @@ class App extends React.Component {
      * Complete the current user's offer by initiating a questionnaire
      */
     completeOffer() {
-        this.initiateReview();
+        this.initiateReview({
+            _userId: this.state.currentUserId,
+            userType: "giver",
+            offerTitle: this.state.currentUser.offer.title,
+        });
 
         var offersCompleted = this.state.currentUser.offersCompleted || 0;
 
         this.pushUserUpdates({
             offer: null,
             offersCompleted: offersCompleted + 1,
-        })
+        });
     }
 
     /**
-     * Initiate a review for a recently completed offer
+     * Initiate a review for the recipient of a recently completed offer
      */
-    initiateReview(giverReview = null) {
-        if (giverReview) {
-            var body = {
-                _userId: giverReview._otherUserId,
-                _otherUserId: this.state.currentUserId,
-                userType: "recipient",
-                offerTitle: giverReview.offerTitle,
-            };
-        } else  {
-            var body = {
-                _userId: this.state.currentUserId,
-                userType: "giver",
-                offerTitle: this.state.currentUser.offer.title,
-            };
-        }
+    initiateRecipientReview(giverReview) {
+        this.initiateReview({
+            _userId: giverReview._otherUserId,
+            _otherUserId: this.state.currentUserId,
+            userType: "recipient",
+            offerTitle: giverReview.offerTitle,
+        });
+    }
 
+    /**
+     * Initiate a review with the given attributes
+     */
+    initiateReview(attributes) {
         // Make the call to the "create review" API endpoint
         var url = this.apiUrl + "pendingReviews";
 
         fetch(url, {
             method: "POST",
-            body: JSON.stringify(body),
+            body: JSON.stringify(attributes),
             headers: {
                 'Content-Type': 'application/json',
                 // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
@@ -628,7 +630,7 @@ class App extends React.Component {
                     l={this.l}
                     currentUser={this.state.currentUser}
                     // For reviews card
-                    initiateReview={this.initiateReview}
+                    initiateRecipientReview={this.initiateRecipientReview}
                     openReview={this.openReview}
                     pendingReviews={this.state.pendingReviews}
                     pushReviewUpdates={this.pushReviewUpdates}

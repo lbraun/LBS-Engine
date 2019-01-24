@@ -54,7 +54,10 @@ class Dashboard extends React.Component {
 
     submitReview(review) {
         this.props.pushReviewUpdates(review);
-        this.props.initiateReview(review);
+
+        if (review.userType == "giver") {
+            this.props.initiateRecipientReview(review);
+        }
 
         this.setState({
             reviewToDisplay: null,
@@ -207,6 +210,7 @@ class Dashboard extends React.Component {
                         </div>
 
                         <reviewDialog.ReviewDialog
+                            online={this.props.online}
                             currentUserId={this.props.currentUser._id}
                             users={this.props.users}
                             review={this.state.reviewToDisplay == review && review}

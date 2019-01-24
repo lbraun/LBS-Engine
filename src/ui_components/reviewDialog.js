@@ -16,6 +16,10 @@ class ReviewDialog extends React.Component {
         this.handleCancelClick = this.handleCancelClick.bind(this);
 
         this.state = this.defaultState();
+
+        if (this.props.review.userType == "recipient") {
+            this.state._otherUserId = this.props.review._otherUserId;
+        }
     }
 
     defaultState() {
@@ -64,8 +68,9 @@ class ReviewDialog extends React.Component {
      * @param {e} click event
      */
     handleSubmitClick(e) {
+        var otherUserId = this.props.review._otherUserId || this.state._otherUserId;
         var validationFailed = !(
-            this.state._otherUserId
+            otherUserId
             && this.state.question1
             && this.state.question2
             && this.state.question3
@@ -80,8 +85,9 @@ class ReviewDialog extends React.Component {
             var review = {
                 _id: this.props.review._id,
                 _userId: this.props.review._userId,
+                userType: this.props.review.userType,
+                _otherUserId: otherUserId,
                 offerTitle: this.props.review.offerTitle,
-                _otherUserId: this.state._otherUserId,
                 question1: this.state.question1,
                 question2: this.state.question2,
                 question3: this.state.question3,
@@ -145,9 +151,12 @@ class ReviewDialog extends React.Component {
 
     renderQuestions() {
         var questionListItems = [];
-        var questionName = "_otherUserId";
 
-        questionListItems.push(this.renderQuestion(questionName));
+        if (this.props.review.userType == "recipient") {
+            questionListItems.push(this.renderOtherUserInfo());
+        } else {
+            questionListItems.push(this.renderQuestion("_otherUserId"));
+        }
 
         for (var i = 1; i <= 4; i++) {
             var questionName = `question${i}`;
@@ -155,6 +164,39 @@ class ReviewDialog extends React.Component {
         }
 
         return questionListItems;
+    }
+
+    renderOtherUserInfo() {
+        var otherUser = null;
+
+        for (var i = this.props.users.length - 1; i >= 0; i--) {
+            if (this.props.users[i]._id == this.props.review._otherUserId) {
+                otherUser = this.props.users[i];
+            }
+        }
+
+        if (otherUser.picture && this.props.online) {
+            var picture = (
+                <img className="list-item__thumbnail"
+                    src={otherUser.picture}
+                    alt="Profile picture" />
+            );
+        } else {
+            var picture = null;
+        }
+
+        return (
+            <Ons.ListItem key={"otherUserInfo"}>
+                <div className="left">
+                    {picture}
+                </div>
+                <div className="center">
+                    <div className="list-item__title">
+                        <b>{otherUser.name} {this.l("saidTheyGaveYouThisOffer")}</b>
+                    </div>
+                </div>
+            </Ons.ListItem>
+        );
     }
 
     renderQuestion(questionName) {

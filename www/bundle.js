@@ -92411,19 +92411,20 @@ module.exports={
         "review.atMyHome": "Bei mir zu Hause",
         "review.atMyWork": "An meiner Arbeitsplatz",
         "review.atSomeoneElsesHome": "Bei jemandem anderen zu Hause",
-        "review.atTheirHome": "Bei ihm zu Hause",
-        "review.atTheirWork": "An seiner Arbeitsplatz",
+        "review.atTheirHome": "Bei ihr oder ihm zu Hause",
+        "review.atTheirWork": "An ihrer oder seiner Arbeitsplatz",
         "review.email": "Email",
         "review.facebook": "Facebook",
         "review.inAnotherPublicPlace": "In einem anderen öffentlichen Ort",
         "review.likely": "Wahrscheinlich",
         "review.other": "Andere",
         "review.phone": "Telefon oder SMS",
-        "review.question1": "Wie hast du Kontakt aufgenommen?",
+        "review.question1": "Wie habt ihr Kontakt aufgenommen?",
         "review.question2": "Wo habt ihr euch getroffen?",
         "review.question3": "Wie zufrieden warst du mit dem Treffen?",
         "review.question4": "Wie wahrscheinlich ist es, dass du diese Person erneut kontaktieren wirst?",
         "review.questionsAbout": "Fragen zu",
+        "review.saidTheyGaveYouThisOffer": "hat gesagt dass, du sie oder ihn über dieses Angebot kontaktiert hast.",
         "review.satisfied": "Zufrieden",
         "review.slightlyDissatisfied": "Etwas unzufrieden",
         "review.unlikely": "Unwahrscheinlich",
@@ -92557,6 +92558,7 @@ module.exports={
         "review.question3": "How satisfied were you with the meeting?",
         "review.question4": "How likely are you to contact this person again?",
         "review.questionsAbout": "Questions about",
+        "review.saidTheyGaveYouThisOffer": "said that you contacted them about this offer.",
         "review.satisfied": "Satisfied",
         "review.slightlyDissatisfied": "Slightly dissatisfied",
         "review.unlikely": "Unlikely",
@@ -92690,6 +92692,7 @@ module.exports={
         "review.question3": "TODO",
         "review.question4": "TODO",
         "review.questionsAbout": "TODO",
+        "review.saidTheyGaveYouThisOffer": "TODO",
         "review.satisfied": "TODO",
         "review.slightlyDissatisfied": "TODO",
         "review.unlikely": "TODO",
@@ -92806,6 +92809,7 @@ class App extends React.Component {
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.hideSidebar = this.hideSidebar.bind(this);
+        this.initiateRecipientReview = this.initiateRecipientReview.bind(this);
         this.initiateReview = this.initiateReview.bind(this);
         this.l = this.l.bind(this);
         this.login = this.login.bind(this);
@@ -92912,7 +92916,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        this.devMode = false;
+        // this.devMode = "dashboard";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -93158,7 +93162,11 @@ class App extends React.Component {
      * Complete the current user's offer by initiating a questionnaire
      */
     completeOffer() {
-        this.initiateReview();
+        this.initiateReview({
+            _userId: this.state.currentUserId,
+            userType: "giver",
+            offerTitle: this.state.currentUser.offer.title
+        });
 
         var offersCompleted = this.state.currentUser.offersCompleted || 0;
 
@@ -93169,30 +93177,27 @@ class App extends React.Component {
     }
 
     /**
-     * Initiate a review for a recently completed offer
+     * Initiate a review for the recipient of a recently completed offer
      */
-    initiateReview(giverReview = null) {
-        if (giverReview) {
-            var body = {
-                _userId: giverReview._otherUserId,
-                _otherUserId: this.state.currentUserId,
-                userType: "recipient",
-                offerTitle: giverReview.offerTitle
-            };
-        } else {
-            var body = {
-                _userId: this.state.currentUserId,
-                userType: "giver",
-                offerTitle: this.state.currentUser.offer.title
-            };
-        }
+    initiateRecipientReview(giverReview) {
+        this.initiateReview({
+            _userId: giverReview._otherUserId,
+            _otherUserId: this.state.currentUserId,
+            userType: "recipient",
+            offerTitle: giverReview.offerTitle
+        });
+    }
 
+    /**
+     * Initiate a review with the given attributes
+     */
+    initiateReview(attributes) {
         // Make the call to the "create review" API endpoint
         var url = this.apiUrl + "pendingReviews";
 
         fetch(url, {
             method: "POST",
-            body: JSON.stringify(body),
+            body: JSON.stringify(attributes),
             headers: {
                 'Content-Type': 'application/json'
                 // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
@@ -93354,7 +93359,7 @@ class App extends React.Component {
                 l: this.l,
                 currentUser: this.state.currentUser
                 // For reviews card
-                , initiateReview: this.initiateReview,
+                , initiateRecipientReview: this.initiateRecipientReview,
                 openReview: this.openReview,
                 pendingReviews: this.state.pendingReviews,
                 pushReviewUpdates: this.pushReviewUpdates
@@ -94192,7 +94197,10 @@ class Dashboard extends React.Component {
 
     submitReview(review) {
         this.props.pushReviewUpdates(review);
-        this.props.initiateReview(review);
+
+        if (review.userType == "giver") {
+            this.props.initiateRecipientReview(review);
+        }
 
         this.setState({
             reviewToDisplay: null,
@@ -94297,8 +94305,7 @@ class Dashboard extends React.Component {
             this.renderNearbyOffersCard(),
             React.createElement(
                 Ons.Toast,
-                {
-                    isOpen: this.state.showReviewSubmittedNotification },
+                { isOpen: this.state.showReviewSubmittedNotification },
                 this.l("reviewSubmitted"),
                 React.createElement(
                     'button',
@@ -94365,6 +94372,7 @@ class Dashboard extends React.Component {
                     review.offerTitle
                 ),
                 React.createElement(reviewDialog.ReviewDialog, {
+                    online: this.props.online,
                     currentUserId: this.props.currentUser._id,
                     users: this.props.users,
                     review: this.state.reviewToDisplay == review && review,
@@ -95318,7 +95326,7 @@ class offerForm extends React.Component {
             return React.createElement(
                 'span',
                 null,
-                React.createElement(Ons.Icon, { icon: "md-spinner" }),
+                React.createElement(Ons.Icon, { icon: "md-spinner", spin: true }),
                 ' ',
                 this.l("syncing")
             );
@@ -95554,6 +95562,10 @@ class ReviewDialog extends React.Component {
         this.handleCancelClick = this.handleCancelClick.bind(this);
 
         this.state = this.defaultState();
+
+        if (this.props.review.userType == "recipient") {
+            this.state._otherUserId = this.props.review._otherUserId;
+        }
     }
 
     defaultState() {
@@ -95602,7 +95614,8 @@ class ReviewDialog extends React.Component {
      * @param {e} click event
      */
     handleSubmitClick(e) {
-        var validationFailed = !(this.state._otherUserId && this.state.question1 && this.state.question2 && this.state.question3 && this.state.question4);
+        var otherUserId = this.props.review._otherUserId || this.state._otherUserId;
+        var validationFailed = !(otherUserId && this.state.question1 && this.state.question2 && this.state.question3 && this.state.question4);
 
         this.setState({
             validationFailed: validationFailed
@@ -95612,8 +95625,9 @@ class ReviewDialog extends React.Component {
             var review = {
                 _id: this.props.review._id,
                 _userId: this.props.review._userId,
+                userType: this.props.review.userType,
+                _otherUserId: otherUserId,
                 offerTitle: this.props.review.offerTitle,
-                _otherUserId: this.state._otherUserId,
                 question1: this.state.question1,
                 question2: this.state.question2,
                 question3: this.state.question3,
@@ -95699,9 +95713,12 @@ class ReviewDialog extends React.Component {
 
     renderQuestions() {
         var questionListItems = [];
-        var questionName = "_otherUserId";
 
-        questionListItems.push(this.renderQuestion(questionName));
+        if (this.props.review.userType == "recipient") {
+            questionListItems.push(this.renderOtherUserInfo());
+        } else {
+            questionListItems.push(this.renderQuestion("_otherUserId"));
+        }
 
         for (var i = 1; i <= 4; i++) {
             var questionName = `question${i}`;
@@ -95709,6 +95726,49 @@ class ReviewDialog extends React.Component {
         }
 
         return questionListItems;
+    }
+
+    renderOtherUserInfo() {
+        var otherUser = null;
+
+        for (var i = this.props.users.length - 1; i >= 0; i--) {
+            if (this.props.users[i]._id == this.props.review._otherUserId) {
+                otherUser = this.props.users[i];
+            }
+        }
+
+        if (otherUser.picture && this.props.online) {
+            var picture = React.createElement('img', { className: 'list-item__thumbnail',
+                src: otherUser.picture,
+                alt: 'Profile picture' });
+        } else {
+            var picture = null;
+        }
+
+        return React.createElement(
+            Ons.ListItem,
+            { key: "otherUserInfo" },
+            React.createElement(
+                'div',
+                { className: 'left' },
+                picture
+            ),
+            React.createElement(
+                'div',
+                { className: 'center' },
+                React.createElement(
+                    'div',
+                    { className: 'list-item__title' },
+                    React.createElement(
+                        'b',
+                        null,
+                        otherUser.name,
+                        ' ',
+                        this.l("saidTheyGaveYouThisOffer")
+                    )
+                )
+            )
+        );
     }
 
     renderQuestion(questionName) {
