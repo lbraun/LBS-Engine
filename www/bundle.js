@@ -92814,6 +92814,7 @@ class App extends React.Component {
         this.l = this.l.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+        this.onDeviceBackButton = this.onDeviceBackButton.bind(this);
         this.pushReviewUpdates = this.pushReviewUpdates.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.refresh = this.refresh.bind(this);
@@ -93312,6 +93313,10 @@ class App extends React.Component {
         );
     }
 
+    onDeviceBackButton() {
+        this.handleTabChange("dashboard");
+    }
+
     hideSidebar() {
         this.setState({ sidebarIsOpen: false });
     }
@@ -93450,7 +93455,7 @@ class App extends React.Component {
         },
         // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
         {
-            content: React.createElement(offerForm.offerForm, {
+            content: React.createElement(offerForm.OfferForm, {
                 l: this.l,
                 handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
@@ -93715,7 +93720,7 @@ class App extends React.Component {
                 ),
                 React.createElement(
                     Ons.Page,
-                    { renderToolbar: this.renderToolbar },
+                    { renderToolbar: this.renderToolbar, onDeviceBackButton: this.onDeviceBackButton },
                     React.createElement(Ons.Tabbar, {
                         swipeable: false,
                         position: 'bottom',
@@ -94682,7 +94687,7 @@ class UserListItems extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = user.coords.length && !!(user.shareLocation || this.props.currentUser.coords.length);
+                var clickable = !!(user.coords.length && (user.shareLocation || this.props.currentUser.coords.length));
 
                 if (!user.offer && this.props.usersWithOffersOnly) {
                     continue;
@@ -95132,7 +95137,7 @@ const confirmDialog = require('./confirmDialog.js');
 /**
  * Offer form where the user can list items they are giving away.
  */
-class offerForm extends React.Component {
+class OfferForm extends React.Component {
     constructor(props) {
         super(props);
         this.goToSettingsTab = this.goToSettingsTab.bind(this);
@@ -95503,7 +95508,7 @@ class offerForm extends React.Component {
 }
 
 module.exports = {
-    offerForm: offerForm
+    OfferForm: OfferForm
 };
 
 },{"./confirmDialog.js":277,"./contactLinks.js":279,"react":265,"react-onsenui":262}],286:[function(require,module,exports){

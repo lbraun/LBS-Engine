@@ -131,7 +131,7 @@ class UserListItems extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = user.coords.length && !!(user.shareLocation || this.props.currentUser.coords.length);
+                var clickable = !!(user.coords.length && (user.shareLocation || this.props.currentUser.coords.length));
 
                 if (!user.offer && this.props.usersWithOffersOnly) { continue; }
 

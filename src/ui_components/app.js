@@ -56,6 +56,7 @@ class App extends React.Component {
         this.l = this.l.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+        this.onDeviceBackButton = this.onDeviceBackButton.bind(this);
         this.pushReviewUpdates = this.pushReviewUpdates.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
         this.refresh = this.refresh.bind(this);
@@ -579,6 +580,10 @@ class App extends React.Component {
         )
     }
 
+    onDeviceBackButton() {
+        this.handleTabChange("dashboard");
+    }
+
     hideSidebar() {
         this.setState({sidebarIsOpen: false});
     }
@@ -721,7 +726,7 @@ class App extends React.Component {
             },
             // Offer form element, with no tab displayed in the tab bar, as it is accessible via the sidebar
             {
-                content: <offerForm.offerForm
+                content: <offerForm.OfferForm
                     l={this.l}
                     handleTabChange={this.handleTabChange}
                     pushUserUpdates={this.pushUserUpdates}
@@ -966,7 +971,7 @@ class App extends React.Component {
                         </Ons.Page>
                     </Ons.SplitterSide>
 
-                    <Ons.Page renderToolbar={this.renderToolbar}>
+                    <Ons.Page renderToolbar={this.renderToolbar} onDeviceBackButton={this.onDeviceBackButton}>
                         <Ons.Tabbar
                             swipeable={false}
                             position='bottom'
