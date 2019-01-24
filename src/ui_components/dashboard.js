@@ -127,13 +127,6 @@ class Dashboard extends React.Component {
                     confirmActionName={this.l("completeOffer")}
                     l={this.props.l} />
 
-                <reviewDialog.ReviewDialog
-                    users={this.props.users}
-                    review={this.state.reviewToDisplay}
-                    onCancel={this.closeReviewDialog}
-                    onSubmit={this.submitReview}
-                    l={this.props.l} />
-
                 <Ons.Row>
                     <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
                         <div>{this.l("nearbyOffers")}</div>
@@ -185,6 +178,13 @@ class Dashboard extends React.Component {
                         <div>
                             {review.offerTitle}
                         </div>
+
+                        <reviewDialog.ReviewDialog
+                            users={this.props.users}
+                            review={this.state.reviewToDisplay == review && review}
+                            onCancel={this.closeReviewDialog}
+                            onSubmit={this.submitReview}
+                            l={this.props.l} />
                 </Ons.ListItem>
             );
         }

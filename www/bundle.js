@@ -92426,6 +92426,7 @@ module.exports={
         "review.satisfied": "Zufrieden",
         "review.slightlyDissatisfied": "Etwas unzufrieden",
         "review.unlikely": "Unwahrscheinlich",
+        "review.validationFailed": "Alle Felder müssen ausgefüllt werden",
         "review.veryDissatisfied": "Sehr unzufrieden",
         "review.veryLikely": "Sehr wahrscheinlich",
         "review.verySatisfied": "Sehr zufrieden",
@@ -92557,6 +92558,7 @@ module.exports={
         "review.satisfied": "Satisfied",
         "review.slightlyDissatisfied": "Slightly dissatisfied",
         "review.unlikely": "Unlikely",
+        "review.validationFailed": "All fields must be completed",
         "review.veryDissatisfied": "Very dissatisfied",
         "review.veryLikely": "Very likely",
         "review.verySatisfied": "Very satisfied",
@@ -92688,6 +92690,7 @@ module.exports={
         "review.satisfied": "TODO",
         "review.slightlyDissatisfied": "TODO",
         "review.unlikely": "TODO",
+        "review.validationFailed": "TODO",
         "review.veryDissatisfied": "TODO",
         "review.veryLikely": "TODO",
         "review.verySatisfied": "TODO",
@@ -94263,12 +94266,6 @@ class Dashboard extends React.Component {
                 confirmAction: this.confirmOfferCompletion,
                 confirmActionName: this.l("completeOffer"),
                 l: this.props.l }),
-            React.createElement(reviewDialog.ReviewDialog, {
-                users: this.props.users,
-                review: this.state.reviewToDisplay,
-                onCancel: this.closeReviewDialog,
-                onSubmit: this.submitReview,
-                l: this.props.l }),
             React.createElement(
                 Ons.Row,
                 null,
@@ -94339,7 +94336,13 @@ class Dashboard extends React.Component {
                     'div',
                     null,
                     review.offerTitle
-                )
+                ),
+                React.createElement(reviewDialog.ReviewDialog, {
+                    users: this.props.users,
+                    review: this.state.reviewToDisplay == review && review,
+                    onCancel: this.closeReviewDialog,
+                    onSubmit: this.submitReview,
+                    l: this.props.l })
             ));
         }
 
@@ -95531,7 +95534,8 @@ class ReviewDialog extends React.Component {
             question1: "",
             question2: "",
             question3: "",
-            question4: ""
+            question4: "",
+            validationFailed: false
         };
     }
 
@@ -95555,10 +95559,6 @@ class ReviewDialog extends React.Component {
         this.setState({
             [name]: value
         });
-
-        this.setState({
-            allFieldsFilled: this.state._otherUserId && this.state.question1 && this.state.question2 && this.state.question3 && this.state.question4
-        });
     }
 
     /**
@@ -95574,24 +95574,34 @@ class ReviewDialog extends React.Component {
      * @param {e} click event
      */
     handleSubmitClick(e) {
-        var review = {
-            _id: this.props.review._id,
-            _userId: this.props.review._userId,
-            offerTitle: this.props.review.offerTitle,
-            _otherUserId: this.state._otherUserId,
-            question1: this.state.question1,
-            question2: this.state.question2,
-            question3: this.state.question3,
-            question4: this.state.question4,
-            status: "submitted"
-        };
+        var validationFailed = !(this.state._otherUserId && this.state.question1 && this.state.question2 && this.state.question3 && this.state.question4);
 
-        this.props.onSubmit(review);
-        this.setState(this.defaultState());
+        this.setState({
+            validationFailed: validationFailed
+        });
+
+        if (!validationFailed) {
+            var review = {
+                _id: this.props.review._id,
+                _userId: this.props.review._userId,
+                offerTitle: this.props.review.offerTitle,
+                _otherUserId: this.state._otherUserId,
+                question1: this.state.question1,
+                question2: this.state.question2,
+                question3: this.state.question3,
+                question4: this.state.question4,
+                status: "submitted"
+            };
+
+            this.props.onSubmit(review);
+            this.setState(this.defaultState());
+        }
     }
 
     render() {
-        if (!this.props.review) return null;
+        if (!this.props.review) {
+            return null;
+        }
 
         return React.createElement(
             Ons.Modal,
@@ -95606,16 +95616,22 @@ class ReviewDialog extends React.Component {
                     null,
                     React.createElement(
                         Ons.ListItem,
-                        { key: "Title" },
+                        { key: "title" },
                         React.createElement(
-                            'h3',
-                            null,
-                            this.l("questionsAbout"),
-                            ' ',
-                            this.props.review.offerTitle
+                            'div',
+                            { className: 'list-item__title', style: { textAlign: "center" } },
+                            React.createElement(
+                                'h3',
+                                null,
+                                this.l("questionsAbout"),
+                                ' "',
+                                this.props.review.offerTitle,
+                                '"'
+                            )
                         )
                     ),
                     this.renderQuestions(),
+                    this.renderValidationMessage(),
                     React.createElement(
                         Ons.ListItem,
                         { key: "buttons" },
@@ -95640,6 +95656,12 @@ class ReviewDialog extends React.Component {
                             )
                         )
                     )
+                ),
+                React.createElement(
+                    Ons.Toast,
+                    {
+                        isOpen: this.state.validationFailed },
+                    'Please choose a user!'
                 )
             )
         );
@@ -95716,6 +95738,20 @@ class ReviewDialog extends React.Component {
 
     asSelectOption(user) {
         return { value: user._id, text: user.name };
+    }
+
+    renderValidationMessage() {
+        if (this.state.validationFailed) {
+            return React.createElement(
+                Ons.ListItem,
+                { key: "validationMessage", style: { color: "#d9534f" } },
+                React.createElement(
+                    'i',
+                    null,
+                    this.l("validationFailed")
+                )
+            );
+        }
     }
 }
 

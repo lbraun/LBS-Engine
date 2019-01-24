@@ -23,6 +23,7 @@ class ReviewDialog extends React.Component {
             question2: "",
             question3: "",
             question4: "",
+            validationFailed: false,
         };
     }
 
@@ -46,14 +47,6 @@ class ReviewDialog extends React.Component {
         this.setState({
             [name]: value
         });
-
-        this.setState({
-            allFieldsFilled: this.state._otherUserId
-                && this.state.question1
-                && this.state.question2
-                && this.state.question3
-                && this.state.question4
-        });
     }
 
     /**
@@ -69,24 +62,40 @@ class ReviewDialog extends React.Component {
      * @param {e} click event
      */
     handleSubmitClick(e) {
-        var review = {
-            _id: this.props.review._id,
-            _userId: this.props.review._userId,
-            offerTitle: this.props.review.offerTitle,
-            _otherUserId: this.state._otherUserId,
-            question1: this.state.question1,
-            question2: this.state.question2,
-            question3: this.state.question3,
-            question4: this.state.question4,
-            status: "submitted",
-        };
+        var validationFailed = !(
+            this.state._otherUserId
+            && this.state.question1
+            && this.state.question2
+            && this.state.question3
+            && this.state.question4
+        );
 
-        this.props.onSubmit(review);
-        this.setState(this.defaultState());
+        this.setState({
+            validationFailed: validationFailed
+        });
+
+        if (!validationFailed) {
+            var review = {
+                _id: this.props.review._id,
+                _userId: this.props.review._userId,
+                offerTitle: this.props.review.offerTitle,
+                _otherUserId: this.state._otherUserId,
+                question1: this.state.question1,
+                question2: this.state.question2,
+                question3: this.state.question3,
+                question4: this.state.question4,
+                status: "submitted",
+            };
+
+            this.props.onSubmit(review);
+            this.setState(this.defaultState());
+        }
     }
 
     render() {
-        if (!this.props.review) return null;
+        if (!this.props.review) {
+            return null;
+        }
 
         return(
             <Ons.Modal onCancel={this.props.onCancel}
@@ -94,13 +103,16 @@ class ReviewDialog extends React.Component {
                 cancelable>
                     <Ons.Page>
                         <Ons.List>
-                            <Ons.ListItem key={"Title"}>
-                                <h3>
-                                    {this.l("questionsAbout")} {this.props.review.offerTitle}
-                                </h3>
+                            <Ons.ListItem key={"title"}>
+                                <div className="list-item__title" style={{textAlign: "center"}}>
+                                    <h3>
+                                        {this.l("questionsAbout")} "{this.props.review.offerTitle}"
+                                    </h3>
+                                </div>
                             </Ons.ListItem>
 
                             {this.renderQuestions()}
+                            {this.renderValidationMessage()}
 
                             <Ons.ListItem key={"buttons"}>
                                 <div className="left">
@@ -117,6 +129,11 @@ class ReviewDialog extends React.Component {
                                 </div>
                             </Ons.ListItem>
                         </Ons.List>
+
+                        <Ons.Toast
+                            isOpen={this.state.validationFailed}>
+                                Please choose a user!
+                        </Ons.Toast>
                     </Ons.Page>
             </Ons.Modal>
         );
@@ -207,6 +224,18 @@ class ReviewDialog extends React.Component {
 
     asSelectOption(user) {
         return {value: user._id, text: user.name}
+    }
+
+    renderValidationMessage() {
+        if (this.state.validationFailed) {
+            return (
+                <Ons.ListItem key={"validationMessage"} style={{color: "#d9534f"}}>
+                    <i>
+                        {this.l("validationFailed")}
+                    </i>
+                </Ons.ListItem>
+            );
+        }
     }
 }
 
