@@ -2,6 +2,8 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const reportLink = require('./reportLink.js');
+
 /**
  * Dialog popup allowing the user to complet a review
  */
@@ -104,7 +106,7 @@ class ReviewDialog extends React.Component {
                     <Ons.Page>
                         <Ons.List>
                             <Ons.ListItem key={"title"}>
-                                <div className="list-item__title" style={{textAlign: "center"}}>
+                                <div className="list-item__title">
                                     <h3>
                                         {this.l("questionsAbout")} "{this.props.review.offerTitle}"
                                     </h3>
@@ -128,12 +130,14 @@ class ReviewDialog extends React.Component {
                                     </Ons.Button>
                                 </div>
                             </Ons.ListItem>
-                        </Ons.List>
 
-                        <Ons.Toast
-                            isOpen={this.state.validationFailed}>
-                                Please choose a user!
-                        </Ons.Toast>
+                            <Ons.ListItem key={"reportLink"}>
+                                <reportLink.ReportLink
+                                    currentUserId={this.props.currentUserId}
+                                    l={this.props.l}
+                                    otherUserId={this.props.review._otherUserId} />
+                            </Ons.ListItem>
+                        </Ons.List>
                     </Ons.Page>
             </Ons.Modal>
         );

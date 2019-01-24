@@ -22,6 +22,7 @@ class Dashboard extends React.Component {
         this.state = {
             offerCompletionAlertDialogIsOpen: false,
             reviewToDisplay: null,
+            showReviewSubmittedNotification: false,
         }
     }
 
@@ -56,7 +57,13 @@ class Dashboard extends React.Component {
 
         this.setState({
             reviewToDisplay: null,
+            showReviewSubmittedNotification: true,
         });
+
+        // Close review submitted notification after a delay
+        setTimeout(function() {
+            this.setState({showReviewSubmittedNotification: false})
+        }.bind(this), 5000)
     }
 
     /**
@@ -114,7 +121,9 @@ class Dashboard extends React.Component {
 
                 <Ons.Row>
                     <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
-                        <div>{this.l("yourOffer")}</div>
+                        <div>
+                            {this.l("yourOffer")}
+                        </div>
                     </Ons.Col>
                 </Ons.Row>
 
@@ -129,7 +138,9 @@ class Dashboard extends React.Component {
 
                 <Ons.Row>
                     <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
-                        <div>{this.l("nearbyOffers")}</div>
+                        <div>
+                            {this.l("nearbyOffers")}
+                        </div>
                     </Ons.Col>
                 </Ons.Row>
 
@@ -147,15 +158,22 @@ class Dashboard extends React.Component {
                 <div>
                     <Ons.Row>
                         <Ons.Col style={{margin: "15px 20px 5px 15px"}}>
-                            <div>{this.l("pendingReviews")}</div>
+                            <div>
+                                {this.l("pendingReviews")}
+                            </div>
                         </Ons.Col>
                     </Ons.Row>
 
-                    <Ons.Card style={{padding: "24px"}}>
+                    <Ons.Card style={{padding: "0px"}}>
                         <Ons.List>
                             {reviewItems}
                         </Ons.List>
                     </Ons.Card>
+
+                    <Ons.Toast
+                        isOpen={this.state.showReviewSubmittedNotification}>
+                            {this.l("reviewSubmitted")}
+                    </Ons.Toast>
                 </div>
             );
         }
@@ -172,6 +190,7 @@ class Dashboard extends React.Component {
 
             reviewItems.push(
                 <Ons.ListItem
+                    modifier={"chevron"}
                     tappable={true}
                     onClick={this.handleReviewClick.bind(this, review)}
                     key={review._id}>
@@ -180,6 +199,7 @@ class Dashboard extends React.Component {
                         </div>
 
                         <reviewDialog.ReviewDialog
+                            currentUserId={this.props.currentUser._id}
                             users={this.props.users}
                             review={this.state.reviewToDisplay == review && review}
                             onCancel={this.closeReviewDialog}
@@ -204,14 +224,8 @@ class Dashboard extends React.Component {
                 <Ons.Card style={{padding: "24px"}}>
                     <Ons.Row>
                         <Ons.Col>
-                            <h3>{offer.title}</h3>
-                        </Ons.Col>
-                        <Ons.Col style={{textAlign: "right"}}>
-                            <a href="#"
-                                style={{color: "black"}}
-
-                                onClick={this.goToOffersTab}>
-                                    <h3><Ons.Icon icon={"md-edit"} /></h3>
+                            <a href="#" onClick={this.goToOffersTab}>
+                                <h3>{offer.title}</h3>
                             </a>
                         </Ons.Col>
                     </Ons.Row>
@@ -220,7 +234,7 @@ class Dashboard extends React.Component {
                         <Ons.Col style={{padding: "16px 0px"}}>
                             <i>{this.props.l(offer.available ? "offerForm.available" : "offerForm.notAvailable")}</i>
                         </Ons.Col>
-                        <Ons.Col style={{padding: "12px 0px", textAlign: "right"}}>
+                        <Ons.Col width="50px" style={{padding: "12px 0px", textAlign: "right"}}>
                             <Ons.Switch
                                 name="available"
                                 checked={offer.available}
@@ -241,7 +255,7 @@ class Dashboard extends React.Component {
             );
         } else {
             return (
-                <Ons.Card style={{padding: "24px"}}>
+                <Ons.Card style={{padding: "24px", textAlign: "center"}}>
                     <p>{this.l("youAreNotOffering")}</p>
                     <p>
                         <Ons.Button onClick={this.goToOffersTab}>
@@ -257,7 +271,7 @@ class Dashboard extends React.Component {
     renderNearbyOffersCard() {
         if (this.props.currentUser.useLocation) {
             return (
-                <Ons.Card>
+                <Ons.Card style={{padding: "0px"}}>
                     <Ons.List>
                         <list.UserListItems
                             l={this.props.l}
@@ -274,17 +288,13 @@ class Dashboard extends React.Component {
             );
         } else {
             return (
-                <Ons.Card>
-                    <Ons.List>
-                        <Ons.ListItem>
-                            <p>{this.l("weNeedYourLocationToShowThis")}</p>
-                            <p>
-                                <Ons.Button onClick={this.turnOnUseLocation}>
-                                    {this.l("useMyLocation")}
-                                </Ons.Button>
-                            </p>
-                        </Ons.ListItem>
-                    </Ons.List>
+                <Ons.Card style={{padding: "24px", textAlign: "center"}}>
+                    <p>{this.l("weNeedYourLocationToShowThis")}</p>
+                    <p>
+                        <Ons.Button onClick={this.turnOnUseLocation}>
+                            {this.props.l("settings.useLocation")}
+                        </Ons.Button>
+                    </p>
                 </Ons.Card>
             );
         }

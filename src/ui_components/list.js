@@ -137,6 +137,7 @@ class UserListItems extends React.Component {
 
                 listItems.push(
                     <Ons.ListItem
+                        modifier={"chevron"}
                         tappable={clickable}
                         onClick={clickable ? this.handleListItemClick.bind(this, user._id) : null}
                         id={`user-list-item-${user._id}`}
