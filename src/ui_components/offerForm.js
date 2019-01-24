@@ -9,7 +9,7 @@ const confirmDialog = require('./confirmDialog.js');
 /**
  * Offer form where the user can list items they are giving away.
  */
-class offerForm extends React.Component {
+class OfferForm extends React.Component {
     constructor(props) {
         super(props);
         this.goToSettingsTab = this.goToSettingsTab.bind(this);
@@ -319,5 +319,5 @@ class offerForm extends React.Component {
 }
 
 module.exports = {
-    offerForm: offerForm,
+    OfferForm: OfferForm,
 }
