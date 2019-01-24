@@ -195,7 +195,7 @@ class offerForm extends React.Component {
         } else {
             return (
                 <span>
-                    <Ons.Icon icon={"md-spinner"} /> {this.l("syncing")}
+                    <Ons.Icon icon={"md-spinner"} spin={true} /> {this.l("syncing")}
                 </span>
             );
         }
@@ -272,15 +272,12 @@ class offerForm extends React.Component {
                         <div className="list-item__title">
                             <Ons.Row>
                                 <Ons.Col>
-                                    <b>{this.l("iCanBeContactedAt")}</b>
-                                </Ons.Col>
-
-                                <Ons.Col width="40px" style={{textAlign: "right"}}>
-                                    <b><a href="#"
-                                        style={{color: "black", marginRight: "10px"}}
-                                        onClick={this.goToSettingsTab}>
-                                            <Ons.Icon icon={"md-settings"} />
-                                    </a></b>
+                                    <b>
+                                        <a href="#"
+                                            onClick={this.goToSettingsTab}>
+                                                {this.l("iCanBeContactedAt")}
+                                        </a>
+                                    </b>
                                 </Ons.Col>
                             </Ons.Row>
                         </div>

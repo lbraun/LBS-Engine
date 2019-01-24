@@ -12,10 +12,6 @@ class ContactLinks extends React.Component {
         var links = [];
         var contactInfo = this.props.user && this.props.user.contactInformation;
 
-        if (!contactInfo) {
-            return null;
-        }
-
         var contactTypes = [
             {setting: "useEmail",    contactType: "email"},
             {setting: "useFacebook", contactType: "facebook"},
@@ -54,7 +50,11 @@ class ContactLinks extends React.Component {
             }
         }
 
-        return links;
+        if (links.length != 0) {
+            return links;
+        } else {
+            return null;
+        }
     }
 
     getContactLink(contactInfo, contactType) {

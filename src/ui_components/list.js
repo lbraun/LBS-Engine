@@ -131,12 +131,13 @@ class UserListItems extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = user.coords && !!(user.shareLocation || this.props.currentUser.coords);
+                var clickable = user.coords.length && !!(user.shareLocation || this.props.currentUser.coords.length);
 
                 if (!user.offer && this.props.usersWithOffersOnly) { continue; }
 
                 listItems.push(
                     <Ons.ListItem
+                        modifier={"chevron"}
                         tappable={clickable}
                         onClick={clickable ? this.handleListItemClick.bind(this, user._id) : null}
                         id={`user-list-item-${user._id}`}

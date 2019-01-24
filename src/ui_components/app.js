@@ -27,6 +27,7 @@ const signInPage = require('./signInPage.js');
 // Logic
 const locationManager = require('../business_components/locationManager.js');
 const logger = require('../business_components/logger.js');
+const l10n = require('../business_components/localization.js');
 
 
 
@@ -50,10 +51,14 @@ class App extends React.Component {
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
         this.hideSidebar = this.hideSidebar.bind(this);
+        this.initiateRecipientReview = this.initiateRecipientReview.bind(this);
+        this.initiateReview = this.initiateReview.bind(this);
         this.l = this.l.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
+        this.pushReviewUpdates = this.pushReviewUpdates.bind(this);
         this.pushUserUpdates = this.pushUserUpdates.bind(this);
+        this.refresh = this.refresh.bind(this);
         this.refreshUsers = this.refreshUsers.bind(this);
         this.renderSidebarList = this.renderSidebarList.bind(this);
         this.renderTabs = this.renderTabs.bind(this);
@@ -75,8 +80,10 @@ class App extends React.Component {
             errorLoadingUsers: null,
             errorSyncingUser: null,
             usersAreLoaded: false,
+            reviewsAreLoaded: false,
             currentUserIsLoaded: false,
             users: [],
+            pendingReviews: [],
             selectedUserId: null,
             notificationLog: [],
             currentTab: "dashboard",
@@ -155,7 +162,7 @@ class App extends React.Component {
         this.state.online = true;
 
         // Use devMode to disable sign-in for faster development
-        // this.devMode = "settings";
+        // this.devMode = "dashboard";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -277,7 +284,7 @@ class App extends React.Component {
      * @param {Object} userInfo object, returned by auth0.loadUserInfo
      */
     fetchOrCreateAuth0User(userInfo) {
-        // Make the call to the "find or create" API endpoint
+        // Make the call to the "find or create user" API endpoint
         var url = this.apiUrl + "users/";
         fetch(url, {
             method: "POST",
@@ -294,7 +301,8 @@ class App extends React.Component {
                         currentUserId: result._id
                     });
 
-                    this.refreshUsers();
+                    // Refresh user's data now that we have the user's id
+                    this.refresh();
                 },
                 (error) => {
                     console.log("There was an error creating or loading the user!");
@@ -304,6 +312,18 @@ class App extends React.Component {
                     });
                 }
             )
+    }
+
+    /**
+     * Refreshes all data that could have changed on the server
+     */
+    refresh() {
+        this.setState({
+            usersAreLoaded: false,
+            reviewsAreLoaded: false,
+        })
+        this.refreshUsers();
+        this.refreshReviews();
     }
 
     /**
@@ -357,6 +377,31 @@ class App extends React.Component {
     }
 
     /**
+     * Fetches all review objects for the current user from the database server
+     */
+    refreshReviews() {
+        if (!this.state.currentUserId) return;
+
+        fetch(this.apiUrl + "pendingReviews?_userId=" + this.state.currentUserId)
+            .then(res => res.json())
+            .then(
+                (pendingReviews) => {
+                    this.setState({
+                        pendingReviews: pendingReviews,
+                        reviewsAreLoaded: true,
+                    });
+                },
+                (error) => {
+                    console.log("There was an error loading the pending reviews!");
+                    console.log(error);
+                    this.setState({
+                        reviewsAreLoaded: true,
+                    });
+                }
+            )
+    }
+
+    /**
      * Determines if the given coordinates fall within the app's bounds
      * @param {Array} coordinates (latitude, longitude) to be tested
      */
@@ -379,12 +424,57 @@ class App extends React.Component {
      * Complete the current user's offer by initiating a questionnaire
      */
     completeOffer() {
+        this.initiateReview({
+            _userId: this.state.currentUserId,
+            userType: "giver",
+            offerTitle: this.state.currentUser.offer.title,
+        });
+
         var offersCompleted = this.state.currentUser.offersCompleted || 0;
 
         this.pushUserUpdates({
             offer: null,
             offersCompleted: offersCompleted + 1,
+        });
+    }
+
+    /**
+     * Initiate a review for the recipient of a recently completed offer
+     */
+    initiateRecipientReview(giverReview) {
+        this.initiateReview({
+            _userId: giverReview._otherUserId,
+            _otherUserId: this.state.currentUserId,
+            userType: "recipient",
+            offerTitle: giverReview.offerTitle,
+        });
+    }
+
+    /**
+     * Initiate a review with the given attributes
+     */
+    initiateReview(attributes) {
+        // Make the call to the "create review" API endpoint
+        var url = this.apiUrl + "pendingReviews";
+
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify(attributes),
+            headers: {
+                'Content-Type': 'application/json',
+                // 'Authorization': `Bearer ${this.auth0client.getIdToken()}`,
+            },
         })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.refreshReviews();
+                },
+                (error) => {
+                    console.log("There was an error creating the review!");
+                    console.log(error);
+                }
+            );
     }
 
     /**
@@ -406,7 +496,7 @@ class App extends React.Component {
             currentUserIsLoaded: false,
         });
 
-        // Make the call to the update API
+        // Make the call to the "update user" API endpoint
         var url = this.apiUrl + "users/" + this.state.currentUserId;
         fetch(url, {
             method: "PUT",
@@ -430,9 +520,47 @@ class App extends React.Component {
             );
     }
 
+    /**
+     * Push the provided updates to the review to the database server
+     * @param {Object} attributes object, representing attributes to be updated
+     */
+    pushReviewUpdates(attributes) {
+        if (!attributes._id) {
+            console.log("ERROR: Cannot push user updates without an id");
+            return;
+        }
+
+        // Make the call to the "update review" API endpoint
+        var url = this.apiUrl + "pendingReviews/" + attributes._id;
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify(attributes),
+            headers: {'Content-Type': 'application/json'},
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        reviewsAreLoaded: false,
+                    })
+                    this.refreshReviews();
+                },
+                (error) => {
+                    console.log("There was an error updating the user!");
+                    console.log(error);
+                    this.setState({
+                        errorSyncingReview: error
+                    });
+                }
+            );
+    }
+
     // Toolbar on top of the app, contains name of the app and the menu button
     renderToolbar() {
         var tabName = this.l(`tabs.${this.state.currentTab}`);
+        var icon = this.state.usersAreLoaded && this.state.reviewsAreLoaded ?
+            'md-refresh' :
+            'md-spinner';
 
         return (
             <Ons.Toolbar>
@@ -443,8 +571,8 @@ class App extends React.Component {
                 </div>
                 <div className='center'>{tabName}</div>
                 <div className='right'>
-                    <Ons.ToolbarButton onClick={this.refreshUsers}>
-                        <Ons.Icon icon='md-refresh'></Ons.Icon>
+                    <Ons.ToolbarButton onClick={this.refresh}>
+                        <Ons.Icon icon={icon}></Ons.Icon>
                     </Ons.ToolbarButton>
                 </div>
             </Ons.Toolbar>
@@ -500,13 +628,18 @@ class App extends React.Component {
             {
                 content: <dashboard.Dashboard
                     l={this.l}
-                    login={this.login}
+                    currentUser={this.state.currentUser}
+                    // For reviews card
+                    initiateRecipientReview={this.initiateRecipientReview}
+                    openReview={this.openReview}
+                    pendingReviews={this.state.pendingReviews}
+                    pushReviewUpdates={this.pushReviewUpdates}
+                    // For my offer card
                     handleTabChange={this.handleTabChange}
                     pushUserUpdates={this.pushUserUpdates}
                     completeOffer={this.completeOffer}
-                    currentUser={this.state.currentUser}
+                    // For nearby offers card
                     online={this.state.online}
-                    // For user list
                     handleListItemClick={this.handleListItemClick}
                     usersAreLoaded={this.state.usersAreLoaded}
                     errorLoadingUsers={this.state.errorLoadingUsers}
@@ -799,6 +932,8 @@ class App extends React.Component {
                 currentUserIsLoaded: false,
                 users: null,
                 usersAreLoaded: false,
+                pendingReviews: null,
+                reviewsAreLoaded: false,
             })
         }
     };

@@ -6,6 +6,7 @@ const leaflet = require('react-leaflet');
 
 const config = require('../data_components/config.json');
 const contactLinks = require('./contactLinks.js');
+const reportLink = require('./reportLink.js');
 const OfflineLayer = require('../business_components/offlineLayer.js');
 
 class Map extends React.Component {
@@ -142,7 +143,12 @@ class Map extends React.Component {
                         <p>
                             <contactLinks.ContactLinks user={user} />
                         </p>
-                        <p>{this.reportLink(user)}</p>
+                        <p>
+                            <reportLink.ReportLink
+                                currentUserId={this.props.currentUser._id}
+                                l={this.props.l}
+                                otherUserId={user._id} />
+                        </p>
                     </div>
                 </leaflet.Popup>
             );
@@ -152,27 +158,16 @@ class Map extends React.Component {
                     <div>
                         <p>{user.name}</p>
                         <p><contactLinks.ContactLinks user={user} /></p>
-                        <p>{this.reportLink(user)}</p>
+                        <p>
+                            <reportLink.ReportLink
+                                currentUserId={this.props.currentUser._id}
+                                l={this.props.l}
+                                otherUserId={user._id} />
+                        </p>
                     </div>
                 </leaflet.Popup>
             );
         }
-    }
-
-    reportLink(user) {
-        var mailtoLink = "mailto:";
-        mailtoLink += config.app.adminEmail;
-        mailtoLink += "?subject=";
-        mailtoLink += this.props.l("app.reportEmailSubject");
-        mailtoLink += ": " + this.props.currentUser._id + " > " + user._id;
-        mailtoLink += "&body=";
-        mailtoLink += this.props.l("app.reportEmailBody");
-
-        return (
-            <a href={mailtoLink}>
-                {this.props.l("app.report")}
-            </a>
-        )
     }
 
     renderMapWithLayers() {
