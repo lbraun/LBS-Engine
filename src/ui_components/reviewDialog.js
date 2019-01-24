@@ -92,8 +92,14 @@ class ReviewDialog extends React.Component {
             <Ons.Modal onCancel={this.props.onCancel}
                 isOpen={!!this.props.review}
                 cancelable>
-                    <Ons.Page style={{height: "90%"}}>
+                    <Ons.Page>
                         <Ons.List>
+                            <Ons.ListItem key={"Title"}>
+                                <h3>
+                                    {this.l("questionsAbout")} {this.props.review.offerTitle}
+                                </h3>
+                            </Ons.ListItem>
+
                             {this.renderQuestions()}
 
                             <Ons.ListItem key={"buttons"}>
@@ -101,12 +107,12 @@ class ReviewDialog extends React.Component {
                                     <Ons.Button
                                         onClick={this.handleCancelClick}
                                         style={{backgroundColor: "#d9534f"}}>
-                                            {this.l("cancel")}
+                                            {this.props.l("app.cancel")}
                                     </Ons.Button>
                                 </div>
                                 <div className="right">
                                     <Ons.Button onClick={this.handleSubmitClick}>
-                                        {this.l("submit")}
+                                        {this.props.l("app.submit")}
                                     </Ons.Button>
                                 </div>
                             </Ons.ListItem>
@@ -136,7 +142,7 @@ class ReviewDialog extends React.Component {
                 <div className="list-item__title">
                     <b>{this.l(questionName)}</b>
                 </div>
-                <div className="list-item__subtitle">
+                <div className="list-item__subtitle" style={{textAlign: "right"}}>
                     <Ons.Select modifier="material"
                         name={questionName}
                         value={this.state[questionName]}
@@ -171,6 +177,7 @@ class ReviewDialog extends React.Component {
                 {value: "facebook"},
                 {value: "phone"},
                 {value: "whatsapp"},
+                {value: "other"},
             ],
             question2: [
                 {value: "atMyHome"},
