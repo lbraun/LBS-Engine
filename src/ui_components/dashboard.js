@@ -10,14 +10,15 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.goToOffersTab = this.goToOffersTab.bind(this);
         this.closeOfferCompletionDialog = this.closeOfferCompletionDialog.bind(this);
         this.closeReviewDialog = this.closeReviewDialog.bind(this);
-        this.submitReview = this.submitReview.bind(this);
-        this.openOfferCompletionDialog = this.openOfferCompletionDialog.bind(this);
+        this.closeReviewSubmittedNotification = this.closeReviewSubmittedNotification.bind(this);
         this.confirmOfferCompletion = this.confirmOfferCompletion.bind(this);
-        this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
+        this.goToOffersTab = this.goToOffersTab.bind(this);
+        this.openOfferCompletionDialog = this.openOfferCompletionDialog.bind(this);
+        this.submitReview = this.submitReview.bind(this);
         this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
+        this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
 
         this.state = {
             offerCompletionAlertDialogIsOpen: false,
@@ -62,8 +63,12 @@ class Dashboard extends React.Component {
 
         // Close review submitted notification after a delay
         setTimeout(function() {
-            this.setState({showReviewSubmittedNotification: false})
+            this.setState({showReviewSubmittedNotification: false});
         }.bind(this), 5000)
+    }
+
+    closeReviewSubmittedNotification() {
+        this.setState({showReviewSubmittedNotification: false});
     }
 
     /**
@@ -145,6 +150,14 @@ class Dashboard extends React.Component {
                 </Ons.Row>
 
                 {this.renderNearbyOffersCard()}
+
+                <Ons.Toast isOpen={this.state.showReviewSubmittedNotification}>
+                    {this.l("reviewSubmitted")}
+
+                    <button onClick={this.closeReviewSubmittedNotification}>
+                        <Ons.Icon icon={"md-close"} />
+                    </button>
+                </Ons.Toast>
             </Ons.Page>
         )
     }
@@ -169,11 +182,6 @@ class Dashboard extends React.Component {
                             {reviewItems}
                         </Ons.List>
                     </Ons.Card>
-
-                    <Ons.Toast
-                        isOpen={this.state.showReviewSubmittedNotification}>
-                            {this.l("reviewSubmitted")}
-                    </Ons.Toast>
                 </div>
             );
         }

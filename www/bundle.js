@@ -94148,14 +94148,15 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.goToOffersTab = this.goToOffersTab.bind(this);
         this.closeOfferCompletionDialog = this.closeOfferCompletionDialog.bind(this);
         this.closeReviewDialog = this.closeReviewDialog.bind(this);
-        this.submitReview = this.submitReview.bind(this);
-        this.openOfferCompletionDialog = this.openOfferCompletionDialog.bind(this);
+        this.closeReviewSubmittedNotification = this.closeReviewSubmittedNotification.bind(this);
         this.confirmOfferCompletion = this.confirmOfferCompletion.bind(this);
-        this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
+        this.goToOffersTab = this.goToOffersTab.bind(this);
+        this.openOfferCompletionDialog = this.openOfferCompletionDialog.bind(this);
+        this.submitReview = this.submitReview.bind(this);
         this.turnOnUseLocation = this.turnOnUseLocation.bind(this);
+        this.updateOfferAvailability = this.updateOfferAvailability.bind(this);
 
         this.state = {
             offerCompletionAlertDialogIsOpen: false,
@@ -94202,6 +94203,10 @@ class Dashboard extends React.Component {
         setTimeout(function () {
             this.setState({ showReviewSubmittedNotification: false });
         }.bind(this), 5000);
+    }
+
+    closeReviewSubmittedNotification() {
+        this.setState({ showReviewSubmittedNotification: false });
     }
 
     /**
@@ -94289,7 +94294,18 @@ class Dashboard extends React.Component {
                     )
                 )
             ),
-            this.renderNearbyOffersCard()
+            this.renderNearbyOffersCard(),
+            React.createElement(
+                Ons.Toast,
+                {
+                    isOpen: this.state.showReviewSubmittedNotification },
+                this.l("reviewSubmitted"),
+                React.createElement(
+                    'button',
+                    { onClick: this.closeReviewSubmittedNotification },
+                    React.createElement(Ons.Icon, { icon: "md-close" })
+                )
+            )
         );
     }
 
@@ -94322,12 +94338,6 @@ class Dashboard extends React.Component {
                         null,
                         reviewItems
                     )
-                ),
-                React.createElement(
-                    Ons.Toast,
-                    {
-                        isOpen: this.state.showReviewSubmittedNotification },
-                    this.l("reviewSubmitted")
                 )
             );
         }
@@ -94664,7 +94674,7 @@ class UserListItems extends React.Component {
 
             for (let i in users) {
                 var user = users[i];
-                var clickable = user.coords && !!(user.shareLocation || this.props.currentUser.coords);
+                var clickable = user.coords.length && !!(user.shareLocation || this.props.currentUser.coords.length);
 
                 if (!user.offer && this.props.usersWithOffersOnly) {
                     continue;
