@@ -48,7 +48,7 @@ class ConsentForm extends React.Component {
      * @param {Event} e the react event object
      */
     handleContinueButtonClick(e) {
-        this.props.pushUserUpdates({hasConsented: this.state.allBoxesChecked})
+        this.props.pushUserUpdates({hasCompletedConsentForm: this.state.allBoxesChecked})
     }
 
     // Render the sign in page

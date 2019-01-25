@@ -20,6 +20,7 @@ const dashboard = require('./dashboard.js');
 const demographicSurvey = require('./demographicSurvey.js');
 const embededSite = require('./embededSite.js')
 const list = require('./list.js');
+const lsnsSurvey = require('./lsnsSurvey.js');
 const map = require('./map.js');
 const offerForm = require('./offerForm.js');
 const settings = require('./settings.js');
@@ -887,7 +888,7 @@ class App extends React.Component {
     };
 
     revokeConsent(e) {
-        this.pushUserUpdates({hasConsented: false});
+        this.pushUserUpdates({hasCompletedConsentForm: false});
     };
 
     handleLocaleChange(e) {
@@ -950,7 +951,7 @@ class App extends React.Component {
         // Redirect to sign in page if user has not yet been authenticated, loaded, and approved
         if (this.state.authenticated && this.state.currentUser && this.state.currentUser.approved) {
             // Redirect to consentForm if user has not yet completed it
-            if (!this.state.currentUser.hasConsented) {
+            if (!this.state.currentUser.hasCompletedConsentForm) {
                 return (<consentForm.ConsentForm
                     l={this.l}
                     locale={this.state.locale}
@@ -960,6 +961,14 @@ class App extends React.Component {
             // Redirect to demographicSurvey if user has not yet completed it
             if (!this.state.currentUser.hasCompletedDemographicSurvey) {
                 return (<demographicSurvey.DemographicSurvey
+                    l={this.l}
+                    locale={this.state.locale}
+                    pushUserUpdates={this.pushUserUpdates}
+                    handleLocaleChange={this.handleLocaleChange} />);
+            }
+            // Redirect to lsnsSurvey if user has not yet completed it
+            if (!this.state.currentUser.hasCompletedLsnsSurvey) {
+                return (<lsnsSurvey.LsnsSurvey
                     l={this.l}
                     locale={this.state.locale}
                     pushUserUpdates={this.pushUserUpdates}
