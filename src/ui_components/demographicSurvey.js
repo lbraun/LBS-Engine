@@ -108,7 +108,7 @@ class DemographicSurvey extends React.Component {
                     <Ons.ListItem id="submit-button">
                         <div className="right">
                             <Ons.Button onClick={this.handleSubmitClick}>
-                                {this.props.l("app.submit")}
+                                {this.props.l("app.next")}
                             </Ons.Button>
                         </div>
                     </Ons.ListItem>
@@ -222,6 +222,7 @@ class DemographicSurvey extends React.Component {
                         name={questionName}
                         onChange={this.handleInputChange}
                         placeholder=""
+                        style={{width: "100%"}}
                         value={this.state[questionName]} />
                 </Ons.ListItem>
             </div>
