@@ -166,7 +166,7 @@ class Help extends React.Component {
     renderContact() {
         return (
             <div>
-                {this.props.l("consentForm.ifYouHaveAnyQuestions")} <a href={`mailto:${config.app.adminEmail}`}>{config.app.adminEmail}</a>
+                If you have any questions, please contact the author, Lucas Braun, at: <a href={`mailto:${config.app.adminEmail}`}>{config.app.adminEmail}</a>.
             </div>
         );
     }

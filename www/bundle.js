@@ -92401,6 +92401,9 @@ module.exports={
         "demographicSurvey.under18": "Unter 18",
         "demographicSurvey.yes": "Ja",
         "demographicSurvey.youMustBe18": "Du musst mindestens 18 Jahre alt sein, um die App zu benutzen.",
+        "help.contact": "Kontakt",
+        "help.legal": "Datenschutz",
+        "help.rules": "Richtlinien und Regeln",
         "list.error": "Fehler",
         "list.fetchFailure": "Es konnten keine anderen Leute gefunden werden. Vielleicht hast du keine Internetverbindung?",
         "list.loading": "Wird geladen...",
@@ -92573,9 +92576,9 @@ module.exports={
         "demographicSurvey.under18": "Under 18",
         "demographicSurvey.yes": "Yes",
         "demographicSurvey.youMustBe18": "You must be at least 18 years old to use the app.",
-        "help.rules": "Help",
-        "help.contact": "Help",
-        "help.legal": "Help",
+        "help.contact": "Contact",
+        "help.legal": "Privacy and Legal",
+        "help.rules": "Rules and Guidelines",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
@@ -92748,6 +92751,9 @@ module.exports={
         "demographicSurvey.under18": "TODO",
         "demographicSurvey.yes": "TODO",
         "demographicSurvey.youMustBe18": "TODO",
+        "help.contact": "TODO",
+        "help.legal": "TODO",
+        "help.rules": "TODO",
         "list.error": "خطأ",
         "list.fetchFailure": "حدث خطأ بينما يتم البحث عن أشخاص هنا. يبدو أنك غير متصل باﻹنترنت?",
         "list.loading": "جاري التحميل ...",
@@ -95166,13 +95172,13 @@ class Help extends React.Component {
         return React.createElement(
             'div',
             null,
-            this.props.l("consentForm.ifYouHaveAnyQuestions"),
-            ' ',
+            'If you have any questions, please contact the author, Lucas Braun, at: ',
             React.createElement(
                 'a',
                 { href: `mailto:${config.app.adminEmail}` },
                 config.app.adminEmail
-            )
+            ),
+            '.'
         );
     }
 
