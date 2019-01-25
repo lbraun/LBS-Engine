@@ -10,7 +10,7 @@ function validateLocalizationsFile() {
         var count = Object.keys(localizations[locale]).length;
 
         if (count != localizationsCount) {
-            consoleLog(`Warning! Locale ${locale} does not have the right number of entries.`);
+            console.log(`Warning! Locale ${locale} does not have the right number of entries.`);
         }
     }
 }
