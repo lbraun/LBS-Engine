@@ -111,7 +111,7 @@ class LsnsSurvey extends React.Component {
                     <Ons.ListItem id="submit-button">
                         <div className="right">
                             <Ons.Button onClick={this.handleSubmitClick}>
-                                {this.props.l("app.next")}
+                                {this.props.l("app.submit")}
                             </Ons.Button>
                         </div>
                     </Ons.ListItem>

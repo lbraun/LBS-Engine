@@ -92399,6 +92399,7 @@ module.exports={
         "demographicSurvey.title": "Erzähl uns etwas über dich",
         "demographicSurvey.under18": "Unter 18",
         "demographicSurvey.yes": "Ja",
+        "demographicSurvey.youMustBe18": "Du musst mindestens 18 Jahre alt sein, um die App zu benutzen.",
         "list.error": "Fehler",
         "list.fetchFailure": "Es konnten keine anderen Leute gefunden werden. Vielleicht hast du keine Internetverbindung?",
         "list.loading": "Wird geladen...",
@@ -92569,6 +92570,7 @@ module.exports={
         "demographicSurvey.title": "Tell us about yourself",
         "demographicSurvey.under18": "Under 18",
         "demographicSurvey.yes": "Yes",
+        "demographicSurvey.youMustBe18": "You must be at least 18 years old to use the app.",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
@@ -92739,6 +92741,7 @@ module.exports={
         "demographicSurvey.title": "TODO",
         "demographicSurvey.under18": "TODO",
         "demographicSurvey.yes": "TODO",
+        "demographicSurvey.youMustBe18": "TODO",
         "list.error": "خطأ",
         "list.fetchFailure": "حدث خطأ بينما يتم البحث عن أشخاص هنا. يبدو أنك غير متصل باﻹنترنت?",
         "list.loading": "جاري التحميل ...",
@@ -93023,11 +93026,11 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        // this.state.online = true;
-        this.state.online = false;
+        this.state.online = true;
+        // this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
-        this.devMode = "dashboard";
+        // this.devMode = "dashboard";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -94667,7 +94670,8 @@ class DemographicSurvey extends React.Component {
             question3: "",
             question4: "",
             question5: "",
-            validationFailed: false
+            notAllFieldsAreFilled: false,
+            participantIsTooYoung: false
         };
     }
 
@@ -94698,13 +94702,16 @@ class DemographicSurvey extends React.Component {
      * @param {e} click event
      */
     handleSubmitClick(e) {
-        var validationFailed = !(this.state.question1 && this.state.question2 && this.state.question3 && this.state.question4 && this.state.question5);
+        var notAllFieldsAreFilled = !(this.state.question1 && this.state.question2 && this.state.question3 && this.state.question4 && this.state.question5);
+
+        var participantIsTooYoung = this.state.question1 == "under18";
 
         this.setState({
-            validationFailed: validationFailed
+            notAllFieldsAreFilled: notAllFieldsAreFilled,
+            participantIsTooYoung: participantIsTooYoung
         });
 
-        if (!validationFailed) {
+        if (!notAllFieldsAreFilled && !participantIsTooYoung) {
             var demographicSurvey = [{ questionId: "question1", response: this.state.question1 }, { questionId: "question2", response: this.state.question2 }, { questionId: "question3", response: this.state.question3 }, { questionId: "question4", response: this.state.question4 }, { questionId: "question5", response: this.state.question5 }];
 
             this.props.pushUserUpdates({
@@ -94761,7 +94768,7 @@ class DemographicSurvey extends React.Component {
                     )
                 ),
                 this.renderQuestions(),
-                this.renderValidationMessage(),
+                this.renderValidationMessages(),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'submit-button' },
@@ -94934,18 +94941,34 @@ class DemographicSurvey extends React.Component {
         return answerKey[questionName] || [];
     }
 
-    renderValidationMessage() {
-        if (this.state.validationFailed) {
-            return React.createElement(
+    renderValidationMessages() {
+        validationMessages = [];
+
+        if (this.state.notAllFieldsAreFilled) {
+            validationMessages.push(React.createElement(
                 Ons.ListItem,
-                { key: "validationMessage", style: { color: "#d9534f" } },
+                { key: "allFieldsMustBeCompleted", style: { color: "#d9534f" } },
                 React.createElement(
                     'i',
                     null,
                     this.props.l("app.allFieldsMustBeCompleted")
                 )
-            );
+            ));
         }
+
+        if (this.state.participantIsTooYoung) {
+            validationMessages.push(React.createElement(
+                Ons.ListItem,
+                { key: "youMustBe18", style: { color: "#d9534f" } },
+                React.createElement(
+                    'i',
+                    null,
+                    this.l("youMustBe18")
+                )
+            ));
+        }
+
+        return validationMessages;
     }
 }
 
@@ -95329,7 +95352,7 @@ class LsnsSurvey extends React.Component {
                         React.createElement(
                             Ons.Button,
                             { onClick: this.handleSubmitClick },
-                            this.props.l("app.next")
+                            this.props.l("app.submit")
                         )
                     )
                 )
@@ -95408,7 +95431,7 @@ class LsnsSurvey extends React.Component {
         // 4 = Five to eight
         // 5 = Nine or more
 
-        return [{ value: 0 }, { value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }];
+        return [{ value: "0" }, { value: "1" }, { value: "2" }, { value: "3" }, { value: "4" }, { value: "5" }];
     }
 
     renderValidationMessage() {

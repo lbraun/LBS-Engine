@@ -17,7 +17,8 @@ class DemographicSurvey extends React.Component {
             question3: "",
             question4: "",
             question5: "",
-            validationFailed: false,
+            notAllFieldsAreFilled: false,
+            participantIsTooYoung: false,
         };
     }
 
@@ -48,7 +49,7 @@ class DemographicSurvey extends React.Component {
      * @param {e} click event
      */
     handleSubmitClick(e) {
-        var validationFailed = !(
+        var notAllFieldsAreFilled = !(
             this.state.question1
             && this.state.question2
             && this.state.question3
@@ -56,11 +57,14 @@ class DemographicSurvey extends React.Component {
             && this.state.question5
         );
 
+        var participantIsTooYoung = this.state.question1 == "under18";
+
         this.setState({
-            validationFailed: validationFailed
+            notAllFieldsAreFilled: notAllFieldsAreFilled,
+            participantIsTooYoung: participantIsTooYoung,
         });
 
-        if (!validationFailed) {
+        if (!notAllFieldsAreFilled && !participantIsTooYoung) {
             var demographicSurvey = [
                 {questionId: "question1", response: this.state.question1},
                 {questionId: "question2", response: this.state.question2},
@@ -103,7 +107,7 @@ class DemographicSurvey extends React.Component {
                     </Ons.ListItem>
 
                     {this.renderQuestions()}
-                    {this.renderValidationMessage()}
+                    {this.renderValidationMessages()}
 
                     <Ons.ListItem id="submit-button">
                         <div className="right">
@@ -259,16 +263,30 @@ class DemographicSurvey extends React.Component {
         return answerKey[questionName] || [];
     }
 
-    renderValidationMessage() {
-        if (this.state.validationFailed) {
-            return (
-                <Ons.ListItem key={"validationMessage"} style={{color: "#d9534f"}}>
+    renderValidationMessages() {
+        validationMessages = [];
+
+        if (this.state.notAllFieldsAreFilled) {
+            validationMessages.push(
+                <Ons.ListItem key={"allFieldsMustBeCompleted"} style={{color: "#d9534f"}}>
                     <i>
                         {this.props.l("app.allFieldsMustBeCompleted")}
                     </i>
                 </Ons.ListItem>
             );
         }
+
+        if (this.state.participantIsTooYoung) {
+            validationMessages.push(
+                <Ons.ListItem key={"youMustBe18"} style={{color: "#d9534f"}}>
+                    <i>
+                        {this.l("youMustBe18")}
+                    </i>
+                </Ons.ListItem>
+            );
+        }
+
+        return validationMessages;
     }
 }
 
