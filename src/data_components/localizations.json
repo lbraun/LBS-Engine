@@ -2,7 +2,7 @@
     "de": {
         "alert.isLessThan": "ist weniger als",
         "alert.metersAwayWith": "m entfernt mit dem folgenden Angebot:",
-        "app.allFieldsMustBeCompleted": "Alle Felder müssen ausgefüllt werden",
+        "app.allFieldsMustBeCompleted": "Alle Felder müssen ausgefüllt werden.",
         "app.areYouSure": "Bist du sicher?",
         "app.cancel": "Abbrechen",
         "app.edit": "Bearbeiten",
@@ -173,7 +173,7 @@
     "en": {
         "alert.isLessThan": "is less than",
         "alert.metersAwayWith": "m away with the following offer:",
-        "app.allFieldsMustBeCompleted": "All fields must be completed",
+        "app.allFieldsMustBeCompleted": "All fields must be completed.",
         "app.areYouSure": "Are you sure?",
         "app.cancel": "Cancel",
         "app.edit": "Edit",

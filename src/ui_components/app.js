@@ -19,6 +19,7 @@ const contactLinks = require('./contactLinks.js');
 const dashboard = require('./dashboard.js');
 const demographicSurvey = require('./demographicSurvey.js');
 const embededSite = require('./embededSite.js')
+const help = require('./help.js');
 const list = require('./list.js');
 const lsnsSurvey = require('./lsnsSurvey.js');
 const map = require('./map.js');
@@ -743,9 +744,11 @@ class App extends React.Component {
                     key='offerForm'
                     style={{display: 'none'}} />
             },
-            // Help page iframe
+            // Help element
             {
-                content: <embededSite.EmbededComponent site='help.html' key='help' name='Help' />,
+                content: <help.Help
+                    l={this.l}
+                    key='help' />,
                 tab: <Ons.Tab
                     label={this.l('tabs.help')}
                     icon='md-help'
@@ -764,10 +767,10 @@ class App extends React.Component {
     // Render the list displayed in the sidebar
     renderSidebarList() {
         var sidebarItems = [
+            {key: "dashboard", icon: "md-compass"},
             {key: "offers",    icon: "md-edit"},
             {key: "settings",  icon: "md-settings"},
             {key: "help",      icon: "md-help"},
-            {key: "dashboard", icon: "md-compass"},
 
         ];
 
