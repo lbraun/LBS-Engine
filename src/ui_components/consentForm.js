@@ -15,7 +15,7 @@ class ConsentForm extends React.Component {
     }
 
     /**
-     * Localize a string in the context of the sign-in page
+     * Localize a string in the context of the page
      * @param {string} string to be localized
      */
     l(string) {
@@ -48,7 +48,7 @@ class ConsentForm extends React.Component {
      * @param {Event} e the react event object
      */
     handleContinueButtonClick(e) {
-        this.props.pushUserUpdates({hasConsented: this.state.allBoxesChecked})
+        this.props.pushUserUpdates({hasCompletedConsentForm: this.state.allBoxesChecked})
     }
 
     // Render the sign in page

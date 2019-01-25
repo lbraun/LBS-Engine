@@ -17,7 +17,7 @@
     },
     "userDefaults": {
         "contactInformation": {},
-        "hasConsented": false,
+        "hasCompletedConsentForm": false,
         "offer": {},
         "shareLocation": false,
         "useLocation": false

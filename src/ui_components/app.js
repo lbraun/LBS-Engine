@@ -17,8 +17,10 @@ const defaultPicture = 'img/logo.png';
 const consentForm = require('./consentForm.js');
 const contactLinks = require('./contactLinks.js');
 const dashboard = require('./dashboard.js');
+const demographicSurvey = require('./demographicSurvey.js');
 const embededSite = require('./embededSite.js')
 const list = require('./list.js');
+const lsnsSurvey = require('./lsnsSurvey.js');
 const map = require('./map.js');
 const offerForm = require('./offerForm.js');
 const settings = require('./settings.js');
@@ -161,6 +163,7 @@ class App extends React.Component {
 
         // TODO: implement this for real!
         this.state.online = true;
+        // this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
         // this.devMode = "dashboard";
@@ -835,10 +838,10 @@ class App extends React.Component {
 
             var userInfo = {
                 "nickname": "dev.user",
-                "name": "Developer User",
+                "name": "Developer User 8",
                 "picture": "https://s.gravatar.com/avatar/78d60ce06fb9b7c0fe1710ae15da0480?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flu.png",
                 "updated_at": "2019-01-09T08:54:31.035Z",
-                auth0Id: "auth0|5c35b6c6a19540326d51c3a9",
+                auth0Id: "auth0|5c35b6c6a19540326d51c3a8",
                 approved: true,
                 loginsCount: 0,
             };
@@ -885,7 +888,7 @@ class App extends React.Component {
     };
 
     revokeConsent(e) {
-        this.pushUserUpdates({hasConsented: false});
+        this.pushUserUpdates({hasCompletedConsentForm: false});
     };
 
     handleLocaleChange(e) {
@@ -947,9 +950,25 @@ class App extends React.Component {
     render() {
         // Redirect to sign in page if user has not yet been authenticated, loaded, and approved
         if (this.state.authenticated && this.state.currentUser && this.state.currentUser.approved) {
-            // Redirect to consent form if user has not yet consented
-            if (!this.state.currentUser.hasConsented) {
+            // Redirect to consentForm if user has not yet completed it
+            if (!this.state.currentUser.hasCompletedConsentForm) {
                 return (<consentForm.ConsentForm
+                    l={this.l}
+                    locale={this.state.locale}
+                    pushUserUpdates={this.pushUserUpdates}
+                    handleLocaleChange={this.handleLocaleChange} />);
+            }
+            // Redirect to demographicSurvey if user has not yet completed it
+            if (!this.state.currentUser.hasCompletedDemographicSurvey) {
+                return (<demographicSurvey.DemographicSurvey
+                    l={this.l}
+                    locale={this.state.locale}
+                    pushUserUpdates={this.pushUserUpdates}
+                    handleLocaleChange={this.handleLocaleChange} />);
+            }
+            // Redirect to lsnsSurvey if user has not yet completed it
+            if (!this.state.currentUser.hasCompletedLsnsSurvey) {
+                return (<lsnsSurvey.LsnsSurvey
                     l={this.l}
                     locale={this.state.locale}
                     pushUserUpdates={this.pushUserUpdates}
