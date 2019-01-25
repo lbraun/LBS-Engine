@@ -162,11 +162,11 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        // this.state.online = true;
-        this.state.online = false;
+        this.state.online = true;
+        // this.state.online = false;
 
         // Use devMode to disable sign-in for faster development
-        this.devMode = "dashboard";
+        // this.devMode = "dashboard";
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
