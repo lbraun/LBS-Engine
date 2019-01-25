@@ -92333,6 +92333,7 @@ module.exports={
         "alert.metersAwayWith": "m entfernt mit dem folgenden Angebot:",
         "app.allFieldsMustBeCompleted": "Alle Felder müssen ausgefüllt werden.",
         "app.areYouSure": "Bist du sicher?",
+        "app.back": "Zurück",
         "app.cancel": "Abbrechen",
         "app.edit": "Bearbeiten",
         "app.name": "Geofreebie",
@@ -92504,6 +92505,7 @@ module.exports={
         "alert.metersAwayWith": "m away with the following offer:",
         "app.allFieldsMustBeCompleted": "All fields must be completed.",
         "app.areYouSure": "Are you sure?",
+        "app.back": "Back",
         "app.cancel": "Cancel",
         "app.edit": "Edit",
         "app.name": "Geofreebie",
@@ -92571,6 +92573,9 @@ module.exports={
         "demographicSurvey.under18": "Under 18",
         "demographicSurvey.yes": "Yes",
         "demographicSurvey.youMustBe18": "You must be at least 18 years old to use the app.",
+        "help.rules": "Help",
+        "help.contact": "Help",
+        "help.legal": "Help",
         "list.error": "Error",
         "list.fetchFailure": "There was a problem finding people to list here. Perhaps you are not connected to the internet?",
         "list.loading": "Loading...",
@@ -92607,8 +92612,8 @@ module.exports={
         "offerForm.iAmOfferingHelpText": "Please give a nice short description of the offer.",
         "offerForm.iCanBeContactedAt": "Contact options",
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
-        "offerForm.notAvailable": "Not available now",
         "offerForm.noOffer": "No offer",
+        "offerForm.notAvailable": "Not available now",
         "offerForm.offerDescriptionPlaceholder": "Description",
         "offerForm.offerPicture": "Picture",
         "offerForm.offerTitlePlaceholder": "Title",
@@ -92675,6 +92680,7 @@ module.exports={
         "alert.metersAwayWith": "متر (أمتار) من العرض التالي:",
         "app.allFieldsMustBeCompleted": "TODO",
         "app.areYouSure": "TODO",
+        "app.back": "TODO",
         "app.cancel": "TODO",
         "app.edit": "TODO",
         "app.name": "جيوفريبي",
@@ -95013,6 +95019,8 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const config = require('../data_components/config.json');
+
 /**
  * Component for displaying the help page.
  */
@@ -95135,7 +95143,22 @@ class Help extends React.Component {
         return React.createElement(
             'div',
             null,
-            'Blah bla bla'
+            React.createElement(
+                'p',
+                null,
+                'Hier nochmal alle WICHTIGEN REGELN zur Nutzung dieser Gruppe f\xFCr euch zusammengefasst: 1. Hier sollen nur Beitr\xE4ge gepostet werden von Sachen, die ihr VERSCHENKEN wollt. Der Name der Gruppe sagt deutlich: Wer etwas verschenkt, sollte keine Gegenleistungen erwarten. (Ansonsten: Kommentarlose L\xF6schung des Beitrags.) 2. Wenn ihr etwas sucht, nutzt bitte die daf\xFCr vorgesehene Gruppe: [\xDCbers Handy am besten \xFCber "Veranstaltungen" aufzurufen!!!] https://www.facebook.com/events/229226263869316/?ref=3 3. Gesuche, Verk\xE4ufe oder gar Werbung (dazu z\xE4hlen auch Gutscheine bzw. Rabattcodes) sowie das Verschenken von lebenden und toten Tieren, tierschutzwidrigem Zubeh\xF6r oder illegalen Artikel (Medikamente, Raubkopien, Plagiate) haben hier nichts zu suchen und werden kommentarlos gel\xF6scht. (Bei Posts f\xFCr den guten Zweck wird nach vorheriger (!) Absprache mit den Admins ein Auge zugedr\xFCckt.) 4. Verschenkt werden sollen hier Dinge, die nutzbar sind. Dies schlie\xDFt volldefekte Artikel aus. Liegen nur kleine bekannte Defekte vor, die auch f\xFCr Laien mit einfachen Handgriffen zu reparieren sind, so weist bitte darauf hin. 5. Wie ihr euer Geschenk vergebt, bleibt euch \xFCberlassen. Ob ihr z.B. nach dem first-come-first-served Verfahren vorgeht oder auslost, ihr entscheidet. 6. L\xF6scht bitte alte Posts mit Dingen, die bereits erfolgreich verschenkt wurden. 7. Pers\xF6nliche Nachrichten von Menschen au\xDFerhalb eurer Freunde-Liste landen gerne mal bei den Nachrichtenanfragen, welche ihr unter euren Nachrichten abrufen k\xF6nnt. Schaut auch dort mal rein. 8. Gep\xF6bel gegen andere Gruppenmitglieder und Admins sind nicht nett. Darum m\xF6chten wir so etwas hier nicht sehen... Ebenso ist das Blockieren von einem oder mehreren Admins nicht gestattet. Geldangebote f\xFChren zur sofortigen Blockierung. 9. Unzuverl\xE4ssige Mitglieder sind - ohne Ausnahmen - den Admins zu melden. Lasst euch nicht durch scheinheilige Entschuldigungen verunsichern. Wir f\xFChren eine Liste auf der jeder einen "Freifahrtschein" hat. !!! Denkt bitte daran: Bei Verst\xF6\xDFen gegen die Gruppenregeln kann es passieren, dass wir die/denjenigen aus der Gruppe verweisen...!!! PS: Falls Ihr keine Lust auf Facebook habt, gibt es in der Stadt auch noch mehrere M\xF6glichkeiten, wo Ihr die Sachen direkt loswerden k\xF6nnt. (Angaben ohne Gew\xE4hr) Advent-Kirche, Horstmarer Landweg AVM Recyclinghof Eulerstra\xDFe, Mecklenbeck und Roxel Bushaltestelle Metzer Stra\xDFe, Hammer Stra\xDFe Hotel Guter Hirte, St. Mauritz Paul-Gerhard Haus im Caf\xE9 Sankt Josef Kirche, Hammer Stra\xDFe Sankt Margareta Kirche, Hegerskamp Skagerrakstra\xDFe / Warendorferstra\xDFe B\xFCcherregal Rosenstra\xDFe B\xFCcherregal Meesenstiege Bei der Reparatur vermeintlich defekter Artikel k\xF6nnt ihr hier Hilfe finden: https://repaircafe-muenster.de/'
+            ),
+            React.createElement(
+                'p',
+                null,
+                'For more see: ',
+                React.createElement(
+                    'a',
+                    { href: 'https://groups.freecycle.org/group/BournemouthUK/admin/65978' },
+                    'https://groups.freecycle.org/group/BournemouthUK/admin/65978'
+                ),
+                '.'
+            )
         );
     }
 
@@ -95143,7 +95166,13 @@ class Help extends React.Component {
         return React.createElement(
             'div',
             null,
-            'Blah bla bla'
+            this.props.l("consentForm.ifYouHaveAnyQuestions"),
+            ' ',
+            React.createElement(
+                'a',
+                { href: `mailto:${config.app.adminEmail}` },
+                config.app.adminEmail
+            )
         );
     }
 
@@ -95151,7 +95180,7 @@ class Help extends React.Component {
         return React.createElement(
             'div',
             null,
-            'Blah bla bla'
+            'We will take all precautions with your data.'
         );
     }
 }
@@ -95160,7 +95189,7 @@ module.exports = {
     Help: Help
 };
 
-},{"react":265,"react-onsenui":262}],284:[function(require,module,exports){
+},{"../data_components/config.json":273,"react":265,"react-onsenui":262}],284:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
