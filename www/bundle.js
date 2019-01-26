@@ -92701,7 +92701,7 @@ module.exports={
         "app.name": "Geofreebie",
         "app.next": "Next",
         "app.projectsWebsite": "project's website",
-        "app.report": "Report this profile",
+        "app.report": "Report misuse",
         "app.reportEmailBody": "Please explain the problem here:\n\n",
         "app.reportEmailSubject": "Profile report",
         "app.save": "Save",
@@ -96335,7 +96335,7 @@ class OfferForm extends React.Component {
             title: offer.title || "",
             description: offer.description || "",
             available: offer.available || false,
-            saved: false
+            saved: !!offer.title
         };
     }
 
@@ -96382,7 +96382,7 @@ class OfferForm extends React.Component {
                 pictureFormat: this.state.pictureFormat,
                 title: this.state.title,
                 description: this.state.description,
-                available: this.state.available
+                available: this.props.currentUser.offer ? this.props.currentUser.offer.available : this.state.available
             }
         });
 
@@ -96456,7 +96456,11 @@ class OfferForm extends React.Component {
             title: "",
             description: "",
             available: false,
-            saved: false
+            saved: true
+        });
+
+        this.props.pushUserUpdates({
+            offer: null
         });
 
         this.closeOfferDeletionDialog();
@@ -96475,6 +96479,37 @@ class OfferForm extends React.Component {
             );
         } else {
             return null;
+        }
+    }
+
+    renderAvailabilitySwitch() {
+        if (!this.props.currentUser.offer) {
+            return React.createElement(
+                Ons.ListItem,
+                { id: 'availablility-switch-li' },
+                React.createElement(
+                    'div',
+                    { className: 'left' },
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__title' },
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l(this.state.available ? "available" : "notAvailable")
+                        )
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'right' },
+                    React.createElement(Ons.Switch, {
+                        name: 'available',
+                        checked: this.state.available,
+                        disabled: this.props.outOfGeofence ? "true" : false,
+                        onChange: this.handleInputChange })
+                )
+            );
         }
     }
 
@@ -96659,32 +96694,7 @@ class OfferForm extends React.Component {
                     )
                 ),
                 this.renderGeofenceWarningListItem(),
-                React.createElement(
-                    Ons.ListItem,
-                    { id: 'availablility-switch-li' },
-                    React.createElement(
-                        'div',
-                        { className: 'left' },
-                        React.createElement(
-                            'div',
-                            { className: 'list-item__title' },
-                            React.createElement(
-                                'b',
-                                null,
-                                this.l(this.state.available ? "available" : "notAvailable")
-                            )
-                        )
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'right' },
-                        React.createElement(Ons.Switch, {
-                            name: 'available',
-                            checked: this.state.available,
-                            disabled: this.props.outOfGeofence ? "true" : false,
-                            onChange: this.handleInputChange })
-                    )
-                ),
+                this.renderAvailabilitySwitch(),
                 React.createElement(
                     Ons.ListItem,
                     null,

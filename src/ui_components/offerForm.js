@@ -34,7 +34,7 @@ class OfferForm extends React.Component {
             title: offer.title || "",
             description: offer.description || "",
             available: offer.available || false,
-            saved: false,
+            saved: !!offer.title,
         };
     }
 
@@ -81,7 +81,9 @@ class OfferForm extends React.Component {
                 pictureFormat: this.state.pictureFormat,
                 title: this.state.title,
                 description: this.state.description,
-                available: this.state.available,
+                available: this.props.currentUser.offer ?
+                    this.props.currentUser.offer.available :
+                    this.state.available,
             },
         });
 
@@ -157,7 +159,11 @@ class OfferForm extends React.Component {
             title: "",
             description: "",
             available: false,
-            saved: false,
+            saved: true,
+        });
+
+        this.props.pushUserUpdates({
+            offer: null,
         });
 
         this.closeOfferDeletionDialog();
@@ -174,6 +180,27 @@ class OfferForm extends React.Component {
             );
         } else {
             return null;
+        }
+    }
+
+    renderAvailabilitySwitch() {
+        if (!this.props.currentUser.offer) {
+            return (
+                <Ons.ListItem id='availablility-switch-li'>
+                    <div className='left'>
+                        <div className="list-item__title">
+                            <b>{this.l(this.state.available ? "available" :"notAvailable")}</b>
+                        </div>
+                    </div>
+                    <div className='right'>
+                        <Ons.Switch
+                            name="available"
+                            checked={this.state.available}
+                            disabled={this.props.outOfGeofence ? "true" : false}
+                            onChange={this.handleInputChange} />
+                    </div>
+                </Ons.ListItem>
+            );
         }
     }
 
@@ -317,21 +344,7 @@ class OfferForm extends React.Component {
                     </Ons.ListItem>
 
                     {this.renderGeofenceWarningListItem()}
-
-                    <Ons.ListItem id='availablility-switch-li'>
-                        <div className='left'>
-                            <div className="list-item__title">
-                                <b>{this.l(this.state.available ? "available" :"notAvailable")}</b>
-                            </div>
-                        </div>
-                        <div className='right'>
-                            <Ons.Switch
-                                name="available"
-                                checked={this.state.available}
-                                disabled={this.props.outOfGeofence ? "true" : false}
-                                onChange={this.handleInputChange} />
-                        </div>
-                    </Ons.ListItem>
+                    {this.renderAvailabilitySwitch()}
 
                     <Ons.ListItem>
                         <div className='right'>
