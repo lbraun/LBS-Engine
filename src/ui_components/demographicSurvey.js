@@ -264,7 +264,7 @@ class DemographicSurvey extends React.Component {
     }
 
     renderValidationMessages() {
-        validationMessages = [];
+        var validationMessages = [];
 
         if (this.state.notAllFieldsAreFilled) {
             validationMessages.push(
