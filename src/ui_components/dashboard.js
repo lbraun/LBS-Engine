@@ -79,7 +79,7 @@ class Dashboard extends React.Component {
      * @param {Event} e the react event object
      */
     goToOffersTab(e) {
-        this.props.handleTabChange("offers");
+        this.props.handleTabChange("offer");
     }
 
     /**

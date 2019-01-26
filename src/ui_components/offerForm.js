@@ -3,6 +3,7 @@
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const config = require('../data_components/config.json');
 const contactLinks = require('./contactLinks.js');
 const confirmDialog = require('./confirmDialog.js');
 
@@ -21,12 +22,19 @@ class OfferForm extends React.Component {
         this.confirmPictureDeletion = this.confirmPictureDeletion.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
-        this.offer = this.offer.bind(this);
-        this.pushOfferUpdates = this.pushOfferUpdates.bind(this);
+        this.save = this.save.bind(this);
+
+        var offer = this.props.currentUser.offer || {};
 
         this.state = {
             offerDeletionAlertDialogIsOpen: false,
             pictureDeletionAlertDialogIsOpen: false,
+            picture: offer.picture || null,
+            pictureFormat: offer.picture ? "uri" : "base64",
+            title: offer.title || "",
+            description: offer.description || "",
+            available: offer.available || false,
+            saved: false,
         };
     }
 
@@ -36,17 +44,6 @@ class OfferForm extends React.Component {
      */
     l(string) {
         return this.props.l(`offerForm.${string}`);
-    }
-
-    offer() {
-        var newOffer = {
-            title: "",
-            picture: null,
-            description: "",
-            available: false,
-        };
-
-        return this.props.currentUser.offer || newOffer;
     }
 
     /**
@@ -66,15 +63,31 @@ class OfferForm extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var attributes = {[name]: value};
-        this.pushOfferUpdates(attributes);
+        this.setState({
+            [name]: value,
+            saved: false,
+        });
     }
 
-    pushOfferUpdates(attributes) {
-        var updatedOffer = JSON.parse(JSON.stringify(this.offer()));
-        Object.assign(updatedOffer, attributes);
+    save() {
+        if (!this.state.title) {
+            alert(this.l("anOfferMustHaveATitle"));
+            return;
+        }
 
-        this.props.pushUserUpdates({offer: updatedOffer});
+        this.props.pushUserUpdates({
+            offer: {
+                picture: this.state.picture,
+                pictureFormat: this.state.pictureFormat,
+                title: this.state.title,
+                description: this.state.description,
+                available: this.state.available,
+            },
+        });
+
+        this.setState({
+            saved: true,
+        });
     }
 
     /**
@@ -85,12 +98,15 @@ class OfferForm extends React.Component {
         var formInstance = this;
 
         navigator.camera.getPicture(function onSuccess(imageData) {
-            formInstance.pushOfferUpdates({picture: imageData});
+            formInstance.setState({
+                picture: imageData,
+                pictureFormat: "base64",
+                saved: false,
+            });
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
         }, {
-            quality: 50,
-            allowEdit: true,
+            quality: 25,
             destinationType: Camera.DestinationType.DATA_URL
         });
     }
@@ -111,7 +127,11 @@ class OfferForm extends React.Component {
      * @param {Event} e the react event object
      */
     confirmPictureDeletion(e) {
-        this.pushOfferUpdates({picture: null});
+        this.setState({
+            picture: null,
+            saved: false,
+        });
+
         this.closePictureDeletionDialog();
     }
 
@@ -131,7 +151,15 @@ class OfferForm extends React.Component {
      * @param {Event} e the react event object
      */
     confirmOfferDeletion(e) {
-        this.props.pushUserUpdates({offer: null});
+        this.setState({
+            picture: null,
+            pictureFormat: "base64",
+            title: "",
+            description: "",
+            available: false,
+            saved: false,
+        });
+
         this.closeOfferDeletionDialog();
     }
 
@@ -150,10 +178,16 @@ class OfferForm extends React.Component {
     }
 
     renderImageArea() {
-        if (this.offer().picture) {
+        if (this.state.picture) {
+            if (this.state.pictureFormat == "base64") {
+                var src = `data:image/jpeg;base64, ${this.state.picture}`;
+            } else {
+                var src = this.state.picture;
+            }
+
             return (
                 <div>
-                    <img src={`data:image/jpeg;base64, ${this.offer().picture}`}
+                    <img src={src}
                         id='offer-picture'
                         style={{width: "100%"}} />
 
@@ -186,19 +220,34 @@ class OfferForm extends React.Component {
     }
 
     renderOfferStatus() {
-        if (this.props.currentUserIsLoaded) {
-            return (
-                <span style={{color: "green"}}>
-                    <Ons.Icon icon={"md-check"} /> {this.l("saved")}
-                </span>
-            );
-        } else {
-            return (
-                <span>
-                    <Ons.Icon icon={"md-spinner"} spin={true} /> {this.l("syncing")}
-                </span>
-            );
+        var status = {
+            color: "#d9534f",
+            icon: "edit",
+            text: "notSaved",
+        };
+
+        if (this.state.saved) {
+            if (this.props.currentUserIsLoaded) {
+                status = {
+                    color: "green",
+                    icon: "check",
+                    text: "saved",
+                };
+            } else {
+                status = {
+                    color: "black",
+                    icon: "spinner",
+                    spin: true,
+                    text: "syncing",
+                };
+            }
         }
+
+        return (
+            <span style={{color: status.color}}>
+                <Ons.Icon icon={"md-" + status.icon} spin={status.spin} /> {this.l(status.text)}
+            </span>
+        );
     }
 
     render() {
@@ -211,6 +260,12 @@ class OfferForm extends React.Component {
                 </Ons.Row>
 
                 <Ons.List>
+                    <Ons.ListItem>
+                        <div className="list-item__subtitle">
+                            {this.renderOfferStatus()}
+                        </div>
+                    </Ons.ListItem>
+
                     <Ons.ListItem id="offer-title-li">
                         <div className="list-item__title">
                             <b>{this.l("offerTitlePlaceholder")}</b>
@@ -222,14 +277,12 @@ class OfferForm extends React.Component {
                                 className="text-input text-input--transparent"
                                 style={{width: "100%"}}
                                 placeholder={this.l("offerTitlePlaceholder")}
-                                value={this.offer().title}
+                                value={this.state.title}
                                 onChange={this.handleInputChange}>
                             </input>
                         </div>
                     </Ons.ListItem>
-                </Ons.List>
 
-                <Ons.List>
                     <Ons.ListItem id="offer-description-li">
                         <div className="list-item__title">
                             <b>{this.l("offerDescriptionPlaceholder")}</b>
@@ -242,50 +295,51 @@ class OfferForm extends React.Component {
                                 style={{width: "100%"}}
                                 rows="3"
                                 placeholder={this.l("offerDescriptionPlaceholder")}
-                                value={this.offer().description}
+                                value={this.state.description}
                                 onChange={this.handleInputChange}>
                             </textarea>
                         </div>
                     </Ons.ListItem>
 
+                    <Ons.ListItem
+                        id="contact-information-li"
+                        modifier={"chevron"}
+                        tappable={true}
+                        onClick={this.goToSettingsTab}>
+                            <div className="list-item__title">
+                                <b>{this.l("iCanBeContactedAt")}</b>
+                            </div>
+                            <p>
+                                <contactLinks.ContactLinks
+                                    small={true}
+                                    user={this.props.currentUser} />
+                            </p>
+                    </Ons.ListItem>
+
                     {this.renderGeofenceWarningListItem()}
+
                     <Ons.ListItem id='availablility-switch-li'>
                         <div className='left'>
-                            <p>{this.offer().available ? this.l("available") : this.l("notAvailable")}</p>
+                            <div className="list-item__title">
+                                <b>{this.l(this.state.available ? "available" :"notAvailable")}</b>
+                            </div>
                         </div>
                         <div className='right'>
                             <Ons.Switch
                                 name="available"
-                                checked={this.offer().available}
+                                checked={this.state.available}
                                 disabled={this.props.outOfGeofence ? "true" : false}
                                 onChange={this.handleInputChange} />
                         </div>
                     </Ons.ListItem>
 
                     <Ons.ListItem>
-                        <div className="list-item__subtitle">
-                            {this.renderOfferStatus()}
+                        <div className='right'>
+                            <Ons.Button onClick={this.save}>
+                                <Ons.Icon icon={"md-save"} style={{marginRight: "20px"}} />
+                                {this.l("saveOffer")}
+                            </Ons.Button>
                         </div>
-                    </Ons.ListItem>
-
-                    <Ons.ListItem id="contact-information-li">
-                        <div className="list-item__title">
-                            <Ons.Row>
-                                <Ons.Col>
-                                    <b>
-                                        <a href="#"
-                                            onClick={this.goToSettingsTab}>
-                                                {this.l("iCanBeContactedAt")}
-                                        </a>
-                                    </b>
-                                </Ons.Col>
-                            </Ons.Row>
-                        </div>
-                        <p>
-                            <contactLinks.ContactLinks
-                                small={true}
-                                user={this.props.currentUser} />
-                        </p>
                     </Ons.ListItem>
 
                     <Ons.ListItem>
@@ -314,7 +368,7 @@ class OfferForm extends React.Component {
                     confirmActionName={this.l("deleteOfferPicture")}
                     l={this.props.l} />
             </Ons.Page>
-        )
+        );
     }
 }
 

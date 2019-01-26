@@ -92279,7 +92279,7 @@ class OfflineControl extends leaflet.MapControl {
             saveButtonHtml: '<i class="fa fa-download" aria-hidden="true"></i>',
             removeButtonHtml: '<i class="fa fa-trash" aria-hidden="true"></i>',
             confirmSavingCallback: function (nTilesToSave, continueSaveTiles) {
-                if (window.confirm(offlineControl.l("save") + ' ' + nTilesToSave + '?')) {
+                if (window.confirm(offlineControl.props.l("app.save") + ' ' + nTilesToSave + '?')) {
                     continueSaveTiles();
                 }
             },
@@ -92305,10 +92305,12 @@ module.exports={
         "adminEmail": "lucas.braun@uni-muenster.de",
         "apiUrl": "https://geofreebie-backend.herokuapp.com/api/",
         "defaultLocale": "en",
+        "devMode": false,
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
+        "online": true,
         "projectWebsite": "https://github.com/lbraun/geofreebie",
     },
     "map": {
@@ -92342,6 +92344,7 @@ module.exports={
         "app.report": "TODO",
         "app.reportEmailBody": "TODO",
         "app.reportEmailSubject": "TODO",
+        "app.save": "حفظ",
         "app.submit": "TODO",
         "app.thisCannotBeUndone": "TODO",
         "consentForm.continue": "TODO",
@@ -92432,6 +92435,7 @@ module.exports={
         "map.youAreHere": "أنت هنا اﻵن",
         "offerForm.addPicture": "TODO",
         "offerForm.available": "متاح اﻵن",
+        "offerForm.anOfferMustHaveATitle": "TODO",
         "offerForm.contactInformationPlaceholder": "معلومات اﻹتصال",
         "offerForm.deleteOffer": "TODO",
         "offerForm.deleteOfferPicture": "TODO",
@@ -92441,14 +92445,15 @@ module.exports={
         "offerForm.iCanBeContactedAt": "TODO",
         "offerForm.iCanBeContactedAtHelpText": "من فضلك ادخل رقم هاتف، عنوان بريد الكتروني أو آية تعليمات اخرى.",
         "offerForm.notAvailable": "غير متاح اﻵن",
+        "offerForm.notSaved": "TODO",
         "offerForm.noOffer": "TODO",
         "offerForm.offerDescriptionPlaceholder": "وصف العرض",
         "offerForm.offerPicture": "TODO",
         "offerForm.offerTitlePlaceholder": "TODO",
         "offerForm.saved": "TODO",
+        "offerForm.saveOffer": "TODO",
         "offerForm.syncing": "تتم المزامنة...",
         "offlineLayer.removeTiles": "هل أنت متأكد أنك تريد حذف جميع الاجزاء المحفوظة",
-        "offlineLayer.save": "حفظ",
         "review._otherUserId": "TODO",
         "review.atMyHome": "TODO",
         "review.atMyWork": "TODO",
@@ -92500,7 +92505,7 @@ module.exports={
         "tabs.help": "مساعدة",
         "tabs.list": "قائمة",
         "tabs.map": "خريطة",
-        "tabs.offers": "عروضي",
+        "tabs.offer": "عروضي",
         "tabs.settings": "اﻹعدادات"
     },
     "de": {
@@ -92517,6 +92522,7 @@ module.exports={
         "app.report": "Missbrauch melden",
         "app.reportEmailBody": "Bitte das Problem hier erklären:\n\n",
         "app.reportEmailSubject": "Missbrauchs Meldung",
+        "app.save": "Speichern",
         "app.submit": "Abschicken",
         "app.thisCannotBeUndone": "Das kann nicht rückgängig gemacht werden.",
         "consentForm.continue": "Fortfahren",
@@ -92607,6 +92613,7 @@ module.exports={
         "map.youAreHere": "Dein Standort",
         "offerForm.addPicture": "Ein Bild hinzufügen",
         "offerForm.available": "Jetzt verfügbar",
+        "offerForm.anOfferMustHaveATitle": "Ein Angebot musst ein Titel haben.",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
         "offerForm.deleteOffer": "Angebot löschen",
         "offerForm.deleteOfferPicture": "Angebotsbild löschen",
@@ -92616,14 +92623,15 @@ module.exports={
         "offerForm.iCanBeContactedAt": "Kontaktmöglichkeiten",
         "offerForm.iCanBeContactedAtHelpText": "Bitte gib eine Telefonnummer, E-Mail-Adresse oder andere Kontaktmöglichkeiten an.",
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
+        "offerForm.notSaved": "Angebot nicht gespeichert",
         "offerForm.noOffer": "Kein Angebot",
         "offerForm.offerDescriptionPlaceholder": "Beschreibung",
         "offerForm.offerPicture": "Bild",
         "offerForm.offerTitlePlaceholder": "Titel",
         "offerForm.saved": "Angebot gespeichert",
+        "offerForm.saveOffer": "Angebot speichern",
         "offerForm.syncing": "Wird synchronisiert...",
         "offlineLayer.removeTiles": "Möchtest du wirklich alle gespeicherten Kartendaten entfernen?",
-        "offlineLayer.save": "Speichern",
         "review._otherUserId": "Zu wem hast du das Angebot gegeben?",
         "review.atMyHome": "Bei mir zu Hause",
         "review.atMyWork": "An meinem Arbeitsplatz",
@@ -92675,7 +92683,7 @@ module.exports={
         "tabs.help": "Hilfe",
         "tabs.list": "Liste",
         "tabs.map": "Karte",
-        "tabs.offers": "Meine Angebote",
+        "tabs.offer": "Mein Angebot",
         "tabs.settings": "Einstellungen"
     },
     "en": {
@@ -92692,6 +92700,7 @@ module.exports={
         "app.report": "Report this profile",
         "app.reportEmailBody": "Please explain the problem here:\n\n",
         "app.reportEmailSubject": "Profile report",
+        "app.save": "Save",
         "app.submit": "Submit",
         "app.thisCannotBeUndone": "This cannot be undone.",
         "consentForm.continue": "Continue",
@@ -92782,6 +92791,7 @@ module.exports={
         "map.youAreHere": "You are here",
         "offerForm.addPicture": "Add a picture",
         "offerForm.available": "Available now",
+        "offerForm.anOfferMustHaveATitle": "An offer must have a title.",
         "offerForm.contactInformationPlaceholder": "Contact information",
         "offerForm.deleteOffer": "Delete Offer",
         "offerForm.deleteOfferPicture": "Delete Offer Picture",
@@ -92792,13 +92802,14 @@ module.exports={
         "offerForm.iCanBeContactedAtHelpText": "Please provide a phone number, email, or other instructions.",
         "offerForm.noOffer": "No offer",
         "offerForm.notAvailable": "Not available now",
+        "offerForm.notSaved": "Offer not saved",
         "offerForm.offerDescriptionPlaceholder": "Description",
         "offerForm.offerPicture": "Picture",
         "offerForm.offerTitlePlaceholder": "Title",
         "offerForm.saved": "Offer saved",
+        "offerForm.saveOffer": "Save offer",
         "offerForm.syncing": "Syncing...",
         "offlineLayer.removeTiles": "Are you sure you want to remove all saved map data?",
-        "offlineLayer.save": "Save",
         "review._otherUserId": "To whom did you give your offer?",
         "review.atMyHome": "At my home",
         "review.atMyWork": "At my work",
@@ -92850,7 +92861,7 @@ module.exports={
         "tabs.help": "Help",
         "tabs.list": "List",
         "tabs.map": "Map",
-        "tabs.offers": "My Offers",
+        "tabs.offer": "My Offer",
         "tabs.settings": "Settings"
     }
 }
@@ -92930,6 +92941,7 @@ class App extends React.Component {
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
+        this.handlePopupClose = this.handlePopupClose.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
@@ -92950,7 +92962,7 @@ class App extends React.Component {
         this.revokeConsent = this.revokeConsent.bind(this);
         this.showSidebar = this.showSidebar.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
-        this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
+        this.tabs = ["dashboard", "map", "list", "settings", "offer", "help"];
         this.state = {
             sidebarIsOpen: false,
             sidebarIsSwipeable: true,
@@ -93039,11 +93051,10 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = true;
-        // this.state.online = false;
+        this.state.online = config.app.online;
 
         // Use devMode to disable sign-in for faster development
-        // this.devMode = "dashboard";
+        this.devMode = config.app.devMode;
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -93206,36 +93217,42 @@ class App extends React.Component {
      */
     refreshUsers() {
         fetch(this.apiUrl + "users").then(res => res.json()).then(users => {
-            // Store current user and remove it from the list
+            var currentUserIndex;
+
             for (var i = users.length - 1; i >= 0; --i) {
+                if (users[i].offer && users[i].offer.picture) {
+                    users[i].offer.picture = this.apiUrl + "offer_pictures/" + users[i]._id;
+                }
+
                 if (users[i]._id == this.state.currentUserId) {
-                    var currentUser = users[i];
-                    users.splice(i, 1);
-
-                    // Set defaults from config file if user just signed up
-                    if (currentUser.newlyCreated) {
-                        this.pushUserUpdates({
-                            shareLocation: config.userDefaults.shareLocation,
-                            useLocation: config.userDefaults.useLocation,
-                            contactInformation: config.userDefaults.contactInformation,
-                            locale: this.state.locale,
-                            newlyCreated: false
-                        });
-                    }
-
-                    users = this.updateDistancesToUsers(currentUser.coords, users);
-
-                    this.setState({
-                        currentUser: currentUser,
-                        locale: currentUser.locale || this.state.locale,
-                        currentUserIsLoaded: true,
-                        users: users || [],
-                        usersAreLoaded: true
-                    });
-
-                    break;
+                    currentUserIndex = i;
                 }
             }
+
+            // Store current user and remove it from the list
+            var currentUser = users[currentUserIndex];
+            users.splice(currentUserIndex, 1);
+
+            // Set defaults from config file if user just signed up
+            if (currentUser.newlyCreated) {
+                this.pushUserUpdates({
+                    shareLocation: config.userDefaults.shareLocation,
+                    useLocation: config.userDefaults.useLocation,
+                    contactInformation: config.userDefaults.contactInformation,
+                    locale: this.state.locale,
+                    newlyCreated: false
+                });
+            }
+
+            users = this.updateDistancesToUsers(currentUser.coords, users);
+
+            this.setState({
+                currentUser: currentUser,
+                locale: currentUser.locale || this.state.locale,
+                currentUserIsLoaded: true,
+                users: users || [],
+                usersAreLoaded: true
+            });
         }, error => {
             console.log("There was an error loading the users!");
             console.log(error);
@@ -93461,6 +93478,13 @@ class App extends React.Component {
     }
 
     /**
+     * Handle the closing of a popup on the map
+     */
+    handlePopupClose() {
+        this.setState({ selectedUserId: null });
+    }
+
+    /**
      * Calculate the distance from the user's location to a given position
      * @param {Array} coordinates (latitude, longitude) identifying the position
      */
@@ -93524,6 +93548,7 @@ class App extends React.Component {
                 centerPosition: this.state.centerPosition,
                 selectedUserId: this.state.selectedUserId,
                 calculateDistanceTo: this.calculateDistanceTo,
+                handlePopupClose: this.handlePopupClose,
                 users: this.state.users,
                 key: 'map' }),
             tab: React.createElement(Ons.Tab, {
@@ -93537,12 +93562,10 @@ class App extends React.Component {
                 l: this.l,
                 logging: this.state.logging,
                 externalData: this.state.externalData,
-                layerControl: this.state.layerControl,
                 draggable: this.state.draggable,
                 zoomable: this.state.zoomable,
                 currentUser: this.state.currentUser,
                 centerPosition: this.state.centerPosition,
-                selectedUserId: this.state.selectedUserId,
                 handleListItemClick: this.handleListItemClick,
                 online: this.state.online,
                 defaultPicture: defaultPicture,
@@ -93590,7 +93613,7 @@ class App extends React.Component {
                 outOfGeofence: this.state.outOfGeofence,
                 key: 'offerForm' }),
             tab: React.createElement(Ons.Tab, {
-                label: this.l('tabs.offers'),
+                label: this.l('tabs.offer'),
                 icon: 'md-edit',
                 key: 'offerForm',
                 style: { display: 'none' } })
@@ -93616,7 +93639,7 @@ class App extends React.Component {
 
     // Render the list displayed in the sidebar
     renderSidebarList() {
-        var sidebarItems = [{ key: "dashboard", icon: "md-compass" }, { key: "offers", icon: "md-edit" }, { key: "settings", icon: "md-settings" }, { key: "help", icon: "md-help" }];
+        var sidebarItems = [{ key: "dashboard", icon: "md-compass" }, { key: "offer", icon: "md-edit" }, { key: "settings", icon: "md-settings" }, { key: "help", icon: "md-help" }];
 
         var picture = this.state.online && this.state.currentUser.picture;
         picture = picture || defaultPicture;
@@ -94371,7 +94394,7 @@ class Dashboard extends React.Component {
      * @param {Event} e the react event object
      */
     goToOffersTab(e) {
-        this.props.handleTabChange("offers");
+        this.props.handleTabChange("offer");
     }
 
     /**
@@ -95660,9 +95683,10 @@ class Map extends React.Component {
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
-        this.renderMapWithLayers = this.renderMapWithLayers.bind(this);
         this.handleOverlayAdd = this.handleOverlayAdd.bind(this);
         this.handleOverlayRemove = this.handleOverlayRemove.bind(this);
+        this.handlePopupClose = this.handlePopupClose.bind(this);
+        this.renderMap = this.renderMap.bind(this);
 
         // Get the settings from the config file
         this.state = {
@@ -95706,6 +95730,23 @@ class Map extends React.Component {
      * @param {Object} e Layer Object fired by leaflet
      */
     handleOverlayRemove(e) {}
+
+    /**
+     * Handle the closing of a popup
+     */
+    handlePopupClose() {
+        this.props.handlePopupClose();
+    }
+
+    // Render the map with the layerControl
+    render() {
+        return React.createElement(
+            Ons.Page,
+            null,
+            this.renderMap(),
+            this.renderBottomPane()
+        );
+    }
 
     // Add each layer with a layercontrol.Overlay to the map
     addLayers() {
@@ -95779,43 +95820,66 @@ class Map extends React.Component {
         if (user.offer) {
             return React.createElement(
                 leaflet.Popup,
-                null,
+                { onClose: this.handlePopupClose },
                 React.createElement(
                     'div',
-                    null,
+                    { style: { width: "200px" } },
                     React.createElement(
-                        'p',
-                        null,
-                        user.name,
-                        ' ',
-                        this.l("isOffering")
+                        'a',
+                        { href: user.offer.picture },
+                        React.createElement('img', { src: user.offer.picture,
+                            id: 'offer-picture',
+                            style: { width: "100%" } })
                     ),
                     React.createElement(
-                        'b',
+                        'div',
                         null,
-                        user.offer.title
-                    ),
-                    React.createElement(
-                        'p',
-                        null,
+                        React.createElement(
+                            'span',
+                            { style: { fontSize: "150%", marginTop: "20px" } },
+                            user.offer.title
+                        ),
+                        React.createElement('br', null),
                         user.offer.description
                     ),
-                    React.createElement('img', { src: `data:image/jpeg;base64, ${user.offer.picture}`,
-                        id: 'offer-picture',
-                        style: { width: "100%" } }),
                     React.createElement(
-                        'p',
-                        null,
-                        this.l("andCanBeContactedAt")
+                        'div',
+                        { style: { height: "40px", padding: "10px 0px" } },
+                        React.createElement('img', { className: 'list-item__thumbnail',
+                            style: { float: "left", marginRight: "10px" },
+                            src: user.picture,
+                            alt: 'Profile picture' }),
+                        React.createElement(
+                            'div',
+                            null,
+                            user.name,
+                            ' ',
+                            this.l("isOffering"),
+                            React.createElement('br', null),
+                            React.createElement(
+                                'div',
+                                { style: { marginTop: "5px" } },
+                                React.createElement(Ons.Icon, {
+                                    icon: 'md-star-circle',
+                                    style: { marginRight: "5px", color: "#FC9D2C" } }),
+                                user.offersCompleted || 0,
+                                React.createElement(Ons.Icon, {
+                                    icon: 'md-navigation',
+                                    style: { marginRight: "5px", marginLeft: "20px" } }),
+                                user.distanceToUser ? user.distanceToUser + "m" : null
+                            )
+                        )
                     ),
+                    this.props.l("offerForm.iCanBeContactedAt"),
+                    ':',
                     React.createElement(
-                        'p',
+                        'div',
                         null,
                         React.createElement(contactLinks.ContactLinks, { user: user })
                     ),
                     React.createElement(
-                        'p',
-                        null,
+                        'div',
+                        { style: { paddingTop: "10px" } },
                         React.createElement(reportLink.ReportLink, {
                             currentUserId: this.props.currentUser._id,
                             l: this.props.l,
@@ -95826,7 +95890,7 @@ class Map extends React.Component {
         } else {
             return React.createElement(
                 leaflet.Popup,
-                null,
+                { onClose: this.handlePopupClose },
                 React.createElement(
                     'div',
                     null,
@@ -95853,7 +95917,7 @@ class Map extends React.Component {
         }
     }
 
-    renderMapWithLayers() {
+    renderMap() {
         // Check if the user's position is available
         const marker = this.props.currentUser.coords.length ? React.createElement(
             ExtendedMarker,
@@ -95864,7 +95928,7 @@ class Map extends React.Component {
                 icon: this.positionMarker },
             React.createElement(
                 leaflet.Popup,
-                null,
+                { onClose: this.handlePopupClose },
                 React.createElement(
                     'span',
                     null,
@@ -95895,6 +95959,7 @@ class Map extends React.Component {
         return React.createElement(
             leaflet.Map,
             {
+                style: { height: this.props.currentUserId ? "60%" : "100%" },
                 center: center,
                 zoom: this.state.zoom,
                 dragging: this.props.draggable,
@@ -95907,55 +95972,27 @@ class Map extends React.Component {
                 url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 attribution: this.l("attribution")
             }),
-            React.createElement(
-                leaflet.LayersControl,
-                { position: 'topleft' },
-                this.addLayers()
-            ),
+            this.props.layerControl ? this.renderLayersControl() : null,
             React.createElement(OfflineLayer.OfflineControl, {
                 l: this.props.l }),
             marker
         );
     }
 
-    // Render the map with the layerControl
-    render() {
-        // If the layerControl is active, the map is rendered with the layercontrol
-        if (this.props.layerControl) {
-            return this.renderMapWithLayers();
-        } else {
-            // Check if the location is enabled and available
-            const marker = this.props.currentUser.useLocation && this.props.currentUser.coords.length ? React.createElement(
-                leaflet.Marker,
-                { position: this.props.currentUser.coords, icon: this.positionMarker },
-                React.createElement(
-                    leaflet.Popup,
-                    null,
-                    React.createElement(
-                        'span',
-                        null,
-                        this.l("youAreHere")
-                    )
-                )
-            ) : null;
+    renderLayersControl() {
+        return React.createElement(
+            leaflet.LayersControl,
+            { position: 'topleft' },
+            this.addLayers()
+        );
+    }
 
-            // Return the map without any layers shown
-            return React.createElement(
-                leaflet.Map,
-                { center: this.props.centerPosition,
-                    zoom: this.state.zoom,
-                    dragging: this.props.draggable,
-                    zoomControl: this.props.zoomable,
-                    scrollWheelZoom: this.props.zoomable,
-                    zoomDelta: this.props.zoomable == false ? 0 : 1 },
-                React.createElement(OfflineLayer.OfflineLayer, {
-                    url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    attribution: this.l("attribution")
-                }),
-                React.createElement(OfflineLayer.OfflineControl, null),
-                marker
-            );
-        }
+    renderBottomPane() {
+        return React.createElement(
+            Ons.Row,
+            { style: { height: this.props.currentUserId ? "30%" : "0%" } },
+            'CHECK THIS OUT'
+        );
     }
 }
 
@@ -96003,6 +96040,7 @@ module.exports = {
 const React = require('react');
 const Ons = require('react-onsenui');
 
+const config = require('../data_components/config.json');
 const contactLinks = require('./contactLinks.js');
 const confirmDialog = require('./confirmDialog.js');
 
@@ -96021,12 +96059,19 @@ class OfferForm extends React.Component {
         this.confirmPictureDeletion = this.confirmPictureDeletion.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleNewPictureClick = this.handleNewPictureClick.bind(this);
-        this.offer = this.offer.bind(this);
-        this.pushOfferUpdates = this.pushOfferUpdates.bind(this);
+        this.save = this.save.bind(this);
+
+        var offer = this.props.currentUser.offer || {};
 
         this.state = {
             offerDeletionAlertDialogIsOpen: false,
-            pictureDeletionAlertDialogIsOpen: false
+            pictureDeletionAlertDialogIsOpen: false,
+            picture: offer.picture || null,
+            pictureFormat: offer.picture ? "uri" : "base64",
+            title: offer.title || "",
+            description: offer.description || "",
+            available: offer.available || false,
+            saved: false
         };
     }
 
@@ -96036,17 +96081,6 @@ class OfferForm extends React.Component {
      */
     l(string) {
         return this.props.l(`offerForm.${string}`);
-    }
-
-    offer() {
-        var newOffer = {
-            title: "",
-            picture: null,
-            description: "",
-            available: false
-        };
-
-        return this.props.currentUser.offer || newOffer;
     }
 
     /**
@@ -96066,15 +96100,31 @@ class OfferForm extends React.Component {
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
-        var attributes = { [name]: value };
-        this.pushOfferUpdates(attributes);
+        this.setState({
+            [name]: value,
+            saved: false
+        });
     }
 
-    pushOfferUpdates(attributes) {
-        var updatedOffer = JSON.parse(JSON.stringify(this.offer()));
-        Object.assign(updatedOffer, attributes);
+    save() {
+        if (!this.state.title) {
+            alert(this.l("anOfferMustHaveATitle"));
+            return;
+        }
 
-        this.props.pushUserUpdates({ offer: updatedOffer });
+        this.props.pushUserUpdates({
+            offer: {
+                picture: this.state.picture,
+                pictureFormat: this.state.pictureFormat,
+                title: this.state.title,
+                description: this.state.description,
+                available: this.state.available
+            }
+        });
+
+        this.setState({
+            saved: true
+        });
     }
 
     /**
@@ -96085,12 +96135,15 @@ class OfferForm extends React.Component {
         var formInstance = this;
 
         navigator.camera.getPicture(function onSuccess(imageData) {
-            formInstance.pushOfferUpdates({ picture: imageData });
+            formInstance.setState({
+                picture: imageData,
+                pictureFormat: "base64",
+                saved: false
+            });
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
         }, {
-            quality: 50,
-            allowEdit: true,
+            quality: 25,
             destinationType: Camera.DestinationType.DATA_URL
         });
     }
@@ -96110,7 +96163,11 @@ class OfferForm extends React.Component {
      * @param {Event} e the react event object
      */
     confirmPictureDeletion(e) {
-        this.pushOfferUpdates({ picture: null });
+        this.setState({
+            picture: null,
+            saved: false
+        });
+
         this.closePictureDeletionDialog();
     }
 
@@ -96129,7 +96186,15 @@ class OfferForm extends React.Component {
      * @param {Event} e the react event object
      */
     confirmOfferDeletion(e) {
-        this.props.pushUserUpdates({ offer: null });
+        this.setState({
+            picture: null,
+            pictureFormat: "base64",
+            title: "",
+            description: "",
+            available: false,
+            saved: false
+        });
+
         this.closeOfferDeletionDialog();
     }
 
@@ -96150,11 +96215,17 @@ class OfferForm extends React.Component {
     }
 
     renderImageArea() {
-        if (this.offer().picture) {
+        if (this.state.picture) {
+            if (this.state.pictureFormat == "base64") {
+                var src = `data:image/jpeg;base64, ${this.state.picture}`;
+            } else {
+                var src = this.state.picture;
+            }
+
             return React.createElement(
                 'div',
                 null,
-                React.createElement('img', { src: `data:image/jpeg;base64, ${this.offer().picture}`,
+                React.createElement('img', { src: src,
                     id: 'offer-picture',
                     style: { width: "100%" } }),
                 React.createElement(
@@ -96191,23 +96262,36 @@ class OfferForm extends React.Component {
     }
 
     renderOfferStatus() {
-        if (this.props.currentUserIsLoaded) {
-            return React.createElement(
-                'span',
-                { style: { color: "green" } },
-                React.createElement(Ons.Icon, { icon: "md-check" }),
-                ' ',
-                this.l("saved")
-            );
-        } else {
-            return React.createElement(
-                'span',
-                null,
-                React.createElement(Ons.Icon, { icon: "md-spinner", spin: true }),
-                ' ',
-                this.l("syncing")
-            );
+        var status = {
+            color: "#d9534f",
+            icon: "edit",
+            text: "notSaved"
+        };
+
+        if (this.state.saved) {
+            if (this.props.currentUserIsLoaded) {
+                status = {
+                    color: "green",
+                    icon: "check",
+                    text: "saved"
+                };
+            } else {
+                status = {
+                    color: "black",
+                    icon: "spinner",
+                    spin: true,
+                    text: "syncing"
+                };
+            }
         }
+
+        return React.createElement(
+            'span',
+            { style: { color: status.color } },
+            React.createElement(Ons.Icon, { icon: "md-" + status.icon, spin: status.spin }),
+            ' ',
+            this.l(status.text)
+        );
     }
 
     render() {
@@ -96226,6 +96310,15 @@ class OfferForm extends React.Component {
             React.createElement(
                 Ons.List,
                 null,
+                React.createElement(
+                    Ons.ListItem,
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__subtitle' },
+                        this.renderOfferStatus()
+                    )
+                ),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'offer-title-li' },
@@ -96247,14 +96340,10 @@ class OfferForm extends React.Component {
                             className: 'text-input text-input--transparent',
                             style: { width: "100%" },
                             placeholder: this.l("offerTitlePlaceholder"),
-                            value: this.offer().title,
+                            value: this.state.title,
                             onChange: this.handleInputChange })
                     )
-                )
-            ),
-            React.createElement(
-                Ons.List,
-                null,
+                ),
                 React.createElement(
                     Ons.ListItem,
                     { id: 'offer-description-li' },
@@ -96277,8 +96366,32 @@ class OfferForm extends React.Component {
                             style: { width: "100%" },
                             rows: '3',
                             placeholder: this.l("offerDescriptionPlaceholder"),
-                            value: this.offer().description,
+                            value: this.state.description,
                             onChange: this.handleInputChange })
+                    )
+                ),
+                React.createElement(
+                    Ons.ListItem,
+                    {
+                        id: 'contact-information-li',
+                        modifier: "chevron",
+                        tappable: true,
+                        onClick: this.goToSettingsTab },
+                    React.createElement(
+                        'div',
+                        { className: 'list-item__title' },
+                        React.createElement(
+                            'b',
+                            null,
+                            this.l("iCanBeContactedAt")
+                        )
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        React.createElement(contactLinks.ContactLinks, {
+                            small: true,
+                            user: this.props.currentUser })
                     )
                 ),
                 this.renderGeofenceWarningListItem(),
@@ -96289,9 +96402,13 @@ class OfferForm extends React.Component {
                         'div',
                         { className: 'left' },
                         React.createElement(
-                            'p',
-                            null,
-                            this.offer().available ? this.l("available") : this.l("notAvailable")
+                            'div',
+                            { className: 'list-item__title' },
+                            React.createElement(
+                                'b',
+                                null,
+                                this.l(this.state.available ? "available" : "notAvailable")
+                            )
                         )
                     ),
                     React.createElement(
@@ -96299,7 +96416,7 @@ class OfferForm extends React.Component {
                         { className: 'right' },
                         React.createElement(Ons.Switch, {
                             name: 'available',
-                            checked: this.offer().available,
+                            checked: this.state.available,
                             disabled: this.props.outOfGeofence ? "true" : false,
                             onChange: this.handleInputChange })
                     )
@@ -96309,41 +96426,13 @@ class OfferForm extends React.Component {
                     null,
                     React.createElement(
                         'div',
-                        { className: 'list-item__subtitle' },
-                        this.renderOfferStatus()
-                    )
-                ),
-                React.createElement(
-                    Ons.ListItem,
-                    { id: 'contact-information-li' },
-                    React.createElement(
-                        'div',
-                        { className: 'list-item__title' },
+                        { className: 'right' },
                         React.createElement(
-                            Ons.Row,
-                            null,
-                            React.createElement(
-                                Ons.Col,
-                                null,
-                                React.createElement(
-                                    'b',
-                                    null,
-                                    React.createElement(
-                                        'a',
-                                        { href: '#',
-                                            onClick: this.goToSettingsTab },
-                                        this.l("iCanBeContactedAt")
-                                    )
-                                )
-                            )
+                            Ons.Button,
+                            { onClick: this.save },
+                            React.createElement(Ons.Icon, { icon: "md-save", style: { marginRight: "20px" } }),
+                            this.l("saveOffer")
                         )
-                    ),
-                    React.createElement(
-                        'p',
-                        null,
-                        React.createElement(contactLinks.ContactLinks, {
-                            small: true,
-                            user: this.props.currentUser })
                     )
                 ),
                 React.createElement(
@@ -96383,7 +96472,7 @@ module.exports = {
     OfferForm: OfferForm
 };
 
-},{"./confirmDialog.js":277,"./contactLinks.js":279,"react":265,"react-onsenui":262}],289:[function(require,module,exports){
+},{"../data_components/config.json":273,"./confirmDialog.js":277,"./contactLinks.js":279,"react":265,"react-onsenui":262}],289:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -97030,7 +97119,10 @@ class ContactSettings extends React.Component {
                 React.createElement(
                     'label',
                     { className: 'left', htmlFor: `${setting}-check` },
-                    React.createElement(Ons.Icon, { icon: `md-${contactType}`, style: { marginRight: "15px" } }),
+                    React.createElement(Ons.Icon, {
+                        fixedWidth: true,
+                        icon: `md-${contactType}`,
+                        style: { marginRight: "15px" } }),
                     this.l(setting)
                 ),
                 React.createElement(
