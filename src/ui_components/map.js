@@ -13,9 +13,10 @@ class Map extends React.Component {
     constructor(props) {
         super(props);
         this.addLayers = this.addLayers.bind(this);
-        this.renderMapWithLayers = this.renderMapWithLayers.bind(this);
         this.handleOverlayAdd = this.handleOverlayAdd.bind(this);
         this.handleOverlayRemove = this.handleOverlayRemove.bind(this);
+        this.handlePopupClose = this.handlePopupClose.bind(this);
+        this.renderMap = this.renderMap.bind(this);
 
         // Get the settings from the config file
         this.state = {
@@ -59,6 +60,23 @@ class Map extends React.Component {
      * @param {Object} e Layer Object fired by leaflet
      */
     handleOverlayRemove(e) {}
+
+    /**
+     * Handle the closing of a popup
+     */
+    handlePopupClose() {
+        this.props.handlePopupClose();
+    }
+
+    // Render the map with the layerControl
+    render() {
+        return (
+            <Ons.Page>
+                {this.renderMap()}
+                {this.renderBottomPane()}
+            </Ons.Page>
+        );
+    }
 
     // Add each layer with a layercontrol.Overlay to the map
     addLayers() {
@@ -129,32 +147,59 @@ class Map extends React.Component {
     renderPopup(user) {
         if (user.offer) {
             return (
-                <leaflet.Popup>
-                    <div>
-                        <p>{user.name} {this.l("isOffering")}</p>
-                        <b>{user.offer.title}</b>
-                        <p>{user.offer.description}</p>
-                        <img src={`data:image/jpeg;base64, ${user.offer.picture}`}
-                            id='offer-picture'
-                            style={{width: "100%"}} />
-                        <p>
-                            {this.l("andCanBeContactedAt")}
-                        </p>
-                        <p>
-                            <contactLinks.ContactLinks user={user} />
-                        </p>
-                        <p>
+                <leaflet.Popup onClose={this.handlePopupClose}>
+                    <div style={{width: "200px"}}>
+                        <a href={user.offer.picture}>
+                            <img src={user.offer.picture}
+                                id='offer-picture'
+                                style={{width: "100%"}} />
+                        </a>
+
+                        <div>
+                            <span style={{fontSize: "150%", marginTop: "20px"}}>
+                                {user.offer.title}
+                            </span>
+
+                            <br />{user.offer.description}
+                        </div>
+
+                        <div style={{height: "40px", padding: "10px 0px"}}>
+                            <img className="list-item__thumbnail"
+                                style={{float: "left", marginRight: "10px"}}
+                                src={user.picture}
+                                alt="Profile picture" />
+
+                            <div>
+                                {user.name} {this.l("isOffering")}
+                                <br />
+                                <div style={{marginTop: "5px"}}>
+                                    <Ons.Icon
+                                        icon="md-star-circle"
+                                        style={{marginRight: "5px", color: "#FC9D2C"}} />
+                                    {user.offersCompleted || 0}
+                                    <Ons.Icon
+                                        icon="md-navigation"
+                                        style={{marginRight: "5px", marginLeft: "20px"}} />
+                                    {user.distanceToUser ? user.distanceToUser + "m" : null}
+                                </div>
+                            </div>
+                        </div>
+
+                        {this.props.l("offerForm.iCanBeContactedAt")}:
+                        <div><contactLinks.ContactLinks user={user} /></div>
+
+                        <div style={{paddingTop: "10px"}}>
                             <reportLink.ReportLink
                                 currentUserId={this.props.currentUser._id}
                                 l={this.props.l}
                                 otherUserId={user._id} />
-                        </p>
+                        </div>
                     </div>
                 </leaflet.Popup>
             );
         } else {
             return (
-                <leaflet.Popup>
+                <leaflet.Popup onClose={this.handlePopupClose}>
                     <div>
                         <p>{user.name}</p>
                         <p><contactLinks.ContactLinks user={user} /></p>
@@ -170,7 +215,7 @@ class Map extends React.Component {
         }
     }
 
-    renderMapWithLayers() {
+    renderMap() {
         // Check if the user's position is available
         const marker = this.props.currentUser.coords.length
             ? (
@@ -179,7 +224,7 @@ class Map extends React.Component {
                     position={this.props.currentUser.coords}
                     isOpen={false}
                     icon={this.positionMarker}>
-                    <leaflet.Popup>
+                    <leaflet.Popup onClose={this.handlePopupClose}>
                         <span>
                             {this.l("youAreHere")}
                         </span>
@@ -209,6 +254,7 @@ class Map extends React.Component {
 
         return (
             <leaflet.Map
+                style={{height: this.props.currentUserId ? "60%" : "100%"}}
                 center={center}
                 zoom={this.state.zoom}
                 dragging={this.props.draggable}
@@ -217,56 +263,35 @@ class Map extends React.Component {
                 zoomDelta={this.props.zoomable == false ? 0 : 1}
                 onOverlayadd={this.handleOverlayAdd}
                 onOverlayremove={this.handleOverlayRemove}>
-                <OfflineLayer.OfflineLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution={this.l("attribution")}
-                />
-                <leaflet.LayersControl position="topleft">
-                    {this.addLayers()}
-                </leaflet.LayersControl>
-                <OfflineLayer.OfflineControl
-                    l={this.props.l} />
-                {marker}
-            </leaflet.Map>
-        )
-    }
-
-    // Render the map with the layerControl
-    render() {
-        // If the layerControl is active, the map is rendered with the layercontrol
-        if (this.props.layerControl) {
-            return this.renderMapWithLayers()
-        } else {
-            // Check if the location is enabled and available
-            const marker = this.props.currentUser.useLocation && this.props.currentUser.coords.length
-                ? (
-                    <leaflet.Marker position={this.props.currentUser.coords} icon={this.positionMarker}>
-                        <leaflet.Popup>
-                            <span>
-                                {this.l("youAreHere")}
-                            </span>
-                        </leaflet.Popup>
-                    </leaflet.Marker>
-                )
-                : null;
-
-            // Return the map without any layers shown
-            return (
-                <leaflet.Map center={this.props.centerPosition}
-                    zoom={this.state.zoom}
-                    dragging={this.props.draggable}
-                    zoomControl={this.props.zoomable}
-                    scrollWheelZoom={this.props.zoomable}
-                    zoomDelta={this.props.zoomable == false ? 0 : 1}>
                     <OfflineLayer.OfflineLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution={this.l("attribution")}
                     />
-                    <OfflineLayer.OfflineControl />
+
+                    {this.props.layerControl ? this.renderLayersControl() : null}
+
+                    <OfflineLayer.OfflineControl
+                        l={this.props.l} />
+
                     {marker}
-                </leaflet.Map>
-            )
-        }
+            </leaflet.Map>
+        )
+    }
+
+    renderLayersControl() {
+        return (
+            <leaflet.LayersControl position="topleft">
+                {this.addLayers()}
+            </leaflet.LayersControl>
+        );
+    }
+
+    renderBottomPane() {
+        return(
+            <Ons.Row style={{height: this.props.currentUserId ? "30%" : "0%"}}>
+                CHECK THIS OUT
+            </Ons.Row>
+        );
     }
 }
 

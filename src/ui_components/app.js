@@ -50,6 +50,7 @@ class App extends React.Component {
         this.handleListItemClick = this.handleListItemClick.bind(this);
         this.handleLocaleChange = this.handleLocaleChange.bind(this);
         this.handleLoggingChange = this.handleLoggingChange.bind(this);
+        this.handlePopupClose = this.handlePopupClose.bind(this);
         this.handleSidebarClick = this.handleSidebarClick.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
         this.handleZoomMapChange = this.handleZoomMapChange.bind(this);
@@ -70,7 +71,7 @@ class App extends React.Component {
         this.revokeConsent = this.revokeConsent.bind(this);
         this.showSidebar = this.showSidebar.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
-        this.tabs = ["dashboard", "map", "list", "settings", "offers", "help"];
+        this.tabs = ["dashboard", "map", "list", "settings", "offer", "help"];
         this.state = {
             sidebarIsOpen: false,
             sidebarIsSwipeable: true,
@@ -163,11 +164,10 @@ class App extends React.Component {
         });
 
         // TODO: implement this for real!
-        this.state.online = true;
-        // this.state.online = false;
+        this.state.online = config.app.online;
 
         // Use devMode to disable sign-in for faster development
-        // this.devMode = "dashboard";
+        this.devMode = config.app.devMode;
 
         if (this.devMode && !this.state.online) {
             this.apiUrl = "http://localhost:8080/api/";
@@ -339,36 +339,42 @@ class App extends React.Component {
             .then(res => res.json())
             .then(
                 (users) => {
-                    // Store current user and remove it from the list
+                    var currentUserIndex;
+
                     for (var i = users.length - 1; i >= 0; --i) {
+                        if (users[i].offer && users[i].offer.picture) {
+                            users[i].offer.picture = this.apiUrl + "offer_pictures/" + users[i]._id;
+                        }
+
                         if (users[i]._id == this.state.currentUserId) {
-                            var currentUser = users[i];
-                            users.splice(i, 1);
-
-                            // Set defaults from config file if user just signed up
-                            if (currentUser.newlyCreated) {
-                                this.pushUserUpdates({
-                                    shareLocation: config.userDefaults.shareLocation,
-                                    useLocation: config.userDefaults.useLocation,
-                                    contactInformation: config.userDefaults.contactInformation,
-                                    locale: this.state.locale,
-                                    newlyCreated: false,
-                                });
-                            }
-
-                            users = this.updateDistancesToUsers(currentUser.coords, users);
-
-                            this.setState({
-                                currentUser: currentUser,
-                                locale: currentUser.locale || this.state.locale,
-                                currentUserIsLoaded: true,
-                                users: users || [],
-                                usersAreLoaded: true,
-                            });
-
-                            break;
+                            currentUserIndex = i;
                         }
                     }
+
+                    // Store current user and remove it from the list
+                    var currentUser = users[currentUserIndex];
+                    users.splice(currentUserIndex, 1);
+
+                    // Set defaults from config file if user just signed up
+                    if (currentUser.newlyCreated) {
+                        this.pushUserUpdates({
+                            shareLocation: config.userDefaults.shareLocation,
+                            useLocation: config.userDefaults.useLocation,
+                            contactInformation: config.userDefaults.contactInformation,
+                            locale: this.state.locale,
+                            newlyCreated: false,
+                        });
+                    }
+
+                    users = this.updateDistancesToUsers(currentUser.coords, users);
+
+                    this.setState({
+                        currentUser: currentUser,
+                        locale: currentUser.locale || this.state.locale,
+                        currentUserIsLoaded: true,
+                        users: users || [],
+                        usersAreLoaded: true,
+                    });
                 },
                 (error) => {
                     console.log("There was an error loading the users!");
@@ -606,6 +612,13 @@ class App extends React.Component {
     }
 
     /**
+     * Handle the closing of a popup on the map
+     */
+    handlePopupClose() {
+        this.setState({selectedUserId: null});
+    }
+
+    /**
      * Calculate the distance from the user's location to a given position
      * @param {Array} coordinates (latitude, longitude) identifying the position
      */
@@ -673,6 +686,7 @@ class App extends React.Component {
                     centerPosition={this.state.centerPosition}
                     selectedUserId={this.state.selectedUserId}
                     calculateDistanceTo={this.calculateDistanceTo}
+                    handlePopupClose={this.handlePopupClose}
                     users={this.state.users}
                     key='map' />,
                 tab: <Ons.Tab
@@ -686,12 +700,10 @@ class App extends React.Component {
                     l={this.l}
                     logging={this.state.logging}
                     externalData={this.state.externalData}
-                    layerControl={this.state.layerControl}
                     draggable={this.state.draggable}
                     zoomable={this.state.zoomable}
                     currentUser={this.state.currentUser}
                     centerPosition={this.state.centerPosition}
-                    selectedUserId={this.state.selectedUserId}
                     handleListItemClick={this.handleListItemClick}
                     online={this.state.online}
                     defaultPicture={defaultPicture}
@@ -739,7 +751,7 @@ class App extends React.Component {
                     outOfGeofence={this.state.outOfGeofence}
                     key='offerForm' />,
                 tab: <Ons.Tab
-                    label={this.l('tabs.offers')}
+                    label={this.l('tabs.offer')}
                     icon='md-edit'
                     key='offerForm'
                     style={{display: 'none'}} />
@@ -768,7 +780,7 @@ class App extends React.Component {
     renderSidebarList() {
         var sidebarItems = [
             {key: "dashboard", icon: "md-compass"},
-            {key: "offers",    icon: "md-edit"},
+            {key: "offer",     icon: "md-edit"},
             {key: "settings",  icon: "md-settings"},
             {key: "help",      icon: "md-help"},
 
