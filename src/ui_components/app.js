@@ -760,6 +760,8 @@ class App extends React.Component {
             {
                 content: <help.Help
                     l={this.l}
+                    locale={this.state.locale}
+                    handleLocaleChange={this.handleLocaleChange}
                     key='help' />,
                 tab: <Ons.Tab
                     label={this.l('tabs.help')}
