@@ -3,10 +3,12 @@
         "adminEmail": "lucas.braun@uni-muenster.de",
         "apiUrl": "https://geofreebie-backend.herokuapp.com/api/",
         "defaultLocale": "en",
+        "devMode": false,
         "externalData": false,
         "layerControl": true,
         "logging": true,
         "numberOfImages": 3,
+        "online": true,
         "projectWebsite": "https://github.com/lbraun/geofreebie",
     },
     "map": {

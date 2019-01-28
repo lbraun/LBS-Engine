@@ -112,7 +112,7 @@ class OfflineControl extends leaflet.MapControl {
             saveButtonHtml: '<i class="fa fa-download" aria-hidden="true"></i>',
             removeButtonHtml: '<i class="fa fa-trash" aria-hidden="true"></i>',
             confirmSavingCallback: function (nTilesToSave, continueSaveTiles) {
-                if (window.confirm(offlineControl.l("save") + ' ' + nTilesToSave + '?')) {
+                if (window.confirm(offlineControl.props.l("app.save") + ' ' + nTilesToSave + '?')) {
                     continueSaveTiles();
                 }
             },

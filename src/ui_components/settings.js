@@ -218,7 +218,10 @@ class ContactSettings extends React.Component {
             <div>
                 <Ons.ListItem tappable={true}>
                     <label className='left' htmlFor={`${setting}-check`}>
-                        <Ons.Icon icon={`md-${contactType}`} style={{marginRight: "15px"}} />
+                        <Ons.Icon
+                            fixedWidth={true}
+                            icon={`md-${contactType}`}
+                            style={{marginRight: "15px"}} />
                         {this.l(setting)}
                     </label>
                     <label className='right'>
