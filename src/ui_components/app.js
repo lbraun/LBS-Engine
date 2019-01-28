@@ -474,6 +474,8 @@ class App extends React.Component {
             return (this.state.currentUserId.something);
         }
 
+        var offerIsSaving = 'offer' in attributes;
+
         var currentUser = this.state.currentUser || {};
         var updatedUser = JSON.parse(JSON.stringify(currentUser));
         Object.assign(updatedUser, attributes);
@@ -481,6 +483,7 @@ class App extends React.Component {
         this.setState({
             currentUser: updatedUser,
             currentUserIsLoaded: false,
+            offerIsSaving: offerIsSaving,
         });
 
         // Make the call to the "update user" API endpoint
@@ -493,6 +496,12 @@ class App extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    if (offerIsSaving) {
+                        this.setState({
+                            offerIsSaving: false,
+                        });
+                    }
+
                     this.setState({
                         currentUserIsLoaded: true,
                     });
@@ -722,7 +731,7 @@ class App extends React.Component {
                     l={this.l}
                     handleTabChange={this.handleTabChange}
                     pushUserUpdates={this.pushUserUpdates}
-                    currentUserIsLoaded={this.state.currentUserIsLoaded}
+                    offerIsSaving={this.state.offerIsSaving}
                     currentUser={this.state.currentUser}
                     outOfGeofence={this.state.outOfGeofence}
                     key='offerForm' />,
@@ -1019,6 +1028,7 @@ class App extends React.Component {
             usersAreLoaded: false,
             reviewsAreLoaded: false,
             currentUserIsLoaded: false,
+            offerIsSaving: false,
             users: [],
             pendingReviews: [],
             selectedUserId: null,

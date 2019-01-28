@@ -93728,13 +93728,16 @@ class App extends React.Component {
             return this.state.currentUserId.something;
         }
 
+        var offerIsSaving = 'offer' in attributes;
+
         var currentUser = this.state.currentUser || {};
         var updatedUser = JSON.parse(JSON.stringify(currentUser));
         Object.assign(updatedUser, attributes);
 
         this.setState({
             currentUser: updatedUser,
-            currentUserIsLoaded: false
+            currentUserIsLoaded: false,
+            offerIsSaving: offerIsSaving
         });
 
         // Make the call to the "update user" API endpoint
@@ -93744,6 +93747,12 @@ class App extends React.Component {
             body: JSON.stringify(attributes),
             headers: { 'Content-Type': 'application/json' }
         }).then(res => res.json()).then(result => {
+            if (offerIsSaving) {
+                this.setState({
+                    offerIsSaving: false
+                });
+            }
+
             this.setState({
                 currentUserIsLoaded: true
             });
@@ -93972,7 +93981,7 @@ class App extends React.Component {
                 l: this.l,
                 handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
-                currentUserIsLoaded: this.state.currentUserIsLoaded,
+                offerIsSaving: this.state.offerIsSaving,
                 currentUser: this.state.currentUser,
                 outOfGeofence: this.state.outOfGeofence,
                 key: 'offerForm' }),
@@ -94287,6 +94296,7 @@ class App extends React.Component {
             usersAreLoaded: false,
             reviewsAreLoaded: false,
             currentUserIsLoaded: false,
+            offerIsSaving: false,
             users: [],
             pendingReviews: [],
             selectedUserId: null,
@@ -96582,8 +96592,7 @@ class OfferForm extends React.Component {
             pictureFormat: offer.picture ? "uri" : "base64",
             title: offer.title || "",
             description: offer.description || "",
-            available: offer.available || false,
-            saved: !!offer.title
+            available: offer.available || false
         };
     }
 
@@ -96613,9 +96622,18 @@ class OfferForm extends React.Component {
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
         this.setState({
-            [name]: value,
-            saved: false
+            [name]: value
         });
+    }
+
+    offer() {
+        return {
+            picture: this.state.picture,
+            pictureFormat: this.state.pictureFormat,
+            title: this.state.title,
+            description: this.state.description,
+            available: this.props.currentUser.offer ? this.props.currentUser.offer.available : this.state.available
+        };
     }
 
     save() {
@@ -96625,18 +96643,14 @@ class OfferForm extends React.Component {
         }
 
         this.props.pushUserUpdates({
-            offer: {
-                picture: this.state.picture,
-                pictureFormat: this.state.pictureFormat,
-                title: this.state.title,
-                description: this.state.description,
-                available: this.props.currentUser.offer ? this.props.currentUser.offer.available : this.state.available
-            }
+            offer: this.offer()
         });
+    }
 
-        this.setState({
-            saved: true
-        });
+    isSaved() {
+        var offer = this.props.currentUser.offer || {};
+
+        return this.offer().picture == offer.picture && this.offer().title == offer.title && this.offer().description == offer.description && this.offer().available == offer.available;
     }
 
     /**
@@ -96649,8 +96663,7 @@ class OfferForm extends React.Component {
         navigator.camera.getPicture(function onSuccess(imageData) {
             formInstance.setState({
                 picture: imageData,
-                pictureFormat: "base64",
-                saved: false
+                pictureFormat: "base64"
             });
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
@@ -96676,8 +96689,7 @@ class OfferForm extends React.Component {
      */
     confirmPictureDeletion(e) {
         this.setState({
-            picture: null,
-            saved: false
+            picture: null
         });
 
         this.closePictureDeletionDialog();
@@ -96703,8 +96715,7 @@ class OfferForm extends React.Component {
             pictureFormat: "base64",
             title: "",
             description: "",
-            available: false,
-            saved: true
+            available: false
         });
 
         this.props.pushUserUpdates({
@@ -96809,27 +96820,25 @@ class OfferForm extends React.Component {
     }
 
     renderOfferStatus() {
-        var status = {
-            color: "#d9534f",
-            icon: "edit",
-            text: "notSaved"
-        };
-
-        if (this.state.saved) {
-            if (this.props.currentUserIsLoaded) {
-                status = {
-                    color: "green",
-                    icon: "check",
-                    text: "saved"
-                };
-            } else {
-                status = {
-                    color: "black",
-                    icon: "spinner",
-                    spin: true,
-                    text: "syncing"
-                };
-            }
+        if (this.props.offerIsSaving) {
+            var status = {
+                color: "black",
+                icon: "spinner",
+                spin: true,
+                text: "syncing"
+            };
+        } else if (this.isSaved()) {
+            var status = {
+                color: "green",
+                icon: "check",
+                text: "saved"
+            };
+        } else {
+            var status = {
+                color: "#d9534f",
+                icon: "edit",
+                text: "notSaved"
+            };
         }
 
         return React.createElement(
