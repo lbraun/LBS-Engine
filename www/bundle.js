@@ -92003,6 +92003,13 @@ function validateLocalizationsFile() {
 
         if (count != localizationsCount) {
             console.log(`Warning! Locale ${locale} does not have the right number of entries.`);
+
+            var a = Object.keys(localizations[locale]);
+            var b = Object.keys(localizations.en);
+            var diff = [...a.filter(x => !b.includes(x)), ...b.filter(x => !a.includes(x))];
+
+            console.log("Entries that are different:");
+            console.log(diff);
         }
     }
 }
@@ -92404,8 +92411,11 @@ module.exports={
         "demographicSurvey.under18": "TODO",
         "demographicSurvey.yes": "TODO",
         "demographicSurvey.youMustBe18": "TODO",
+        "help.consent": "Study Consent Form (English)",
         "help.contact": "TODO",
+        "help.help": "Wiki مساعدة",
         "help.legal": "TODO",
+        "help.privacy": "TODO",
         "help.questionsOrConcerns": "TODO",
         "help.rules": "TODO",
         "help.thanks": "TODO",
@@ -92436,8 +92446,8 @@ module.exports={
         "map.showOtherUsers": "اظهار مستخدمين آخرين",
         "map.youAreHere": "أنت هنا اﻵن",
         "offerForm.addPicture": "TODO",
-        "offerForm.available": "متاح اﻵن",
         "offerForm.anOfferMustHaveATitle": "TODO",
+        "offerForm.available": "متاح اﻵن",
         "offerForm.contactInformationPlaceholder": "معلومات اﻹتصال",
         "offerForm.deleteOffer": "TODO",
         "offerForm.deleteOfferPicture": "TODO",
@@ -92446,9 +92456,9 @@ module.exports={
         "offerForm.iAmOfferingHelpText": "من فضلك ادخل وصف جيد للعرض",
         "offerForm.iCanBeContactedAt": "TODO",
         "offerForm.iCanBeContactedAtHelpText": "من فضلك ادخل رقم هاتف، عنوان بريد الكتروني أو آية تعليمات اخرى.",
+        "offerForm.noOffer": "TODO",
         "offerForm.notAvailable": "غير متاح اﻵن",
         "offerForm.notSaved": "TODO",
-        "offerForm.noOffer": "TODO",
         "offerForm.offerDescriptionPlaceholder": "وصف العرض",
         "offerForm.offerPicture": "TODO",
         "offerForm.offerTitlePlaceholder": "TODO",
@@ -92532,7 +92542,7 @@ module.exports={
         "consentForm.dataRecordingInfo": "Die Daten, die in dieser Studie erhoben werden, werden in anonymisierter Form erhoben und nur in Aggregation mit weiteren anonymen Daten verarbeitet. In dieser Form werden die Daten ggf. in akademischen Journalen, Präsentationen oder anderen Medien veröffentlicht, jedoch ist niemals eine Identifizierung der einzelnen Teilnehmer möglich. Eine Woche nach Abschluss der Studie ist es daher quasi nicht mehr möglich die Daten aus deiner Teilnahme zu aus den aggregierten Datensätzen aller Teilnehmer zu identifizieren.",
         "consentForm.dataRecordingInfoTitle": "Datenschutz",
         "consentForm.description": "Vielen Dank für deine Teilnahme an dieser Studie, über wie ein ortsbasierter Dienst die soziale Isolation von Flüchtlingen in Münster reduzieren kann.",
-        "consentForm.goodBehaviorConsent": "TODO",
+        "consentForm.goodBehaviorConsent": "Ich stimme zu, dass ich die anderen Benutzer der App mit Respekt behandle und ihnen gegenüber freundlich bin.",
         "consentForm.ifYouHaveAnyQuestions": "Bei Fragen wende dich bitte an den Forscher, bevor du fortfährst:",
         "consentForm.instructions": "Aktiviere die Kontrollkästchen, wenn du mit den folgenden Aussagen einverstanden bist:",
         "consentForm.moreInfo": "Weitere Informationen zur Studie findest du auf der",
@@ -92584,8 +92594,11 @@ module.exports={
         "demographicSurvey.under18": "Unter 18",
         "demographicSurvey.yes": "Ja",
         "demographicSurvey.youMustBe18": "Du musst mindestens 18 Jahre alt sein, um die App zu benutzen.",
+        "help.consent": "Studien Einverständniserklärung",
         "help.contact": "Kontakt",
+        "help.help": "Hilfe Wiki",
         "help.legal": "Datenschutz",
+        "help.privacy": "Datenschutz",
         "help.questionsOrConcerns": "Sollst du irgendeine Frage haben, bitte schreib an",
         "help.rules": "Richtlinien und Regeln",
         "help.thanks": "Danke",
@@ -92616,8 +92629,8 @@ module.exports={
         "map.showOtherUsers": "Andere Benutzer anzeigen",
         "map.youAreHere": "Dein Standort",
         "offerForm.addPicture": "Ein Bild hinzufügen",
-        "offerForm.available": "Jetzt verfügbar",
         "offerForm.anOfferMustHaveATitle": "Ein Angebot musst ein Titel haben.",
+        "offerForm.available": "Jetzt verfügbar",
         "offerForm.contactInformationPlaceholder": "Kontaktinformation",
         "offerForm.deleteOffer": "Angebot löschen",
         "offerForm.deleteOfferPicture": "Angebotsbild löschen",
@@ -92625,10 +92638,10 @@ module.exports={
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte gib eine kurze Beschreibung des Angebots.",
         "offerForm.iCanBeContactedAt": "Kontaktmöglichkeiten",
-        "offerForm.iCanBeContactedAtHelpText": "Bitte gib eine Telefonnummer, E-Mail-Adresse oder andere Kontaktmöglichkeiten an.",
+        "offerForm.iCanBeContactedAtHelpText": "Bitte gib eine Telefonnummer, Email-Adresse oder andere Kontaktmöglichkeiten an.",
+        "offerForm.noOffer": "Kein Angebot",
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
         "offerForm.notSaved": "Angebot nicht gespeichert",
-        "offerForm.noOffer": "Kein Angebot",
         "offerForm.offerDescriptionPlaceholder": "Beschreibung",
         "offerForm.offerPicture": "Bild",
         "offerForm.offerTitlePlaceholder": "Titel",
@@ -92679,10 +92692,10 @@ module.exports={
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
         "signInPage.refresh": "Neuladen",
-        "signInPage.waitForApproval": "TODO",
-        "signInPage.whileYouAreWaiting": "TODO",
-        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
-        "signInPage.youMustBeOnlineInOrderToLogOut": "TODO",
+        "signInPage.waitForApproval": "Bitte warte auf den Admin um deinen Account genehmigen zu lassen.",
+        "signInPage.whileYouAreWaiting": "Du wirst eine Email erhalten wenn du dich einloggen kannst.",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "Du musst online sein um dich einzuloggen.",
+        "signInPage.youMustBeOnlineInOrderToLogOut": "Du musst online sein um dich auszuloggen.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Hilfe und Info",
         "tabs.list": "Liste",
@@ -92764,8 +92777,11 @@ module.exports={
         "demographicSurvey.under18": "Under 18",
         "demographicSurvey.yes": "Yes",
         "demographicSurvey.youMustBe18": "You must be at least 18 years old to use the app.",
+        "help.consent": "Study Consent Form",
         "help.contact": "Contact",
+        "help.help": "Help Wiki",
         "help.legal": "Privacy and Legal",
+        "help.privacy": "Privacy Policy",
         "help.questionsOrConcerns": "If you have any questions or concerns, please write to me at",
         "help.rules": "Rules and Guidelines",
         "help.thanks": "Thanks",
@@ -92796,8 +92812,8 @@ module.exports={
         "map.showOtherUsers": "Show other users",
         "map.youAreHere": "You are here",
         "offerForm.addPicture": "Add a picture",
-        "offerForm.available": "Available now",
         "offerForm.anOfferMustHaveATitle": "An offer must have a title.",
+        "offerForm.available": "Available now",
         "offerForm.contactInformationPlaceholder": "Contact information",
         "offerForm.deleteOffer": "Delete Offer",
         "offerForm.deleteOfferPicture": "Delete Offer Picture",
@@ -92869,6 +92885,372 @@ module.exports={
         "tabs.map": "Map",
         "tabs.offer": "My Offer",
         "tabs.settings": "Settings"
+    },
+    "es": {
+        "alert.isLessThan": "es menor que",
+        "alert.metersAwayWith": "m de aquí con:",
+        "app.allFieldsMustBeCompleted": "Todos los campos deben ser completados.",
+        "app.areYouSure": "¿Estás seguro?",
+        "app.back": "Atrás",
+        "app.cancel": "Cancelar",
+        "app.edit": "Editar",
+        "app.name": "Geofreebie",
+        "app.next": "Siguiente",
+        "app.projectsWebsite": "Página web del proyecto",
+        "app.report": "Reportar una problema",
+        "app.reportEmailBody": "Por favor, explica el problema aquí:\n\n",
+        "app.reportEmailSubject": "Reporta este perfil",
+        "app.save": "Guardar",
+        "app.submit": "Enviar",
+        "app.thisCannotBeUndone": "Esto no se puede deshacer.",
+        "consentForm.continue": "Continuar",
+        "consentForm.dataRecordingConsent": "Acepto compartir mi localización durante el estudio.",
+        "consentForm.dataRecordingInfo": "Los datos originales obtenidos de este estudio serán anónimos y solo procesados en conjunto. En tal forma, puede ser publicado en revistas académicas o presentaciones, pero nunca de manera que permita la identificación individual de los participantes. Una semana después de la finalización del estudio no será posible recuperar tus datos desde los análisis agregados.",
+        "consentForm.dataRecordingInfoTitle": "Privacidad",
+        "consentForm.description": "Gracias por participar en este estudio para apoyar el restablecimiento de inmigrantes forzados con un servicio “freecycling” basado en la ubicación.",
+        "consentForm.goodBehaviorConsent": "Me comprometo a tratar a todos los usuarios de la aplicación con amabilidad y respeto.",
+        "consentForm.ifYouHaveAnyQuestions": "Si tienes alguna pregunta, contacta con el investigador antes de empezar:",
+        "consentForm.instructions": "Marca las casillas si estás de acuerdo con las siguientes afirmaciones:",
+        "consentForm.moreInfo": "Para saber más sobre el estudio:",
+        "consentForm.moreInfoTitle": "Más información",
+        "consentForm.rightToQuitConsent": "Confirmo que he entendido que tengo el derecho de abandonar el estudio en cualquier momento.",
+        "consentForm.rightToQuitInfo": "Eres libre de abandonar el estudio o retirar tus datos en cualquier momento sin ninguna consecuencia.",
+        "consentForm.rightToQuitInfoTitle": "Derecho de abandonar",
+        "consentForm.title": "Formulario de consentimiento",
+        "consentForm.volunteeredConsent": "Confirmo que he participado en este estudio de manera voluntaria.",
+        "contact.email": "Email",
+        "contact.facebook": "Usuario de Facebook",
+        "contact.howDoYouWantToBeContacted": "¿Cómo quieres ser contactado?",
+        "contact.phone": "Número de teléfono",
+        "contact.useEmail": "Usar email",
+        "contact.useFacebook": "Usar Facebook",
+        "contact.usePhone": "Usar teléfono o SMS",
+        "contact.useWhatsapp": "Usar Whatsapp",
+        "contact.whatsapp": "Número de Whatsapp",
+        "dashboard.availableNow": "Disponible ahora",
+        "dashboard.becomeAvailable": "Cambiar a disponible",
+        "dashboard.becomeUnavailable": "Cambiar a no disponible",
+        "dashboard.completeOffer": "Ya lo he dado",
+        "dashboard.createAnOffer": "Crear una oferta",
+        "dashboard.nearbyOffers": "Ofertas cercanas",
+        "dashboard.notCurrentlyAvailable": "No disponible actualmente",
+        "dashboard.pendingReviews": "Opiniones pendientes",
+        "dashboard.reviewSubmitted": "Opinión enviada",
+        "dashboard.welcome": "Bienvenido",
+        "dashboard.weNeedYourLocationToShowThis": "Necesitamos saber tu localización para mostrar esto.",
+        "dashboard.youAreNotOffering": "No estás ofreciendo nada ahora.",
+        "dashboard.yourOffer": "Tu oferta",
+        "demographicSurvey.18To25": "18 a 25",
+        "demographicSurvey.26To35": "26 a 35",
+        "demographicSurvey.36To45": "36 a 45",
+        "demographicSurvey.46To55": "46 a 55",
+        "demographicSurvey.description": "Por favor, para el propósito del estudio, rellena estas dos encuestas antes de empezar a usar la aplicación.",
+        "demographicSurvey.female": "Mujer",
+        "demographicSurvey.male": "Hombre",
+        "demographicSurvey.no": "No",
+        "demographicSurvey.notSure": "No estoy seguro",
+        "demographicSurvey.other": "Otro",
+        "demographicSurvey.over55": "Más de 55",
+        "demographicSurvey.question1": "Cuál es tu edad?",
+        "demographicSurvey.question2": "Cuál es tu género?",
+        "demographicSurvey.question3": "En qué ciudad o ciudades creciste?",
+        "demographicSurvey.question4": "Eres solicitante de asilo o refugiado?",
+        "demographicSurvey.question5": "Has usado alguna vez Verschenk's Münster, Foodsharing, Freecycling.org, o algún otro sistema de \"freecycling\"?",
+        "demographicSurvey.title": "Cuéntanos sobre ti",
+        "demographicSurvey.under18": "Menos de 18",
+        "demographicSurvey.yes": "Si",
+        "demographicSurvey.youMustBe18": "Debes tener al menos 18 años para usar la aplicación.",
+        "help.consent": "Study Consent Form (Ingles)",
+        "help.contact": "Contacto",
+        "help.help": "Ayuda Wiki",
+        "help.legal": "Privacidad y asuntos legales",
+        "help.questionsOrConcerns": "Si tienes alguna duda o pregunta, por favor escribe a",
+        "help.privacy": "Privacidad",
+        "help.rules": "Reglas e instrucciones",
+        "help.thanks": "Gracias",
+        "list.error": "Error",
+        "list.fetchFailure": "¿Estás conectado a internet?",
+        "list.loading": "Cargando",
+        "list.locationIsUnavailable": "Localización no disponible",
+        "list.noUsers": "Actualmente no hay usuarios en el sistema. Por favor, prueba más tarde.",
+        "lsnsSurvey.0": "Ninguno",
+        "lsnsSurvey.1": "Uno",
+        "lsnsSurvey.2": "Dos",
+        "lsnsSurvey.3": "Tres o cuatro",
+        "lsnsSurvey.4": "De 5 a 8",
+        "lsnsSurvey.5": "9 o más",
+        "lsnsSurvey.description": "¡Casi allí!",
+        "lsnsSurvey.family": "Familia: Considerando las personas con las que estás relacionado por nacimiento, matrimonio, adopción...",
+        "lsnsSurvey.friendships": "Amistad: Considerando todos tus amigos e incluyendo tus vecinos",
+        "lsnsSurvey.question1": "¿Con cuántos parientes te encuentras o sabes de ellos al menos una vez al mes?",
+        "lsnsSurvey.question2": "¿Con cuántos parientes puedes hablar de problemas privados?",
+        "lsnsSurvey.question3": "¿A cuántos parientes llamarías para pedir ayuda?",
+        "lsnsSurvey.question4": "¿Con cuántos amigos te encuentras o sabes de ellos al menos una vez al mes?",
+        "lsnsSurvey.question5": "¿Con cuántos amigos puedes hablar de problemas privados?",
+        "lsnsSurvey.question6": "¿A cuántos amigos llamarías para pedir ayuda?",
+        "lsnsSurvey.title": "Cuéntanos sobre ti",
+        "map.andCanBeContactedAt": "y puede ser contactado en",
+        "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
+        "map.isOffering": "está ofreciendo",
+        "map.showOtherUsers": "Muestra otros usuarios",
+        "map.youAreHere": "Tú estás aquí",
+        "offerForm.addPicture": "Añade una foto",
+        "offerForm.anOfferMustHaveATitle": "Una oferta tiene que tener título.",
+        "offerForm.available": "Disponible ahora",
+        "offerForm.contactInformationPlaceholder": "Información de contacto",
+        "offerForm.deleteOffer": "Elimina la oferta",
+        "offerForm.deleteOfferPicture": "Elimina la foto de la oferta",
+        "offerForm.geofenceWarning": "Solo puedes hacer tu oferta cuando estés disponible en Münster",
+        "offerForm.iAmOffering": "Estoy ofreciendo...",
+        "offerForm.iAmOfferingHelpText": "Por favor, de una pequeña descripción de la oferta.",
+        "offerForm.iCanBeContactedAt": "Opciones de contacto",
+        "offerForm.iCanBeContactedAtHelpText": "Por favor, proporciona un número de teléfono, email o otras instrucciones.",
+        "offerForm.noOffer": "No hay oferta",
+        "offerForm.notAvailable": "No disponible ahora",
+        "offerForm.notSaved": "No guardada",
+        "offerForm.offerDescriptionPlaceholder": "Descripción",
+        "offerForm.offerPicture": "Imagen",
+        "offerForm.offerTitlePlaceholder": "Título",
+        "offerForm.saved": "Oferta guardada",
+        "offerForm.saveOffer": "Guardar oferta",
+        "offerForm.syncing": "Sincronizando...",
+        "offlineLayer.removeTiles": "¿Estás seguro de que quieres retirar todos los datos guardados del mapa?",
+        "review._otherUserId": "A quién le diste tu oferta?",
+        "review.atMyHome": "En mi casa",
+        "review.atMyWork": "En mi trabajo",
+        "review.atSomeoneElsesHome": "En casa de alguien",
+        "review.atTheirHome": "En su casa",
+        "review.atTheirWork": "En su trabajo",
+        "review.email": "Email",
+        "review.facebook": "Facebook",
+        "review.inAnotherPublicPlace": "En un espacio público",
+        "review.likely": "Probable",
+        "review.other": "Otro",
+        "review.phone": "Teléfono o SMS",
+        "review.question1": "Cómo os pusisteis en contacto?",
+        "review.question2": "Dónde os encontrasteis?",
+        "review.question3": "Estás satisfecho con la reunión?",
+        "review.question4": "¿Contactarías con esta persona de nuevo?",
+        "review.questionsAbout": "Preguntas sobre",
+        "review.saidTheyGaveYouThisOffer": "dijeron que tú los contactaste por esta oferta.",
+        "review.satisfied": "Satisfecho",
+        "review.slightlyDissatisfied": "Ligeramente satisfecho",
+        "review.unlikely": "Improbable",
+        "review.veryDissatisfied": "Muy insatisfecho",
+        "review.veryLikely": "Muy probable",
+        "review.verySatisfied": "Muy satisfecho",
+        "review.veryUnlikely": "Muy improbable",
+        "review.weDidntMeetInPerson": "No nos encontramos en persona",
+        "review.whatsapp": "Whatsapp",
+        "settings.language": "Idioma",
+        "settings.loggedInAs": "Registrarme como",
+        "settings.logIn": "Iniciar sesión",
+        "settings.logOut": "Cerrar sesión",
+        "settings.name": "Nombre",
+        "settings.notCurrentlyLoggedIn": "No estás conectado",
+        "settings.quitTheStudy": "Salir",
+        "settings.shareLocation": "Compartir mi ubicación",
+        "settings.shareLocationText": "Esto te permite cambiar tu ubicación a pública o privada. Sólo tu ubicación aproximada (a 50 metros) se verá en el mapa si la marcas como privada.",
+        "settings.useLocation": "Usa mi ubicación",
+        "settings.useLocationText": "Esto permite a la ubicación recibir tu ubicación actual desde tu teléfono. Actívalo para ver tu ubicación en el mapa. Tu ubicación es privada y nunca será guardada en la aplicación.",
+        "settings.youHaveConsented": "Has aceptado formar parte del estudio.",
+        "signInPage.hi": "Hola",
+        "signInPage.loading": "Cargando...",
+        "signInPage.logIn": "Iniciar sesión",
+        "signInPage.refresh": "Refrescar",
+        "signInPage.waitForApproval": "Por favor espera hasta que un moderador apruebe tu cuenta.",
+        "signInPage.whileYouAreWaiting": "Recibirás un email donde puedes iniciar sesión.",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "Tienes que tener internet para iniciar sesión.",
+        "signInPage.youMustBeOnlineInOrderToLogOut": "Tienes que tener internet para cerrar sesión.",
+        "tabs.dashboard": "Panel principal",
+        "tabs.help": "Ayuda y Información",
+        "tabs.list": "Lista",
+        "tabs.map": "Mapa",
+        "tabs.offer": "Mi oferta",
+        "tabs.settings": "Ajustes"
+    },
+    "ne": {
+        "alert.isLessThan": "भन्दा कम",
+        "alert.metersAwayWith": "TODO",
+        "app.allFieldsMustBeCompleted": "सबै क्षेत्रहरू अनिवार्य भरिनै पर्छ.",
+        "app.areYouSure": "साच्चै हो?",
+        "app.back": "फिर्ता",
+        "app.cancel": "रद्द गर्नुहोस्",
+        "app.edit": "सम्पादन गर्नुहोस्",
+        "app.name": "नाम",
+        "app.next": "अर्को",
+        "app.projectsWebsite": "परियोजनाको वेबसाइट",
+        "app.report": "रिपोर्ट गर्नुहोस्",
+        "app.reportEmailBody": "कृपया समस्या यहाँ व्याख्या गर्नुहोस्",
+        "app.reportEmailSubject": "प्रोफाइल रिपोर्ट",
+        "app.save": "TODO",
+        "app.submit": "पेश गर्नुहोस्",
+        "app.thisCannotBeUndone": "यो निर्णय पछि सच्याउन मिल्नेछैन.",
+        "consentForm.continue": "जारी राख्नुहोस् ",
+        "consentForm.dataRecordingConsent": "म अध्ययनको बेलामा मेरो हाल्को स्थान डाटा रेकर्ड गर्न सहमत छु.",
+        "consentForm.dataRecordingInfo": "यो अध्ययनबाट प्राप्त गरिएको मूल डेटा अज्ञात हुनेछ र केवल समग्रमा प्रशोधन गरिनेछ. यस्तो फारममा, यो अकादमिक पत्रिकाहरू, प्रस्तुतीकरणहरू वा अन्य मिडियाहरूमा प्रकाशित हुन सक्छ, तर त्यसबेला कहिल्यै पनि व्यक्तिगत रूपमा पहिचान गरिदैन. अध्ययनको समाप्ति पछि एक हप्ता पछी तपाइँको यो डेटा समयावधि विश्लेषण बाट फिर्ता लिन सम्भव हुने छैन.",
+        "consentForm.dataRecordingInfoTitle": "गोपनीयता",
+        "consentForm.description": "प्रवासकानिम्ती स्थान आधारित फ्री साइकल सेवाको मा आदारित अध्ययनमा भाग लिनुभएकोमा धन्यवाद.",
+        "consentForm.goodBehaviorConsent": "म एप को अन्य प्रयोगकर्ताहरु को सम्मान र दया संग व्यवहार गर्न सहमत छु.",
+        "consentForm.ifYouHaveAnyQuestions": "यदि तपाइँसँग कुनै प्रश्नहरू छन् भने कृपया जारी राख्नु अघि शोधकर्तालाई सम्पर्क गर्नुहोस्.",
+        "consentForm.instructions": "यदि तपाइँ निम्न विवरणहरुमा सहमत हुनुहुन्छ भने बाकसहरूमा ठिक लगाउनुहोस.",
+        "consentForm.moreInfo": "अध्ययनको बारेमा थप जानकारीको लागि, हेर्नुहोस्.",
+        "consentForm.moreInfoTitle": "थप जानकारी",
+        "consentForm.rightToQuitConsent": "म पुष्टि गर्दछु कि मैले कुनै पनि समय अध्ययन छोड्न मेरो अधिकार बुझ्छु.",
+        "consentForm.rightToQuitInfo": "तपाईं रोक्न स्वतन्त्र हुनुहुन्छ, अध्ययन छोड्नुहोस् र कुनै पनि समयमा कुनै पनि समयमा नतिजा नतिजाको साथ आफ्नो डेटा फिर्ता लिन सक्नुहुने छ.",
+        "consentForm.rightToQuitInfoTitle": "छोड्ने अधिकार",
+        "consentForm.title": "सूचना सहमति फारम",
+        "consentForm.volunteeredConsent": "म पुष्टि गर्छु कि मैले यो अध्ययनमा आफ्नै इक्छया अनुसार भाग लिएको हु.",
+        "contact.email": "इ-मेल ठेगाना",
+        "contact.facebook": "फेसबुकको प्रओफाइल नाम.",
+        "contact.howDoYouWantToBeContacted": "तपाइँलाई कसरी सम्पर्क गर्दा ठिक लाग्छ?",
+        "contact.phone": "फोन नम्बर",
+        "contact.useEmail": "इ-मेल प्रयोग गर्नुहोस्.",
+        "contact.useFacebook": "फकेबूक प्रयोग गर्नुहोस्.",
+        "contact.usePhone": "फोन वा एसएमएस प्रयोग गर्नुहोस्.",
+        "contact.useWhatsapp": "व्हाट्सएप प्रयोग गर्नुहोस्.",
+        "contact.whatsapp": "व्हाट्सएप नम्बर",
+        "dashboard.availableNow": "अहिले उपलब्ध छु",
+        "dashboard.becomeAvailable": "उपलब्ध हुनेछु",
+        "dashboard.becomeUnavailable": "उपलब्ध छैन",
+        "dashboard.completeOffer": "पूरा",
+        "dashboard.createAnOffer": "एउटा प्रस्ताव सिर्जना गर्नुहोस्.",
+        "dashboard.nearbyOffers": "नजिकैको प्रस्तावहरू:",
+        "dashboard.notCurrentlyAvailable": "हाल उपलब्ध छैन.",
+        "dashboard.pendingReviews": "रिभ्यु गर्न बाँकी.",
+        "dashboard.reviewSubmitted": "रिभ्यु पेश गरियो.",
+        "dashboard.welcome": "स्वागत छ.",
+        "dashboard.weNeedYourLocationToShowThis": "हामीलाई यो प्रदर्शन गर्न तपाईंको स्थान जान्न आवश्यक छ।",
+        "dashboard.youAreNotOffering": "तपाईं अहिले केहि पनि प्रस्तावित गर्नु भएको छैन.",
+        "dashboard.yourOffer": "तपाईंको प्रस्तावहरु:",
+        "demographicSurvey.18To25": "१८ देखि २५",
+        "demographicSurvey.26To35": "२६ देखि ३५",
+        "demographicSurvey.36To45": "३६ देखि ४५",
+        "demographicSurvey.46To55": "४६ देखि ५५",
+        "demographicSurvey.description": "अध्ययनको उद्देश्यको लागि, कृपया आय्य्प प्रयोग गर्नु भन्दाअघाडी निम्न दुई सर्वेक्षणहरू भर्नुहोस्.",
+        "demographicSurvey.female": "महिला",
+        "demographicSurvey.male": "पुरुष",
+        "demographicSurvey.no": "होइन",
+        "demographicSurvey.notSure": "पक्का छैन",
+        "demographicSurvey.other": "अर्को",
+        "demographicSurvey.over55": "५५ भन्दा माथि",
+        "demographicSurvey.question1": "तपाईको उमेर कति हो?",
+        "demographicSurvey.question2": "तपाईको लिंग के हो?",
+        "demographicSurvey.question3": "तपाई कुन शहर वा शहरहरूमा हुर्किनुभयो?",
+        "demographicSurvey.question4": "TODO",
+        "demographicSurvey.question5": "के तपाइँले कहिल्यै वर्चेन्किको मुनिस्टर, फूडशेयरिङ.org, फ्रीसाइक्लिङ. ओर्ग वा कुनै अन्य 'फ्रीसाइक्लिङ्' प्रणाली प्रयोग गर्नुभयो?",
+        "demographicSurvey.title": "हामीलाई आफ्नो बारेमा भाताउनुहोस.",
+        "demographicSurvey.under18": "१८ भन्दा कम",
+        "demographicSurvey.yes": "हो",
+        "demographicSurvey.youMustBe18": "यो आय्य्पा प्रयोग गर्नको लागि तपाई कम्तीमा १८ वर्षको हुनुपर्दछ.",
+        "help.consent": "TODO",
+        "help.contact": "सम्पर्क",
+        "help.help": "TODO",
+        "help.legal": "गोपनीयता र कानूनी",
+        "help.privacy": "TODO",
+        "help.questionsOrConcerns": "TODO",
+        "help.rules": "नियम र दिशानिर्देशहरू",
+        "help.thanks": "TODO",
+        "list.error": "त्रुटि",
+        "list.fetchFailure": "यहाँ सूची पत्ता लगाउन समस्या पर्यो। सायद तपाईं इन्टरनेटमा जडान हुनुहुन्न.",
+        "list.loading": "लोड हुँदै ...",
+        "list.locationIsUnavailable": "स्थान अपलब्ध छैन",
+        "list.noUsers": "अहिले प्रणालीमा अन्य कुनै प्रयोगकर्ताहरू छैनन्. पछि फेरि हेर्नु होला.",
+        "lsnsSurvey.0": "खाली",
+        "lsnsSurvey.1": "एक",
+        "lsnsSurvey.2": "दुइ",
+        "lsnsSurvey.3": "तीन या चार",
+        "lsnsSurvey.4": "पाच देखी आठ",
+        "lsnsSurvey.5": "नौ या नौ भन्दा बढी",
+        "lsnsSurvey.description": "लगभग सकिन लाग्यो!",
+        "lsnsSurvey.family": "परिवार: तपाईंले जन्म, विवाह आदिसँग सम्बन्धित व्यक्तिहरूलाई विचार गर्दै.",
+        "lsnsSurvey.friendships": "मित्रता: तपाईंको छिमेकी सहितका सबै साथीहरूलाई ध्यान दिँदै.",
+        "lsnsSurvey.question1": "एक महिनमा कम्तीमा तपाई कति जना आफन्तहरूसँग भेट्नु वा बोल्नुहुन्छ?",
+        "lsnsSurvey.question2": "तपाईं कतिजना आफ्न्तरुसँग आफ्नो निजी मामिलामा कुरा गर्न सजिलो महसुस गर्नुहुन्छ?",
+        "lsnsSurvey.question3": "तपाई कतिजना आफन्तहरुसँग नजिक हुनुहुन्छ यती तपाईलाई अप्ठेरो परेको बेलामा सहयोगको लागि कल गर्न सक्नुहुनेछ?",
+        "lsnsSurvey.question4": "एक महिनमा कम्तीमा तपाई कति जना साथीहरूसँग भेट्नु वा बोल्नुहुन्छ?",
+        "lsnsSurvey.question5": "तपाईं कतिजना साथीहरुसँग आफ्नो निजी मामिलामा कुरा गर्न सजिलो महसुस गर्नुहुन्छ?",
+        "lsnsSurvey.question6": "तपाई कतिजना साथीहरुसँग नजिक हुनुहुन्छ यती तपाईलाई अप्ठेरो परेको बेलामा सहयोगको लागि कल गर्न सक्नुहुनेछ?",
+        "lsnsSurvey.title": "हामीलाई आफ्नो बारेमा भाताउनुहोस.",
+        "map.andCanBeContactedAt": "यहाँ सम्पर्क गर्न सकिन्छ.",
+        "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
+        "map.isOffering": "प्रस्ताव गरिरहेको छ.",
+        "map.showOtherUsers": "अन्य प्रयोगकर्ताहरू देखाउनुहोस्.",
+        "map.youAreHere": "तपाई अहिले यहाँ हुनुहुन्छ.",
+        "offerForm.addPicture": "तस्वीर थप्नुहोस्.",
+        "offerForm.anOfferMustHaveATitle": "TODO",
+        "offerForm.available": "अहिले उपलब्ध छ.",
+        "offerForm.contactInformationPlaceholder": "सम्पर्क जानकारी:",
+        "offerForm.deleteOffer": "प्रस्ताव मेटाउनुहोस्.",
+        "offerForm.deleteOfferPicture": "प्रस्तावको चित्र मेटाउनुहोस्.",
+        "offerForm.geofenceWarning": "तपाईं मुन्स्टर भित्र हुँदा मात्र तपाईंले आफ्नो अफर उपलब्ध गराउन सक्नुहुन्छ.",
+        "offerForm.iAmOffering": "म प्रस्ताव गर्दैछु.",
+        "offerForm.iAmOfferingHelpText": "कृपया प्रस्तावको बारेमा केहि विवरण दिनुहोस्.",
+        "offerForm.iCanBeContactedAt": "सम्पर्क गर्नका लागि विकल्पहरू:",
+        "offerForm.iCanBeContactedAtHelpText": "कृपया फोन नम्बर, ईमेल वा अन्य निर्देशनहरू प्रदान गर्नुहोस्.",
+        "offerForm.noOffer": "कुनै प्रस्ताव छैन",
+        "offerForm.notAvailable": "अहिले उपलब्ध छैन",
+        "offerForm.notSaved": "TODO",
+        "offerForm.offerDescriptionPlaceholder": "विवरण",
+        "offerForm.offerPicture": "चित्र",
+        "offerForm.offerTitlePlaceholder": "शीर्षक",
+        "offerForm.saved": "प्रस्ताव सुरक्षित गरियो",
+        "offerForm.saveOffer": "TODO",
+        "offerForm.syncing": "TODO",
+        "offlineLayer.removeTiles": "के तपाईं नक्शाका सबै सुरक्षित डेटा हटाउन पक्का चाहनुहुन्छ?",
+        "review._otherUserId": "तपाईंले आफ्नो प्रस्ताव कसलाई दिनुभयो?",
+        "review.atMyHome": "मेरो घरमा",
+        "review.atMyWork": "म काम गर्ने ठाउँमा",
+        "review.atSomeoneElsesHome": "अरू कसैको घरमा",
+        "review.atTheirHome": "उनीहरूको घरमा",
+        "review.atTheirWork": "उनीहरू काम गर्ने ठाउँमा",
+        "review.email": "ईमेल",
+        "review.facebook": "फेसबुक",
+        "review.inAnotherPublicPlace": "अर्को सार्वजनिक स्थानमा",
+        "review.likely": "सम्भावित",
+        "review.other": "अन्य",
+        "review.phone": "फोन वा एसएमएस",
+        "review.question1": "तपाईहरु कसरी सम्पर्कमा आउनुभयो?",
+        "review.question2": "तपाईहरु कहाँ भेट्नुभयो?",
+        "review.question3": "भेट्घाट पस्चात तपाईं कतिको सन्तुष्ट हुनुहुन्छ?",
+        "review.question4": "यो व्यक्तिलाई फेरि सम्पर्क गर्ने कतिको सम्भावना छ?",
+        "review.questionsAbout": "बारे प्रश्नहरू",
+        "review.saidTheyGaveYouThisOffer": "तपाईंले यस प्रस्तावको बारेमा तिनीहरूलाई सम्पर्क गर्नुभयो.",
+        "review.satisfied": "सन्तुष्ट",
+        "review.slightlyDissatisfied": "थोरै असन्तुष्ट",
+        "review.unlikely": "सम्भवत",
+        "review.veryDissatisfied": "धेरै असन्तुष्ट",
+        "review.veryLikely": "धेरै सम्भव छ",
+        "review.verySatisfied": "धेरै सन्तुष्ट",
+        "review.veryUnlikely": "सम्भावना कम छ",
+        "review.weDidntMeetInPerson": "हामी एक-आपस्मा भेटेनौ",
+        "review.whatsapp": "व्हाट्सएप",
+        "settings.language": "भाषा",
+        "settings.loggedInAs": "यस रूपमा लग इन गरियो",
+        "settings.logIn": "लग-इन्न",
+        "settings.logOut": "लग-आउट",
+        "settings.name": "नाम",
+        "settings.notCurrentlyLoggedIn": "हाल लग-इन्न गरिएको छैन.",
+        "settings.quitTheStudy": "त्याग्नु",
+        "settings.shareLocation": "मेरो अहिलेको स्थान साझेदारी गर्नुहोस्.",
+        "settings.shareLocationText": "यसमार्फत तपाईंले आफ्नो स्थान सार्वजनिक वा निजीमा स्विच गर्न सक्नुहुन्छ. यती निजी गर्नुभएमा नक्शामा तपाईंको स्थानबाट अनुमानित केवल(५० मिटर भित्र) मात्र देखाइनेछ.",
+        "settings.useLocation": "मेरो स्थान प्रयोग गर्नुहोस्.",
+        "settings.useLocationText": "नक्सामा तपाईंको स्थान हेर्न यो खोल्नुहोस्। यसले तपाईंको फोनबाट तपाईंको वास्तविक इस्थान प्राप्त गर्न अनुमति दिन्छ. तपाईंको स्थान निजी हो र एपमा सेभ कहिल्यै हुनेछैन.",
+        "settings.youHaveConsented": "तपाईंले अध्ययनमा भाग लिन सहमत गर्नुभएको छ.",
+        "signInPage.hi": "नमस्ते !",
+        "signInPage.loading": "लोड हुँदैछ ...",
+        "signInPage.logIn": "लग-इन्न",
+        "signInPage.refresh": "रि-फेर्स",
+        "signInPage.waitForApproval": "कृपया तपाईंको खाता अनुमोदन गर्नको लागि मोडीरेटरको निर्णयलाई पर्खनुहोस्.",
+        "signInPage.whileYouAreWaiting": "तपाईंले लग-इन्न गर्नको लागि इमेल प्राप्त गर्नुहुनेछ.",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "तपाईंले लग-इन्न गर्नका लागि अनिवार्य अनलाइन हुनुपर्दछ.",
+        "signInPage.youMustBeOnlineInOrderToLogOut": "तपाईंले लग-आउट गर्नका लागि अनिवार्य अनलाइन हुनुपर्दछ",
+        "tabs.dashboard": "ड्याशबोर्ड .",
+        "tabs.help": "मद्दत",
+        "tabs.list": "सूची",
+        "tabs.map": "नक्सा",
+        "tabs.offer": "मेरो प्रस्तावहरू",
+        "tabs.settings": "सेटिङ्हरू"
     }
 }
 
@@ -92969,31 +93351,7 @@ class App extends React.Component {
         this.showSidebar = this.showSidebar.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offer", "help"];
-        this.state = {
-            sidebarIsOpen: false,
-            sidebarIsSwipeable: true,
-            logging: config.app.logging,
-            externalData: config.app.externalData,
-            layerControl: config.app.layerControl,
-            locale: config.app.defaultLocale,
-            draggable: config.map.draggable,
-            zoomable: config.map.zoomable,
-            centerPosition: config.map.center,
-            errorLoadingUsers: null,
-            errorSyncingUser: null,
-            usersAreLoaded: false,
-            reviewsAreLoaded: false,
-            currentUserIsLoaded: false,
-            users: [],
-            pendingReviews: [],
-            selectedUserId: null,
-            notificationLog: [],
-            currentTab: "dashboard",
-            currentUserId: null,
-            currentUser: null,
-            authenticated: false,
-            accessToken: false
-        };
+        this.state = this.defaultAppState();
 
         // Auth0
         this.auth0 = new Auth0.Authentication({
@@ -93370,13 +93728,16 @@ class App extends React.Component {
             return this.state.currentUserId.something;
         }
 
+        var offerIsSaving = 'offer' in attributes;
+
         var currentUser = this.state.currentUser || {};
         var updatedUser = JSON.parse(JSON.stringify(currentUser));
         Object.assign(updatedUser, attributes);
 
         this.setState({
             currentUser: updatedUser,
-            currentUserIsLoaded: false
+            currentUserIsLoaded: false,
+            offerIsSaving: offerIsSaving
         });
 
         // Make the call to the "update user" API endpoint
@@ -93386,6 +93747,12 @@ class App extends React.Component {
             body: JSON.stringify(attributes),
             headers: { 'Content-Type': 'application/json' }
         }).then(res => res.json()).then(result => {
+            if (offerIsSaving) {
+                this.setState({
+                    offerIsSaving: false
+                });
+            }
+
             this.setState({
                 currentUserIsLoaded: true
             });
@@ -93614,7 +93981,7 @@ class App extends React.Component {
                 l: this.l,
                 handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
-                currentUserIsLoaded: this.state.currentUserIsLoaded,
+                offerIsSaving: this.state.offerIsSaving,
                 currentUser: this.state.currentUser,
                 outOfGeofence: this.state.outOfGeofence,
                 key: 'offerForm' }),
@@ -93628,6 +93995,8 @@ class App extends React.Component {
         {
             content: React.createElement(help.Help, {
                 l: this.l,
+                locale: this.state.locale,
+                handleLocaleChange: this.handleLocaleChange,
                 key: 'help' }),
             tab: React.createElement(Ons.Tab, {
                 label: this.l('tabs.help'),
@@ -93829,17 +94198,7 @@ class App extends React.Component {
             });
         } else {
             // User logged out, so clear out stored user data
-            this.setState({
-                accessToken: null,
-                authenticated: false,
-                currentUser: null,
-                currentUserId: null,
-                currentUserIsLoaded: false,
-                users: null,
-                usersAreLoaded: false,
-                pendingReviews: null,
-                reviewsAreLoaded: false
-            });
+            this.setState(this.defaultAppState());
         }
     }
 
@@ -93919,6 +94278,35 @@ class App extends React.Component {
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser });
         }
+    }
+
+    defaultAppState() {
+        return {
+            sidebarIsOpen: false,
+            sidebarIsSwipeable: true,
+            logging: config.app.logging,
+            externalData: config.app.externalData,
+            layerControl: config.app.layerControl,
+            locale: config.app.defaultLocale,
+            draggable: config.map.draggable,
+            zoomable: config.map.zoomable,
+            centerPosition: config.map.center,
+            errorLoadingUsers: null,
+            errorSyncingUser: null,
+            usersAreLoaded: false,
+            reviewsAreLoaded: false,
+            currentUserIsLoaded: false,
+            offerIsSaving: false,
+            users: [],
+            pendingReviews: [],
+            selectedUserId: null,
+            notificationLog: [],
+            currentTab: "dashboard",
+            currentUserId: null,
+            currentUser: null,
+            authenticated: false,
+            accessToken: false
+        };
     }
 }
 
@@ -95055,6 +95443,7 @@ const React = require('react');
 const Ons = require('react-onsenui');
 
 const config = require('../data_components/config.json');
+const localeMenu = require('./localeMenu.js');
 
 /**
  * Component for displaying the help page.
@@ -95062,13 +95451,15 @@ const config = require('../data_components/config.json');
 class Help extends React.Component {
     constructor(props) {
         super(props);
+        this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
         this.handleListItemClick = this.handleListItemClick.bind(this);
-        this.onDeviceBackButton = this.onDeviceBackButton.bind(this);
+        this.handleLinkClick = this.handleLinkClick.bind(this);
         this.render = this.render.bind(this);
         this.renderHelpListItems = this.renderHelpListItems.bind(this);
         this.renderHelpListItem = this.renderHelpListItem.bind(this);
         this.renderPage = this.renderPage.bind(this);
         this.renderRules = this.renderRules.bind(this);
+        this.renderRulesEn = this.renderRulesEn.bind(this);
         this.renderContact = this.renderContact.bind(this);
         this.renderLegal = this.renderLegal.bind(this);
 
@@ -95100,7 +95491,16 @@ class Help extends React.Component {
         });
     }
 
-    onDeviceBackButton() {
+    /**
+     * Handle clicks on items in the list
+     * @param {itemId} id of the item
+     * @param {e} click event
+     */
+    handleLinkClick(url, e) {
+        window.open(url, "_blank");
+    }
+
+    handleBackButtonClick() {
         this.setState({
             rulesPageIsOpen: false,
             contactPageIsOpen: false,
@@ -95137,11 +95537,32 @@ class Help extends React.Component {
     }
 
     renderHelpListItems() {
+        var websiteBaseUrl = "https://lbraun.github.io/geofreebie/";
+        var wikiBaseUrl = "https://github.com/lbraun/geofreebie/wiki/";
+
+        var rules = "Rules-(English)";
+        var privacy_policy = "privacy_policy_en.html";
+        var consent_form = "consent_form_en.pdf";
+
+        if (this.props.locale == "de") {
+            rules = "Rules-(German)";
+            privacy_policy = "privacy_policy_de.html";
+            consent_form = "consent_form_de.pdf";
+        }
+
         var listItems = [];
 
-        listItems.push(this.renderHelpListItem("rules"));
+        listItems.push(this.renderHelpListItemLink("help", wikiBaseUrl));
+
+        listItems.push(this.renderHelpListItemLink("rules", wikiBaseUrl + rules));
+
+        // listItems.push(this.renderHelpListItem("rules"));
         listItems.push(this.renderHelpListItem("contact"));
-        listItems.push(this.renderHelpListItem("legal"));
+        // listItems.push(this.renderHelpListItem("legal"));
+
+        listItems.push(this.renderHelpListItemLink("privacy", websiteBaseUrl + privacy_policy));
+
+        listItems.push(this.renderHelpListItemLink("consent", websiteBaseUrl + consent_form));
 
         return listItems;
     }
@@ -95159,17 +95580,45 @@ class Help extends React.Component {
         );
     }
 
+    renderHelpListItemLink(pageId, url) {
+        return React.createElement(
+            Ons.ListItem,
+            {
+                modifier: "chevron",
+                tappable: true,
+                onClick: this.handleLinkClick.bind(this, url),
+                id: `help-list-item-${pageId}`,
+                key: pageId },
+            this.l(pageId)
+        );
+    }
+
     renderPage(pageName, renderContent) {
         return React.createElement(
             Ons.Page,
-            { onDeviceBackButton: this.onDeviceBackButton },
+            null,
             React.createElement(
                 'div',
                 { style: { margin: "15px" } },
                 React.createElement(
-                    Ons.Button,
-                    { onClick: this.onDeviceBackButton },
-                    this.props.l("app.back")
+                    Ons.Row,
+                    null,
+                    React.createElement(
+                        Ons.Col,
+                        null,
+                        React.createElement(
+                            Ons.Button,
+                            { onClick: this.handleBackButtonClick },
+                            this.props.l("app.back")
+                        )
+                    ),
+                    React.createElement(
+                        Ons.Col,
+                        { style: { textAlign: "right" } },
+                        React.createElement(localeMenu.LocaleMenu, {
+                            locale: this.props.locale,
+                            handleLocaleChange: this.props.handleLocaleChange })
+                    )
                 ),
                 React.createElement(
                     'h1',
@@ -95182,6 +95631,46 @@ class Help extends React.Component {
     }
 
     renderRules() {
+        if (this.props.locale == "de") {
+            return this.renderRulesDe();
+        } else {
+            return this.renderRulesEn();
+        }
+    }
+
+    renderRulesEn() {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'p',
+                null,
+                '1. Only post things that you want to give away for free. Those who offer something should not expect anything in exchange.'
+            ),
+            React.createElement(
+                'p',
+                null,
+                '2. Users are not allowed to offer anything illegal.'
+            ),
+            React.createElement(
+                'p',
+                null,
+                '3. The person offering can choose the recipient of their offer any way they like.'
+            ),
+            React.createElement(
+                'p',
+                null,
+                '4. Private messages from strangers on Facebook might not end up in your inbox. Check your message requests too!'
+            ),
+            React.createElement(
+                'p',
+                null,
+                '5. Be kind and respectful. You may be blocked from the app if you do not respect the community, its rules, and its members.'
+            )
+        );
+    }
+
+    renderRulesDe() {
         return React.createElement(
             'div',
             null,
@@ -95218,13 +95707,15 @@ class Help extends React.Component {
             'div',
             null,
             this.l("questionsOrConcerns"),
-            ' ',
+            React.createElement('br', null),
+            React.createElement('br', null),
             React.createElement(
                 'a',
                 { href: `mailto:${config.app.adminEmail}` },
                 config.app.adminEmail
             ),
-            '. ',
+            React.createElement('br', null),
+            React.createElement('br', null),
             this.l("thanks"),
             '!',
             React.createElement('br', null),
@@ -95232,257 +95723,14 @@ class Help extends React.Component {
         );
     }
 
-    renderLegal() {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(
-                'h2',
-                null,
-                'Privacy Policy'
-            ),
-            React.createElement(
-                'p',
-                null,
-                ' Lucas Braun built the Geofreebie app as an Open Source app. This SERVICE is provided by Lucas Braun at no cost and is intended for use as is.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                'This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                'If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                'The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible at Geofreebie unless otherwise defined in this Privacy Policy.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Information Collection and Use'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                'For a better experience, while using our Service, I may require you to provide us with certain personally identifiable information, including but not limited to name, contact information, location data. The information that I request will be retained on your device and is not collected by me in any way.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                'The app does use third party services that may collect information used to identify you.'
-            ),
-            ' ',
-            React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'p',
-                    null,
-                    'Link to privacy policy of third party service providers used by the app'
-                ),
-                ' ',
-                React.createElement(
-                    'ul',
-                    null,
-                    React.createElement(
-                        'li',
-                        null,
-                        React.createElement(
-                            'a',
-                            { href: 'https://www.google.com/policies/privacy/', target: '_blank' },
-                            'Google Play Services'
-                        )
-                    )
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Log Data'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                ' I want to inform you that whenever you use my Service, in a case of an error in the app I collect data and information (through third party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (\u201CIP\u201D) address, device name, operating system version, the configuration of the app when utilizing my Service, the time and date of your use of the Service, and other statistics.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Cookies'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                'Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device\'s internal memory.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                'This Service does not use these \u201Ccookies\u201D explicitly. However, the app may use third party code and libraries that use \u201Ccookies\u201D to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Service Providers'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                ' I may employ third-party companies and individuals due to the following reasons:'
-            ),
-            ' ',
-            React.createElement(
-                'ul',
-                null,
-                React.createElement(
-                    'li',
-                    null,
-                    'To facilitate our Service;'
-                ),
-                ' ',
-                React.createElement(
-                    'li',
-                    null,
-                    'To provide the Service on our behalf;'
-                ),
-                ' ',
-                React.createElement(
-                    'li',
-                    null,
-                    'To perform Service-related services; or'
-                ),
-                ' ',
-                React.createElement(
-                    'li',
-                    null,
-                    'To assist us in analyzing how our Service is used.'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                ' I want to inform users of this Service that these third parties have access to your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Security'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                ' I value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and I cannot guarantee its absolute security.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Links to Other Sites'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                'This Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by me. Therefore, I strongly advise you to review the Privacy Policy of these websites. I have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Children\u2019s Privacy'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                'These Services do not address anyone under the age of 13. I do not knowingly collect personally identifiable information from children under 13. In the case I discover that a child under 13 has provided me with personal information, I immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact me so that I will be able to do necessary actions.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Changes to This Privacy Policy'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                ' I may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. I will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                React.createElement(
-                    'strong',
-                    null,
-                    'Contact Us'
-                )
-            ),
-            React.createElement(
-                'p',
-                null,
-                'If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me.'
-            ),
-            React.createElement(
-                'p',
-                null,
-                'This privacy policy page was created at ',
-                React.createElement(
-                    'a',
-                    { href: 'https://privacypolicytemplate.net', target: '_blank' },
-                    'privacypolicytemplate.net'
-                ),
-                'and modified/generated by ',
-                React.createElement(
-                    'a',
-                    { href: 'https://app-privacy-policy-generator.firebaseapp.com/', target: '_blank' },
-                    'App Privacy Policy Generator'
-                )
-            )
-        );
-    }
+    renderLegal() {}
 }
 
 module.exports = {
     Help: Help
-
-    // "questionsOrConcerns": "If you have any questions or concerns, please write to me at"
-    // "thanks": "Thanks"
-
 };
 
-},{"../data_components/config.json":273,"react":265,"react-onsenui":262}],284:[function(require,module,exports){
+},{"../data_components/config.json":273,"./localeMenu.js":285,"react":265,"react-onsenui":262}],284:[function(require,module,exports){
 'use strict';
 
 const React = require('react');
@@ -95696,6 +95944,16 @@ class LocaleMenu extends React.Component {
                 'option',
                 { value: 'ar' },
                 '\u0639\u0631\u0628\u0649'
+            ),
+            React.createElement(
+                'option',
+                { value: 'es' },
+                'Espa\xF1ol'
+            ),
+            React.createElement(
+                'option',
+                { value: 'ne' },
+                '\u0928\u0947\u092A\u093E\u0932\u0940'
             )
         );
     }
@@ -96334,8 +96592,7 @@ class OfferForm extends React.Component {
             pictureFormat: offer.picture ? "uri" : "base64",
             title: offer.title || "",
             description: offer.description || "",
-            available: offer.available || false,
-            saved: !!offer.title
+            available: offer.available || false
         };
     }
 
@@ -96365,9 +96622,18 @@ class OfferForm extends React.Component {
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
         this.setState({
-            [name]: value,
-            saved: false
+            [name]: value
         });
+    }
+
+    offer() {
+        return {
+            picture: this.state.picture,
+            pictureFormat: this.state.pictureFormat,
+            title: this.state.title,
+            description: this.state.description,
+            available: this.props.currentUser.offer ? this.props.currentUser.offer.available : this.state.available
+        };
     }
 
     save() {
@@ -96377,18 +96643,14 @@ class OfferForm extends React.Component {
         }
 
         this.props.pushUserUpdates({
-            offer: {
-                picture: this.state.picture,
-                pictureFormat: this.state.pictureFormat,
-                title: this.state.title,
-                description: this.state.description,
-                available: this.props.currentUser.offer ? this.props.currentUser.offer.available : this.state.available
-            }
+            offer: this.offer()
         });
+    }
 
-        this.setState({
-            saved: true
-        });
+    isSaved() {
+        var offer = this.props.currentUser.offer || {};
+
+        return this.offer().picture == offer.picture && this.offer().title == offer.title && this.offer().description == offer.description && this.offer().available == offer.available;
     }
 
     /**
@@ -96401,8 +96663,7 @@ class OfferForm extends React.Component {
         navigator.camera.getPicture(function onSuccess(imageData) {
             formInstance.setState({
                 picture: imageData,
-                pictureFormat: "base64",
-                saved: false
+                pictureFormat: "base64"
             });
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
@@ -96428,8 +96689,7 @@ class OfferForm extends React.Component {
      */
     confirmPictureDeletion(e) {
         this.setState({
-            picture: null,
-            saved: false
+            picture: null
         });
 
         this.closePictureDeletionDialog();
@@ -96455,8 +96715,7 @@ class OfferForm extends React.Component {
             pictureFormat: "base64",
             title: "",
             description: "",
-            available: false,
-            saved: true
+            available: false
         });
 
         this.props.pushUserUpdates({
@@ -96561,27 +96820,25 @@ class OfferForm extends React.Component {
     }
 
     renderOfferStatus() {
-        var status = {
-            color: "#d9534f",
-            icon: "edit",
-            text: "notSaved"
-        };
-
-        if (this.state.saved) {
-            if (this.props.currentUserIsLoaded) {
-                status = {
-                    color: "green",
-                    icon: "check",
-                    text: "saved"
-                };
-            } else {
-                status = {
-                    color: "black",
-                    icon: "spinner",
-                    spin: true,
-                    text: "syncing"
-                };
-            }
+        if (this.props.offerIsSaving) {
+            var status = {
+                color: "black",
+                icon: "spinner",
+                spin: true,
+                text: "syncing"
+            };
+        } else if (this.isSaved()) {
+            var status = {
+                color: "green",
+                icon: "check",
+                text: "saved"
+            };
+        } else {
+            var status = {
+                color: "#d9534f",
+                icon: "edit",
+                text: "notSaved"
+            };
         }
 
         return React.createElement(

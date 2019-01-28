@@ -72,31 +72,7 @@ class App extends React.Component {
         this.showSidebar = this.showSidebar.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offer", "help"];
-        this.state = {
-            sidebarIsOpen: false,
-            sidebarIsSwipeable: true,
-            logging: config.app.logging,
-            externalData: config.app.externalData,
-            layerControl: config.app.layerControl,
-            locale: config.app.defaultLocale,
-            draggable: config.map.draggable,
-            zoomable: config.map.zoomable,
-            centerPosition: config.map.center,
-            errorLoadingUsers: null,
-            errorSyncingUser: null,
-            usersAreLoaded: false,
-            reviewsAreLoaded: false,
-            currentUserIsLoaded: false,
-            users: [],
-            pendingReviews: [],
-            selectedUserId: null,
-            notificationLog: [],
-            currentTab: "dashboard",
-            currentUserId: null,
-            currentUser: null,
-            authenticated: false,
-            accessToken: false,
-        };
+        this.state = this.defaultAppState();
 
         // Auth0
         this.auth0 = new Auth0.Authentication({
@@ -498,6 +474,8 @@ class App extends React.Component {
             return (this.state.currentUserId.something);
         }
 
+        var offerIsSaving = 'offer' in attributes;
+
         var currentUser = this.state.currentUser || {};
         var updatedUser = JSON.parse(JSON.stringify(currentUser));
         Object.assign(updatedUser, attributes);
@@ -505,6 +483,7 @@ class App extends React.Component {
         this.setState({
             currentUser: updatedUser,
             currentUserIsLoaded: false,
+            offerIsSaving: offerIsSaving,
         });
 
         // Make the call to the "update user" API endpoint
@@ -517,6 +496,12 @@ class App extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    if (offerIsSaving) {
+                        this.setState({
+                            offerIsSaving: false,
+                        });
+                    }
+
                     this.setState({
                         currentUserIsLoaded: true,
                     });
@@ -746,7 +731,7 @@ class App extends React.Component {
                     l={this.l}
                     handleTabChange={this.handleTabChange}
                     pushUserUpdates={this.pushUserUpdates}
-                    currentUserIsLoaded={this.state.currentUserIsLoaded}
+                    offerIsSaving={this.state.offerIsSaving}
                     currentUser={this.state.currentUser}
                     outOfGeofence={this.state.outOfGeofence}
                     key='offerForm' />,
@@ -760,6 +745,8 @@ class App extends React.Component {
             {
                 content: <help.Help
                     l={this.l}
+                    locale={this.state.locale}
+                    handleLocaleChange={this.handleLocaleChange}
                     key='help' />,
                 tab: <Ons.Tab
                     label={this.l('tabs.help')}
@@ -947,17 +934,7 @@ class App extends React.Component {
             });
         } else {
             // User logged out, so clear out stored user data
-            this.setState({
-                accessToken: null,
-                authenticated: false,
-                currentUser: null,
-                currentUserId: null,
-                currentUserIsLoaded: false,
-                users: null,
-                usersAreLoaded: false,
-                pendingReviews: null,
-                reviewsAreLoaded: false,
-            })
+            this.setState(this.defaultAppState());
         }
     };
 
@@ -1032,6 +1009,35 @@ class App extends React.Component {
                 online={this.state.online}
                 authenticated={this.state.authenticated}
                 currentUser={this.state.currentUser} />);
+        }
+    }
+
+    defaultAppState() {
+        return {
+            sidebarIsOpen: false,
+            sidebarIsSwipeable: true,
+            logging: config.app.logging,
+            externalData: config.app.externalData,
+            layerControl: config.app.layerControl,
+            locale: config.app.defaultLocale,
+            draggable: config.map.draggable,
+            zoomable: config.map.zoomable,
+            centerPosition: config.map.center,
+            errorLoadingUsers: null,
+            errorSyncingUser: null,
+            usersAreLoaded: false,
+            reviewsAreLoaded: false,
+            currentUserIsLoaded: false,
+            offerIsSaving: false,
+            users: [],
+            pendingReviews: [],
+            selectedUserId: null,
+            notificationLog: [],
+            currentTab: "dashboard",
+            currentUserId: null,
+            currentUser: null,
+            authenticated: false,
+            accessToken: false,
         }
     }
 }

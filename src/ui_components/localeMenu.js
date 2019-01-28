@@ -14,6 +14,8 @@ class LocaleMenu extends React.Component {
                 <option value="de">Deutsch</option>
                 <option value="en">English</option>
                 <option value="ar">عربى</option>
+                <option value="es">Español</option>
+                <option value="ne">नेपाली</option>
             </Ons.Select>
         )
     }
