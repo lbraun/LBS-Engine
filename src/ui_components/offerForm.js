@@ -34,7 +34,6 @@ class OfferForm extends React.Component {
             title: offer.title || "",
             description: offer.description || "",
             available: offer.available || false,
-            saved: !!offer.title,
         };
     }
 
@@ -65,8 +64,19 @@ class OfferForm extends React.Component {
 
         this.setState({
             [name]: value,
-            saved: false,
         });
+    }
+
+    offer() {
+        return {
+            picture: this.state.picture,
+            pictureFormat: this.state.pictureFormat,
+            title: this.state.title,
+            description: this.state.description,
+            available: this.props.currentUser.offer ?
+                this.props.currentUser.offer.available :
+                this.state.available,
+        }
     }
 
     save() {
@@ -76,20 +86,17 @@ class OfferForm extends React.Component {
         }
 
         this.props.pushUserUpdates({
-            offer: {
-                picture: this.state.picture,
-                pictureFormat: this.state.pictureFormat,
-                title: this.state.title,
-                description: this.state.description,
-                available: this.props.currentUser.offer ?
-                    this.props.currentUser.offer.available :
-                    this.state.available,
-            },
+            offer: this.offer(),
         });
+    }
 
-        this.setState({
-            saved: true,
-        });
+    isSaved() {
+        var offer = this.props.currentUser.offer || {};
+
+        return this.offer().picture == offer.picture
+            && this.offer().title == offer.title
+            && this.offer().description == offer.description
+            && this.offer().available == offer.available;
     }
 
     /**
@@ -103,7 +110,6 @@ class OfferForm extends React.Component {
             formInstance.setState({
                 picture: imageData,
                 pictureFormat: "base64",
-                saved: false,
             });
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
@@ -131,7 +137,6 @@ class OfferForm extends React.Component {
     confirmPictureDeletion(e) {
         this.setState({
             picture: null,
-            saved: false,
         });
 
         this.closePictureDeletionDialog();
@@ -159,7 +164,6 @@ class OfferForm extends React.Component {
             title: "",
             description: "",
             available: false,
-            saved: true,
         });
 
         this.props.pushUserUpdates({
@@ -247,27 +251,25 @@ class OfferForm extends React.Component {
     }
 
     renderOfferStatus() {
-        var status = {
-            color: "#d9534f",
-            icon: "edit",
-            text: "notSaved",
-        };
-
-        if (this.state.saved) {
-            if (this.props.currentUserIsLoaded) {
-                status = {
-                    color: "green",
-                    icon: "check",
-                    text: "saved",
-                };
-            } else {
-                status = {
-                    color: "black",
-                    icon: "spinner",
-                    spin: true,
-                    text: "syncing",
-                };
-            }
+        if (this.props.offerIsSaving) {
+            var status = {
+                color: "black",
+                icon: "spinner",
+                spin: true,
+                text: "syncing",
+            };
+        } else if (this.isSaved()) {
+            var status = {
+                color: "green",
+                icon: "check",
+                text: "saved",
+            };
+        } else {
+            var status = {
+                color: "#d9534f",
+                icon: "edit",
+                text: "notSaved",
+            };
         }
 
         return (
