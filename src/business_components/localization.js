@@ -11,6 +11,16 @@ function validateLocalizationsFile() {
 
         if (count != localizationsCount) {
             console.log(`Warning! Locale ${locale} does not have the right number of entries.`);
+
+            var a = Object.keys(localizations[locale]);
+            var b = Object.keys(localizations.en);
+            var diff = [
+                ...a.filter(x => !b.includes(x)),
+                ...b.filter(x => !a.includes(x))
+            ];
+
+            console.log("Entries that are different:");
+            console.log(diff);
         }
     }
 }

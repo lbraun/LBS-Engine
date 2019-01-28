@@ -92003,6 +92003,13 @@ function validateLocalizationsFile() {
 
         if (count != localizationsCount) {
             console.log(`Warning! Locale ${locale} does not have the right number of entries.`);
+
+            var a = Object.keys(localizations[locale]);
+            var b = Object.keys(localizations.en);
+            var diff = [...a.filter(x => !b.includes(x)), ...b.filter(x => !a.includes(x))];
+
+            console.log("Entries that are different:");
+            console.log(diff);
         }
     }
 }
@@ -92535,7 +92542,7 @@ module.exports={
         "consentForm.dataRecordingInfo": "Die Daten, die in dieser Studie erhoben werden, werden in anonymisierter Form erhoben und nur in Aggregation mit weiteren anonymen Daten verarbeitet. In dieser Form werden die Daten ggf. in akademischen Journalen, Präsentationen oder anderen Medien veröffentlicht, jedoch ist niemals eine Identifizierung der einzelnen Teilnehmer möglich. Eine Woche nach Abschluss der Studie ist es daher quasi nicht mehr möglich die Daten aus deiner Teilnahme zu aus den aggregierten Datensätzen aller Teilnehmer zu identifizieren.",
         "consentForm.dataRecordingInfoTitle": "Datenschutz",
         "consentForm.description": "Vielen Dank für deine Teilnahme an dieser Studie, über wie ein ortsbasierter Dienst die soziale Isolation von Flüchtlingen in Münster reduzieren kann.",
-        "consentForm.goodBehaviorConsent": "TODO",
+        "consentForm.goodBehaviorConsent": "Ich stimme zu, dass ich die anderen Benutzer der App mit Respekt behandle und ihnen gegenüber freundlich bin.",
         "consentForm.ifYouHaveAnyQuestions": "Bei Fragen wende dich bitte an den Forscher, bevor du fortfährst:",
         "consentForm.instructions": "Aktiviere die Kontrollkästchen, wenn du mit den folgenden Aussagen einverstanden bist:",
         "consentForm.moreInfo": "Weitere Informationen zur Studie findest du auf der",
@@ -92631,7 +92638,7 @@ module.exports={
         "offerForm.iAmOffering": "Ich biete:",
         "offerForm.iAmOfferingHelpText": "Bitte gib eine kurze Beschreibung des Angebots.",
         "offerForm.iCanBeContactedAt": "Kontaktmöglichkeiten",
-        "offerForm.iCanBeContactedAtHelpText": "Bitte gib eine Telefonnummer, E-Mail-Adresse oder andere Kontaktmöglichkeiten an.",
+        "offerForm.iCanBeContactedAtHelpText": "Bitte gib eine Telefonnummer, Email-Adresse oder andere Kontaktmöglichkeiten an.",
         "offerForm.noOffer": "Kein Angebot",
         "offerForm.notAvailable": "Jetzt nicht verfügbar",
         "offerForm.notSaved": "Angebot nicht gespeichert",
@@ -92685,10 +92692,10 @@ module.exports={
         "signInPage.loading": "Wird geladen...",
         "signInPage.logIn": "Anmelden",
         "signInPage.refresh": "Neuladen",
-        "signInPage.waitForApproval": "TODO",
-        "signInPage.whileYouAreWaiting": "TODO",
-        "signInPage.youMustBeOnlineInOrderToLogIn": "TODO",
-        "signInPage.youMustBeOnlineInOrderToLogOut": "TODO",
+        "signInPage.waitForApproval": "Bitte warte auf den Admin um deinen Account genehmigen zu lassen.",
+        "signInPage.whileYouAreWaiting": "Du wirst eine Email erhalten wenn du dich einloggen kannst.",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "Du musst online sein um dich einzuloggen.",
+        "signInPage.youMustBeOnlineInOrderToLogOut": "Du musst online sein um dich auszuloggen.",
         "tabs.dashboard": "Dashboard",
         "tabs.help": "Hilfe und Info",
         "tabs.list": "Liste",
@@ -92957,8 +92964,8 @@ module.exports={
         "help.contact": "Contacto",
         "help.help": "Ayuda Wiki",
         "help.legal": "Privacidad y asuntos legales",
+        "help.questionsOrConcerns": "Si tienes alguna duda o pregunta, por favor escribe a",
         "help.privacy": "Privacidad",
-        "help.questionsOrConcerns": "Si tienes algún dudo o alguna pregunta, por favor escribe a",
         "help.rules": "Reglas e instrucciones",
         "help.thanks": "Gracias",
         "list.error": "Error",
@@ -92988,12 +92995,12 @@ module.exports={
         "map.showOtherUsers": "Muestra otros usuarios",
         "map.youAreHere": "Tú estás aquí",
         "offerForm.addPicture": "Añade una foto",
-        "offerForm.anOfferMustHaveATitle": "Una oferta tiene que tener un título.",
+        "offerForm.anOfferMustHaveATitle": "Una oferta tiene que tener título.",
         "offerForm.available": "Disponible ahora",
         "offerForm.contactInformationPlaceholder": "Información de contacto",
         "offerForm.deleteOffer": "Elimina la oferta",
         "offerForm.deleteOfferPicture": "Elimina la foto de la oferta",
-        "offerForm.geofenceWarning": "Solo puedes hacer tu oferta cuando estás disponible en Münster",
+        "offerForm.geofenceWarning": "Solo puedes hacer tu oferta cuando estés disponible en Münster",
         "offerForm.iAmOffering": "Estoy ofreciendo...",
         "offerForm.iAmOfferingHelpText": "Por favor, de una pequeña descripción de la oferta.",
         "offerForm.iCanBeContactedAt": "Opciones de contacto",
@@ -93061,6 +93068,189 @@ module.exports={
         "tabs.map": "Mapa",
         "tabs.offer": "Mi oferta",
         "tabs.settings": "Ajustes"
+    },
+    "ne": {
+        "alert.isLessThan": "भन्दा कम",
+        "alert.metersAwayWith": "TODO",
+        "app.allFieldsMustBeCompleted": "सबै क्षेत्रहरू अनिवार्य भरिनै पर्छ.",
+        "app.areYouSure": "साच्चै हो?",
+        "app.back": "फिर्ता",
+        "app.cancel": "रद्द गर्नुहोस्",
+        "app.edit": "सम्पादन गर्नुहोस्",
+        "app.name": "नाम",
+        "app.next": "अर्को",
+        "app.projectsWebsite": "परियोजनाको वेबसाइट",
+        "app.report": "रिपोर्ट गर्नुहोस्",
+        "app.reportEmailBody": "कृपया समस्या यहाँ व्याख्या गर्नुहोस्",
+        "app.reportEmailSubject": "प्रोफाइल रिपोर्ट",
+        "app.save": "TODO",
+        "app.submit": "पेश गर्नुहोस्",
+        "app.thisCannotBeUndone": "यो निर्णय पछि सच्याउन मिल्नेछैन.",
+        "consentForm.continue": "जारी राख्नुहोस् ",
+        "consentForm.dataRecordingConsent": "म अध्ययनको बेलामा मेरो हाल्को स्थान डाटा रेकर्ड गर्न सहमत छु.",
+        "consentForm.dataRecordingInfo": "यो अध्ययनबाट प्राप्त गरिएको मूल डेटा अज्ञात हुनेछ र केवल समग्रमा प्रशोधन गरिनेछ. यस्तो फारममा, यो अकादमिक पत्रिकाहरू, प्रस्तुतीकरणहरू वा अन्य मिडियाहरूमा प्रकाशित हुन सक्छ, तर त्यसबेला कहिल्यै पनि व्यक्तिगत रूपमा पहिचान गरिदैन. अध्ययनको समाप्ति पछि एक हप्ता पछी तपाइँको यो डेटा समयावधि विश्लेषण बाट फिर्ता लिन सम्भव हुने छैन.",
+        "consentForm.dataRecordingInfoTitle": "गोपनीयता",
+        "consentForm.description": "प्रवासकानिम्ती स्थान आधारित फ्री साइकल सेवाको मा आदारित अध्ययनमा भाग लिनुभएकोमा धन्यवाद.",
+        "consentForm.goodBehaviorConsent": "म एप को अन्य प्रयोगकर्ताहरु को सम्मान र दया संग व्यवहार गर्न सहमत छु.",
+        "consentForm.ifYouHaveAnyQuestions": "यदि तपाइँसँग कुनै प्रश्नहरू छन् भने कृपया जारी राख्नु अघि शोधकर्तालाई सम्पर्क गर्नुहोस्.",
+        "consentForm.instructions": "यदि तपाइँ निम्न विवरणहरुमा सहमत हुनुहुन्छ भने बाकसहरूमा ठिक लगाउनुहोस.",
+        "consentForm.moreInfo": "अध्ययनको बारेमा थप जानकारीको लागि, हेर्नुहोस्.",
+        "consentForm.moreInfoTitle": "थप जानकारी",
+        "consentForm.rightToQuitConsent": "म पुष्टि गर्दछु कि मैले कुनै पनि समय अध्ययन छोड्न मेरो अधिकार बुझ्छु.",
+        "consentForm.rightToQuitInfo": "तपाईं रोक्न स्वतन्त्र हुनुहुन्छ, अध्ययन छोड्नुहोस् र कुनै पनि समयमा कुनै पनि समयमा नतिजा नतिजाको साथ आफ्नो डेटा फिर्ता लिन सक्नुहुने छ.",
+        "consentForm.rightToQuitInfoTitle": "छोड्ने अधिकार",
+        "consentForm.title": "सूचना सहमति फारम",
+        "consentForm.volunteeredConsent": "म पुष्टि गर्छु कि मैले यो अध्ययनमा आफ्नै इक्छया अनुसार भाग लिएको हु.",
+        "contact.email": "इ-मेल ठेगाना",
+        "contact.facebook": "फेसबुकको प्रओफाइल नाम.",
+        "contact.howDoYouWantToBeContacted": "तपाइँलाई कसरी सम्पर्क गर्दा ठिक लाग्छ?",
+        "contact.phone": "फोन नम्बर",
+        "contact.useEmail": "इ-मेल प्रयोग गर्नुहोस्.",
+        "contact.useFacebook": "फकेबूक प्रयोग गर्नुहोस्.",
+        "contact.usePhone": "फोन वा एसएमएस प्रयोग गर्नुहोस्.",
+        "contact.useWhatsapp": "व्हाट्सएप प्रयोग गर्नुहोस्.",
+        "contact.whatsapp": "व्हाट्सएप नम्बर",
+        "dashboard.availableNow": "अहिले उपलब्ध छु",
+        "dashboard.becomeAvailable": "उपलब्ध हुनेछु",
+        "dashboard.becomeUnavailable": "उपलब्ध छैन",
+        "dashboard.completeOffer": "पूरा",
+        "dashboard.createAnOffer": "एउटा प्रस्ताव सिर्जना गर्नुहोस्.",
+        "dashboard.nearbyOffers": "नजिकैको प्रस्तावहरू:",
+        "dashboard.notCurrentlyAvailable": "हाल उपलब्ध छैन.",
+        "dashboard.pendingReviews": "रिभ्यु गर्न बाँकी.",
+        "dashboard.reviewSubmitted": "रिभ्यु पेश गरियो.",
+        "dashboard.welcome": "स्वागत छ.",
+        "dashboard.weNeedYourLocationToShowThis": "हामीलाई यो प्रदर्शन गर्न तपाईंको स्थान जान्न आवश्यक छ।",
+        "dashboard.youAreNotOffering": "तपाईं अहिले केहि पनि प्रस्तावित गर्नु भएको छैन.",
+        "dashboard.yourOffer": "तपाईंको प्रस्तावहरु:",
+        "demographicSurvey.18To25": "१८ देखि २५",
+        "demographicSurvey.26To35": "२६ देखि ३५",
+        "demographicSurvey.36To45": "३६ देखि ४५",
+        "demographicSurvey.46To55": "४६ देखि ५५",
+        "demographicSurvey.description": "अध्ययनको उद्देश्यको लागि, कृपया आय्य्प प्रयोग गर्नु भन्दाअघाडी निम्न दुई सर्वेक्षणहरू भर्नुहोस्.",
+        "demographicSurvey.female": "महिला",
+        "demographicSurvey.male": "पुरुष",
+        "demographicSurvey.no": "होइन",
+        "demographicSurvey.notSure": "पक्का छैन",
+        "demographicSurvey.other": "अर्को",
+        "demographicSurvey.over55": "५५ भन्दा माथि",
+        "demographicSurvey.question1": "तपाईको उमेर कति हो?",
+        "demographicSurvey.question2": "तपाईको लिंग के हो?",
+        "demographicSurvey.question3": "तपाई कुन शहर वा शहरहरूमा हुर्किनुभयो?",
+        "demographicSurvey.question4": "TODO",
+        "demographicSurvey.question5": "के तपाइँले कहिल्यै वर्चेन्किको मुनिस्टर, फूडशेयरिङ.org, फ्रीसाइक्लिङ. ओर्ग वा कुनै अन्य 'फ्रीसाइक्लिङ्' प्रणाली प्रयोग गर्नुभयो?",
+        "demographicSurvey.title": "हामीलाई आफ्नो बारेमा भाताउनुहोस.",
+        "demographicSurvey.under18": "१८ भन्दा कम",
+        "demographicSurvey.yes": "हो",
+        "demographicSurvey.youMustBe18": "यो आय्य्पा प्रयोग गर्नको लागि तपाई कम्तीमा १८ वर्षको हुनुपर्दछ.",
+        "help.consent": "TODO",
+        "help.contact": "सम्पर्क",
+        "help.help": "TODO",
+        "help.legal": "गोपनीयता र कानूनी",
+        "help.privacy": "TODO",
+        "help.questionsOrConcerns": "TODO",
+        "help.rules": "नियम र दिशानिर्देशहरू",
+        "help.thanks": "TODO",
+        "list.error": "त्रुटि",
+        "list.fetchFailure": "यहाँ सूची पत्ता लगाउन समस्या पर्यो। सायद तपाईं इन्टरनेटमा जडान हुनुहुन्न.",
+        "list.loading": "लोड हुँदै ...",
+        "list.locationIsUnavailable": "स्थान अपलब्ध छैन",
+        "list.noUsers": "अहिले प्रणालीमा अन्य कुनै प्रयोगकर्ताहरू छैनन्. पछि फेरि हेर्नु होला.",
+        "lsnsSurvey.0": "खाली",
+        "lsnsSurvey.1": "एक",
+        "lsnsSurvey.2": "दुइ",
+        "lsnsSurvey.3": "तीन या चार",
+        "lsnsSurvey.4": "पाच देखी आठ",
+        "lsnsSurvey.5": "नौ या नौ भन्दा बढी",
+        "lsnsSurvey.description": "लगभग सकिन लाग्यो!",
+        "lsnsSurvey.family": "परिवार: तपाईंले जन्म, विवाह आदिसँग सम्बन्धित व्यक्तिहरूलाई विचार गर्दै.",
+        "lsnsSurvey.friendships": "मित्रता: तपाईंको छिमेकी सहितका सबै साथीहरूलाई ध्यान दिँदै.",
+        "lsnsSurvey.question1": "एक महिनमा कम्तीमा तपाई कति जना आफन्तहरूसँग भेट्नु वा बोल्नुहुन्छ?",
+        "lsnsSurvey.question2": "तपाईं कतिजना आफ्न्तरुसँग आफ्नो निजी मामिलामा कुरा गर्न सजिलो महसुस गर्नुहुन्छ?",
+        "lsnsSurvey.question3": "तपाई कतिजना आफन्तहरुसँग नजिक हुनुहुन्छ यती तपाईलाई अप्ठेरो परेको बेलामा सहयोगको लागि कल गर्न सक्नुहुनेछ?",
+        "lsnsSurvey.question4": "एक महिनमा कम्तीमा तपाई कति जना साथीहरूसँग भेट्नु वा बोल्नुहुन्छ?",
+        "lsnsSurvey.question5": "तपाईं कतिजना साथीहरुसँग आफ्नो निजी मामिलामा कुरा गर्न सजिलो महसुस गर्नुहुन्छ?",
+        "lsnsSurvey.question6": "तपाई कतिजना साथीहरुसँग नजिक हुनुहुन्छ यती तपाईलाई अप्ठेरो परेको बेलामा सहयोगको लागि कल गर्न सक्नुहुनेछ?",
+        "lsnsSurvey.title": "हामीलाई आफ्नो बारेमा भाताउनुहोस.",
+        "map.andCanBeContactedAt": "यहाँ सम्पर्क गर्न सकिन्छ.",
+        "map.attribution": "Map data &copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
+        "map.isOffering": "प्रस्ताव गरिरहेको छ.",
+        "map.showOtherUsers": "अन्य प्रयोगकर्ताहरू देखाउनुहोस्.",
+        "map.youAreHere": "तपाई अहिले यहाँ हुनुहुन्छ.",
+        "offerForm.addPicture": "तस्वीर थप्नुहोस्.",
+        "offerForm.anOfferMustHaveATitle": "TODO",
+        "offerForm.available": "अहिले उपलब्ध छ.",
+        "offerForm.contactInformationPlaceholder": "सम्पर्क जानकारी:",
+        "offerForm.deleteOffer": "प्रस्ताव मेटाउनुहोस्.",
+        "offerForm.deleteOfferPicture": "प्रस्तावको चित्र मेटाउनुहोस्.",
+        "offerForm.geofenceWarning": "तपाईं मुन्स्टर भित्र हुँदा मात्र तपाईंले आफ्नो अफर उपलब्ध गराउन सक्नुहुन्छ.",
+        "offerForm.iAmOffering": "म प्रस्ताव गर्दैछु.",
+        "offerForm.iAmOfferingHelpText": "कृपया प्रस्तावको बारेमा केहि विवरण दिनुहोस्.",
+        "offerForm.iCanBeContactedAt": "सम्पर्क गर्नका लागि विकल्पहरू:",
+        "offerForm.iCanBeContactedAtHelpText": "कृपया फोन नम्बर, ईमेल वा अन्य निर्देशनहरू प्रदान गर्नुहोस्.",
+        "offerForm.noOffer": "कुनै प्रस्ताव छैन",
+        "offerForm.notAvailable": "अहिले उपलब्ध छैन",
+        "offerForm.notSaved": "TODO",
+        "offerForm.offerDescriptionPlaceholder": "विवरण",
+        "offerForm.offerPicture": "चित्र",
+        "offerForm.offerTitlePlaceholder": "शीर्षक",
+        "offerForm.saved": "प्रस्ताव सुरक्षित गरियो",
+        "offerForm.saveOffer": "TODO",
+        "offerForm.syncing": "TODO",
+        "offlineLayer.removeTiles": "के तपाईं नक्शाका सबै सुरक्षित डेटा हटाउन पक्का चाहनुहुन्छ?",
+        "review._otherUserId": "तपाईंले आफ्नो प्रस्ताव कसलाई दिनुभयो?",
+        "review.atMyHome": "मेरो घरमा",
+        "review.atMyWork": "म काम गर्ने ठाउँमा",
+        "review.atSomeoneElsesHome": "अरू कसैको घरमा",
+        "review.atTheirHome": "उनीहरूको घरमा",
+        "review.atTheirWork": "उनीहरू काम गर्ने ठाउँमा",
+        "review.email": "ईमेल",
+        "review.facebook": "फेसबुक",
+        "review.inAnotherPublicPlace": "अर्को सार्वजनिक स्थानमा",
+        "review.likely": "सम्भावित",
+        "review.other": "अन्य",
+        "review.phone": "फोन वा एसएमएस",
+        "review.question1": "तपाईहरु कसरी सम्पर्कमा आउनुभयो?",
+        "review.question2": "तपाईहरु कहाँ भेट्नुभयो?",
+        "review.question3": "भेट्घाट पस्चात तपाईं कतिको सन्तुष्ट हुनुहुन्छ?",
+        "review.question4": "यो व्यक्तिलाई फेरि सम्पर्क गर्ने कतिको सम्भावना छ?",
+        "review.questionsAbout": "बारे प्रश्नहरू",
+        "review.saidTheyGaveYouThisOffer": "तपाईंले यस प्रस्तावको बारेमा तिनीहरूलाई सम्पर्क गर्नुभयो.",
+        "review.satisfied": "सन्तुष्ट",
+        "review.slightlyDissatisfied": "थोरै असन्तुष्ट",
+        "review.unlikely": "सम्भवत",
+        "review.veryDissatisfied": "धेरै असन्तुष्ट",
+        "review.veryLikely": "धेरै सम्भव छ",
+        "review.verySatisfied": "धेरै सन्तुष्ट",
+        "review.veryUnlikely": "सम्भावना कम छ",
+        "review.weDidntMeetInPerson": "हामी एक-आपस्मा भेटेनौ",
+        "review.whatsapp": "व्हाट्सएप",
+        "settings.language": "भाषा",
+        "settings.loggedInAs": "यस रूपमा लग इन गरियो",
+        "settings.logIn": "लग-इन्न",
+        "settings.logOut": "लग-आउट",
+        "settings.name": "नाम",
+        "settings.notCurrentlyLoggedIn": "हाल लग-इन्न गरिएको छैन.",
+        "settings.quitTheStudy": "त्याग्नु",
+        "settings.shareLocation": "मेरो अहिलेको स्थान साझेदारी गर्नुहोस्.",
+        "settings.shareLocationText": "यसमार्फत तपाईंले आफ्नो स्थान सार्वजनिक वा निजीमा स्विच गर्न सक्नुहुन्छ. यती निजी गर्नुभएमा नक्शामा तपाईंको स्थानबाट अनुमानित केवल(५० मिटर भित्र) मात्र देखाइनेछ.",
+        "settings.useLocation": "मेरो स्थान प्रयोग गर्नुहोस्.",
+        "settings.useLocationText": "नक्सामा तपाईंको स्थान हेर्न यो खोल्नुहोस्। यसले तपाईंको फोनबाट तपाईंको वास्तविक इस्थान प्राप्त गर्न अनुमति दिन्छ. तपाईंको स्थान निजी हो र एपमा सेभ कहिल्यै हुनेछैन.",
+        "settings.youHaveConsented": "तपाईंले अध्ययनमा भाग लिन सहमत गर्नुभएको छ.",
+        "signInPage.hi": "नमस्ते !",
+        "signInPage.loading": "लोड हुँदैछ ...",
+        "signInPage.logIn": "लग-इन्न",
+        "signInPage.refresh": "रि-फेर्स",
+        "signInPage.waitForApproval": "कृपया तपाईंको खाता अनुमोदन गर्नको लागि मोडीरेटरको निर्णयलाई पर्खनुहोस्.",
+        "signInPage.whileYouAreWaiting": "तपाईंले लग-इन्न गर्नको लागि इमेल प्राप्त गर्नुहुनेछ.",
+        "signInPage.youMustBeOnlineInOrderToLogIn": "तपाईंले लग-इन्न गर्नका लागि अनिवार्य अनलाइन हुनुपर्दछ.",
+        "signInPage.youMustBeOnlineInOrderToLogOut": "तपाईंले लग-आउट गर्नका लागि अनिवार्य अनलाइन हुनुपर्दछ",
+        "tabs.dashboard": "ड्याशबोर्ड .",
+        "tabs.help": "मद्दत",
+        "tabs.list": "सूची",
+        "tabs.map": "नक्सा",
+        "tabs.offer": "मेरो प्रस्तावहरू",
+        "tabs.settings": "सेटिङ्हरू"
     }
 }
 
@@ -93161,31 +93351,7 @@ class App extends React.Component {
         this.showSidebar = this.showSidebar.bind(this);
         this.updateDistancesToUsers = this.updateDistancesToUsers.bind(this);
         this.tabs = ["dashboard", "map", "list", "settings", "offer", "help"];
-        this.state = {
-            sidebarIsOpen: false,
-            sidebarIsSwipeable: true,
-            logging: config.app.logging,
-            externalData: config.app.externalData,
-            layerControl: config.app.layerControl,
-            locale: config.app.defaultLocale,
-            draggable: config.map.draggable,
-            zoomable: config.map.zoomable,
-            centerPosition: config.map.center,
-            errorLoadingUsers: null,
-            errorSyncingUser: null,
-            usersAreLoaded: false,
-            reviewsAreLoaded: false,
-            currentUserIsLoaded: false,
-            users: [],
-            pendingReviews: [],
-            selectedUserId: null,
-            notificationLog: [],
-            currentTab: "dashboard",
-            currentUserId: null,
-            currentUser: null,
-            authenticated: false,
-            accessToken: false
-        };
+        this.state = this.defaultAppState();
 
         // Auth0
         this.auth0 = new Auth0.Authentication({
@@ -93562,13 +93728,16 @@ class App extends React.Component {
             return this.state.currentUserId.something;
         }
 
+        var offerIsSaving = 'offer' in attributes;
+
         var currentUser = this.state.currentUser || {};
         var updatedUser = JSON.parse(JSON.stringify(currentUser));
         Object.assign(updatedUser, attributes);
 
         this.setState({
             currentUser: updatedUser,
-            currentUserIsLoaded: false
+            currentUserIsLoaded: false,
+            offerIsSaving: offerIsSaving
         });
 
         // Make the call to the "update user" API endpoint
@@ -93578,6 +93747,12 @@ class App extends React.Component {
             body: JSON.stringify(attributes),
             headers: { 'Content-Type': 'application/json' }
         }).then(res => res.json()).then(result => {
+            if (offerIsSaving) {
+                this.setState({
+                    offerIsSaving: false
+                });
+            }
+
             this.setState({
                 currentUserIsLoaded: true
             });
@@ -93806,7 +93981,7 @@ class App extends React.Component {
                 l: this.l,
                 handleTabChange: this.handleTabChange,
                 pushUserUpdates: this.pushUserUpdates,
-                currentUserIsLoaded: this.state.currentUserIsLoaded,
+                offerIsSaving: this.state.offerIsSaving,
                 currentUser: this.state.currentUser,
                 outOfGeofence: this.state.outOfGeofence,
                 key: 'offerForm' }),
@@ -94023,17 +94198,7 @@ class App extends React.Component {
             });
         } else {
             // User logged out, so clear out stored user data
-            this.setState({
-                accessToken: null,
-                authenticated: false,
-                currentUser: null,
-                currentUserId: null,
-                currentUserIsLoaded: false,
-                users: null,
-                usersAreLoaded: false,
-                pendingReviews: null,
-                reviewsAreLoaded: false
-            });
+            this.setState(this.defaultAppState());
         }
     }
 
@@ -94113,6 +94278,35 @@ class App extends React.Component {
                 authenticated: this.state.authenticated,
                 currentUser: this.state.currentUser });
         }
+    }
+
+    defaultAppState() {
+        return {
+            sidebarIsOpen: false,
+            sidebarIsSwipeable: true,
+            logging: config.app.logging,
+            externalData: config.app.externalData,
+            layerControl: config.app.layerControl,
+            locale: config.app.defaultLocale,
+            draggable: config.map.draggable,
+            zoomable: config.map.zoomable,
+            centerPosition: config.map.center,
+            errorLoadingUsers: null,
+            errorSyncingUser: null,
+            usersAreLoaded: false,
+            reviewsAreLoaded: false,
+            currentUserIsLoaded: false,
+            offerIsSaving: false,
+            users: [],
+            pendingReviews: [],
+            selectedUserId: null,
+            notificationLog: [],
+            currentTab: "dashboard",
+            currentUserId: null,
+            currentUser: null,
+            authenticated: false,
+            accessToken: false
+        };
     }
 }
 
@@ -95755,6 +95949,11 @@ class LocaleMenu extends React.Component {
                 'option',
                 { value: 'es' },
                 'Espa\xF1ol'
+            ),
+            React.createElement(
+                'option',
+                { value: 'ne' },
+                '\u0928\u0947\u092A\u093E\u0932\u0940'
             )
         );
     }
@@ -96393,8 +96592,7 @@ class OfferForm extends React.Component {
             pictureFormat: offer.picture ? "uri" : "base64",
             title: offer.title || "",
             description: offer.description || "",
-            available: offer.available || false,
-            saved: !!offer.title
+            available: offer.available || false
         };
     }
 
@@ -96424,9 +96622,18 @@ class OfferForm extends React.Component {
         const name = target.type === 'checkbox' ? target.checkbox.name : target.name;
 
         this.setState({
-            [name]: value,
-            saved: false
+            [name]: value
         });
+    }
+
+    offer() {
+        return {
+            picture: this.state.picture,
+            pictureFormat: this.state.pictureFormat,
+            title: this.state.title,
+            description: this.state.description,
+            available: this.props.currentUser.offer ? this.props.currentUser.offer.available : this.state.available
+        };
     }
 
     save() {
@@ -96436,18 +96643,14 @@ class OfferForm extends React.Component {
         }
 
         this.props.pushUserUpdates({
-            offer: {
-                picture: this.state.picture,
-                pictureFormat: this.state.pictureFormat,
-                title: this.state.title,
-                description: this.state.description,
-                available: this.props.currentUser.offer ? this.props.currentUser.offer.available : this.state.available
-            }
+            offer: this.offer()
         });
+    }
 
-        this.setState({
-            saved: true
-        });
+    isSaved() {
+        var offer = this.props.currentUser.offer || {};
+
+        return this.offer().picture == offer.picture && this.offer().title == offer.title && this.offer().description == offer.description && this.offer().available == offer.available;
     }
 
     /**
@@ -96460,8 +96663,7 @@ class OfferForm extends React.Component {
         navigator.camera.getPicture(function onSuccess(imageData) {
             formInstance.setState({
                 picture: imageData,
-                pictureFormat: "base64",
-                saved: false
+                pictureFormat: "base64"
             });
         }, function onFail(message) {
             console.log('Error getting picture: ' + message);
@@ -96487,8 +96689,7 @@ class OfferForm extends React.Component {
      */
     confirmPictureDeletion(e) {
         this.setState({
-            picture: null,
-            saved: false
+            picture: null
         });
 
         this.closePictureDeletionDialog();
@@ -96514,8 +96715,7 @@ class OfferForm extends React.Component {
             pictureFormat: "base64",
             title: "",
             description: "",
-            available: false,
-            saved: true
+            available: false
         });
 
         this.props.pushUserUpdates({
@@ -96620,27 +96820,25 @@ class OfferForm extends React.Component {
     }
 
     renderOfferStatus() {
-        var status = {
-            color: "#d9534f",
-            icon: "edit",
-            text: "notSaved"
-        };
-
-        if (this.state.saved) {
-            if (this.props.currentUserIsLoaded) {
-                status = {
-                    color: "green",
-                    icon: "check",
-                    text: "saved"
-                };
-            } else {
-                status = {
-                    color: "black",
-                    icon: "spinner",
-                    spin: true,
-                    text: "syncing"
-                };
-            }
+        if (this.props.offerIsSaving) {
+            var status = {
+                color: "black",
+                icon: "spinner",
+                spin: true,
+                text: "syncing"
+            };
+        } else if (this.isSaved()) {
+            var status = {
+                color: "green",
+                icon: "check",
+                text: "saved"
+            };
+        } else {
+            var status = {
+                color: "#d9534f",
+                icon: "edit",
+                text: "notSaved"
+            };
         }
 
         return React.createElement(
