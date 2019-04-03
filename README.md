@@ -1,7 +1,5 @@
 # Geofreebie
 
-[![Waffle.io - Columns and their card count](https://badge.waffle.io/lbraun/geofreebie.svg?columns=all)](https://waffle.io/lbraun/geofreebie)
-
 ### Welcome!
 
 Geofreebie is a [freecycling](https://en.wikipedia.org/wiki/Freecycling) and skill-sharing app. It improves on existing freecycling platforms in Münster, Germany with its map interface and location-based recommendations. It makes freecycling more accessible and spontaneuous.
