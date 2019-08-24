@@ -42,6 +42,10 @@ These are just a few examples of notifications our app can deliver.
 6. [Cordova-promise-fs](https://github.com/markmarijnissen/cordova-promise-fs)
 7. [leaflet-offline](https://github.com/robertomlsoares/leaflet-offline)
 
+## Backend
+
+The backend for the app is housed in a separate repository and can be found here: https://github.com/lbraun/geofreebie-backend.
+
 ## Installation
 
 _How to install the app and run it on your device._
